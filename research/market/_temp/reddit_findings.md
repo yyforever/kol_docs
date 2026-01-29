@@ -1,6 +1,6 @@
 # Reddit 创作者社区调研发现
 
-> 调研时间: 2025-01-29
+> 调研时间: 2026-01-29
 > 调研范围: r/NewTubers, r/TikTokCreators, r/influencermarketing
 > 数据来源: WebSearch 聚合多个Reddit讨论、行业报告及学术研究
 
@@ -245,13 +245,13 @@
 
 ---
 
-*报告生成时间: 2025-01-29*
+*报告生成时间: 2026-01-29*
 
 ---
 
 # Reddit 电商社区调研发现
 
-> 调研时间: 2025-01-29
+> 调研时间: 2026-01-29
 > 调研范围: r/ecommerce, r/FulfillmentByAmazon, r/dropship, r/shopify
 > 数据来源: WebSearch 聚合多个Reddit讨论、行业报告及电商分析
 
@@ -569,4 +569,4 @@
 
 ---
 
-*电商社区调研生成时间: 2025-01-29*
+*电商社区调研生成时间: 2026-01-29*

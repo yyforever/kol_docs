@@ -1,6 +1,6 @@
 # 创作者痛点深挖 (Q1-4)
 
-> 调研时间: 2025-01-29
+> 调研时间: 2026-01-29
 > 调研方法: WebSearch 多维度搜索 (Reddit, 行业报告, 专家观点)
 > 参考来源: Roberto Blake, Colin & Samir, Harvard 研究, TubeBuddy, VidIQ 等
 

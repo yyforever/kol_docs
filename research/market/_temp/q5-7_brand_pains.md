@@ -1,6 +1,6 @@
 # 品牌方痛点深挖 (Q5-7)
 
-> 调研时间: 2025-01-29
+> 调研时间: 2026-01-29
 > 数据来源: Reddit营销社区、行业报告(eMarketer, HypeAuditor, Influencer Marketing Hub)、DTC专家(Nik Sharma, Moiz Ali)观点、品牌案例研究
 
 ---
