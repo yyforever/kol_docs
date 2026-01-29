@@ -46,6 +46,17 @@
 
 ---
 
+## 关键数据来源
+
+| 类别 | 来源 |
+|------|------|
+| 市场数据 | Statista, Grand View Research, eMarketer, Goldman Sachs |
+| TikTok Shop | MarketMaze, Signalytics, FordeBaker |
+| 创作者经济 | CreatorIQ, Creator Spotlight, EMARKETER |
+| 融资动态 | Crunchbase, TechCrunch, a]6z |
+| 一线洞察 | Reddit, Twitter/X, Product Hunt, Trustpilot |
+| 中国经验 | 艾媒咨询, 商务部, 澎湃新闻 |
+
 ---
 
 *最后更新：2026-01-29*
