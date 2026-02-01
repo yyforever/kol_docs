@@ -7,3 +7,4 @@
 | 文档 | 内容 |
 |------|------|
 | [01_AI_Coding测试设计最佳实践](01_AI_Coding测试设计最佳实践.md) | 闭环工程、测试金字塔、Agent Contract、CI 分层 |
+| [02_Agent工作流原则](02_Agent工作流原则.md) | **核心原则**：Codex + CLI + Skills，拒绝 context tax |
