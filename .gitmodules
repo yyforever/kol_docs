@@ -1,0 +1,3 @@
+[submodule ".claude/skills/product-research"]
+	path = .claude/skills/product-research
+	url = git@github.com:yyforever/product-research.git
