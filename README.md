@@ -5,7 +5,7 @@
 | 目录 | 内容 |
 |------|------|
 | [research/](research/) | 市场调研、竞品分析、用户调研 |
-| [docs/engineering/](docs/engineering/) | 工程方法论、AI Coding 最佳实践 |
+| [engineering/](engineering/) | 工程方法论、AI Coding 最佳实践 |
 | prd/ | 产品需求文档 |
 | design/ | 交互设计、信息架构、流程图 |
 | specs/ | API规格、数据字典、业务规则 |
