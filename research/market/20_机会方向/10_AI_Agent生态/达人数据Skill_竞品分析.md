@@ -1,7 +1,7 @@
 # 子方向A：达人数据Skill — 竞品分析
 
 > 更新时间：2026-02-05
-> 状态：R1步骤1完成
+> 状态：R2步骤1完成
 
 ---
 
@@ -266,3 +266,57 @@
 ---
 
 *来源：TechCrunch, AdExchanger, Influencer Marketing Hub, Product Hunt, 新浪财经, blog.apify.com, Reddit r/mcp, a16z, Stratechery 等2025年发布内容*
+
+---
+
+## R2更新（步骤1：竞品发现补充）
+
+### 新发现竞品（R1未覆盖）
+
+| 竞品 | 定位 | 定价 | 状态 |
+|------|------|------|------|
+| **IQFluence** | 低价达人API | $10/月起 | 活跃 |
+| **Influencers.Club** | 340M+ profiles数据库 | 未公开 | 活跃 |
+| **HypeBridge** | AI达人匹配(via Apify MCP) | 未公开 | 10K+品牌 |
+| **Creator Contacts** | TikTok达人数据库 | 一次性购买 | PH 2025.11 |
+| **InfluenceFlow** | 免费达人平台+API | 免费 | 活跃 |
+
+### 重大竞品动态
+
+- 🔥 **HypeAuditor → HypeAgent**：推出独立对话式AI产品，**$30/月**起（Beta）— R1时只有Composio MCP，现在有独立产品了
+- **CreatorDB MCP**：31工具（IG 11+YT 11+TT 9），MIT开源社区项目，$79-749/月SaaS
+- **Modash/Phyllo**：仍**无MCP集成**，MCP窗口仍在
+- **AnyTag MCP**：亚太持续扩张（韩国+小红书）
+
+### B2D市场地图（达人数据API的真实买家）
+
+| 买家类型 | 代表公司 | 用途 |
+|---------|---------|------|
+| **电商平台** | Pietra(a16z) | 社交监听，服务300K电商品牌 |
+| **增长工具** | Clay(5000+公司) | CRM enrichment |
+| **创作者工具** | Beacons(link-in-bio) | 自动生成media kit |
+| **创作者金融** | Karat/Nerve/Creative Juice | 社交数据做信贷评估 |
+| **Affiliate平台** | MagicLinks | 达人验证+匹配 |
+
+**开发者核心需求排序**：Time-to-market > 可靠性 > 开发者体验 > 数据规模 > 价格
+
+### Scraping vs Database竞争
+
+| 维度 | Scraping(Apify等) | Database(聚星/Modash) |
+|------|-------------------|---------------------|
+| 速度 | 慢 | ✅ 快 |
+| 稳定性 | 低 | ✅ 高 |
+| 受众画像 | ❌ 无 | ✅ 有 |
+| 合规性 | 🔴 高风险(16国监管声明) | ✅ 清晰 |
+| 护城河 | 低 | ✅ 高 |
+| 价格 | 低 | 中高 |
+
+> **结论**：Database-First + Scraping辅助 = 最佳架构。合规将成为vs scraping竞品的关键差异化。
+
+### 空白确认更新
+
+| 空白 | R1判断 | R2验证 |
+|------|--------|--------|
+| 专业达人数据MCP | 零 | ✅ **仍为零**（CreatorDB是社区项目，Apify 2.4/5仅16用户）|
+| Modash/Phyllo MCP | 无 | ✅ **仍无** |
+| 中国达人数据MCP | 零 | ✅ **全球空白** |
