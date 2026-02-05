@@ -313,6 +313,31 @@
 
 > **结论**：Database-First + Scraping辅助 = 最佳架构。合规将成为vs scraping竞品的关键差异化。
 
+### R2步骤2：竞品深挖更新
+
+**HypeAgent（HypeAuditor独立AI产品）**
+- 独立品牌+域名(hypeagent.io)，$30/月(Credit制)，Beta中
+- 205M+达人库，纯对话式"AI分析师"（不能执行外联/谈判）
+- ❌ **无API/MCP** — 封闭生态，数据能力不对外开放
+- vs Stormy: HypeAgent="AI分析师"(分析)，Stormy="AI执行者"(执行)，互补非竞争
+
+**Modash API B2D生态（标杆参照）**
+- $16,200/yr起(Discovery) + $10,000/yr(Raw)，年付锁定
+- 60+API客户含Clay($1.3B估值)、Pietra(a16z)、NYT
+- ✅ 文档质量高，❌ 无SDK、无自助注册、无免费sandbox
+- 🎯 **无MCP Server** — 全球无任何influencer data API提供官方MCP
+
+**IQFluence（威胁：低）**
+- "$10/月"是误解——实际是pay-as-you-go最低充值$10
+- 375M+达人声称，但零API文档、零SDK、零开发者门户
+- 可能是上游数据供应商角色（其他竞品从IQFluence获取数据）
+
+**Phyllo/InsightIQ B2D验证**
+- R1修正：CEO没离开，Clayface.ai是Phyllo子品牌
+- $17.8M融资，$3.9M收入，burn multiple 4.6x — 不理想
+- "Creator Data Plaid"部分验证（20+客户）但天花板明显
+- **核心教训：纯B2D API天花板低，必须向垂直应用延伸**
+
 ### 空白确认更新
 
 | 空白 | R1判断 | R2验证 |

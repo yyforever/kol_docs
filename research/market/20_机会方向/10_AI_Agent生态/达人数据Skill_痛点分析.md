@@ -154,4 +154,55 @@
 
 ---
 
-*（步骤3a Reddit痛点、3b 竞品评价痛点、3c 中文痛点的结果待整合）*
+---
+
+## R2更新（步骤3：痛点深化验证）
+
+### R2-1: 开发者(B2D)痛点
+
+| 痛点 | 严重度 | 用户原话 |
+|------|--------|---------|
+| **定价过高+强制年付** | 🔴极高 | "expensive for what you get" — Modash $16,200/yr, Phyllo $20,000/yr |
+| **无自助注册** | 🔴极高 | "Book a demo screams I have to pay for the guy making the demo" |
+| **数据准确性存疑** | 🟡高 | "not realistic at all, filtering options aren't any good" |
+| **集成复杂度** | 🟡高 | "months of development time" for each platform |
+| **MCP接口空白** | 🟢机会 | 整个行业零MCP Server |
+
+**市场空白确认**：自助注册+透明定价+免费层+MCP = 无人覆盖
+
+### R2-2: Agent环境数据痛点（**完全验证**）
+
+| 证据 | 来源 | 时间 |
+|------|------|------|
+| ChatGPT**编造达人用户名** | Neil Patel亲测 | 2025.05 |
+| ChatGPT准确率仅**59.7%** | NP Digital报告 | 2026.02.04 |
+| 47.1%营销人员每周多次遇AI错误 | NP Digital | 2026.02 |
+| OpenAI Operator找达人"疯狂幻觉" | Reddit测试者 | 2025.01 |
+| GPT-4o引用>50%为编造 | 学术研究 | 2025 |
+
+> **核心空白**：达人数据API存在（Modash 2亿+）、Agent框架成熟（MCP广泛应用）、**但两者之间没有桥梁** 🎯
+
+### R2-3: 合规差异化
+
+- Clearview AI因爬取社交数据被累计罚款**近€1亿**
+- 16国监管联合声明："公开可用 ≠ 可合法处理"
+- **Database-based vs Scraping-based = 结构性合规差异**
+- SOC2认证已成Enterprise入场券（Phyllo/Upfluence已有）
+
+### R2-4: 中国公司信任障碍
+
+- TikTok被罚€5.3亿 → 创造最坏先例
+- 获客成本倍数：美国5-10x、欧洲3-5x、东南亚1.5-2x
+- NoxInfluencer海外品牌认知：🔴 Reddit关联"scam"，B2D圈品牌资产≈0
+- **必须用全新品牌+新加坡注册+开源SDK**
+- 但DeepSeek 2025年证明：开源+好产品可快速赢回信任
+
+### R2痛点总结
+
+**R1→R2修正**：
+| 维度 | R1判断 | R2验证 |
+|------|--------|--------|
+| Agent数据痛点 | 推测存在 | ✅ **Neil Patel+NP Digital+学术研究三重确认** |
+| B2D痛点 | 未涉及 | ✅ 定价过高+无自助+无MCP = 三重空白 |
+| 合规差异化 | 提及但未深入 | ✅ €1亿罚款先例+16国声明 = 结构性壁垒 |
+| 信任障碍 | 轻描淡写 | 🔴 **严重但可克服（新品牌+开源+新加坡）** |
