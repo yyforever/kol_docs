@@ -1,7 +1,7 @@
 # 子方向A：达人数据Skill — 竞品分析
 
 > 更新时间：2026-02-05
-> 状态：R2步骤1完成
+> 状态：R3步骤1完成（最终轮）
 
 ---
 
@@ -345,3 +345,93 @@
 | 专业达人数据MCP | 零 | ✅ **仍为零**（CreatorDB是社区项目，Apify 2.4/5仅16用户）|
 | Modash/Phyllo MCP | 无 | ✅ **仍无** |
 | 中国达人数据MCP | 零 | ✅ **全球空白** |
+
+---
+
+## R3更新（步骤1：最终竞品扫描）
+
+### 三轮扫描完整竞品图谱（24家）
+
+**Tier 1：直接API/MCP竞品（核心威胁）**
+
+| 竞品 | 模式 | 数据库 | 定价 | MCP |
+|------|------|--------|------|-----|
+| Modash API | Discovery+Raw API | 350M+ | $16,200/yr起 | ❌ |
+| Phyllo/InsightIQ | API基础设施 | 450M+ | 定制 | ❌ |
+| HypeAuditor+HypeAgent | API+对话式AI | 205M+ | $30/月(Agent) | Composio仅3工具 |
+| CreatorDB+MCP | API+MCP | 10M+ | $79-749/月 | ✅ 31工具(社区) |
+| Influencers.Club | API | 340M+ | 未公开 | ❌ |
+| Apify达人Agent | MCP+爬取 | 按需 | 按用量 | ✅ 弱(2.4/5) |
+| AnyTag MCP | MCP | 未公开 | 未公开 | ✅ |
+| NoxInfluencer(聚星) | API+SaaS | 63-100M | $3,899-7,999/yr | ❌ |
+
+**Tier 2：应用层竞品**
+- 🆕 **ShopMy**：$1.5B估值，达人→销售归因闭环，$1B+ GMV，已盈利
+- 🆕 **RHEI Made**：Warner Music背景，5个AI Agent"数字C-Suite"面向达人，$30-300/月
+- 🆕 **Favikon**：AI Chat驱动达人发现，10M+档案，9渠道
+- 🆕 **Aha(aha.inc)**：LLM匹配+自动谈判+定价，$120/月
+- Stormy AI：YC，AI Agent端到端，$100-350/月
+
+**Tier 3：MCP生态新竞品**
+- 🆕 **Audiense Insights MCP**：官方MCP Registry成员，受众洞察+达人亲和度
+- 🆕 **Xpoz MCP**：1.5B+帖子索引，无需API Key
+- 🆕 **SocialAPIs Hub MCP**：统一社交API面向Agent
+
+### Creator Fintech竞品（R3新增场景）
+
+| 竞品 | 定位 | 融资 | 与达人数据API重叠度 |
+|------|------|------|-------------------|
+| **Phyllo Income API** | 达人收入验证(OAuth) | $17.8M | 高 |
+| **Karat Financial** | 达人信用卡(社交数据+Plaid) | $70M | 中（数据消费方） |
+| **Argyle** | 通用收入验证(含YT/Shopify) | 未公开 | 低 |
+| **NeoReach** | 反欺诈API(信用制) | 未公开 | 中 |
+
+> **空白**：没有一家公司同时做"收入验证+欺诈检测"。金融机构需要两个答案但来自不同供应商。
+
+### MCP商业化现实（R3关键发现）
+
+| 案例 | ARR | 模式 |
+|------|-----|------|
+| Bright Data | $300M+ | 企业数据平台+MCP免费层 |
+| Exa | $12M | AI搜索API，MCP开源引流 |
+| Tavily | $2.8M | Agent搜索API |
+| 21st.dev | ~$6K/月 | 唯一MCP-first付费成功案例 |
+
+> **结论：纯MCP-first付费产品几乎没有成功。MCP是分发渠道，不是产品。数据独特性才是壁垒。**
+
+### R3步骤2：竞品深挖更新
+
+**ShopMy（$1.5B估值，应用层标杆）**
+- ~$89M ARR，2024起盈利，毛利mid-60s到high-70s
+- 三层收入：SaaS $399-7,000/月(40-50%) + 佣金82/18分成(25-35%) + Campaign 15%平台费(15-25%)
+- 核心护城河：多达人归因自动拆分佣金 + Smart Global Links
+- Circles(B2B2C)：30K+ circles，向消费者端延伸
+- **启示：数据飞轮 > 单个API；归因数据最值钱但外部难替代**
+
+**Favikon（AI对话式达人发现）**
+- €79-359/月，10M+达人，**9个平台（含LinkedIn+Substack，独特）**
+- AI是"语义搜索框"不是"对话Agent"；750+自动Niche分类
+- Capterra 4.6/5(31评)，10K+用户
+- ❌ 无公开API/MCP
+- **可借鉴：AI+筛选器组合、Chrome Extension、自动Niche分类**
+
+**Wayde（450M+达人库，PH新产品）**
+- 2人波兰团队，无融资，450M+极大概率采购自InsightIQ
+- $299-799/月，无API
+- 差异化：Brief上传→LLM解析、Life Moments提取、PR-Safety检测
+- **威胁等级：低**
+
+**Audiense Insights MCP**
+- ⚠️ 修正：不在新MCP Official Registry，只在旧GitHub社区列表
+- 8个工具：受众洞察+达人亲和度，本质是$12K/yr SaaS的AI接口
+- 与达人数据MCP互补非竞争（受众优先 vs 达人优先）
+- 🎯 **MCP Registry是完全开放自助系统，无审核门槛，1-2天可发布占位**
+
+### R3空白最终确认
+
+| 空白 | R1 | R2 | R3 |
+|------|----|----|-----|
+| 专业达人数据MCP | 零 | 仍零 | ✅ **CreatorDB社区版+Apify弱版=仅有2个，均非商业级** |
+| Modash/Phyllo官方MCP | 无 | 无 | ✅ **仍无** |
+| 大公司入场 | 无 | 无 | ✅ **无（Meta反而在收紧数据访问）** |
+| 对话式AI+达人数据(面向达人商业决策) | — | — | 🆕 **无人做**（HypeAgent面向品牌，RHEI面向创作流程）|
