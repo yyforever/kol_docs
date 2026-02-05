@@ -100,3 +100,67 @@
 1. **MCP协议原生接入**（Agent可直接调用）
 2. **AI语义查询**（自然语言而非结构化Filter）
 3. **达人深度画像 + 电商转化数据**的交叉分析（传统达人平台和TikTok Shop工具都没打通）
+
+---
+
+## 六、R1步骤2：竞品深挖
+
+### EchoTik API（A1最直接竞品）
+
+| 维度 | 详情 |
+|------|------|
+| 端点 | 7模块40+端点（Product/Seller/Influencer/Live/Video/Hashtag/Other） |
+| 达人字段 | 粉丝/点赞/播放/GMV(估算)/佣金率/品类/24月历史 |
+| 定价 | API $59-399/月（按请求量），SaaS $0-29.10/月，100次免费试用 |
+| DX | OpenAPI文档+curl示例，❌无SDK，文档偶404 |
+| 客户 | 200+，SaaS开发者>Agency>品牌>投资>AI团队 |
+| 团队 | 新加坡注册，核心来自**小米+TikTok全球电商**，2024天使轮(紫鸟创始人领投) |
+| 数据 | ⚠️ 全部第三方估算，非官方一手数据 |
+
+**EchoTik弱点（A1可攻击）**：无SDK、文档不稳定、无MCP、纯数据无执行闭环
+
+### Kalodata（前TikTok/Lazada团队）
+
+| 维度 | 详情 |
+|------|------|
+| 创始人 | 郭汉润(Lawrence Guo)：UC Berkeley→阿里→**Lazada内容电商负责人4年**；联创来自**字节数据中台** |
+| 功能 | 7大模块（类目/探索/商品/店铺/达人/视频广告/直播）+AI选品+Amazon整合 |
+| 定价 | $46-159/月（近期涨价），Enterprise定制 |
+| API | ❌ 仅Enterprise定制，无公开API |
+| 融资 | A轮（CE Innovation/灵犀/梅花），金额未披露 |
+| 新品 | **Kaloboost**：批量达人自动外联(1000人/次)+100万验证邮箱 |
+| 数据 | 公开渠道采集+AI模型处理，非官方数据通道 |
+
+### FastMoss（最大用户基数+OpenAPI）
+
+| 维度 | 详情 |
+|------|------|
+| 公司 | 深圳有乐今天科技(YOLO)，法人史文禄，100-499人，北京+深圳 |
+| 用户 | 2.6M+注册，推算5-13万付费 |
+| API | ✅ OpenAPI(openapi.fastmoss.com)，3模块：Search/Ranking/Market，OAuth2+SHA256，有Python SDK |
+| 融资 | 锦秋基金+NYX Ventures，金额未公开 |
+| 数据 | 行业准确性评价最高，1000+天历史 |
+| 定位 | 深度全面(企业级)，vs Kalodata轻量高效(个人级) |
+
+### Helium 10 TikTok Shop（大厂入场）
+
+| 维度 | 详情 |
+|------|------|
+| 功能 | 9大功能含Influencer Finder(可查GMV)+Product Finder+Profits Dashboard |
+| 定价 | **包含在现有订阅中不额外收费**（Platinum $99-129/月，Diamond $279-359/月） |
+| 达人数据 | 可按GMV/posting likelihood/niche过滤，❌缺直播/店铺级/佣金ROI |
+| API | 仅Enterprise($1,499+/月) |
+| 冲击 | 🔴极高：Amazon→TikTok跨平台卖家 / 🟢低：纯TikTok达人/中国卖家 |
+
+### 竞品对比矩阵
+
+| 维度 | EchoTik | Kalodata | FastMoss | Helium 10 |
+|------|---------|----------|----------|-----------|
+| 独立API | ✅ 40+端点 | ❌ | ✅ OpenAPI | ❌(Enterprise only) |
+| SDK | ❌ | ❌ | ✅ Python | ❌ |
+| MCP | ❌ | ❌ | ❌ | ❌ |
+| 达人GMV | ✅(估算) | ✅ | ✅ | ✅(估算) |
+| 直播数据 | ✅ | ✅ | ✅ | ❌ |
+| 达人外联 | ❌ | ✅(Kaloboost) | ❌ | ✅(Messenger) |
+| 自助注册API | ✅ | ❌ | ❌(需注册) | ❌ |
+| 最低API月费 | $59 | Enterprise | Enterprise | $1,499 |
