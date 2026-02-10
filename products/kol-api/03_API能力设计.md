@@ -1,6 +1,6 @@
 # 03 API能力设计
 
-> 状态：草稿，待确认
+> ⚠️ 状态：占位内容，待深入调研验证。以下内容基于前期调研初步推演，不作为结论。
 > 依赖：[01_定位与假设](01_定位与假设.md)、[02_用户场景](02_用户场景.md)
 > 参考：[聚星现有API](_research/nox-api-research.md)、[竞品DX](_research/influencer-api-dx-comparison.md)
 
