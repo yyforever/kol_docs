@@ -27,30 +27,79 @@ CreatorDB 的 31 个 Tool（11 IG + 11 YT + 9 TikTok）本质是把 REST endpoin
 
 > Microsoft Research 发现：当 Tool 数量超过 20 个，Agent 任务完成率下降最高 **85%**。原因是上下文窗口被 Tool 描述占满，推理质量急剧下降。
 
-**kol-api 设计目标：7 个 Tool 覆盖全链路。**
+**kol-api 设计目标：7 个 Tool 覆盖全链路。Day 1 上线 4 个（P0），数据验证后迭代加入 3 个（P1/P2）。**
 
-### 1.2 六条设计原则
+### 1.2 设计原则
 
 | # | 原则 | 证据 | 在 kol-api 的体现 |
 |---|------|------|------------------|
 | 1 | **一个用户意图 = 一个 Tool** | CreatorDB 31 tools 失败 vs Tavily 4 tools 成功 | 7 个 Tool 覆盖 02 中全部 20 个细粒度能力 |
 | 2 | **Tool description 决定被发现概率** | Anthropic 官方指南 + Arcade 54 MCP 设计模式 | 每个 Tool description ≥ 3 句话，从 Agent 视角写（见附录） |
 | 3 | **必填参数最少化（1-2 个）** | Context7 每个 Tool 仅 1-2 个必填参数 | 7 个 Tool 中 5 个仅 1 个必填参数 |
-| 4 | **返回可行动结果 + 建议下一步** | Firecrawl 返回结构化数据 + 状态追踪 | 每个返回含 `summary` + `suggested_actions` |
+| 4 | **返回完整结构化数据，不替 Agent 做编排** | Agent 应自主推理下一步，而非被 Tool 返回引导走固定路线 | 返回 `summary` + `data` + `credits`，不含工作流建议 |
 | 5 | **一致的返回格式 + Credit 透明** | 所有成功产品的共同模式 | 统一信封（第四节） |
 | 6 | **写操作需人工确认** | MCP 最佳实践：先只读，逐步加写操作 | `outreach_creators` 和 `negotiate` 先预览再执行 |
+| 7 | **Tool 是原子操作，不是 Workflow 步骤** | LangChain/Arcade 编排模式：Tool 无序可组合，编排在上层 | Tool 不暗示调用顺序，编排由 Agent 或独立 Skill 负责 |
+| 8 | **CLI-first，MCP-second** | Pi/OpenClaw（4 Tool，157K Stars）：终端对 Agent 更友好——可组合、可观测、可验证 | CLI 是核心交付物，MCP/SKILL/GPT Action 是薄包装（第二节） |
+| 9 | **返回支持 Agent 自我验证**（P2） | Claude Code 最佳实践："Agent 能验证自己的工作时表现显著提升"；Ralph Loop 模式 | 返回含质量指标，Agent 可自主判断是否需要迭代（第四节 4.5） |
 
 ### 1.3 本文不是什么
 
-- **不是 REST API 文档**：kol-api 底层有 REST API，但品牌不直接调用。本文设计的是 Agent 调用的 Tool 接口。
-- **不是 SDK 使用指南**：不涉及 `pip install` 或 `npm install`。
+- **不是 REST API 文档**：kol-api 底层有 REST API，但品牌不直接调用。本文设计的是 CLI 命令 + Agent Tool 接口。
 - **不是按 API 调用量分层**：付费逻辑是 Credit 额度制（见 01 第七节、02 第 2.4 节），不是每月调用上限。
 
 ---
 
-## 二、MCP Server 身份
+## 二、接入层架构
 
-### 2.1 Server 描述
+### 2.1 核心原则：CLI-first，MCP-second
+
+Pi（OpenClaw 底层引擎）用 4 个 Tool（read/write/edit/bash）驱动了 157K Stars 的 Agent 产品。Mario Zechner 的核心论点：**前沿模型已被 RL 训练到足够理解 CLI 工具，给 Agent 一个终端比给它 20 个专用 Tool 更强。** 终端对 Agent 更友好，因为：可组合（管道自由拼接）、可观测（输入输出人类都能看到）、可验证（Agent 看到输出后能自主判断是否需要迭代）。
+
+> 来源：[What I learned building an opinionated and minimal coding agent](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/)、[Pi: The Minimal Agent Within OpenClaw](https://lucumr.pocoo.org/2026/1/31/pi/)
+
+**kol-api 因此采用 CLI-first 架构**：先构建设计良好的 CLI，MCP/SKILL/GPT Action 都是 CLI 的薄包装层。
+
+```
+                        ┌─ MCP Server ──→ Claude / Cursor / Glama
+                        │
+CLI（kol）──→ REST API ──┼─ SKILL.md ───→ OpenClaw / ClawHub
+                        │
+                        └─ GPT Action ──→ ChatGPT Apps
+
+终端型 Agent（Claude Code / OpenClaw）→ 直接 bash 调 CLI，不经过 MCP
+```
+
+CLI 命令与 MCP Tool 的对应：
+
+```bash
+# discover_creators
+kol search "US beauty TikTokers 10K-1M followers"
+kol search --platform tiktok --country US --niche beauty --followers 10000-1000000
+
+# analyze_creator
+kol analyze @beautybyjess --deep
+kol analyze --url "https://tiktok.com/@beautybyjess"
+
+# outreach_creators
+kol outreach @beautybyjess @glowwithme --brief "protein powder launch" --preview
+kol outreach @beautybyjess @glowwithme --brief "protein powder launch" --send
+
+# negotiate
+kol negotiate @beautybyjess --max 900 --target 800 --preview
+kol negotiate @beautybyjess --max 900 --target 800 --start
+```
+
+CLI 的优势在于 Agent 可以自由组合——这在 MCP 固定参数设计中做不到：
+
+```bash
+# 搜索后按互动率过滤，再批量邀约——Agent 自主编排
+kol search "US beauty TikTokers" --json | \
+  jq '[.[] | select(.engagement_rate > 0.05)]' | \
+  kol outreach --stdin --brief "protein powder launch" --preview
+```
+
+### 2.2 MCP Server 描述
 
 Agent 发现工具的第一步是读取 Server 描述。这是 kol-api 在 Agent 生态中的"SEO"——写得好，Agent 就能自动匹配用户的达人营销意图。
 
@@ -63,10 +112,11 @@ description: >
   outreach emails, negotiate pricing within budget, manage campaigns,
   and track ROI — all through natural language. Replaces 3-5 days
   of manual research with 30-second structured results.
+  Also available as CLI: npm install -g @kol-api/cli
 version: 1.0.0
 ```
 
-### 2.2 语义触发词注册
+### 2.3 语义触发词注册
 
 Agent 匹配用户意图时依赖关键词。以下词组需要在各平台注册为 kol-api 的触发语义：
 
@@ -77,15 +127,28 @@ Agent 匹配用户意图时依赖关键词。以下词组需要在各平台注�
 | 领域 | influencer marketing, creator marketing, brand collaboration, sponsored content |
 | 意图 | fake followers, audience demographics, engagement rate, pricing benchmark |
 
-### 2.3 支持平台
+### 2.4 支持平台
 
 v1 优先：**YouTube + TikTok + Instagram**（覆盖 95% 品牌场景）。
 
-所有 Tool 接受 `platform` 参数进行过滤，不传则跨平台搜索。平台维度在参数层面处理，**不在 Tool 层面拆分**（避免 CreatorDB 式膨胀）。
+所有 Tool / CLI 命令接受 `platform` 参数进行过滤，不传则跨平台搜索。平台维度在参数层面处理，**不在 Tool 层面拆分**（避免 CreatorDB 式膨胀）。
 
 ---
 
 ## 三、Tool 定义（7 个 Tool）
+
+### 发布节奏
+
+| 阶段 | Tool | 理由 |
+|------|------|------|
+| **Day 1**（4 个） | discover_creators, analyze_creator, outreach_creators, negotiate | P0 全链路核心：搜索→评估→邀约→谈判。覆盖 83% 人工成本（28% 信息密集 + 55% 沟通密集） |
+| **v1.1**（3 个） | manage_campaigns, competitive_intel, track_performance | 基于 Day 1 真实调用数据验证需求后加入。Firecrawl 上线时也只有 2 个 Tool，`map` 和 `extract` 是用户使用三个月后根据调用日志中的失败模式才加的 |
+
+Day 1 不上 7 个的原因：未经真实 Agent 调用验证的 Tool 越多，维护债务越大。v1.1 的 3 个 Tool 设计已完成（见 3.5-3.7），随时可上线，但**上线时机由数据驱动**。
+
+---
+
+### Day 1 Tool（P0）
 
 ### 3.1 `discover_creators` — "帮我找达人"
 
@@ -108,8 +171,6 @@ v1 优先：**YouTube + TikTok + Instagram**（覆盖 95% 品牌场景）。
 
 **关键设计**：一次调用完成搜索+初筛+基础评估。品牌不需要先搜索、再逐个查详情、再逐个查假粉——这些全在一次 Tool 调用中完成。
 
-**建议下一步**：`"要深入分析某位达人吗？还是直接批量邀约？"`
-
 ### 3.2 `analyze_creator` — "这个达人靠谱吗"
 
 **优先级**：P0 | **Credit**：2 credits/次
@@ -130,8 +191,6 @@ v1 优先：**YouTube + TikTok + Instagram**（覆盖 95% 品牌场景）。
 - 预估合作费用（基于市场基准）
 - 品牌契合度分析（如果品牌有历史合作数据）
 
-**建议下一步**：`"要邀约这位达人吗？还是看看竞品在跟谁合作？"`
-
 ### 3.3 `outreach_creators` — "帮我联系这些达人"
 
 **优先级**：P0 | **Credit**：3 credits/人
@@ -149,8 +208,6 @@ v1 优先：**YouTube + TikTok + Instagram**（覆盖 95% 品牌场景）。
 
 1. **预览阶段**（`confirm: false`）：返回每位达人的邮件预览 + 联系方式可达性 + 预估响应率。品牌审核内容。
 2. **发送阶段**（`confirm: true`）：品牌确认后发送，返回发送状态 + 后续追踪 ID。3 天无回复自动发 follow-up。
-
-**建议下一步**：`"邮件已发送。有回复时我会通知你。要同步看看合作进展吗？"`
 
 ### 3.4 `negotiate` — "帮我谈价"
 
@@ -172,7 +229,7 @@ v1 优先：**YouTube + TikTok + Instagram**（覆盖 95% 品牌场景）。
 1. **策略阶段**（`confirm: false`）：返回市场定价基准 + 该达人历史报价 + 建议谈判策略 + 预估成交价区间。
 2. **执行阶段**（`confirm: true`）：在预算范围内自动与达人邮件往返。每轮进展同步给品牌，达成一致后发合作确认邮件（需品牌最终审核）。
 
-**建议下一步**：`"谈判完成。要查看合作管理面板吗？"`
+### v1.1 Tool（数据验证后上线）
 
 ### 3.5 `manage_campaigns` — "我的合作情况"
 
@@ -191,8 +248,6 @@ v1 优先：**YouTube + TikTok + Instagram**（覆盖 95% 品牌场景）。
 
 **返回**：Campaign 列表 + 每个 Campaign 的阶段进展（邀约→谈判→合同→发货→审稿→发布→结算） + 达人白/黑名单 + 活跃提醒。
 
-**建议下一步**：`"有 2 个合作即将到期，要续约吗？3 位达人的内容等待审核。"`
-
 ### 3.6 `competitive_intel` — "竞品在做什么"
 
 **优先级**：P1 | **Credit**：5 credits/次
@@ -210,8 +265,6 @@ v1 优先：**YouTube + TikTok + Instagram**（覆盖 95% 品牌场景）。
 
 **返回**：竞品达人合作清单 + 合作类型分布 + 效果最佳合作案例 + 可挖角达人（未签独家）。
 
-**建议下一步**：`"发现 3 位高效果达人尚未与竞品签独家，要邀约吗？"`
-
 ### 3.7 `track_performance` — "效果怎么样"
 
 **优先级**：P2 | **Credit**：2 credits/次
@@ -228,8 +281,6 @@ v1 优先：**YouTube + TikTok + Instagram**（覆盖 95% 品牌场景）。
 
 **返回**：实时数据（播放/互动/转化） + 与同品类基准对比 + ROI 计算 + 趋势变化。
 
-**建议下一步**：`"ROI 最高的 3 位达人可以复投，要发起新一轮邀约吗？"`
-
 ---
 
 ## 四、返回格式标准
@@ -243,10 +294,6 @@ v1 优先：**YouTube + TikTok + Instagram**（覆盖 95% 品牌场景）。
   "success": true,
   "data": { ... },
   "summary": "找到 15 位符合条件的美妆达人，互动率最高的是 @beautybyjess（4.2%）",
-  "suggested_actions": [
-    {"action": "analyze_creator", "label": "深入分析某位达人", "params": {"creator_id": "..."}},
-    {"action": "outreach_creators", "label": "批量邀约", "params": {"creator_ids": ["..."]}}
-  ],
   "credits": {
     "used": 1,
     "remaining": 199,
@@ -267,19 +314,7 @@ Agent 可直接将 `summary` 呈现给用户，无需再做二次处理。写法
 - 包含关键数字（数量、百分比、金额）
 - 一句话概括结果，不超过 100 字
 
-### 4.3 `suggested_actions` 字段
-
-引导 Agent 进入下一步工作流，形成闭环：
-
-```
-discover → analyze → outreach → negotiate → manage → track
-                                                    ↓
-                                              discover（复投）
-```
-
-每个 `suggested_action` 包含完整的 Tool 名 + 预填参数，Agent 可一键调用。
-
-### 4.4 Credit 余额始终透明
+### 4.3 Credit 余额始终透明
 
 每次返回都包含 `credits` 对象。当余额不足时，`summary` 中自动提示：
 
@@ -294,7 +329,7 @@ discover → analyze → outreach → negotiate → manage → track
 }
 ```
 
-### 4.5 错误信息设计
+### 4.4 错误信息设计
 
 错误信息面向 Agent 推理（可行动），不是面向开发者调试（密码式错误码）：
 
@@ -304,6 +339,25 @@ discover → analyze → outreach → negotiate → manage → track
 | 余额不足 | "需要 5 credits，余额 3。品牌可在 kol-api.com 升级" | 给出行动路径 |
 | 达人未找到 | "未找到该达人。试试用 discover_creators 搜索？" | 建议替代操作 |
 | 平台不支持 | "暂不支持 Facebook 搜索，支持 YouTube/TikTok/Instagram" | 明确能力边界 |
+
+### 4.5 可验证闭环：返回支持 Agent 自我验证（P2）
+
+> 优先级 P2，Day 1 不实现。设计原则先确立，实现节奏由数据驱动。
+
+Coding Agent 的核心循环是：写代码 → 跑测试 → 看输出 → 修正 → 再跑。Agent 通过终端输出来验证自己的工作质量，不需要人类介入就能迭代到正确结果。kol-api 同理——如果返回中包含足够的质量指标，Agent 可以自主判断"结果好不好，要不要换个策略重来"。
+
+| Tool | 当前返回 | P2 增加的验证信息 |
+|------|---------|-----------------|
+| discover_creators | 达人列表 | 搜索质量：匹配度分布、被过滤数量、是否还有更多结果 |
+| analyze_creator | 达人画像 | 数据置信度：哪些字段是实时的、哪些是缓存的 |
+| outreach_creators | 邮件预览/发送状态 | 可达性预估：邮箱有效率、同类邮件历史投递率 |
+| negotiate | 市场基准/谈判进展 | 策略置信度：基准基于多少样本、达人历史谈判模式 |
+
+有了这些信息，Agent 可以自主决策：
+- "只找到 3 个匹配的，条件太严了，我放宽 engagement 再搜一次"
+- "这个达人的数据是 30 天前的，我提醒品牌数据可能不够新"
+
+这是**用数据闭环替代硬编码的 suggested_actions**——不是告诉 Agent 该做什么，而是给它足够的信息让它自己判断。
 
 ---
 
@@ -374,7 +428,7 @@ CreatorDB 因缺少 LICENSE 文件导致 Glama F 级、不可安装、零使用�
 | 失败模式 | CreatorDB 教训 | kol-api 对策 |
 |---------|---------------|-------------|
 | 无 LICENSE | F 级不可安装 | Day 1 添加 MIT LICENSE |
-| Tool 过多 | 31 个 Tool，Agent 性能下降 85% | 7 个 Tool，意图级抽象 |
+| Tool 过多 | 31 个 Tool，Agent 性能下降 85% | Day 1 仅 4 个 Tool，全量 7 个，意图级抽象 |
 | 无发布管理 | 无版本号，无 changelog | semver + 公开 changelog |
 | 描述面向开发者 | Agent 无法匹配用户意图 | 描述面向 Agent 推理（见附录） |
 
@@ -386,22 +440,31 @@ CreatorDB 因缺少 LICENSE 文件导致 Glama F 级、不可安装、零使用�
 
 | # | 决策 | 选择 | 否决选项 | 依据 |
 |---|------|------|---------|------|
-| D1 | Tool 数量 | 7 个 | 31 个（CreatorDB 式 1:1 映射） | 成功产品 2-8 个；Microsoft Research: >20 性能下降 85% |
+| D1 | Tool 数量 | 7 个（Day 1 上 4 个） | 31 个（CreatorDB 式 1:1 映射） | 成功产品 2-8 个；Microsoft Research: >20 性能下降 85% |
 | D2 | 平台维度处理 | 参数层面（`platform` 参数） | Tool 层面（per-platform Tool） | 避免 CreatorDB 的 IG/YT/TT 三重复 |
 | D3 | 写操作模式 | 两阶段 human-in-the-loop | 全自动无确认 | MCP 最佳实践 + 品牌信任建设 |
-| D4 | 返回格式 | 含 summary + suggested_actions | 仅返回原始数据 | Firecrawl 模式：返回可行动结果 |
+| D4 | 返回格式 | 含 summary + data + credits，不含工作流建议 | 含 suggested_actions 引导下一步 | Tool 是原子操作，编排是上层职责。Agent 应自主推理下一步，不应被 Tool 返回硬编码引导走固定路线 |
 | D5 | 必填参数数量 | 每 Tool 1-2 个 | 多参数必填 | Context7 模式：降低 Agent 构造参数的难度 |
 | D6 | description 长度 | ≥ 3 句话 | 一句话 | Anthropic 官方 + Arcade 54 模式 |
 | D7 | Credit 映射 | 与 01/02 完全一致 | 重新定义 | 保持三份文档一致性 |
+| D8 | 发布节奏 | Day 1 上 4 个，v1.1 加 3 个 | 7 个同时上线 | Firecrawl 模式：带最小集上线，用调用数据驱动迭代。未验证的 Tool 越多，维护债务越大 |
+| D9 | 接入层架构 | CLI-first，MCP/SKILL/GPT Action 是薄包装 | MCP-first | Pi/OpenClaw 验证：终端对 Agent 更友好（可组合/可观测/可验证）。CLI 覆盖终端型 Agent，MCP 覆盖非终端型 Agent，一套核心两个入口 |
+| D10 | 返回验证信息 | P2 实现，Day 1 先上基础返回 | Day 1 就含验证字段 | 有价值但实现成本高（需要搜索质量评分、数据新鲜度追踪、邮箱有效率统计等基础设施）。先跑通核心链路，再用数据驱动优化返回质量 |
 
-### 7.2 与 01/02 一致性校验
+### 7.2 待调研决策
+
+| # | 问题 | 当前选择 | 待验证 |
+|---|------|---------|--------|
+| T1 | **MCP Resource vs Tool 分类** | 全部实现为 Tool | 需调研 MCP 协议规范中 Resource 和 Tool 的实际区分标准。analyze_creator / competitive_intel / track_performance 是否应作为 Resource 实现（只读、无副作用、无 Credit 消耗门槛）？参考 Firecrawl / Context7 / Supabase MCP 的实践选择 |
+
+### 7.3 与 01/02 一致性校验
 
 | 校验项 | 01 定义 | 02 定义 | 03 实现 | 状态 |
 |--------|--------|--------|--------|:----:|
 | 客户 | 品牌广告主 | 品牌广告主 | Tool 面向品牌意图设计 | ✅ |
-| 核心场景 | 7 个（P0×3 + P1×3 + P2×1） | 8 个场景（3.1-3.8） | 7 个 Tool（合并 CRM+合作管理+提醒） | ✅ |
+| 核心场景 | 7 个（P0×3 + P1×3 + P2×1） | 8 个场景（3.1-3.8） | 7 个 Tool（Day 1 上 4 个，v1.1 加 3 个） | ✅ |
 | Credit 定义 | 搜索 1 / 评估 2 / 邀约 3 / 谈判 5 | 同 01 + 竞品 5 | 完全一致（第五节） | ✅ |
-| 交付方式 | Agent 平台 Skill/MCP | Agent 对话交互 | MCP Server + 7 Tool | ✅ |
+| 交付方式 | Agent 平台 Skill/MCP | Agent 对话交互 | CLI-first + MCP/SKILL/GPT Action 薄包装 | ✅ |
 | 分发渠道 | 多平台 | Agent 自动发现优先 | 语义触发词 + 全平台注册 | ✅ |
 
 ### 02 中 20 个细粒度能力的覆盖映射
