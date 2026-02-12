@@ -1,171 +1,1401 @@
-# 05 PRD — kol-api v1
+# 05 PRD — 工程团队开工文档
 
-> ⚠️ 状态：占位内容，待深入调研验证。以下内容基于前期调研初步推演，不作为结论。
-> 前置文档：[01定位](01_定位与假设.md) → [02场景](02_用户场景.md) → [03能力](03_API能力设计.md) → [04定价](04_定价与商业模式.md)
+> 状态：初版完成
+> 更新：2026-02-13
+> 依赖：`01_定位与假设.md`、`02_用户场景.md`、`03_能力设计.md`、`04_定价与商业模式.md`
+> 本文回答：**工程团队拿到这份文档，就能开工。**
 
 ---
 
-## 产品概述
+## 一、产品概述
 
-| 维度 | 内容 |
+### 1.1 一句话定位
+
+**kol-api 是 AI 驱动的达人营销全链路自动化——让 Agent 替品牌完成从找人到谈判到管理的完整流程。**
+
+不是"达人数据开发者 API"，是 **AI Agent 达人营销自动化平台**。
+
+### 1.2 目标用户
+
+使用 AI Agent 办公的**品牌广告主 / 营销团队**（不是开发者）。
+
+| 特征 | 说明 |
 |------|------|
-| **产品名** | 待定（新品牌） |
-| **一句话** | 开发者用来构建达人营销产品的数据API |
-| **形态** | REST API + MCP Server + Python/Node SDK |
-| **定价** | $0/49/149/199+ 月付PLG |
-| **目标用户** | 营销Agent开发者、达人营销SaaS构建者、Agency技术团队 |
-| **成功标准** | 6个月：30+付费客户、$5K+ MRR |
+| 预算 | 年达人营销预算 10 万-数百万 |
+| 工具 | 已在使用 OpenClaw / Claude / ChatGPT 等 Agent 平台 |
+| 痛点 | 搜索+筛选+评估占 28% 人工时间，邀约+谈判占 55%——后者是最大成本黑洞 |
+| 替代方案 | 手动搜索（3-5 天）、MCN 推荐（有偏差）、SaaS 仪表盘（$5K-30K/年） |
+
+### 1.3 成功标准
+
+**上线 3 个月（M3）**
+
+| 指标 | 目标 |
+|------|------|
+| 跨平台安装量 | 500+ |
+| 周活跃使用 | 100+ |
+| 付费用户 | 15-30 |
+| MRR | $500-3,000 |
+
+**上线 12 个月（M12）**
+
+| 指标 | 目标 |
+|------|------|
+| 付费用户 | 200-500 |
+| ARR | $100K-300K |
+| Agent 平台在架数 | ≥ 3 |
+| 品牌复购率 | > 60% |
+
+> 来源：01 第九节。基于 PLG benchmark（3-5% 转化率）和 MCP 标杆推算。
 
 ---
 
-## MVP Scope（v1）
+## 二、Day 1 范围（MVP）
 
-### 必须做（P0）— 上线条件
+### 2.1 四个 Tool 详细 Spec
 
-| # | 功能 | 验收标准 | 工作量估算 |
-|---|------|---------|:--------:|
-| 1 | **自助注册+API Key** | 邮箱注册→即刻获得Key，无需Sales | 1周 |
-| 2 | **达人搜索 `GET /v1/creators`** | 结构化筛选（platform/niche/country/followers/engagement），返回统一Creator对象，响应<2s | 2周 |
-| 3 | **AI搜索（自然语言）** | `?q="美妆TikTok达人"` 返回相关结果，基于聚星现有AI能力改造 | 2周 |
-| 4 | **达人详情 `GET /v1/creators/{id}`** | 返回完整profile，基础字段免费、高级字段付费 | 1周 |
-| 5 | **批量查询 `POST /v1/creators/lookup`** | 按handle/URL/ID批量查询，一次最多100个 | 1周 |
-| 6 | **假粉检测 `GET /v1/creators/{id}/authenticity`** | 集成第三方API（Phyllo），返回score+信号 | 1周 |
-| 7 | **统一数据模型** | 6平台返回同一Creator结构，字段映射一致 | 2周 |
-| 8 | **MCP Server** | 封装为MCP工具，发布到npm+MCP目录 | 1周 |
-| 9 | **Python SDK** | `pip install kolapi`，覆盖全部endpoint | 1周 |
-| 10 | **交互式文档** | OpenAPI spec + Try It + Quickstart guide | 1周 |
-| 11 | **定价+计费** | 4层定价、调用量追踪、超量计费、Stripe集成 | 2周 |
-| 12 | **Rate Limit + 防护** | 按tier限流、异常模式检测、`X-RateLimit-*` header | 1周 |
+Day 1 上线 4 个 Tool，覆盖搜索→评估→邀约→谈判全链路核心。覆盖 83% 人工成本（28% 信息密集 + 55% 沟通密集）。
 
-**P0总工作量：约16周（4个月），2-3人全职**
+---
 
-### 上线后迭代（P1）— 第5-6个月
+#### 2.1.1 `discover_creators` — "帮我找达人"
 
-| # | 功能 | 说明 |
-|---|------|------|
-| 13 | Node SDK | `npm install kolapi` |
-| 14 | 受众画像 endpoint | Pro+ |
-| 15 | 联系方式 endpoint | Starter+ |
-| 16 | 历史合作数据 | Pro+ |
-| 17 | Webhooks | 内容发布通知 |
-| 18 | CLI工具 | `kolapi search --niche beauty` |
-| 19 | 开发者Discord | 社区支持 |
+**Credit**：1 credit/次 | **HTTP**：`POST /v1/tools/discover_creators` | **CLI**：`kol search`
 
-### 远期（P2）— 第7个月+
+**输入 Schema**
 
-| # | 功能 |
+```json
+{
+  "type": "object",
+  "required": ["query"],
+  "properties": {
+    "query": {
+      "type": "string",
+      "description": "自然语言描述，如 'US beauty TikTokers with 10K-1M followers'"
+    },
+    "platform": {
+      "type": "string",
+      "enum": ["youtube", "tiktok", "instagram"],
+      "default": "all",
+      "description": "目标平台，不传则跨平台搜索"
+    },
+    "country": {
+      "type": "string",
+      "description": "ISO 3166-1 alpha-2 国家码，如 'US'、'DE'"
+    },
+    "followers_range": {
+      "type": "object",
+      "properties": {
+        "min": { "type": "integer", "minimum": 0 },
+        "max": { "type": "integer" }
+      },
+      "description": "粉丝数范围"
+    },
+    "engagement_min": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "最低互动率（0.03 = 3%）"
+    },
+    "niche": {
+      "type": "string",
+      "description": "内容品类，如 'beauty'、'fitness'、'tech'"
+    },
+    "count": {
+      "type": "integer",
+      "default": 10,
+      "minimum": 1,
+      "maximum": 50,
+      "description": "返回数量"
+    },
+    "include_audience": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否包含受众概要"
+    }
+  }
+}
+```
+
+**输出 Schema**
+
+```json
+{
+  "success": true,
+  "data": {
+    "creators": [
+      {
+        "creator_id": "crt_abc123",
+        "platform": "tiktok",
+        "handle": "@beautybyjess",
+        "display_name": "Beauty by Jess",
+        "avatar_url": "https://...",
+        "followers": 123000,
+        "engagement_rate": 0.042,
+        "content_count": 342,
+        "country": "US",
+        "niche": ["beauty", "skincare"],
+        "authenticity": "high",
+        "estimated_cost": {
+          "min": 800,
+          "max": 1200,
+          "currency": "USD"
+        },
+        "can_contact": true,
+        "audience_summary": {
+          "top_country": "US",
+          "top_age_range": "18-34",
+          "gender_split": { "female": 0.72, "male": 0.28 }
+        }
+      }
+    ],
+    "total_matched": 47
+  },
+  "summary": "找到 15 位符合条件的美妆达人，互动率最高的是 @beautybyjess（4.2%）",
+  "credits": { "used": 1, "remaining": 199, "plan": "free" },
+  "meta": { "request_id": "req_abc123", "latency_ms": 1200, "data_freshness": "2026-02-13T10:00:00Z" }
+}
+```
+
+**行为描述**
+
+1. 将自然语言 `query` 解析为结构化筛选条件（AI 推理层）
+2. 若同时传了 `platform`/`country`/`followers_range` 等结构化参数，优先使用结构化参数，`query` 仅补充未覆盖的维度
+3. 返回结果按综合匹配度排序（匹配度 = 条件符合度 × 互动率 × 真实性）
+4. 每位达人包含：基础画像 + 真假粉标记（粗粒度：high/medium/low）+ 互动率 + 预估合作费
+5. `include_audience: true` 时附加受众概要（不额外消耗 credit）
+6. `authenticity` 字段在 Free 层返回粗粒度（high/medium/low），Starter+ 返回精确分数
+
+**边界条件**
+
+| 条件 | 行为 |
+|------|------|
+| `query` 为空且无结构化参数 | 返回 400 `missing_query` |
+| 匹配结果为 0 | 返回空列表 + summary 建议放宽条件 |
+| `count` > 50 | 截断为 50，summary 中提示 |
+| 不支持的平台值 | 返回 400 `invalid_platform` |
+| credit 不足 | 返回 402 `insufficient_credits` + 升级链接 |
+
+**错误处理**
+
+| 错误码 | HTTP | 错误信息 | Agent 可行动性 |
+|--------|:----:|---------|-------------|
+| `missing_query` | 400 | "请提供搜索条件——告诉我你想找什么样的达人" | 告诉 Agent 缺什么 |
+| `invalid_platform` | 400 | "暂不支持该平台，支持 YouTube/TikTok/Instagram" | 明确能力边界 |
+| `insufficient_credits` | 402 | "需要 1 credit，余额 0。升级到 Starter（$29/月）获得 2,000 credits" | 给出行动路径 |
+| `rate_limited` | 429 | "请求过于频繁，请 {retry_after} 秒后重试" | 给出等待时间 |
+| `internal_error` | 500 | "服务暂时不可用，请稍后重试" | 建议重试 |
+
+**验收标准**
+
+- [ ] 自然语言查询 "US beauty TikTokers 10K-1M followers" 返回 ≥ 5 条结果
+- [ ] 结构化参数搜索（platform + country + followers_range）返回正确过滤结果
+- [ ] 响应时间 < 3 秒（P95）
+- [ ] Free 层返回 `authenticity: "high"/"medium"/"low"`（非精确分数）
+- [ ] credit 不足时返回 402 + upgrade_url
+- [ ] 返回格式符合统一信封规范（success + data + summary + credits + meta）
+
+---
+
+#### 2.1.2 `analyze_creator` — "这个达人靠谱吗"
+
+**Credit**：2 credits/次 | **HTTP**：`POST /v1/tools/analyze_creator` | **CLI**：`kol analyze`
+
+**输入 Schema**
+
+```json
+{
+  "type": "object",
+  "required": [],
+  "oneOf": [
+    { "required": ["creator_id"] },
+    { "required": ["creator_url"] }
+  ],
+  "properties": {
+    "creator_id": {
+      "type": "string",
+      "description": "kol-api 内部 ID（从 discover_creators 返回）"
+    },
+    "creator_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "达人主页 URL，如 'https://tiktok.com/@beautybyjess'"
+    }
+  }
+}
+```
+
+**输出 Schema**
+
+```json
+{
+  "success": true,
+  "data": {
+    "creator_id": "crt_abc123",
+    "platform": "tiktok",
+    "handle": "@beautybyjess",
+    "display_name": "Beauty by Jess",
+    "avatar_url": "https://...",
+    "bio": "...",
+    "followers": 123000,
+    "following": 890,
+    "content_count": 342,
+    "country": "US",
+    "niche": ["beauty", "skincare"],
+    "growth": {
+      "followers_30d": 2300,
+      "followers_90d": 8100,
+      "trend": "growing"
+    },
+    "engagement": {
+      "rate": 0.042,
+      "avg_likes": 5200,
+      "avg_comments": 340,
+      "avg_shares": 120
+    },
+    "authenticity": {
+      "score": 87,
+      "fake_follower_pct": 0.08,
+      "suspicious_signals": ["slight_engagement_spike_2026-01"],
+      "verdict": "trustworthy"
+    },
+    "audience": {
+      "countries": [
+        { "code": "US", "pct": 0.45 },
+        { "code": "GB", "pct": 0.12 },
+        { "code": "DE", "pct": 0.08 }
+      ],
+      "age_ranges": [
+        { "range": "18-24", "pct": 0.35 },
+        { "range": "25-34", "pct": 0.42 }
+      ],
+      "gender": { "female": 0.72, "male": 0.28 },
+      "interests": ["beauty", "fashion", "wellness"]
+    },
+    "estimated_cost": {
+      "min": 800,
+      "max": 1200,
+      "currency": "USD",
+      "basis": "market_benchmark"
+    },
+    "recent_content": [
+      {
+        "title": "30-Day Skincare Challenge",
+        "views": 2100000,
+        "engagement_rate": 0.058,
+        "published_at": "2026-02-01T12:00:00Z",
+        "is_sponsored": false
+      }
+    ]
+  },
+  "summary": "@beautybyjess 真实性评分 87/100，粉丝 12.3 万，互动率 4.2%，受众以 18-34 岁美国女性为主，预估合作费 $800-1,200",
+  "credits": { "used": 2, "remaining": 197, "plan": "free" },
+  "meta": { "request_id": "req_def456", "latency_ms": 1800, "data_freshness": "2026-02-13T10:00:00Z" }
+}
+```
+
+**行为描述**
+
+1. 接受 `creator_id`（优先）或 `creator_url`（解析为内部 ID）
+2. 返回完整画像：基础信息 + 增长趋势 + 互动数据 + 真实性评分 + 受众画像 + 预估费用 + 近期内容
+3. 真实性评分 0-100 + 假粉比例 + 可疑信号列表
+4. 受众画像深度取决于层级：Free 不返回受众、Starter 返回概要、Pro+ 返回完整人口统计
+
+**边界条件**
+
+| 条件 | 行为 |
+|------|------|
+| `creator_id` 和 `creator_url` 都未提供 | 返回 400 `missing_creator` |
+| `creator_url` 无法解析为已知平台 | 返回 400 `unsupported_url` |
+| 达人不在数据库中 | 返回 404 `creator_not_found` + 建议用 discover 搜索 |
+| credit 不足（< 2） | 返回 402 `insufficient_credits` |
+
+**错误处理**
+
+| 错误码 | HTTP | 错误信息 |
+|--------|:----:|---------|
+| `missing_creator` | 400 | "请提供达人 ID 或 URL，我才能分析" |
+| `unsupported_url` | 400 | "无法识别该 URL，支持 YouTube/TikTok/Instagram 主页链接" |
+| `creator_not_found` | 404 | "未找到该达人。试试用 discover_creators 搜索？" |
+| `insufficient_credits` | 402 | "需要 2 credits，余额 {remaining}。升级获取更多额度" |
+
+**验收标准**
+
+- [ ] 通过 `creator_id` 查询返回完整画像
+- [ ] 通过 TikTok/YouTube/Instagram URL 查询返回正确达人
+- [ ] 真实性评分返回 0-100 分值 + fake_follower_pct + suspicious_signals
+- [ ] 受众画像按层级门控（Free 无、Starter 概要、Pro+ 完整）
+- [ ] 响应时间 < 5 秒（P95）
+- [ ] 返回格式符合统一信封规范
+
+---
+
+#### 2.1.3 `outreach_creators` — "帮我联系这些达人"
+
+**Credit**：3 credits/人 | **HTTP**：`POST /v1/tools/outreach_creators` | **CLI**：`kol outreach`
+
+**输入 Schema**
+
+```json
+{
+  "type": "object",
+  "required": ["creator_ids", "campaign_brief"],
+  "properties": {
+    "creator_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "maxItems": 50,
+      "description": "目标达人 ID 列表"
+    },
+    "campaign_brief": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "合作简介（品牌/产品/需求），Agent 据此生成个性化邮件"
+    },
+    "budget_range": {
+      "type": "object",
+      "properties": {
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "currency": { "type": "string", "default": "USD" }
+      },
+      "description": "预算范围"
+    },
+    "confirm": {
+      "type": "boolean",
+      "default": false,
+      "description": "false=预览模式（不发送），true=确认发送"
+    }
+  }
+}
+```
+
+**输出 Schema（预览模式 `confirm: false`）**
+
+```json
+{
+  "success": true,
+  "data": {
+    "outreach_id": "otr_xyz789",
+    "status": "preview",
+    "creators": [
+      {
+        "creator_id": "crt_abc123",
+        "handle": "@beautybyjess",
+        "email_status": "verified",
+        "estimated_response_rate": 0.22,
+        "email_preview": {
+          "subject": "Collaboration with [Brand] — Protein Powder Launch",
+          "body": "Hi Jess,\n\nLove your Reels about skincare routines...",
+          "language": "en"
+        }
+      }
+    ],
+    "total_cost_credits": 36,
+    "contactable": 12,
+    "not_contactable": 0
+  },
+  "summary": "已准备 12 封个性化邀约邮件，预估响应率 15-25%，确认发送？",
+  "credits": { "used": 0, "remaining": 199, "plan": "starter" },
+  "meta": { "request_id": "req_ghi789", "latency_ms": 3200 }
+}
+```
+
+**输出 Schema（发送模式 `confirm: true`）**
+
+```json
+{
+  "success": true,
+  "data": {
+    "outreach_id": "otr_xyz789",
+    "status": "sent",
+    "creators": [
+      {
+        "creator_id": "crt_abc123",
+        "handle": "@beautybyjess",
+        "send_status": "delivered",
+        "tracking_id": "trk_001"
+      }
+    ],
+    "sent_count": 12,
+    "failed_count": 0,
+    "follow_up_scheduled": true,
+    "follow_up_after_days": 3
+  },
+  "summary": "已发送 12 封邀约邮件，3 天无回复将自动发 follow-up",
+  "credits": { "used": 36, "remaining": 163, "plan": "starter" },
+  "meta": { "request_id": "req_jkl012", "latency_ms": 5500 }
+}
+```
+
+**两阶段执行（human-in-the-loop）**
+
+1. **预览阶段**（`confirm: false`）：返回每位达人的邮件预览 + 联系方式可达性 + 预估响应率。**不扣 credit，不发邮件。** 品牌审核内容。
+2. **发送阶段**（`confirm: true`）：品牌确认后发送邮件。**扣 credit（3/人）。** 返回发送状态 + tracking ID。3 天无回复自动发 follow-up（可关闭）。
+
+**边界条件**
+
+| 条件 | 行为 |
+|------|------|
+| `creator_ids` 为空 | 返回 400 `missing_creator_ids` |
+| `creator_ids` 长度 > 50 | 返回 400 `too_many_creators`，提示上限 50 |
+| 部分达人无联系方式 | 预览中标记 `email_status: "not_found"`，发送时跳过 |
+| `confirm: true` 但无先前预览 | 允许直接发送（Agent 可能跳过预览） |
+| credit 不足以覆盖全部发送 | 返回 402 `insufficient_credits`，提示需要 N credits |
+| Free 层调用 | 返回 403 `upgrade_required`（邀约仅 Starter+ 可用） |
+
+**错误处理**
+
+| 错误码 | HTTP | 错误信息 |
+|--------|:----:|---------|
+| `missing_creator_ids` | 400 | "请提供要邀约的达人列表" |
+| `too_many_creators` | 400 | "单次邀约上限 50 人，请分批操作" |
+| `upgrade_required` | 403 | "邮件邀约需要 Starter 套餐（$29/月），Free 层不可用" |
+| `insufficient_credits` | 402 | "邀约 {n} 人需要 {n×3} credits，余额 {remaining}" |
+| `send_failed` | 500 | "部分邮件发送失败，已发送 {sent}/{total}，失败的将自动重试" |
+
+**验收标准**
+
+- [ ] 预览模式返回每人邮件预览 + email_status + estimated_response_rate
+- [ ] 预览模式不扣 credit
+- [ ] 发送模式按 3 credits/人 扣费
+- [ ] 邮件内容基于 campaign_brief + 达人画像个性化生成
+- [ ] 发送后 3 天自动 follow-up（可配置）
+- [ ] Free 层调用返回 403 upgrade_required
+- [ ] 联系方式不可达的达人在预览中标记，发送时跳过
+
+---
+
+#### 2.1.4 `negotiate` — "帮我谈价"
+
+**Credit**：5 credits/次 | **HTTP**：`POST /v1/tools/negotiate` | **CLI**：`kol negotiate`
+
+**输入 Schema**
+
+```json
+{
+  "type": "object",
+  "required": ["creator_id", "budget_max"],
+  "properties": {
+    "creator_id": {
+      "type": "string",
+      "description": "谈判对象"
+    },
+    "budget_max": {
+      "type": "number",
+      "description": "预算上限"
+    },
+    "budget_target": {
+      "type": "number",
+      "description": "目标成交价（Agent 会尽量达到）"
+    },
+    "currency": {
+      "type": "string",
+      "default": "USD",
+      "description": "货币单位"
+    },
+    "deliverables": {
+      "type": "string",
+      "description": "交付物描述，如 '1 Reel + 2 Stories'"
+    },
+    "confirm": {
+      "type": "boolean",
+      "default": false,
+      "description": "false=策略预览，true=启动谈判"
+    }
+  }
+}
+```
+
+**输出 Schema（策略预览 `confirm: false`）**
+
+```json
+{
+  "success": true,
+  "data": {
+    "negotiation_id": "neg_pqr456",
+    "status": "strategy",
+    "creator_id": "crt_abc123",
+    "market_benchmark": {
+      "median_price": 750,
+      "range": { "min": 500, "max": 1100 },
+      "currency": "USD",
+      "sample_size": 42,
+      "basis": "同量级同品类达人近 6 个月成交价"
+    },
+    "creator_history": {
+      "past_quotes": [1200, 1000],
+      "avg_negotiation_rounds": 3,
+      "flexibility": "moderate"
+    },
+    "recommended_strategy": {
+      "opening_offer": 700,
+      "target_range": { "min": 750, "max": 850 },
+      "tactics": ["offer_product_gifting", "highlight_long_term_potential"],
+      "estimated_close_price": { "min": 780, "max": 880 }
+    }
+  },
+  "summary": "市场基准 $750，该达人历史要价偏高。建议从 $700 起谈，目标 $800-850 成交",
+  "credits": { "used": 0, "remaining": 194, "plan": "pro" },
+  "meta": { "request_id": "req_mno345", "latency_ms": 2100 }
+}
+```
+
+**输出 Schema（谈判进行中 `confirm: true`）**
+
+```json
+{
+  "success": true,
+  "data": {
+    "negotiation_id": "neg_pqr456",
+    "status": "in_progress",
+    "rounds": [
+      {
+        "round": 1,
+        "our_offer": 700,
+        "their_counter": 1000,
+        "message_sent": "Hi Jess, we'd love to offer $700 + product gifting...",
+        "message_received": "Thanks! I usually charge $1,000 for a Reel...",
+        "timestamp": "2026-02-13T14:00:00Z"
+      },
+      {
+        "round": 2,
+        "our_offer": 800,
+        "their_counter": 900,
+        "timestamp": "2026-02-13T16:30:00Z"
+      },
+      {
+        "round": 3,
+        "our_offer": 850,
+        "their_counter": 850,
+        "status": "agreed",
+        "timestamp": "2026-02-14T10:00:00Z"
+      }
+    ],
+    "outcome": {
+      "status": "agreed",
+      "final_price": 850,
+      "deliverables": "1 Reel + 2 Stories",
+      "discount_from_ask": 0.29,
+      "confirmation_email_draft": "..."
+    }
+  },
+  "summary": "谈判完成：$850 成交（比要价降 29%），含 1 Reel + 2 Stories。需要发确认邮件吗？",
+  "credits": { "used": 5, "remaining": 189, "plan": "pro" },
+  "meta": { "request_id": "req_stu678", "latency_ms": 4500 }
+}
+```
+
+**两阶段执行（human-in-the-loop）**
+
+1. **策略阶段**（`confirm: false`）：返回市场定价基准 + 达人历史报价 + 建议谈判策略 + 预估成交价区间。**不扣 credit，不发邮件。**
+2. **执行阶段**（`confirm: true`）：在预算范围内自动与达人邮件往返。每轮进展同步给品牌。达成一致后生成合作确认邮件草稿（需品牌最终审核）。**扣 5 credits/次。**
+
+**边界条件**
+
+| 条件 | 行为 |
+|------|------|
+| `budget_max` < 市场基准最低价 | 策略阶段警告"预算低于市场最低水平，成交概率 < 10%" |
+| 谈判超过 5 轮未达成 | 暂停谈判，返回 `status: "stalled"` + 建议品牌调整预算或放弃 |
+| 达人明确拒绝 | 返回 `status: "rejected"` + 建议寻找替代达人 |
+| 达人报价超出 `budget_max` 且无下降趋势 | 自动终止，返回 `status: "over_budget"` |
+| Free/Starter 层调用 | 返回 403 `upgrade_required`（谈判仅 Pro+ 可用）*待确认* |
+
+**错误处理**
+
+| 错误码 | HTTP | 错误信息 |
+|--------|:----:|---------|
+| `missing_budget` | 400 | "请提供预算上限，我才能帮你谈" |
+| `creator_not_found` | 404 | "未找到该达人" |
+| `no_prior_outreach` | 400 | "该达人尚未回复邀约，建议先用 outreach_creators 联系" |
+| `insufficient_credits` | 402 | "谈判需要 5 credits，余额 {remaining}" |
+
+**验收标准**
+
+- [ ] 策略模式返回市场基准（含 sample_size）+ 建议策略
+- [ ] 策略模式不扣 credit
+- [ ] 执行模式自动发送谈判邮件，每轮进展可查
+- [ ] 超过 5 轮未达成自动暂停
+- [ ] 达成协议后生成确认邮件草稿
+- [ ] 谈判过程中不超出 `budget_max`
+
+---
+
+### 2.2 认证与计费
+
+#### 2.2.1 自助注册 + API Key 发放
+
+```
+品牌访问 kol-api.com/signup
+        ↓
+邮箱 + 密码注册（30 秒，无 Sales Call）
+        ↓
+邮箱验证 → 即时获得 API Key（格式：kol_live_xxx / kol_test_xxx）
+        ↓
+200 一次性免费 credits 到账
+        ↓
+API Key 配置到 Agent 环境变量 → 开始使用
+```
+
+**技术要求**：
+
+| 项目 | 规格 |
+|------|------|
+| API Key 格式 | `kol_live_` + 32 字符随机串（生产环境） |
+| API Key 传递 | `Authorization: Bearer kol_live_xxx` header |
+| Key 管理 | 支持生成、吊销、查看用量；每账号最多 5 个 Key |
+| 注册信息 | 邮箱（必填）、公司名（可选）、用途（可选） |
+| 邮箱验证 | 发送验证邮件，验证后激活 Key |
+
+#### 2.2.2 Credit 追踪 + 扣减逻辑
+
+| Tool | Credit/次 | 扣减时机 |
+|------|:---------:|---------|
+| `discover_creators` | 1 | 请求成功后扣减 |
+| `analyze_creator` | 2 | 请求成功后扣减 |
+| `outreach_creators` | 3/人 | `confirm: true` 发送成功后按实际发送人数扣减 |
+| `negotiate` | 5/次 | `confirm: true` 启动谈判后扣减 |
+
+**关键规则**：
+
+- 预览模式（`confirm: false`）不扣 credit
+- 请求失败（4xx/5xx）不扣 credit
+- 每次返回都包含 `credits.remaining`，余额透明
+- 月度 credit 不累积（no rollover），防止攒 credit 后一次性搬取
+- Free 层 200 credits 一次性发放，用完即止（不按月重置）
+
+#### 2.2.3 Stripe 集成
+
+| 环节 | 实现 |
+|------|------|
+| **Checkout** | Stripe Checkout Session → 用户选择套餐 → 支付 → 回调激活 |
+| **订阅管理** | Stripe Customer Portal → 升级/降级/取消 |
+| **Webhook** | 监听 `checkout.session.completed`、`invoice.paid`、`invoice.payment_failed`、`customer.subscription.updated`、`customer.subscription.deleted` |
+| **超额计费** | Stripe Metered Billing：credit 用完后按量计费，月底结算 |
+| **年付** | Stripe Price 配置年付选项，全档 20% off |
+
+#### 2.2.4 分层定价实现
+
+| 层级 | 月费 | Credits/月 | 超额单价 | 数据权限 |
+|------|:----:|:---------:|:--------:|---------|
+| **Free** | $0 | 200（一次性） | 不可超 | 基础搜索 + 粗粒度真实性 |
+| **Starter** | $29 | 2,000 | $0.020 | + 精确真实性 + 概要受众 + 联系方式 + 邀约 |
+| **Pro** | $99 | 10,000 | $0.012 | + 完整受众 + 竞品历史 + 谈判 |
+| **Growth** | $199 | 30,000 | $0.008 | 同 Pro + 更高 rate limit |
+| **Enterprise** | 定制 | 定制 | 定制 | 全功能 + SLA + 专属支持 |
+
+> 来源：04 第 1.2 节。Enterprise 不在 Day 1 范围，M6 后启动。
+
+### 2.3 数据保护（Day 1 必须）
+
+Day 1 必须实现 4 层防搬策略：
+
+#### L1：Credit 机制（天然防线）
+
+Credit 额度制让批量搬取在经济上不可行。搬取 100,000 个达人全量数据需 $2,400+。
+
+#### L2：Rate Limit
+
+| 层级 | 每分钟 | 每小时 | 并发 | 单 IP 每日 |
+|------|:------:|:------:|:----:|:---------:|
+| Free | 10 | 100 | 1 | 5,000 |
+| Starter | 30 | 500 | 3 | 5,000 |
+| Pro | 60 | 2,000 | 5 | 5,000 |
+| Growth | 120 | 5,000 | 10 | 5,000 |
+
+**Rate Limit 响应头**（每次返回）：
+
+```
+X-RateLimit-Limit: 30
+X-RateLimit-Remaining: 27
+X-RateLimit-Reset: 1707750000
+Retry-After: 60
+```
+
+#### L4：数据分级返回
+
+| 数据字段 | Free | Starter | Pro+ |
+|---------|:----:|:-------:|:----:|
+| 达人名称 + 平台 + 粉丝数 | ✅ | ✅ | ✅ |
+| 互动率 + 内容量 | ✅ | ✅ | ✅ |
+| 真实性评分（粗粒度：高/中/低） | ✅ | ✅ | ✅ |
+| 真实性评分（精确分数 + 可疑信号） | ❌ | ✅ | ✅ |
+| 受众画像（概要） | ❌ | ✅ | ✅ |
+| 受众画像（完整人口统计） | ❌ | ❌ | ✅ |
+| 联系方式（邮箱） | ❌ | ✅ | ✅ |
+| 预估合作费用 | ❌ | ✅ | ✅ |
+| 竞品合作历史 | ❌ | ❌ | ✅ |
+
+> 来源：04 第 4.2 节 L4 定义。
+
+#### L7：ToS
+
+Day 1 上线前完成服务条款，明确禁止：
+- 数据转售
+- 批量存储 / 创建竞品数据库
+- 分享 API Key
+- 自动化遍历（非正常使用模式的批量抓取）
+
+保留审计权和终止服务权。
+
+### 2.4 平台分发（Day 1 必须上架的渠道）
+
+| 平台 | 格式 | 要求 | Day 1 动作 |
+|------|------|------|----------|
+| **Glama** | MCP Server | 三 A 评分 | MIT LICENSE + 完整 metadata + npm release + 完整 README |
+| **ClawHub** | SKILL.md | Skill 标准格式 | 提交 SKILL.md，确保 `kol` 命令可被 OpenClaw 调用 |
+| **ChatGPT App Store** | GPT Action | OpenAPI spec + Action 配置 | 提交 GPT Action，基于 REST API 层 |
+
+**Glama 三 A 评分要求**（避免 CreatorDB 式 F 级失败）：
+
+| 条件 | 要求 | kol-api 目标 |
+|------|------|:-----------:|
+| LICENSE 文件 | MIT / Apache 2.0 | ✅ MIT |
+| 完整 metadata | name + description + version | ✅ 完整 |
+| 稳定发布 | npm/GitHub release | ✅ semver |
+| 文档 | README + 使用说明 | ✅ 完整 |
+
+**ClawHub SKILL.md 核心结构**：
+
+```yaml
+name: kol-api
+description: AI-powered influencer marketing automation for brands
+commands:
+  - name: search
+    description: Discover creators across YouTube, TikTok, and Instagram
+  - name: analyze
+    description: Deep analysis of a creator's profile and authenticity
+  - name: outreach
+    description: Send personalized outreach emails to creators
+  - name: negotiate
+    description: Negotiate collaboration pricing with creators
+auth:
+  type: api_key
+  env: KOL_API_KEY
+```
+
+**ChatGPT GPT Action**：基于 REST API 层的 OpenAPI 3.1 spec 自动生成，覆盖 4 个 Day 1 Tool。
+
+---
+
+## 三、技术架构
+
+### 3.1 CLI-first 架构
+
+```
+                        ┌─ MCP Server ──→ Claude / Cursor / Glama
+                        │
+CLI（kol）──→ REST API ──┼─ SKILL.md ───→ OpenClaw / ClawHub
+                        │
+                        └─ GPT Action ──→ ChatGPT Apps
+
+终端型 Agent（Claude Code / OpenClaw）→ 直接 bash 调 CLI，不经过 MCP
+```
+
+**三层架构**：
+
+| 层 | 职责 | 技术选型建议 |
+|----|------|------------|
+| **CLI core** | `kol` 命令，所有业务逻辑的入口 | Node.js（commander/oclif）或 Go *待技术评审确认* |
+| **REST API 层** | HTTP 接口，供 CLI 和协议适配层调用 | Fastify (Node) 或 Hono (Cloudflare Workers) *待技术评审确认* |
+| **协议适配层** | MCP Server / SKILL.md / GPT Action，都是 REST API 的薄包装 | MCP: `@modelcontextprotocol/sdk`；SKILL: CLI 命令映射；GPT Action: OpenAPI spec。详见 3.1.1 MCP Server 工程规范 |
+
+#### 3.1.1 MCP Server 工程规范
+
+> 来源：Peter Steinberger 5 个生产级 MCP Server 构建经验（[MCP Best Practices](https://steipete.me/posts/2025/mcp-best-practices)）
+
+kol-api 的 MCP Server 是 REST API 的薄包装，但"薄"不等于"随意"。以下规范确保 MCP Server 达到 Glama 三 A 评分并在生产环境稳定运行。
+
+**配置与行为**
+
+| 规范 | 要求 | 理由 |
+|------|------|------|
+| 环境变量默认值 | `KOL_API_KEY` 为唯一必配项，其余均有 sensible defaults | 即开即用，降低配置门槛 |
+| 版本号 | 从 `package.json` 动态读取，不硬编码 | 避免版本漂移 |
+| 参数解析 | 宽进严出——接受宽松输入，返回严格 schema | 对 Agent 友好（Agent 构造参数不总精确） |
+| 错误处理 | 配置错误不 crash，返回结构化错误信息 | MCP Server crash = Agent 无法使用 |
+| stdio 纪律 | 正常运行时**不向 stdio 输出任何内容**（stdio 是 MCP 通信通道） | 任何非协议输出都会导致 MCP 客户端解析失败 |
+
+**传输层**
+
+| 模式 | 用途 | 优先级 |
+|------|------|:------:|
+| **stdio** | 本地开发 + Claude Desktop / Cursor 等桌面客户端 | Day 1 |
+| **Streamable HTTP** | 生产远程部署 + Glama / mcp.so 等云端目录 | Day 1 |
+
+> MCP 2025-06 规范已废弃 SSE，统一使用 Streamable HTTP。两种传输模式从同一代码库构建。
+
+**日志**
+
+| 规范 | 要求 |
+|------|------|
+| 日志库 | Pino（文件日志，不走 stdio） |
+| 日志路径 | `~/Library/Logs/kol-api/` (macOS) / `~/.local/share/kol-api/logs/` (Linux) |
+| 日志级别 | 通过 `KOL_LOG_LEVEL` 环境变量配置，默认 `info` |
+| 缺失目录 | 自动创建 |
+| 进程退出 | flush logger 后再退出，确保最后的日志不丢 |
+
+**代码质量**
+
+| 规范 | 要求 |
+|------|------|
+| 单文件 | < 500 行 |
+| TypeScript | 零 linter / tsc 错误 |
+| 依赖 | 保持最新稳定版 |
+| npm 包内容 | 仅含 `dist/`、README、LICENSE |
+| 测试 | Vitest，含 TypeScript 单测 + E2E |
+
+**发布流程**
+
+发布前执行 `prepare-release` 脚本，自动校验：
+- git 状态干净
+- 依赖安全审计（`npm audit`）
+- 代码格式化 + lint
+- 全量测试通过
+- npm 包大小在限制内
+- 版本号正确递增（semver）
+
+校验全部通过后发布 beta → 验证 → 正式 release。
+
+**CLI 命令对照**：
+
+```bash
+# discover_creators
+kol search "US beauty TikTokers 10K-1M followers"
+kol search --platform tiktok --country US --niche beauty --followers 10000-1000000
+
+# analyze_creator
+kol analyze @beautybyjess --deep
+kol analyze --url "https://tiktok.com/@beautybyjess"
+
+# outreach_creators
+kol outreach @beautybyjess @glowwithme --brief "protein powder launch" --preview
+kol outreach @beautybyjess @glowwithme --brief "protein powder launch" --send
+
+# negotiate
+kol negotiate @beautybyjess --max 900 --target 800 --preview
+kol negotiate @beautybyjess --max 900 --target 800 --start
+```
+
+**CLI 可组合性**（Agent 编排优势）：
+
+```bash
+# 搜索后按互动率过滤，再批量邀约
+kol search "US beauty TikTokers" --json | \
+  jq '[.[] | select(.engagement_rate > 0.05)]' | \
+  kol outreach --stdin --brief "protein powder launch" --preview
+```
+
+### 3.2 数据层
+
+#### 聚星现有数据能力（可复用）
+
+| 能力 | 平台覆盖 | 说明 |
+|------|---------|------|
+| 搜索 API（结构化） | YT / TikTok / IG | 按关键词/标签搜索达人 |
+| URL → ID 转换 | YT / TikTok / IG | 解析达人主页 URL |
+| 联系信息提取 | YT / TikTok / IG | 公开邮箱等联系方式 |
+| 频道数据 | 6 平台全覆盖 | 粉丝数、播放量、增长趋势 |
+| 视频数据 | 6 平台全覆盖 | 单条视频详情、表现数据 |
+| 评论数据 | 5 平台（除 NaverBlog） | 视频评论抓取 |
+| 频道价值估算 | 主要 YT | CPM/CPE 估算 |
+| 受众分析 | 主要 YT | 观众画像（年龄/性别/国家） |
+| 品牌分析/赞助视频 | YT | 商业合作数据 |
+| 排行榜 | YT | 分类/地区排名 |
+
+> 来源：`_research/nox-api-research.md`
+
+#### 需要新建的能力
+
+| 能力 | 说明 | Day 1 方案 | 技术路径 |
+|------|------|-----------|---------|
+| **AI 自然语言搜索** | 现有是标签搜索，无 NLP | Day 1 必须 | LLM 将自然语言解析为结构化查询 → 调用聚星搜索 API |
+| **假粉检测** | 完全缺失 | Day 1 集成第三方 | 集成 Phyllo 或 HypeAuditor API；v2 自研 |
+| **跨平台统一数据模型** | 各平台字段结构不一致 | Day 1 必须 | 设计统一 Creator 对象（见附录 B） |
+| **邮件邀约基础设施** | 无 | Day 1 必须 | Resend 或 AWS SES + 邮件模板 + 投递追踪 |
+| **AI 谈判引擎** | 无 | Day 1 必须 | 多轮 LLM 推理 + 邮件往返自动化 |
+| **受众画像扩展** | 仅 YT 有，IG/TT 缺失 | v1.1（数据源限制） | 集成第三方受众数据或逐步自建 |
+
+#### 统一 Creator 数据模型
+
+所有 Tool 返回的达人数据使用统一的 `Creator` 对象。详见附录 B。
+
+核心设计原则：
+- 字段命名跨平台一致（不暴露平台差异）
+- 字段缺失时返回 `null`（不省略字段）
+- 数值字段统一精度（粉丝数为整数，百分比为小数）
+
+### 3.3 AI 推理层
+
+| 能力 | 用途 | 技术方案建议 |
+|------|------|------------|
+| **自然语言搜索解析** | 将 "US beauty TikTokers 10K-1M followers" 解析为结构化查询 | LLM function calling（GPT-4o-mini 级别，低成本高速） |
+| **真实性评分算法** | 假粉检测 + 互动异常检测 + 综合评分 | v1: 第三方 API（Phyllo）；v2: 自研模型（基于增长模式+互动特征） |
+| **邮件内容生成** | 基于 campaign_brief + 达人画像生成个性化邮件 | LLM（GPT-4o 级别，需要高质量文本） |
+| **谈判策略生成** | 市场基准分析 + 谈判策略推荐 | LLM + 聚星历史数据 |
+| **自动谈判** | 多轮邮件往返，在预算范围内协商 | 多轮 LLM 推理（GPT-4o 级别）+ 邮件发送/接收自动化 |
+
+**AI 模型选择建议** *待技术评审确认*：
+
+| 任务 | 推荐模型 | 估算成本/次 | 理由 |
+|------|---------|:----------:|------|
+| 自然语言解析 | GPT-4o-mini / Claude Haiku | $0.003 | 简单结构化，速度优先 |
+| 邮件生成 | GPT-4o / Claude Sonnet | $0.01 | 需要高质量、个性化文本 |
+| 谈判推理 | GPT-4o / Claude Sonnet | $0.01/轮 | 需要策略推理能力 |
+| 真实性评分 | 第三方 API（Phyllo） | $0.02-0.05 | v1 不自研 |
+
+### 3.4 基础设施
+
+| 组件 | 技术选型建议 | 说明 |
+|------|------------|------|
+| **部署** | Cloudflare Workers + Hono 或 AWS Lambda + API Gateway | *待技术评审确认*。独立服务，不依赖聚星主站 |
+| **数据库** | PostgreSQL（Supabase 或 RDS） | 用户账号、API Key、credit 追踪、谈判记录 |
+| **缓存** | Redis（Upstash 或 ElastiCache） | 搜索结果缓存、rate limit 计数器 |
+| **邮件服务** | Resend（首选）或 AWS SES | 邀约邮件发送、投递追踪、退信处理 |
+| **AI 推理 API** | OpenAI API（GPT-4o / 4o-mini） | 自然语言解析、邮件生成、谈判推理 |
+| **支付** | Stripe（Checkout + Billing + Webhooks） | 订阅管理、超额计费、发票 |
+| **监控** | Sentry（错误追踪）+ Grafana/Datadog（指标） | 错误率、延迟、credit 消耗分布 |
+| **日志** | 结构化日志 + correlation ID | 每次请求可追溯，支持审计 |
+| **CI/CD** | GitHub Actions | 自动测试、构建、部署 |
+
+### 3.5 可测性架构（验证闭环）
+
+> 来源：Peter Steinberger 闭环工程实践（[Shipping at Inference-Speed](https://steipete.me/posts/2025/shipping-at-inference-speed)）、项目 `engineering/01_AI_Coding测试设计最佳实践.md`
+
+kol-api 有两个层面的验证闭环：**工程团队验证系统本身**，以及 **Agent 消费者验证返回结果**。
+
+#### 3.5.1 内部可测性：Core / Shell / Harness 架构
+
+Peter 的核心主张：**"whatever I wanna build, it starts as CLI… closing the loop"**。把系统拆成三层，让闭环尽可能短：
+
+```
+┌─────────────────────────────────────────────────────┐
+│  Harness（诊断入口）                                  │
+│  kol CLI + 回归脚本 + 冒烟 runner                     │
+│  直接调用 Core，--json 输出 + 明确 exit code          │
+├─────────────────────────────────────────────────────┤
+│  Shell（壳）                                         │
+│  REST API + MCP Server + SKILL.md + GPT Action       │
+│  仅做 I/O、认证、协议适配                              │
+├─────────────────────────────────────────────────────┤
+│  Core（纯逻辑）                                      │
+│  搜索解析、真实性评分、邮件生成、谈判策略、Credit 扣减   │
+│  无 I/O 依赖，可独立测试                              │
+└─────────────────────────────────────────────────────┘
+```
+
+**映射到 kol-api**：
+
+| 层 | 包含什么 | 可测性特征 |
+|----|---------|----------|
+| **Core** | 自然语言→结构化查询解析、Creator 数据标准化、Credit 扣减逻辑、谈判策略状态机、邮件模板渲染 | 纯函数 / 纯状态机，无外部依赖，**100% 可单测** |
+| **Shell** | REST API 路由、MCP Server 协议适配、Stripe webhook 处理、认证中间件 | 薄 I/O 层，mock 外部服务后可集成测试 |
+| **Harness** | `kol` CLI 命令、`kol test-search` 回归脚本、`kol smoke` 冒烟测试 | 直接调用 Core，绕过 Shell，**缩短反馈回路** |
+
+**关键设计约束**：
+
+- CLI（Harness）和 REST API（Shell）调用**同一份 Core 代码**，不复制逻辑
+- Core 层所有函数接受依赖注入（数据源、LLM 调用、邮件发送），测试时替换为 mock
+- CLI 支持 `--json` 输出 + 明确 exit code，Agent 和 CI 都能消费
+
+#### 3.5.2 测试分层
+
+| 层级 | 时机 | 覆盖 | 目标耗时 |
+|------|------|------|:-------:|
+| **L1 Unit + Lint** | 每次提交 | Core 纯逻辑：查询解析、Credit 计算、数据标准化、错误码映射、谈判状态机 | < 30 秒 |
+| **L2 Integration** | PR 合并前 | Shell 层：API 路由 + 认证 + Rate Limit + 数据分级门控（mock 外部服务，hermetic） | < 3 分钟 |
+| **L3 E2E** | PR 合并前 | 关键路径：注册→搜索→分析→邀约预览→谈判预览（mock LLM + mock 聚星 API） | < 5 分钟 |
+| **L4 Live Smoke** | Nightly | 真实 API Key 跑完整链路：聚星数据源 + Phyllo + OpenAI + Resend | 允许更慢 |
+
+**AI 组件的特殊测试问题**：
+
+LLM 输出不确定，传统断言失效。对策：
+
+| AI 组件 | 测试策略 |
+|---------|---------|
+| 自然语言→结构化查询 | **Eval 回归集**：固定 50 条自然语言输入 + 期望的结构化输出，用 LLM-as-judge 打分，分数低于阈值则 CI 红灯 |
+| 邮件内容生成 | **Schema 校验 + 关键词检查**：输出必须含 brand name、creator handle、brief 关键词；长度在 100-500 词 |
+| 谈判策略推理 | **边界约束断言**：开价不低于 `budget_target`、不高于 `budget_max`、推荐策略包含至少 1 个 tactic |
+| 谈判邮件生成 | **回归快照 + 人工抽检**：每周抽 10 封谈判邮件人工评分，异常时触发模型/prompt 回滚 |
+
+> 来源：OpenAI [Testing Agent Skills Systematically with Evals](https://developers.openai.com/blog/eval-skills/)——把 eval 做成轻量 E2E：prompt → captured run → checks → score。
+
+#### 3.5.3 CLI Harness 验收命令
+
+工程团队交付每个 Tool 时，必须同时交付对应的 Harness 命令：
+
+```bash
+# 单次验证（开发时用）
+kol test-search "US beauty TikTokers" --assert-min-results 5 --assert-latency-ms 3000
+kol test-analyze crt_abc123 --assert-has-authenticity --assert-has-audience
+kol test-outreach crt_abc123 --brief "test" --assert-preview-has-email
+kol test-negotiate crt_abc123 --max 1000 --assert-strategy-has-benchmark
+
+# 回归套件（CI L3 用）
+kol smoke --all --json > smoke-results.json  # exit code 0 = 全绿
+```
+
+设计原则（来自 Peter）：
+
+| 原则 | 实现 |
+|------|------|
+| 同一路径 | Harness 调用 Core，不复制逻辑 |
+| 可参数化 | `--mock` 用 mock 数据源、`--live` 用真实 key |
+| 可机器消费 | `--json` 输出 + 明确 exit code |
+| 可复现 | 打印生效配置（API 版本、数据源、模型版本） |
+
+#### 3.5.4 外部验证闭环：Agent 自我验证（P2）
+
+> 继承 03 第 4.5 节设计。Day 1 不实现，原则先确立。
+
+Coding Agent 的核心循环是：写代码 → 跑测试 → 看输出 → 修正 → 再跑。kol-api 同理——如果返回中包含足够的质量指标，Agent 可以自主判断"结果好不好，要不要换个策略重来"。
+
+这是**用数据闭环替代硬编码的 suggested_actions**——不是告诉 Agent 该做什么，而是给它足够的信息让它自己判断。
+
+| Tool | Day 1 返回 | P2 增加的验证信息 |
+|------|-----------|-----------------|
+| `discover_creators` | 达人列表 | 搜索质量：匹配度分布、被过滤数量、是否还有更多结果 |
+| `analyze_creator` | 达人画像 | 数据置信度：哪些字段是实时的、哪些是缓存的、数据最后更新时间 |
+| `outreach_creators` | 邮件预览/发送状态 | 可达性预估：邮箱有效率、同类邮件历史投递率 |
+| `negotiate` | 市场基准/谈判进展 | 策略置信度：基准基于多少样本、达人历史谈判模式 |
+
+有了这些信息，Agent 可以自主决策：
+- "只找到 3 个匹配的，条件太严了，我放宽 engagement 再搜一次"
+- "这个达人的数据是 30 天前的，我提醒品牌数据可能不够新"
+
+**P2 触发条件**：Day 1 调用日志显示 Agent 对同一 Tool 的重复调用率 > 20%（说明 Agent 在盲目重试，缺少自我判断信息）。
+
+---
+
+## 四、DX 要求
+
+### 4.1 P0（Day 1 必须）
+
+| # | 要求 | 验收标准 |
+|---|------|---------|
+| 1 | **自助注册** | 邮箱注册 → 30 秒内获得 API Key，无需 Sales Call |
+| 2 | **OpenAPI 3.1 spec** | 覆盖全部 4 个 Tool，可自动生成文档和 SDK |
+| 3 | **5 分钟 Quick Start** | 从注册到第一次成功搜索 < 5 分钟的教程 |
+| 4 | **结构化错误响应** | 统一格式 `{success, error: {code, message, upgrade_url}}`，面向 Agent 推理 |
+| 5 | **Rate Limit 响应头** | 每次返回 `X-RateLimit-Limit/Remaining/Reset` + `Retry-After` |
+| 6 | **CLI 工具发布** | `npm install -g @kol-api/cli`，覆盖全部 4 个 Tool |
+| 7 | **MCP Server 发布** | npm 发布 + Glama/mcp.so 上架 |
+| 8 | **Changelog** | 每次 API 变更都有公开记录，semver 版本管理 |
+
+### 4.2 P1（上线后 1-2 月）
+
+| # | 要求 |
 |---|------|
-| 20 | 达人排行榜 API |
-| 21 | 相似达人推荐（Lookalike） |
-| 22 | 合作报价估算 |
-| 23 | AI智能匹配（品牌→达人） |
-| 24 | RapidAPI上架 |
+| 1 | 交互式 API Explorer（文档内嵌 Try It） |
+| 2 | Postman Collection（一键导入） |
+| 3 | Python SDK（`pip install kol-api`） |
+| 4 | curl/Python/Node 示例代码（每个 Tool） |
+| 5 | Health Check 端点（`GET /health`，公开可访问） |
+| 6 | 用量 Dashboard（开发者 portal 实时用量和账单） |
+
+### 4.3 P2
+
+| # | 要求 |
+|---|------|
+| 1 | Node.js SDK（`npm install kol-api`） |
+| 2 | 开发者 Discord 社区 |
+| 3 | GitHub 开源 SDK |
+| 4 | TypeScript 类型定义 |
+
+> DX 差异化机会（来源：`_research/influencer-api-dx-comparison.md`）：全行业无官方 SDK、全行业需 Sales Call、全行业无 CLI、全行业无开发者社区。kol-api 每一项都是差异化。
 
 ---
 
-## 技术架构
+## 五、v1.1 范围（数据驱动迭代）
 
-```
-                    开发者
-                   ╱      ╲
-              REST API    MCP Server
-                   ╲      ╱
-                 API Gateway
-                (认证/限流/计费)
-                      │
-              ┌───────┼───────┐
-              │       │       │
-         搜索服务  详情服务  AI服务
-              │       │       │
-              └───────┼───────┘
-                      │
-              聚星数据层（改造）
-              ├── 统一数据模型
-              ├── 跨平台字段映射
-              └── 缓存层
-                      │
-              聚星现有数据库
-              （1亿+达人）
-```
+### 5.1 三个后续 Tool Spec 概要
 
-### 关键技术决策
+设计已完成（见 03 第 3.5-3.7 节），上线时机由数据驱动。
 
-| 决策点 | 选择 | 理由 |
-|--------|------|------|
-| API框架 | FastAPI (Python) 或 NestJS (Node) | 团队决定 |
-| 文档 | OpenAPI 3.1 + Redoc/Scalar | 行业标准 |
-| 认证 | API Key (header) | 最简单，MCP兼容 |
-| 计费 | Stripe Billing | PLG标配 |
-| MCP协议 | MCP SDK (TypeScript) | 官方SDK |
-| 假粉检测 | v1: Phyllo API集成 → v2: 自研 | 快速上线 |
-| 部署 | 独立服务，不依赖聚星主站 | 新品牌独立 |
+#### `manage_campaigns` — "我的合作情况"
 
----
+- **Credit**：1 credit/次 | **P1**
+- **输入**：`campaign_id`（可选）、`creator_id`（可选）、`status_filter`（可选）、`action`（可选）
+- **返回**：Campaign 列表 + 阶段进展（邀约→谈判→合同→发货→审稿→发布→结算）+ 达人白/黑名单 + 活跃提醒
+- **设计目的**：低价（1 credit）高频 CRM 查询提高留存，驱动付费的邀约+谈判操作
 
-## 上线计划
+#### `competitive_intel` — "竞品在做什么"
 
-```
-M1 ─── 基础设施
-        ├── 统一数据模型设计+实现
-        ├── API Gateway搭建（认证/限流/计费）
-        └── 注册+API Key发放
+- **Credit**：5 credits/次 | **P1**
+- **输入**：`brand_name` 或 `brand_domain`（二选一必填）、`time_range`（默认 3m）、`platform`（可选）
+- **返回**：竞品达人合作清单 + 合作类型分布 + 效果最佳案例 + 可挖角达人（未签独家）
+- **设计目的**：高价值洞察，品牌对竞品信息付费意愿高
 
-M2 ─── 核心Endpoint
-        ├── 达人搜索（结构化+AI）
-        ├── 达人详情
-        └── 批量查询
+#### `track_performance` — "效果怎么样"
 
-M3 ─── 增值+包装
-        ├── 假粉检测（集成Phyllo）
-        ├── MCP Server
-        ├── Python SDK
-        └── 交互式文档
+- **Credit**：2 credits/次 | **P2**
+- **输入**：`campaign_id` 或 `creator_id`（二选一必填）、`metrics`（可选：views/engagement/conversions/roi）
+- **返回**：实时数据 + 同品类基准对比 + ROI 计算 + 趋势变化
+- **设计目的**：闭环效果追踪，验证 ROI 驱动复投
 
-M4 ─── 上线
-        ├── Beta测试（邀请制，20-50开发者）
-        ├── 定价+计费上线
-        ├── MCP目录上架
-        └── 公开发布（HN/PH）
+### 5.2 触发条件（不是日历时间，是数据指标）
 
-M5-6 ─ 迭代
-        ├── P1功能（Node SDK/受众/联系方式/Webhook）
-        └── 根据用户反馈调整
-```
+| Tool | 触发上线条件 | 数据来源 |
+|------|------------|---------|
+| `manage_campaigns` | Day 1 outreach 使用 > 100 次/周 **且** 用户反馈需要管理合作状态 | 调用日志 + 用户反馈 |
+| `competitive_intel` | 用户搜索中 > 15% 含竞品关键词（如 "Gymshark 合作了谁"） | 搜索 query 分析 |
+| `track_performance` | > 50 个品牌完成至少 1 个 campaign 全流程 | campaign 状态数据 |
+
+### 5.3 v1.1 防搬层（Day 1 之后迭代）
+
+| 层级 | 机制 | 触发条件 |
+|------|------|---------|
+| **L3** | 使用模式检测（连续遍历 ID、搜索/分析比例异常、Agent 循环调用） | 积累 1 个月调用数据后部署 |
+| **L5** | Canary Records + 数据指纹 | 积累足够用户数据后部署 |
+| **L6** | KYB（Growth+ 客户身份验证）+ 已知竞品屏蔽 + 年付绑定 | Growth 层用户 > 10 时启动 |
 
 ---
 
-## 团队需求
+## 六、上线计划
+
+### 6.1 里程碑 + 工作量估算
+
+> 基于 CLI-first 架构重新评估。旧方案 16 周 2-3 人已不适用。
+
+```
+Phase 1（M1-M2）—— 基础设施 + 核心能力
+├── W1-2  统一 Creator 数据模型设计 + 聚星数据层适配
+├── W3-4  REST API 骨架（认证 / 限流 / Credit 追踪 / Stripe 集成）
+├── W5-6  discover_creators + analyze_creator（含 AI 搜索解析）
+├── W7-8  假粉检测集成（Phyllo）+ 数据分级返回逻辑
+
+Phase 2（M3）—— 邀约 + 谈判 + CLI
+├── W9-10  outreach_creators（邮件生成 + 发送 + 追踪 + follow-up）
+├── W10-11 negotiate（策略生成 + 自动谈判 + 邮件往返）
+├── W11-12 CLI 工具（kol 命令，覆盖 4 个 Tool）
+
+Phase 3（M4）—— 包装 + 分发 + 上线
+├── W13   MCP Server + SKILL.md + GPT Action 适配层
+├── W14   OpenAPI spec + Quick Start 文档 + 注册页
+├── W15   Beta 测试（邀请 20-50 品牌，内部 + 外部）
+├── W16   修复 Beta 反馈 + 上架 Glama/ClawHub/ChatGPT + 公开发布
+```
+
+**总工作量：约 16 周（4 个月），2-3 人全职。**
+
+> 虽然总工期与旧方案相近，但范围完全不同：旧方案是 12 个 REST endpoint + MCP + SDK，新方案是 4 个 Agent Tool + CLI + 邮件基础设施 + AI 谈判引擎 + 三平台分发。邮件和谈判的基础设施建设增加了工作量，但 Tool 数量减少（12→4）部分抵消。
+
+### 6.2 团队需求
 
 | 角色 | 人数 | 职责 |
 |------|:----:|------|
-| 后端工程师 | 2 | API开发、数据模型、Gateway |
-| 前端/文档 | 0.5 | 文档站、注册页、Dashboard |
-| 产品（兼） | 0.5 | 可由现有PM兼任 |
-| **总计** | **3人** | |
+| 后端工程师 | 2 | REST API、数据层适配、Credit/计费系统、邮件基础设施 |
+| AI 工程师 | 0.5 | 自然语言解析、邮件生成、谈判引擎（可由后端兼任） |
+| 前端/文档 | 0.5 | 注册页、Dashboard、文档站、Quick Start |
+| 产品（兼） | 0.5 | 可由现有 PM 兼任 |
+| **总计** | **~3 人** | |
 
-**不需要新招**：可从聚星现有团队抽调（研发占比70%，有余力）。需要的是API设计经验，不是LLM专家。
+**不需要新招**：可从聚星现有团队抽调。关键能力需求：API 设计经验 + LLM 集成经验。
+
+### 6.3 关键依赖
+
+| 依赖 | 影响范围 | 风险 | 缓解 |
+|------|---------|:----:|------|
+| **聚星数据层 API 稳定性** | 全部 Tool | 高 | 早期对接，W1 确认 API 可用性和性能 |
+| **聚星搜索 API 改造** | discover_creators | 高 | AI 搜索解析层可解耦聚星搜索 API 的限制 |
+| **Phyllo API 可用性** | analyze_creator（假粉检测） | 中 | 备选供应商：HypeAuditor API |
+| **Resend/SES 账号** | outreach_creators, negotiate | 中 | 邮件域名预热需 2-4 周，Phase 1 就启动 |
+| **Stripe 账号** | 计费系统 | 低 | 标准集成，风险可控 |
+| **OpenAI API 额度** | AI 推理层 | 低 | 可切换 Anthropic API 作为备选 |
 
 ---
 
-## 风险与应对
+## 七、待确认清单
 
-| 风险 | 概率 | 影响 | 应对 |
-|------|:----:|:----:|------|
-| 数据质量不满足开发者预期 | 🟡 | 🔴 | Beta阶段收集反馈，针对性补数据 |
-| 竞品快速跟进做PLG | 🟡 | 🟡 | 先发优势+DX壁垒+MCP卡位 |
-| 假粉检测依赖第三方不稳定 | 🟡 | 🟡 | 多供应商备选 |
-| 品牌信任问题 | 🟡 | 🟡 | 新品牌+优质文档+社区口碑 |
-| 调用量太低无法覆盖成本 | 🟢 | 🟡 | 边际成本极低，数据已有 |
+### 需要杨洋确认的决策
+
+| # | 问题 | 选项 | 初步建议 | 阻塞 |
+|---|------|------|---------|------|
+| Q1 | 产品品牌名 | kol-api / 新名称 | 需 brainstorm（NoxInfluencer 不适合面向海外品牌） | 域名、npm 包名、文档 |
+| Q2 | 注册实体 | A:聚星现有 B:新加坡新公司 | B（海外信任 + 合规） | Stripe 接入、法务 |
+| Q3 | v1 假粉检测供应商 | A: Phyllo B: HypeAuditor C: 其他 | A（Phyllo 有 sandbox + RapidAPI 上架，集成最快） | M1 集成 |
+| Q4 | 首发平台 | A:OpenClaw B:Claude C:ChatGPT D:同时 | D（同一 API 三个接入层，同时发布） | M4 上架 |
+| Q5 | negotiate 层级门控 | A: Pro+ 才可用 B: Starter+ 可用 | A（谈判成本最高，Pro+ 限制合理） | 计费规则 |
+
+### 需要技术负责人确认的决策
+
+| # | 问题 | 选项 | 初步建议 | 阻塞 |
+|---|------|------|---------|------|
+| T1 | API 框架 | Fastify (Node) / Hono (CF Workers) / NestJS / Go | Hono on CF Workers（边缘部署，低延迟） | M1 开工 |
+| T2 | CLI 技术栈 | Node (commander/oclif) / Go (cobra) | Node oclif（与 MCP SDK 同生态） | M3 CLI 开发 |
+| T3 | 聚星数据层对接方式 | 直连数据库 / 调用聚星内部 API / 数据同步 | 调用聚星内部 API（最低耦合） | M1 数据层 |
+| T4 | 数据库选型 | Supabase (PostgreSQL) / PlanetScale / 自建 RDS | Supabase（集成 Auth + Realtime，适合 PLG） | M1 基础设施 |
+| T5 | 邮件域名 | 新域名 / 聚星子域名 | 新域名（独立品牌 + 避免影响聚星邮件信誉） | M1 邮件预热 |
+
+### 前置红线（开工前必须完成）
+
+**H4 聚星数据质量验证**：
+
+1. 抽样 100 个欧美头部达人（Beauty / Fashion / Tech 各类别）
+2. 对比聚星数据 vs 竞品公开数据（Modash / HypeAuditor 平台可试用）
+3. 评估三个维度：覆盖率（有没有）、新鲜度（多久更新）、准确度（粉丝数/互动率偏差）
+4. **如果覆盖率 < 70% 或准确度偏差 > 20%：需补数据源或调整定位至亚洲市场**
+
+> 来源：01 第八节。H4 是唯一的前置红线。
 
 ---
 
-## 待确认清单
+## 附录
 
-| # | 问题 | 需要谁确认 | 阻塞什么 |
-|---|------|:--------:|---------|
-| 1 | 品牌名 | 杨洋 | 注册域名、文档、SDK包名 |
-| 2 | 注册实体（新加坡？） | 杨洋 | Stripe接入、法务 |
-| 3 | 团队分配（从聚星抽谁？） | 杨洋+技术负责人 | 开工 |
-| 4 | 聚星数据层改造范围确认 | 技术负责人 | M1统一数据模型 |
-| 5 | 假粉检测供应商选择 | PM | M3集成 |
-| 6 | 定价方案最终确认 | 杨洋 | M4上线 |
+### 附录 A：Tool Description 原文
+
+以下 4 段描述用于 MCP metadata 的 `description` 字段，直接从 03 附录复制。
+
+**discover_creators**
+> Search and discover influencers across YouTube, TikTok, and Instagram using natural language queries. Returns a ranked list of creators with follower counts, engagement rates, authenticity flags, and estimated collaboration costs. Use this tool when a brand wants to find creators for a campaign — it handles search, initial screening, and basic evaluation in a single call. Supports filtering by platform, country, follower range, niche, and minimum engagement rate.
+
+**analyze_creator**
+> Get a deep analysis of a specific creator's profile, including authenticity scoring, audience demographics, content performance trends, and estimated pricing. Use this tool when a brand wants to evaluate whether a creator is trustworthy and a good fit before reaching out. Accepts either a creator ID (from discover_creators results) or a direct profile URL.
+
+**outreach_creators**
+> Send personalized outreach emails to a list of creators on behalf of a brand. Generates customized email content based on the campaign brief and each creator's profile. First call returns email previews for brand approval; second call with confirm=true sends the emails and enables response tracking with automatic follow-ups. Use this when a brand is ready to contact creators they've identified.
+
+**negotiate**
+> Negotiate collaboration pricing with a creator within the brand's budget. First provides market pricing benchmarks and a recommended negotiation strategy; then, with brand approval, conducts automated email-based negotiation. Each round of negotiation is reported back to the brand in real-time. Use this when a creator has responded to outreach and pricing discussion begins.
+
+### 附录 B：统一 Creator 数据模型
+
+```typescript
+interface Creator {
+  // 标识
+  creator_id: string           // kol-api 内部 ID（格式：crt_xxx）
+  platform: "youtube" | "tiktok" | "instagram"
+  handle: string               // 平台用户名（含 @）
+  display_name: string         // 显示名称
+  avatar_url: string | null    // 头像 URL
+  profile_url: string          // 达人主页 URL
+  bio: string | null           // 简介
+
+  // 基础数据
+  followers: number            // 粉丝数
+  following: number | null     // 关注数（部分平台无）
+  content_count: number        // 内容总数
+  country: string | null       // ISO 3166-1 alpha-2
+  language: string | null      // ISO 639-1
+  niche: string[]              // 内容品类标签
+  verified: boolean            // 平台认证状态
+
+  // 互动数据
+  engagement_rate: number      // 互动率（0-1）
+  avg_likes: number | null
+  avg_comments: number | null
+  avg_shares: number | null
+  avg_views: number | null     // 平均播放量（视频平台）
+
+  // 增长趋势
+  growth: {
+    followers_30d: number      // 30 天粉丝增量
+    followers_90d: number      // 90 天粉丝增量
+    trend: "growing" | "stable" | "declining"
+  } | null
+
+  // 真实性（Starter+ 精确，Free 粗粒度）
+  authenticity: {
+    score: number              // 0-100（Starter+ 可见）
+    fake_follower_pct: number  // 假粉比例（Starter+ 可见）
+    suspicious_signals: string[] // 可疑信号列表（Starter+ 可见）
+    verdict: "trustworthy" | "moderate" | "suspicious"  // 所有层级可见
+  }
+
+  // 受众画像（分级门控）
+  audience: {
+    countries: { code: string; pct: number }[]  // Starter+ 概要，Pro+ 完整
+    age_ranges: { range: string; pct: number }[] // Pro+
+    gender: { female: number; male: number }     // Starter+
+    interests: string[]                           // Pro+
+  } | null
+
+  // 商业数据
+  estimated_cost: {
+    min: number
+    max: number
+    currency: string
+    basis: "market_benchmark" | "historical"
+  } | null
+
+  can_contact: boolean         // 是否有可用联系方式（Starter+）
+
+  // 近期内容（analyze 返回）
+  recent_content: {
+    title: string
+    views: number
+    engagement_rate: number
+    published_at: string       // ISO 8601
+    is_sponsored: boolean
+  }[] | null
+}
+```
+
+### 附录 C：错误码定义
+
+所有错误使用统一格式：
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "error_code",
+    "message": "面向 Agent 的可行动错误信息",
+    "upgrade_url": "https://kol-api.com/pricing"
+  }
+}
+```
+
+| 错误码 | HTTP | 说明 |
+|--------|:----:|------|
+| `missing_query` | 400 | 搜索条件缺失 |
+| `missing_creator` | 400 | 达人 ID 或 URL 缺失 |
+| `missing_creator_ids` | 400 | 达人列表缺失 |
+| `missing_budget` | 400 | 预算上限缺失 |
+| `invalid_platform` | 400 | 不支持的平台值 |
+| `invalid_parameter` | 400 | 通用参数校验失败 |
+| `unsupported_url` | 400 | 无法识别的达人 URL |
+| `too_many_creators` | 400 | 批量操作超出上限 |
+| `no_prior_outreach` | 400 | 尝试谈判但达人未回复邀约 |
+| `unauthorized` | 401 | API Key 无效或缺失 |
+| `insufficient_credits` | 402 | Credit 余额不足 |
+| `upgrade_required` | 403 | 当前层级不支持该操作 |
+| `creator_not_found` | 404 | 达人不在数据库中 |
+| `rate_limited` | 429 | 请求频率超限 |
+| `internal_error` | 500 | 服务内部错误 |
+| `upstream_error` | 502 | 上游服务（聚星/Phyllo/AI）不可用 |
+| `service_unavailable` | 503 | 服务暂时不可用 |
+
+### 附录 D：Rate Limit 详细规格
+
+| 维度 | Free | Starter | Pro | Growth | Enterprise |
+|------|:----:|:-------:|:---:|:------:|:----------:|
+| 每分钟请求数 | 10 | 30 | 60 | 120 | 定制 |
+| 每小时请求数 | 100 | 500 | 2,000 | 5,000 | 定制 |
+| 并发请求数 | 1 | 3 | 5 | 10 | 定制 |
+| 单 IP 每日请求数 | 5,000 | 5,000 | 5,000 | 5,000 | 定制 |
+| discover 单次最大返回 | 10 | 30 | 50 | 50 | 定制 |
+| outreach 单次最大人数 | — | 20 | 50 | 50 | 定制 |
+
+**响应头**：
+
+```
+X-RateLimit-Limit: 30          # 当前窗口限额
+X-RateLimit-Remaining: 27      # 当前窗口剩余
+X-RateLimit-Reset: 1707750000  # 窗口重置时间（Unix timestamp）
+Retry-After: 60                # 被限流时等待秒数（仅 429 时返回）
+```
+
+**被限流时的响应**：
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "rate_limited",
+    "message": "请求过于频繁，请 60 秒后重试",
+    "retry_after": 60
+  }
+}
+```
