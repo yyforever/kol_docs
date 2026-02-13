@@ -27,7 +27,7 @@ CreatorDB 的 31 个 Tool（11 IG + 11 YT + 9 TikTok）本质是把 REST endpoin
 
 > Microsoft Research 发现：当 Tool 数量超过 20 个，Agent 任务完成率下降最高 **85%**。原因是上下文窗口被 Tool 描述占满，推理质量急剧下降。
 
-**kol-api 设计目标：7 个 Tool 覆盖全链路。Day 1 上线 4 个（P0），数据验证后迭代加入 3 个（P1/P2）。**
+**kol-api 设计目标：7 个 Tool 覆盖全链路。Day 1 上线 5 个（P0：4 个全链路核心 + 1 个只读 CRM），数据验证后迭代增强 + 加入 2 个新 Tool（P1/P2）。**
 
 ### 1.2 设计原则
 
@@ -58,16 +58,27 @@ Pi（OpenClaw 底层引擎）用 4 个 Tool（read/write/edit/bash）驱动了 1
 
 > 来源：[What I learned building an opinionated and minimal coding agent](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/)、[Pi: The Minimal Agent Within OpenClaw](https://lucumr.pocoo.org/2026/1/31/pi/)
 
-**kol-api 因此采用 CLI-first 架构**：先构建设计良好的 CLI，MCP/SKILL/GPT Action 都是 CLI 的薄包装层。
+**kol-api 因此采用 CLI-first 四层架构**：CLI 直接调用 Core（不经过 REST API），MCP/SKILL/GPT Action 同样直接调用 Core，都是 Core 的薄包装层。
 
 ```
-                        ┌─ MCP Server ──→ Claude / Cursor / Glama
-                        │
-CLI（kol）──→ REST API ──┼─ SKILL.md ───→ OpenClaw / ClawHub
-                        │
-                        └─ GPT Action ──→ ChatGPT Apps
+┌────────────────────────────────────────────────────────────┐
+│  Harness（验证入口）                                         │
+│  kol CLI 直接调用 Core（不经过 REST API）                     │
+├────────────────────────────────────────────────────────────┤
+│  Shell（协议适配 + I/O）                                     │
+│  REST API / MCP Server / SKILL.md / GPT Action              │
+│  都直接调用 Core，仅做协议转换 + 认证 + 限流                   │
+├────────────────────────────────────────────────────────────┤
+│  Core（纯业务逻辑）                                          │
+│  搜索解析、假粉检测、邮件生成、谈判策略...                      │
+│  无 I/O 依赖，通过 DI 接收 Services                          │
+├────────────────────────────────────────────────────────────┤
+│  Services（外部依赖适配）                                     │
+│  聚星数据 API / OpenAI / Resend / Stripe / DB                │
+└────────────────────────────────────────────────────────────┘
 
-终端型 Agent（Claude Code / OpenClaw）→ 直接 bash 调 CLI，不经过 MCP
+终端型 Agent（Claude Code / OpenClaw）→ 直接 bash 调 CLI（Harness 层）
+非终端型 Agent（Claude Desktop / Cursor）→ 通过 MCP Server（Shell 层）
 ```
 
 CLI 命令与 MCP Tool 的对应：
@@ -88,6 +99,11 @@ kol outreach @beautybyjess @glowwithme --brief "protein powder launch" --send
 # negotiate
 kol negotiate @beautybyjess --max 900 --target 800 --preview
 kol negotiate @beautybyjess --max 900 --target 800 --start
+
+# manage_campaigns（只读版）
+kol campaigns
+kol campaigns --id cmp_001
+kol campaigns --creator @beautybyjess
 ```
 
 CLI 的优势在于 Agent 可以自由组合——这在 MCP 固定参数设计中做不到：
@@ -141,10 +157,10 @@ v1 优先：**YouTube + TikTok + Instagram**（覆盖 95% 品牌场景）。
 
 | 阶段 | Tool | 理由 |
 |------|------|------|
-| **Day 1**（4 个） | discover_creators, analyze_creator, outreach_creators, negotiate | P0 全链路核心：搜索→评估→邀约→谈判。覆盖 83% 人工成本（28% 信息密集 + 55% 沟通密集） |
-| **v1.1**（3 个） | manage_campaigns, competitive_intel, track_performance | 基于 Day 1 真实调用数据验证需求后加入。Firecrawl 上线时也只有 2 个 Tool，`map` 和 `extract` 是用户使用三个月后根据调用日志中的失败模式才加的 |
+| **Day 1**（5 个） | discover_creators, analyze_creator, outreach_creators, negotiate, manage_campaigns（只读版） | P0 全链路核心：搜索→评估→邀约→谈判 + CRM 留存基础。覆盖 83%+ 人工成本（28% 信息密集 + 55% 沟通密集 + CRM 查询） |
+| **v1.1**（2 个新 + 1 个增强） | manage_campaigns 增强版（加写操作）, competitive_intel, track_performance | 基于 Day 1 真实调用数据验证需求后加入。Firecrawl 上线时也只有 2 个 Tool，`map` 和 `extract` 是用户使用三个月后根据调用日志中的失败模式才加的 |
 
-Day 1 不上 7 个的原因：未经真实 Agent 调用验证的 Tool 越多，维护债务越大。v1.1 的 3 个 Tool 设计已完成（见 3.5-3.7），随时可上线，但**上线时机由数据驱动**。
+Day 1 增加 manage_campaigns 只读版的原因：02 明确 CRM 是"留存驱动力"，只读查询实现简单（无写操作风险），1 credit 低价驱动高频使用。写操作（set_alert / update_status）留到 v1.1 增强版。
 
 ---
 
@@ -229,13 +245,13 @@ Day 1 不上 7 个的原因：未经真实 Agent 调用验证的 Tool 越多，�
 1. **策略阶段**（`confirm: false`）：返回市场定价基准 + 该达人历史报价 + 建议谈判策略 + 预估成交价区间。
 2. **执行阶段**（`confirm: true`）：在预算范围内自动与达人邮件往返。每轮进展同步给品牌，达成一致后发合作确认邮件（需品牌最终审核）。
 
-### v1.1 Tool（数据验证后上线）
+### 3.5 `manage_campaigns`（只读版）— "我的合作情况"
 
-### 3.5 `manage_campaigns` — "我的合作情况"
+**优先级**：P0（Day 1）| **Credit**：1 credit/次
 
-**优先级**：P1 | **Credit**：1 credit/次
+> Day 1 仅只读查询。写操作（`set_alert` / `update_status` / `add_note`）留到 v1.1 增强版。
 
-**合并 02 能力**：`get_collaboration_history` + `update_creator_status` + `get_campaign_status` + `update_campaign_stage` + `set_alert` + `get_alerts`
+**合并 02 能力**（Day 1 只读部分）：`get_collaboration_history` + `get_campaign_status`
 
 | 参数 | 必填 | 类型 | 说明 |
 |------|:----:|------|------|
@@ -243,10 +259,23 @@ Day 1 不上 7 个的原因：未经真实 Agent 调用验证的 Tool 越多，�
 | `campaign_id` | | string | 查看特定 Campaign |
 | `creator_id` | | string | 查看与特定达人的合作历史 |
 | `status_filter` | | enum | active / completed / all |
-| `action` | | enum | 执行操作：`set_alert` / `update_status` / `add_note` |
-| `action_params` | | object | 操作参数（如提醒规则、状态变更、备注内容） |
 
-**返回**：Campaign 列表 + 每个 Campaign 的阶段进展（邀约→谈判→合同→发货→审稿→发布→结算） + 达人白/黑名单 + 活跃提醒。
+**返回**：Campaign 列表 + 每个 Campaign 的阶段进展（邀约→谈判→合同→发货→审稿→发布→结算）。
+
+**关键设计**：低价（1 credit）高频查询提高留存，驱动付费的邀约+谈判操作。只读版实现简单（无写操作风险），CRM 查询是品牌日常高频需求。
+
+### v1.1 Tool（数据验证后上线）
+
+#### `manage_campaigns` 增强版（v1.1）
+
+在 Day 1 只读版基础上增加写操作能力：
+
+| 新增参数 | 类型 | 说明 |
+|---------|------|------|
+| `action` | enum | `set_alert` / `update_status` / `add_note` |
+| `action_params` | object | 操作参数（提醒规则、状态变更、备注内容） |
+
+新增返回：达人白/黑名单 + 活跃提醒。
 
 ### 3.6 `competitive_intel` — "竞品在做什么"
 
@@ -428,7 +457,7 @@ CreatorDB 因缺少 LICENSE 文件导致 Glama F 级、不可安装、零使用�
 | 失败模式 | CreatorDB 教训 | kol-api 对策 |
 |---------|---------------|-------------|
 | 无 LICENSE | F 级不可安装 | Day 1 添加 MIT LICENSE |
-| Tool 过多 | 31 个 Tool，Agent 性能下降 85% | Day 1 仅 4 个 Tool，全量 7 个，意图级抽象 |
+| Tool 过多 | 31 个 Tool，Agent 性能下降 85% | Day 1 仅 5 个 Tool，全量 7 个，意图级抽象 |
 | 无发布管理 | 无版本号，无 changelog | semver + 公开 changelog |
 | 描述面向开发者 | Agent 无法匹配用户意图 | 描述面向 Agent 推理（见附录） |
 
@@ -447,7 +476,7 @@ CreatorDB 因缺少 LICENSE 文件导致 Glama F 级、不可安装、零使用�
 | D5 | 必填参数数量 | 每 Tool 1-2 个 | 多参数必填 | Context7 模式：降低 Agent 构造参数的难度 |
 | D6 | description 长度 | ≥ 3 句话 | 一句话 | Anthropic 官方 + Arcade 54 模式 |
 | D7 | Credit 映射 | 与 01/02 完全一致 | 重新定义 | 保持三份文档一致性 |
-| D8 | 发布节奏 | Day 1 上 4 个，v1.1 加 3 个 | 7 个同时上线 | Firecrawl 模式：带最小集上线，用调用数据驱动迭代。未验证的 Tool 越多，维护债务越大 |
+| D8 | 发布节奏 | Day 1 上 5 个（含 manage_campaigns 只读版），v1.1 加 2 个新 + 1 个增强 | 7 个同时上线 | Firecrawl 模式：带最小集上线，用调用数据驱动迭代。manage_campaigns 只读版加入 Day 1 因为 CRM 是留存驱动力（02 结论） |
 | D9 | 接入层架构 | CLI-first，MCP/SKILL/GPT Action 是薄包装 | MCP-first | Pi/OpenClaw 验证：终端对 Agent 更友好（可组合/可观测/可验证）。CLI 覆盖终端型 Agent，MCP 覆盖非终端型 Agent，一套核心两个入口 |
 | D10 | 返回验证信息 | P2 实现，Day 1 先上基础返回 | Day 1 就含验证字段 | 有价值但实现成本高（需要搜索质量评分、数据新鲜度追踪、邮箱有效率统计等基础设施）。先跑通核心链路，再用数据驱动优化返回质量 |
 
@@ -462,7 +491,7 @@ CreatorDB 因缺少 LICENSE 文件导致 Glama F 级、不可安装、零使用�
 | 校验项 | 01 定义 | 02 定义 | 03 实现 | 状态 |
 |--------|--------|--------|--------|:----:|
 | 客户 | 品牌广告主 | 品牌广告主 | Tool 面向品牌意图设计 | ✅ |
-| 核心场景 | 7 个（P0×3 + P1×3 + P2×1） | 8 个场景（3.1-3.8） | 7 个 Tool（Day 1 上 4 个，v1.1 加 3 个） | ✅ |
+| 核心场景 | 7 个（P0×3 + P1×3 + P2×1） | 8 个场景（3.1-3.8） | 7 个 Tool（Day 1 上 5 个，v1.1 加 2 个新 + 1 个增强） | ✅ |
 | Credit 定义 | 搜索 1 / 评估 2 / 邀约 3 / 谈判 5 | 同 01 + 竞品 5 | 完全一致（第五节） | ✅ |
 | 交付方式 | Agent 平台 Skill/MCP | Agent 对话交互 | CLI-first + MCP/SKILL/GPT Action 薄包装 | ✅ |
 | 分发渠道 | 多平台 | Agent 自动发现优先 | 语义触发词 + 全平台注册 | ✅ |
@@ -498,7 +527,7 @@ CreatorDB 因缺少 LICENSE 文件导致 Glama F 级、不可安装、零使用�
 
 ## 附录：Tool Description 原文
 
-以下 7 段描述可直接用于 MCP metadata 中的 `description` 字段。
+以下 7 段描述可直接用于 MCP metadata 中的 `description` 字段。Day 1 发布 5 个（前 5 段），v1.1 增加 2 个（后 2 段）。
 
 **discover_creators**
 > Search and discover influencers across YouTube, TikTok, and Instagram using natural language queries. Returns a ranked list of creators with follower counts, engagement rates, authenticity flags, and estimated collaboration costs. Use this tool when a brand wants to find creators for a campaign — it handles search, initial screening, and basic evaluation in a single call. Supports filtering by platform, country, follower range, niche, and minimum engagement rate.
@@ -512,8 +541,11 @@ CreatorDB 因缺少 LICENSE 文件导致 Glama F 级、不可安装、零使用�
 **negotiate**
 > Negotiate collaboration pricing with a creator within the brand's budget. First provides market pricing benchmarks and a recommended negotiation strategy; then, with brand approval, conducts automated email-based negotiation. Each round of negotiation is reported back to the brand in real-time. Use this when a creator has responded to outreach and pricing discussion begins.
 
-**manage_campaigns**
-> View and manage all active influencer campaigns, collaboration history, and creator relationships. Returns campaign status tracking (outreach → negotiation → contract → shipping → review → publish → payment), creator whitelist/blacklist, and active alerts. Use this when a brand asks about their ongoing collaborations, past partnerships, or wants to set up monitoring alerts.
+**manage_campaigns**（Day 1 只读版）
+> View active influencer campaigns, collaboration history, and creator relationships. Returns campaign status tracking (outreach → negotiation → contract → shipping → review → publish → payment) and per-creator progress. Use this when a brand asks about their ongoing collaborations or past partnerships. Day 1 is read-only; write operations (alerts, status updates) coming in v1.1.
+
+**manage_campaigns**（v1.1 增强版）
+> View and manage all active influencer campaigns, collaboration history, and creator relationships. Returns campaign status tracking (outreach → negotiation → contract → shipping → review → publish → payment), creator whitelist/blacklist, and active alerts. Supports write operations: set monitoring alerts, update collaboration status, and add notes. Use this when a brand wants to manage their ongoing collaborations or set up monitoring alerts.
 
 **competitive_intel**
 > Analyze a competitor brand's influencer marketing activity. Returns their recent creator partnerships, collaboration types, content performance, and identifies high-performing creators not under exclusive contracts who could be approached. Use this when a brand wants to understand what competitors are doing in influencer marketing or find creators to poach.
