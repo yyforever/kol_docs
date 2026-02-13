@@ -469,7 +469,7 @@ CreatorDB 因缺少 LICENSE 文件导致 Glama F 级、不可安装、零使用�
 
 | # | 决策 | 选择 | 否决选项 | 依据 |
 |---|------|------|---------|------|
-| D1 | Tool 数量 | 7 个（Day 1 上 4 个） | 31 个（CreatorDB 式 1:1 映射） | 成功产品 2-8 个；Microsoft Research: >20 性能下降 85% |
+| D1 | Tool 数量 | 7 个（Day 1 上 5 个） | 31 个（CreatorDB 式 1:1 映射） | 成功产品 2-8 个；Microsoft Research: >20 性能下降 85% |
 | D2 | 平台维度处理 | 参数层面（`platform` 参数） | Tool 层面（per-platform Tool） | 避免 CreatorDB 的 IG/YT/TT 三重复 |
 | D3 | 写操作模式 | 两阶段 human-in-the-loop | 全自动无确认 | MCP 最佳实践 + 品牌信任建设 |
 | D4 | 返回格式 | 含 summary + data + credits，不含工作流建议 | 含 suggested_actions 引导下一步 | Tool 是原子操作，编排是上层职责。Agent 应自主推理下一步，不应被 Tool 返回硬编码引导走固定路线 |
