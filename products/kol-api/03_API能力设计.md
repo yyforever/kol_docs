@@ -27,11 +27,11 @@ CreatorDB 的 31 个 Tool（11 IG + 11 YT + 9 TikTok）本质是把 REST endpoin
 
 > Microsoft Research 发现：当 Tool 数量超过 20 个，Agent 任务完成率下降最高 **85%**。原因是上下文窗口被 Tool 描述占满，推理质量急剧下降。
 
-**kol-api 设计目标：7 个 Tool 覆盖全链路。Day 1 上线 5 个（P0：4 个全链路核心 + 1 个只读 CRM），数据验证后迭代增强 + 加入 2 个新 Tool（P1/P2）。**
+**NoxInfluencer 设计目标：7 个 Tool 覆盖全链路。Day 1 上线 5 个（P0：4 个全链路核心 + 1 个只读 CRM），数据验证后迭代增强 + 加入 2 个新 Tool（P1/P2）。**
 
 ### 1.2 设计原则
 
-| # | 原则 | 证据 | 在 kol-api 的体现 |
+| # | 原则 | 证据 | 在 NoxInfluencer 的体现 |
 |---|------|------|------------------|
 | 1 | **一个用户意图 = 一个 Tool** | CreatorDB 31 tools 失败 vs Tavily 4 tools 成功 | 7 个 Tool 覆盖 02 中全部 20 个细粒度能力 |
 | 2 | **Tool description 决定被发现概率** | Anthropic 官方指南 + Arcade 54 MCP 设计模式 | 每个 Tool description ≥ 3 句话，从 Agent 视角写（见附录） |
@@ -45,7 +45,7 @@ CreatorDB 的 31 个 Tool（11 IG + 11 YT + 9 TikTok）本质是把 REST endpoin
 
 ### 1.3 本文不是什么
 
-- **不是 REST API 文档**：kol-api 底层有 REST API，但品牌不直接调用。本文设计的是 CLI 命令 + Agent Tool 接口。
+- **不是 REST API 文档**：NoxInfluencer 底层有 REST API，但品牌不直接调用。本文设计的是 CLI 命令 + Agent Tool 接口。
 - **不是按 API 调用量分层**：付费逻辑是 Credit 额度制（见 01 第七节、02 第 2.4 节），不是每月调用上限。
 
 ---
@@ -58,12 +58,12 @@ Pi（OpenClaw 底层引擎）用 4 个 Tool（read/write/edit/bash）驱动了 1
 
 > 来源：[What I learned building an opinionated and minimal coding agent](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/)、[Pi: The Minimal Agent Within OpenClaw](https://lucumr.pocoo.org/2026/1/31/pi/)
 
-**kol-api 因此采用 CLI-first 四层架构**：CLI 直接调用 Core（不经过 REST API），MCP/SKILL/GPT Action 同样直接调用 Core，都是 Core 的薄包装层。
+**NoxInfluencer 因此采用 CLI-first 四层架构**：CLI 直接调用 Core（不经过 REST API），MCP/SKILL/GPT Action 同样直接调用 Core，都是 Core 的薄包装层。
 
 ```
 ┌────────────────────────────────────────────────────────────┐
 │  Harness（验证入口）                                         │
-│  kol CLI 直接调用 Core（不经过 REST API）                     │
+│  nox CLI 直接调用 Core（不经过 REST API）                     │
 ├────────────────────────────────────────────────────────────┤
 │  Shell（协议适配 + I/O）                                     │
 │  REST API / MCP Server / SKILL.md / GPT Action              │
@@ -85,42 +85,42 @@ CLI 命令与 MCP Tool 的对应：
 
 ```bash
 # discover_creators
-kol search "US beauty TikTokers 10K-1M followers"
-kol search --platform tiktok --country US --niche beauty --followers 10000-1000000
+nox search "US beauty TikTokers 10K-1M followers"
+nox search --platform tiktok --country US --niche beauty --followers 10000-1000000
 
 # analyze_creator
-kol analyze @beautybyjess --deep
-kol analyze --url "https://tiktok.com/@beautybyjess"
+nox analyze @beautybyjess --deep
+nox analyze --url "https://tiktok.com/@beautybyjess"
 
 # outreach_creators
-kol outreach @beautybyjess @glowwithme --brief "protein powder launch" --preview
-kol outreach @beautybyjess @glowwithme --brief "protein powder launch" --send
+nox outreach @beautybyjess @glowwithme --brief "protein powder launch" --preview
+nox outreach @beautybyjess @glowwithme --brief "protein powder launch" --send
 
 # negotiate
-kol negotiate @beautybyjess --max 900 --target 800 --preview
-kol negotiate @beautybyjess --max 900 --target 800 --start
+nox negotiate @beautybyjess --max 900 --target 800 --preview
+nox negotiate @beautybyjess --max 900 --target 800 --start
 
 # manage_campaigns（只读版）
-kol campaigns
-kol campaigns --id cmp_001
-kol campaigns --creator @beautybyjess
+nox campaigns
+nox campaigns --id cmp_001
+nox campaigns --creator @beautybyjess
 ```
 
 CLI 的优势在于 Agent 可以自由组合——这在 MCP 固定参数设计中做不到：
 
 ```bash
 # 搜索后按互动率过滤，再批量邀约——Agent 自主编排
-kol search "US beauty TikTokers" --json | \
+nox search "US beauty TikTokers" --json | \
   jq '[.[] | select(.engagement_rate > 0.05)]' | \
-  kol outreach --stdin --brief "protein powder launch" --preview
+  nox outreach --stdin --brief "protein powder launch" --preview
 ```
 
 ### 2.2 MCP Server 描述
 
-Agent 发现工具的第一步是读取 Server 描述。这是 kol-api 在 Agent 生态中的"SEO"——写得好，Agent 就能自动匹配用户的达人营销意图。
+Agent 发现工具的第一步是读取 Server 描述。这是 NoxInfluencer 在 Agent 生态中的"SEO"——写得好，Agent 就能自动匹配用户的达人营销意图。
 
 ```
-name: kol-api
+name: nox-influencer
 description: >
   AI-powered influencer marketing automation for brands.
   Discover creators across YouTube, TikTok, and Instagram with
@@ -128,13 +128,13 @@ description: >
   outreach emails, negotiate pricing within budget, manage campaigns,
   and track ROI — all through natural language. Replaces 3-5 days
   of manual research with 30-second structured results.
-  Also available as CLI: npm install -g @kol-api/cli
+  Also available as CLI: npm install -g @noxinfluencer/cli
 version: 1.0.0
 ```
 
 ### 2.3 语义触发词注册
 
-Agent 匹配用户意图时依赖关键词。以下词组需要在各平台注册为 kol-api 的触发语义：
+Agent 匹配用户意图时依赖关键词。以下词组需要在各平台注册为 NoxInfluencer 的触发语义：
 
 | 语义域 | 触发词 |
 |--------|--------|
@@ -195,7 +195,7 @@ Day 1 增加 manage_campaigns 只读版的原因：02 明确 CRM 是"留存驱�
 
 | 参数 | 必填 | 类型 | 说明 |
 |------|:----:|------|------|
-| `creator_id` | ✅* | string | kol-api 内部 ID（从 discover 返回） |
+| `creator_id` | ✅* | string | NoxInfluencer 内部 ID（从 discover 返回） |
 | `creator_url` | ✅* | string | 达人主页 URL（二选一） |
 
 *`creator_id` 或 `creator_url` 至少提供一个。
@@ -353,7 +353,7 @@ Agent 可直接将 `summary` 呈现给用户，无需再做二次处理。写法
   "error": {
     "code": "insufficient_credits",
     "message": "本次操作需要 5 credits，当前余额 3 credits。升级到 Starter（$29/月）获得 2,000 credits。",
-    "upgrade_url": "https://kol-api.com/pricing"
+    "upgrade_url": "https://noxinfluencer.com/pricing"
   }
 }
 ```
@@ -365,7 +365,7 @@ Agent 可直接将 `summary` 呈现给用户，无需再做二次处理。写法
 | 错误类型 | 错误信息示例 | 设计原则 |
 |---------|------------|---------|
 | 参数缺失 | "请提供达人 ID 或 URL，我才能分析" | 告诉 Agent 缺什么 |
-| 余额不足 | "需要 5 credits，余额 3。品牌可在 kol-api.com 升级" | 给出行动路径 |
+| 余额不足 | "需要 5 credits，余额 3。品牌可在 noxinfluencer.com 升级" | 给出行动路径 |
 | 达人未找到 | "未找到该达人。试试用 discover_creators 搜索？" | 建议替代操作 |
 | 平台不支持 | "暂不支持 Facebook 搜索，支持 YouTube/TikTok/Instagram" | 明确能力边界 |
 
@@ -373,7 +373,7 @@ Agent 可直接将 `summary` 呈现给用户，无需再做二次处理。写法
 
 > 优先级 P2，Day 1 不实现。设计原则先确立，实现节奏由数据驱动。
 
-Coding Agent 的核心循环是：写代码 → 跑测试 → 看输出 → 修正 → 再跑。Agent 通过终端输出来验证自己的工作质量，不需要人类介入就能迭代到正确结果。kol-api 同理——如果返回中包含足够的质量指标，Agent 可以自主判断"结果好不好，要不要换个策略重来"。
+Coding Agent 的核心循环是：写代码 → 跑测试 → 看输出 → 修正 → 再跑。Agent 通过终端输出来验证自己的工作质量，不需要人类介入就能迭代到正确结果。NoxInfluencer 同理——如果返回中包含足够的质量指标，Agent 可以自主判断"结果好不好，要不要换个策略重来"。
 
 | Tool | 当前返回 | P2 增加的验证信息 |
 |------|---------|-----------------|
@@ -433,7 +433,7 @@ Coding Agent 的核心循环是：写代码 → 跑测试 → 看输出 → 修�
 
 CreatorDB 因缺少 LICENSE 文件导致 Glama F 级、不可安装、零使用——这是最容易避免的失败。
 
-| 条件 | 要求 | CreatorDB 现状 | kol-api 目标 |
+| 条件 | 要求 | CreatorDB 现状 | NoxInfluencer 目标 |
 |------|------|:-------------:|:-----------:|
 | LICENSE 文件 | MIT / Apache 2.0 | ❌ 缺失 | ✅ MIT |
 | 完整 metadata | name + description + version | 部分缺失 | ✅ 完整 |
@@ -454,7 +454,7 @@ CreatorDB 因缺少 LICENSE 文件导致 Glama F 级、不可安装、零使用�
 
 ### 6.3 避免 CreatorDB 式合规失败
 
-| 失败模式 | CreatorDB 教训 | kol-api 对策 |
+| 失败模式 | CreatorDB 教训 | NoxInfluencer 对策 |
 |---------|---------------|-------------|
 | 无 LICENSE | F 级不可安装 | Day 1 添加 MIT LICENSE |
 | Tool 过多 | 31 个 Tool，Agent 性能下降 85% | Day 1 仅 5 个 Tool，全量 7 个，意图级抽象 |

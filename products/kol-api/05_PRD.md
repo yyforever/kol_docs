@@ -11,7 +11,7 @@
 
 ### 1.1 一句话定位
 
-**kol-api 是 AI 驱动的达人营销全链路自动化——让 Agent 替品牌完成从找人到谈判到管理的完整流程。**
+**NoxInfluencer 是 AI 驱动的达人营销全链路自动化——让 Agent 替品牌完成从找人到谈判到管理的完整流程。**
 
 不是"达人数据开发者 API"，是 **AI Agent 达人营销自动化平台**。
 
@@ -62,7 +62,7 @@ Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈�
 
 #### 2.1.1 `discover_creators` — "帮我找达人"
 
-**Credit**：1 credit/次 | **HTTP**：`POST /v1/tools/discover_creators` | **CLI**：`kol search`
+**Credit**：1 credit/次 | **HTTP**：`POST /v1/tools/discover_creators` | **CLI**：`nox search`
 
 **输入 Schema**
 
@@ -201,7 +201,7 @@ Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈�
 
 #### 2.1.2 `analyze_creator` — "这个达人靠谱吗"
 
-**Credit**：2 credits/次 | **HTTP**：`POST /v1/tools/analyze_creator` | **CLI**：`kol analyze`
+**Credit**：2 credits/次 | **HTTP**：`POST /v1/tools/analyze_creator` | **CLI**：`nox analyze`
 
 **输入 Schema**
 
@@ -216,7 +216,7 @@ Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈�
   "properties": {
     "creator_id": {
       "type": "string",
-      "description": "kol-api 内部 ID（从 discover_creators 返回）"
+      "description": "NoxInfluencer 内部 ID（从 discover_creators 返回）"
     },
     "creator_url": {
       "type": "string",
@@ -334,7 +334,7 @@ Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈�
 
 #### 2.1.3 `outreach_creators` — "帮我联系这些达人"
 
-**Credit**：3 credits/人 | **HTTP**：`POST /v1/tools/outreach_creators` | **CLI**：`kol outreach`
+**Credit**：3 credits/人 | **HTTP**：`POST /v1/tools/outreach_creators` | **CLI**：`nox outreach`
 
 **输入 Schema**
 
@@ -473,7 +473,7 @@ Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈�
 
 #### 2.1.4 `negotiate` — "帮我谈价"
 
-**Credit**：5 credits/次 | **HTTP**：`POST /v1/tools/negotiate` | **CLI**：`kol negotiate`
+**Credit**：5 credits/次 | **HTTP**：`POST /v1/tools/negotiate` | **CLI**：`nox negotiate`
 
 **输入 Schema**
 
@@ -637,7 +637,7 @@ Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈�
 
 #### 2.1.5 `manage_campaigns`（只读版）— "我的合作情况"
 
-**Credit**：1 credit/次 | **HTTP**：`POST /v1/tools/manage_campaigns` | **CLI**：`kol campaigns`
+**Credit**：1 credit/次 | **HTTP**：`POST /v1/tools/manage_campaigns` | **CLI**：`nox campaigns`
 
 > Day 1 仅支持只读查询（品牌历史合作达人列表 + 合作阶段状态）。写操作（`set_alert` / `update_status`）留到 v1.1 增强版。
 
@@ -734,7 +734,7 @@ Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈�
 #### 2.2.1 自助注册 + API Key 发放
 
 ```
-品牌访问 kol-api.com/signup
+品牌访问 noxinfluencer.com/signup
         ↓
 邮箱 + 密码注册（30 秒，无 Sales Call）
         ↓
@@ -902,12 +902,12 @@ Day 1 上线前完成服务条款，明确禁止：
 | 平台 | 格式 | 要求 | Day 1 动作 |
 |------|------|------|----------|
 | **Glama** | MCP Server | 三 A 评分 | MIT LICENSE + 完整 metadata + npm release + 完整 README |
-| **ClawHub** | SKILL.md | Skill 标准格式 | 提交 SKILL.md，确保 `kol` 命令可被 OpenClaw 调用 |
+| **ClawHub** | SKILL.md | Skill 标准格式 | 提交 SKILL.md，确保 `nox` 命令可被 OpenClaw 调用 |
 | **ChatGPT App Store** | GPT Action | OpenAPI spec + Action 配置 | 提交 GPT Action，基于 REST API 层 |
 
 **Glama 三 A 评分要求**（避免 CreatorDB 式 F 级失败）：
 
-| 条件 | 要求 | kol-api 目标 |
+| 条件 | 要求 | NoxInfluencer 目标 |
 |------|------|:-----------:|
 | LICENSE 文件 | MIT / Apache 2.0 | ✅ MIT |
 | 完整 metadata | name + description + version | ✅ 完整 |
@@ -917,7 +917,7 @@ Day 1 上线前完成服务条款，明确禁止：
 **ClawHub SKILL.md 核心结构**：
 
 ```yaml
-name: kol-api
+name: nox-influencer
 description: AI-powered influencer marketing automation for brands
 commands:
   - name: search
@@ -941,25 +941,25 @@ auth:
 
 ```bash
 # discover_creators
-kol search "US beauty TikTokers 10K-1M followers"
-kol search --platform tiktok --country US --niche beauty --followers 10000-1000000
+nox search "US beauty TikTokers 10K-1M followers"
+nox search --platform tiktok --country US --niche beauty --followers 10000-1000000
 
 # analyze_creator
-kol analyze @beautybyjess --deep
-kol analyze --url "https://tiktok.com/@beautybyjess"
+nox analyze @beautybyjess --deep
+nox analyze --url "https://tiktok.com/@beautybyjess"
 
 # outreach_creators
-kol outreach @beautybyjess @glowwithme --brief "protein powder launch" --preview
-kol outreach @beautybyjess @glowwithme --brief "protein powder launch" --send
+nox outreach @beautybyjess @glowwithme --brief "protein powder launch" --preview
+nox outreach @beautybyjess @glowwithme --brief "protein powder launch" --send
 
 # negotiate
-kol negotiate @beautybyjess --max 900 --target 800 --preview
-kol negotiate @beautybyjess --max 900 --target 800 --start
+nox negotiate @beautybyjess --max 900 --target 800 --preview
+nox negotiate @beautybyjess --max 900 --target 800 --start
 
 # manage_campaigns
-kol campaigns
-kol campaigns --id cmp_001
-kol campaigns --creator @beautybyjess
+nox campaigns
+nox campaigns --id cmp_001
+nox campaigns --creator @beautybyjess
 ```
 
 **错误处理**：exit code 标准
@@ -983,11 +983,11 @@ kol campaigns --creator @beautybyjess
 ```yaml
 openapi: 3.1.0
 info:
-  title: kol-api
+  title: NoxInfluencer
   version: 1.0.0
   description: AI-powered influencer marketing automation for brands
 servers:
-  - url: https://api.kol-api.com/v1
+  - url: https://api.noxinfluencer.com/v1
 paths:
   /tools/discover_creators:
     post:
@@ -1063,7 +1063,7 @@ Day 1 不实现 Resource 的原因：Resource 协议语义是"免费可读数据
 ```
 ┌────────────────────────────────────────────────────────────┐
 │  Harness（验证入口）                                         │
-│  kol CLI 直接调用 Core（不经过 REST API）                     │
+│  nox CLI 直接调用 Core（不经过 REST API）                     │
 │  回归脚本 + 冒烟 runner + --json 输出 + 明确 exit code       │
 ├────────────────────────────────────────────────────────────┤
 │  Shell（协议适配 + I/O）                                     │
@@ -1086,7 +1086,7 @@ Day 1 不实现 Resource 的原因：Resource 协议语义是"免费可读数据
 
 | 层 | 职责 | 技术选型建议 |
 |----|------|------------|
-| **Harness** | `kol` CLI 命令，直接调用 Core，验证入口 + 回归测试 | Node.js（commander/oclif）或 Go *待技术评审确认* |
+| **Harness** | `nox` CLI 命令，直接调用 Core，验证入口 + 回归测试 | Node.js（commander/oclif）或 Go *待技术评审确认* |
 | **Shell** | REST API + MCP Server + SKILL.md + GPT Action，都是 Core 的薄包装，仅做协议转换 + 认证 + 限流 + 数据分级门控 | REST: Fastify/Hono *待技术评审确认*；MCP: `@modelcontextprotocol/sdk`；SKILL: CLI 映射；GPT Action: OpenAPI spec |
 | **Core** | 纯业务逻辑：搜索解析、假粉检测、邮件生成、谈判策略、Credit 扣减。无 I/O 依赖，100% 可单测 | TypeScript 纯函数 + 状态机 |
 | **Services** | 外部依赖适配层：聚星数据 API、OpenAI、Resend、Stripe、DB。接口定义在 Core，实现在 Services，通过 DI 注入 | 各 SDK + adapter pattern |
@@ -1095,9 +1095,9 @@ Day 1 不实现 Resource 的原因：Resource 协议语义是"免费可读数据
 
 > 来源：Peter Steinberger 5 个生产级 MCP Server 构建经验（[MCP Best Practices](https://steipete.me/posts/2025/mcp-best-practices)）
 
-kol-api 的 MCP Server 是 Core 的薄包装（< 200 行目标），仅做协议转换。以下规范确保 MCP Server 达到 Glama 三 A 评分并在生产环境稳定运行。
+NoxInfluencer 的 MCP Server 是 Core 的薄包装（< 200 行目标），仅做协议转换。以下规范确保 MCP Server 达到 Glama 三 A 评分并在生产环境稳定运行。
 
-> Peter Steinberger 主张"CLI > MCP"——CLI 更可组合、可观测、可验证。kol-api 选择同时支持两者：CLI 面向终端型 Agent（Claude Code / OpenClaw），MCP Server 面向非终端型 Agent（Claude Desktop / Cursor / Glama）。两者共享同一份 Core 代码。
+> Peter Steinberger 主张"CLI > MCP"——CLI 更可组合、可观测、可验证。NoxInfluencer 选择同时支持两者：CLI 面向终端型 Agent（Claude Code / OpenClaw），MCP Server 面向非终端型 Agent（Claude Desktop / Cursor / Glama）。两者共享同一份 Core 代码。
 
 **MCP Server 职责边界**（仅做协议转换）：
 
@@ -1132,7 +1132,7 @@ kol-api 的 MCP Server 是 Core 的薄包装（< 200 行目标），仅做协议
 | 规范 | 要求 |
 |------|------|
 | 日志库 | Pino（文件日志，不走 stdio） |
-| 日志路径 | `~/Library/Logs/kol-api/` (macOS) / `~/.local/share/kol-api/logs/` (Linux) |
+| 日志路径 | `~/Library/Logs/nox-influencer/` (macOS) / `~/.local/share/nox-influencer/logs/` (Linux) |
 | 日志级别 | 通过 `KOL_LOG_LEVEL` 环境变量配置，默认 `info` |
 | 缺失目录 | 自动创建 |
 | 进程退出 | flush logger 后再退出，确保最后的日志不丢 |
@@ -1163,34 +1163,34 @@ kol-api 的 MCP Server 是 Core 的薄包装（< 200 行目标），仅做协议
 
 ```bash
 # discover_creators
-kol search "US beauty TikTokers 10K-1M followers"
-kol search --platform tiktok --country US --niche beauty --followers 10000-1000000
+nox search "US beauty TikTokers 10K-1M followers"
+nox search --platform tiktok --country US --niche beauty --followers 10000-1000000
 
 # analyze_creator
-kol analyze @beautybyjess --deep
-kol analyze --url "https://tiktok.com/@beautybyjess"
+nox analyze @beautybyjess --deep
+nox analyze --url "https://tiktok.com/@beautybyjess"
 
 # outreach_creators
-kol outreach @beautybyjess @glowwithme --brief "protein powder launch" --preview
-kol outreach @beautybyjess @glowwithme --brief "protein powder launch" --send
+nox outreach @beautybyjess @glowwithme --brief "protein powder launch" --preview
+nox outreach @beautybyjess @glowwithme --brief "protein powder launch" --send
 
 # negotiate
-kol negotiate @beautybyjess --max 900 --target 800 --preview
-kol negotiate @beautybyjess --max 900 --target 800 --start
+nox negotiate @beautybyjess --max 900 --target 800 --preview
+nox negotiate @beautybyjess --max 900 --target 800 --start
 
 # manage_campaigns（只读版）
-kol campaigns
-kol campaigns --id cmp_001
-kol campaigns --creator @beautybyjess
+nox campaigns
+nox campaigns --id cmp_001
+nox campaigns --creator @beautybyjess
 ```
 
 **CLI 可组合性**（Agent 编排优势）：
 
 ```bash
 # 搜索后按互动率过滤，再批量邀约
-kol search "US beauty TikTokers" --json | \
+nox search "US beauty TikTokers" --json | \
   jq '[.[] | select(.engagement_rate > 0.05)]' | \
-  kol outreach --stdin --brief "protein powder launch" --preview
+  nox outreach --stdin --brief "protein powder launch" --preview
 ```
 
 ### 3.2 数据层
@@ -1277,7 +1277,7 @@ kol search "US beauty TikTokers" --json | \
 
 > 来源：Peter Steinberger 闭环工程实践（[Shipping at Inference-Speed](https://steipete.me/posts/2025/shipping-at-inference-speed)）、项目 `engineering/01_AI_Coding测试设计最佳实践.md`
 
-kol-api 有两个层面的验证闭环：**工程团队验证系统本身**，以及 **Agent 消费者验证返回结果**。
+NoxInfluencer 有两个层面的验证闭环：**工程团队验证系统本身**，以及 **Agent 消费者验证返回结果**。
 
 #### 3.5.1 内部可测性：Core / Shell / Harness 架构
 
@@ -1286,7 +1286,7 @@ Peter 的核心主张：**"whatever I wanna build, it starts as CLI… closing t
 ```
 ┌─────────────────────────────────────────────────────┐
 │  Harness（验证入口）                                  │
-│  kol CLI + 回归脚本 + 冒烟 runner                     │
+│  nox CLI + 回归脚本 + 冒烟 runner                     │
 │  直接调用 Core，--json 输出 + 明确 exit code          │
 ├─────────────────────────────────────────────────────┤
 │  Shell（协议适配 + I/O）                              │
@@ -1303,11 +1303,11 @@ Peter 的核心主张：**"whatever I wanna build, it starts as CLI… closing t
 └─────────────────────────────────────────────────────┘
 ```
 
-**映射到 kol-api**：
+**映射到 NoxInfluencer**：
 
 | 层 | 包含什么 | 可测性特征 |
 |----|---------|----------|
-| **Harness** | `kol` CLI 命令、`kol test-search` 回归脚本、`kol smoke` 冒烟测试 | 直接调用 Core，绕过 Shell，**缩短反馈回路** |
+| **Harness** | `nox` CLI 命令、`nox test-search` 回归脚本、`nox smoke` 冒烟测试 | 直接调用 Core，绕过 Shell，**缩短反馈回路** |
 | **Shell** | REST API 路由、MCP Server 协议适配（< 200 行）、Stripe webhook 处理、认证中间件、数据分级门控 | 薄 I/O 层，mock Services 后可集成测试 |
 | **Core** | 自然语言→结构化查询解析、Creator 数据标准化、Credit 扣减逻辑、谈判策略状态机、邮件模板渲染、参数解析（宽进严出） | 纯函数 / 纯状态机，无外部依赖，**100% 可单测** |
 | **Services** | 聚星数据 API adapter、OpenAI adapter、Resend adapter、Stripe adapter、DB adapter | 接口定义在 Core，测试时替换为 mock 实现 |
@@ -1347,14 +1347,14 @@ LLM 输出不确定，传统断言失效。对策：
 
 ```bash
 # 单次验证（开发时用）
-kol test-search "US beauty TikTokers" --assert-min-results 5 --assert-latency-ms 3000
-kol test-analyze crt_abc123 --assert-has-authenticity --assert-has-audience
-kol test-outreach crt_abc123 --brief "test" --assert-preview-has-email
-kol test-negotiate crt_abc123 --max 1000 --assert-strategy-has-benchmark
-kol test-campaigns --assert-has-campaigns
+nox test-search "US beauty TikTokers" --assert-min-results 5 --assert-latency-ms 3000
+nox test-analyze crt_abc123 --assert-has-authenticity --assert-has-audience
+nox test-outreach crt_abc123 --brief "test" --assert-preview-has-email
+nox test-negotiate crt_abc123 --max 1000 --assert-strategy-has-benchmark
+nox test-campaigns --assert-has-campaigns
 
 # 回归套件（CI L3 用）
-kol smoke --all --json > smoke-results.json  # exit code 0 = 全绿
+nox smoke --all --json > smoke-results.json  # exit code 0 = 全绿
 ```
 
 设计原则（来自 Peter）：
@@ -1370,7 +1370,7 @@ kol smoke --all --json > smoke-results.json  # exit code 0 = 全绿
 
 > 继承 03 第 4.5 节设计。Day 1 不实现，原则先确立。
 
-Coding Agent 的核心循环是：写代码 → 跑测试 → 看输出 → 修正 → 再跑。kol-api 同理——如果返回中包含足够的质量指标，Agent 可以自主判断"结果好不好，要不要换个策略重来"。
+Coding Agent 的核心循环是：写代码 → 跑测试 → 看输出 → 修正 → 再跑。NoxInfluencer 同理——如果返回中包含足够的质量指标，Agent 可以自主判断"结果好不好，要不要换个策略重来"。
 
 这是**用数据闭环替代硬编码的 suggested_actions**——不是告诉 Agent 该做什么，而是给它足够的信息让它自己判断。
 
@@ -1400,7 +1400,7 @@ Coding Agent 的核心循环是：写代码 → 跑测试 → 看输出 → 修�
 | 3 | **5 分钟 Quick Start** | 从注册到第一次成功搜索 < 5 分钟的教程 |
 | 4 | **结构化错误响应** | 统一格式 `{success, error: {code, message, upgrade_url}}`，面向 Agent 推理 |
 | 5 | **Rate Limit 响应头** | 每次返回 `X-RateLimit-Limit/Remaining/Reset` + `Retry-After` |
-| 6 | **CLI 工具发布** | `npm install -g @kol-api/cli`，覆盖全部 5 个 Day 1 Tool |
+| 6 | **CLI 工具发布** | `npm install -g @noxinfluencer/cli`，覆盖全部 5 个 Day 1 Tool |
 | 7 | **MCP Server 发布** | npm 发布 + Glama/mcp.so 上架 |
 | 8 | **Changelog** | 每次 API 变更都有公开记录，semver 版本管理 |
 
@@ -1410,7 +1410,7 @@ Coding Agent 的核心循环是：写代码 → 跑测试 → 看输出 → 修�
 |---|------|
 | 1 | 交互式 API Explorer（文档内嵌 Try It） |
 | 2 | Postman Collection（一键导入） |
-| 3 | Python SDK（`pip install kol-api`） |
+| 3 | Python SDK（`pip install noxinfluencer`） |
 | 4 | curl/Python/Node 示例代码（每个 Tool） |
 | 5 | Health Check 端点（`GET /health`，公开可访问） |
 | 6 | 用量 Dashboard（开发者 portal 实时用量和账单） |
@@ -1419,12 +1419,12 @@ Coding Agent 的核心循环是：写代码 → 跑测试 → 看输出 → 修�
 
 | # | 要求 |
 |---|------|
-| 1 | Node.js SDK（`npm install kol-api`） |
+| 1 | Node.js SDK（`npm install noxinfluencer`） |
 | 2 | 开发者 Discord 社区 |
 | 3 | GitHub 开源 SDK |
 | 4 | TypeScript 类型定义 |
 
-> DX 差异化机会（来源：`_research/influencer-api-dx-comparison.md`）：全行业无官方 SDK、全行业需 Sales Call、全行业无 CLI、全行业无开发者社区。kol-api 每一项都是差异化。
+> DX 差异化机会（来源：`_research/influencer-api-dx-comparison.md`）：全行业无官方 SDK、全行业需 Sales Call、全行业无 CLI、全行业无开发者社区。NoxInfluencer 每一项都是差异化。
 
 ---
 
@@ -1490,7 +1490,7 @@ Phase 1（W1-W8）—— 基础设施 + 核心能力
 Phase 2（W9-W14）—— 邀约 + 谈判 + CLI
 ├── W9-10   outreach_creators（邮件生成 + 发送 + 追踪 + follow-up）
 ├── W11-12  negotiate（策略生成 + 自动谈判 + 邮件往返）
-├── W13-14  CLI 工具（kol 命令，覆盖 5 个 Day 1 Tool）+ 协议适配层（MCP/SKILL/GPT Action）
+├── W13-14  CLI 工具（nox 命令，覆盖 5 个 Day 1 Tool）+ 协议适配层（MCP/SKILL/GPT Action）
 
 Phase 3（W15-W20）—— 包装 + 分发 + Beta + 上线
 ├── W15    OpenAPI spec + Quick Start 文档 + 注册页
@@ -1533,7 +1533,7 @@ Phase 3（W15-W20）—— 包装 + 分发 + Beta + 上线
 
 | # | 问题 | 选项 | 初步建议 | 阻塞 |
 |---|------|------|---------|------|
-| Q1 | 产品品牌名 | kol-api / 新名称 | 需 brainstorm（NoxInfluencer 不适合面向海外品牌） | 域名、npm 包名、文档 |
+| Q1 | 产品品牌名 | NoxInfluencer | ✅ 已决策：沿用 NoxInfluencer（海外 SEO 资产 + 品牌一致性） | ✅ 已决策 |
 | Q2 | 注册实体 | A:聚星现有 B:新加坡新公司 | B（海外信任 + 合规） | Stripe 接入、法务 |
 | Q3 | v1 假粉检测方案 | A: 聚星内部能力适配 B: 集成第三方增强 | A（聚星已有三平台假粉检测，行业 top，仅需适配统一接口） | M1 适配 |
 | Q4 | 首发平台 | A:OpenClaw B:Claude C:ChatGPT D:同时 | D（同一 API 三个接入层，同时发布） | M4 上架 |
@@ -1585,7 +1585,7 @@ Phase 3（W15-W20）—— 包装 + 分发 + Beta + 上线
 ```typescript
 interface Creator {
   // 标识
-  creator_id: string           // kol-api 内部 ID（格式：crt_xxx）
+  creator_id: string           // NoxInfluencer 内部 ID（格式：crt_xxx）
   platform: "youtube" | "tiktok" | "instagram"
   handle: string               // 平台用户名（含 @）
   display_name: string         // 显示名称
@@ -1663,7 +1663,7 @@ interface Creator {
   "error": {
     "code": "error_code",
     "message": "面向 Agent 的可行动错误信息",
-    "upgrade_url": "https://kol-api.com/pricing"
+    "upgrade_url": "https://noxinfluencer.com/pricing"
   }
 }
 ```
