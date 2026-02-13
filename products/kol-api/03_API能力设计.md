@@ -67,10 +67,10 @@ Pi（OpenClaw 底层引擎）用 4 个 Tool（read/write/edit/bash）驱动了 1
 ├────────────────────────────────────────────────────────────┤
 │  Shell（协议适配 + I/O）                                     │
 │  REST API / MCP Server / SKILL.md / GPT Action              │
-│  都直接调用 Core，仅做协议转换 + 认证 + 限流                   │
+│  都直接调用 Core，仅做协议转换 + 认证 + 限流 + 数据分级门控      │
 ├────────────────────────────────────────────────────────────┤
 │  Core（纯业务逻辑）                                          │
-│  搜索解析、假粉检测、邮件生成、谈判策略...                      │
+│  搜索解析、假粉检测、邮件生成、谈判策略、Credit 扣减...          │
 │  无 I/O 依赖，通过 DI 接收 Services                          │
 ├────────────────────────────────────────────────────────────┤
 │  Services（外部依赖适配）                                     │
@@ -183,7 +183,7 @@ Day 1 增加 manage_campaigns 只读版的原因：02 明确 CRM 是"留存驱�
 | `count` | | int | 10 | 返回数量（上限 50） |
 | `include_audience` | | bool | false | 是否含受众概要 |
 
-**返回**：排序的达人清单，每人含基础画像 + 真假粉标记 + 互动率 + 预估合作费。
+**返回**：排序的达人清单，每人含基础画像 + 真假粉标记 + 互动率 + 预估合作费。数据深度按层级门控（Free 仅粗粒度真实性 + 基础指标，Starter+ 含联系方式和精确评分，详见 04 L4 数据分级返回 和 05 附录 D）。
 
 **关键设计**：一次调用完成搜索+初筛+基础评估。品牌不需要先搜索、再逐个查详情、再逐个查假粉——这些全在一次 Tool 调用中完成。
 
@@ -222,12 +222,12 @@ Day 1 增加 manage_campaigns 只读版的原因：02 明确 CRM 是"留存驱�
 
 **两阶段执行**（human-in-the-loop）：
 
-1. **预览阶段**（`confirm: false`）：返回每位达人的邮件预览 + 联系方式可达性 + 预估响应率。品牌审核内容。
-2. **发送阶段**（`confirm: true`）：品牌确认后发送，返回发送状态 + 后续追踪 ID。3 天无回复自动发 follow-up。
+1. **预览阶段**（`confirm: false`）：返回每位达人的邮件预览 + 联系方式可达性 + 预估响应率。品牌审核内容。**所有层级可用（含 Free），不扣 credit。**
+2. **发送阶段**（`confirm: true`）：品牌确认后发送，返回发送状态 + 后续追踪 ID。3 天无回复自动发 follow-up。**Starter+ 可用，Free 返回 403 upgrade_required。**
 
 ### 3.4 `negotiate` — "帮我谈价"
 
-**优先级**：P0 | **Credit**：5 credits/次
+**优先级**：P0 | **Credit**：5 credits/轮
 
 **合并 02 能力**：`get_pricing_benchmark` + `negotiate` + `get_negotiation_history`
 
@@ -242,8 +242,8 @@ Day 1 增加 manage_campaigns 只读版的原因：02 明确 CRM 是"留存驱�
 
 **两阶段执行**（human-in-the-loop）：
 
-1. **策略阶段**（`confirm: false`）：返回市场定价基准 + 该达人历史报价 + 建议谈判策略 + 预估成交价区间。
-2. **执行阶段**（`confirm: true`）：在预算范围内自动与达人邮件往返。每轮进展同步给品牌，达成一致后发合作确认邮件（需品牌最终审核）。
+1. **策略阶段**（`confirm: false`）：返回市场定价基准 + 该达人历史报价 + 建议谈判策略 + 预估成交价区间。**所有层级可用，不扣 credit。**
+2. **执行阶段**（`confirm: true`）：在预算范围内自动与达人邮件往返。每轮进展同步给品牌，达成一致后发合作确认邮件（需品牌最终审核）。**所有层级可用，每轮扣 5 credits——Credit 配额是唯一限制。**
 
 ### 3.5 `manage_campaigns`（只读版）— "我的合作情况"
 
@@ -399,7 +399,7 @@ Coding Agent 的核心循环是：写代码 → 跑测试 → 看输出 → 修�
 | `discover_creators` | 1 | 达人搜索 | 含基础画像+真假粉标记 |
 | `analyze_creator` | 2 | 达人详情+受众 | 深度分析单个达人 |
 | `outreach_creators` | 3/人 | 邮件邀约 | 含联系方式查询+邮件发送+追踪 |
-| `negotiate` | 5/次 | AI 谈判（每轮） | 含市场基准+自动邮件往返 |
+| `negotiate` | 5/轮 | AI 谈判（每轮） | 含市场基准+自动邮件往返 |
 | `manage_campaigns` | 1 | — | 低价策略：高频 CRM 查询提高留存，驱动付费的邀约+谈判操作 |
 | `competitive_intel` | 5 | 竞品对标 | 品牌合作历史分析 |
 | `track_performance` | 2 | — | 与 analyze_creator 同级 |
@@ -411,7 +411,7 @@ Coding Agent 的核心循环是：写代码 → 跑测试 → 看输出 → 修�
 | 搜索 1 | 达人搜索 1 credit | discover_creators 1 | ✅ |
 | 评估 2 | 达人详情+受众 2 credits | analyze_creator 2 | ✅ |
 | 邀约 3 | 邮件邀约 3 credits | outreach_creators 3/人 | ✅ |
-| 谈判 5 | AI 谈判（每轮）5 credits | negotiate 5/次 | ✅ |
+| 谈判 5 | AI 谈判（每轮）5 credits | negotiate 5/轮 | ✅ |
 | — | 竞品对标 5 credits | competitive_intel 5 | ✅ |
 
 ### 5.3 典型使用场景的 Credit 消耗
