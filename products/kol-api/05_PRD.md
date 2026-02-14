@@ -1771,7 +1771,7 @@ docs.noxinfluencer.com
 │  所有 I/O 通过 DI 接口隔离，100% 可单测                      │
 ├────────────────────────────────────────────────────────────┤
 │  Services（外部依赖适配）                                     │
-│  聚星数据 API / OpenAI / 聚星邮件 / Stripe / DB              │
+│  聚星 Service 层 / OpenAI / 聚星邮件 / Stripe / DB              │
 │  接口定义在 Core 层，实现在 Services 层                       │
 └────────────────────────────────────────────────────────────┘
 ```
@@ -1785,7 +1785,7 @@ docs.noxinfluencer.com
 | **Harness** | `nox` CLI 命令，直接调用 Core，验证入口 + 回归测试 | Node.js（commander/oclif）或 Go （技术团队决策） |
 | **Shell** | REST API + MCP Server + SKILL.md + GPT Action，都是 Core 的薄包装，仅做协议转换 + 认证 + 限流 + 数据分级门控 | REST: Fastify/Hono （技术团队决策）；MCP: `@modelcontextprotocol/sdk`；SKILL: CLI 映射；GPT Action: OpenAPI spec |
 | **Core** | 业务逻辑 + 状态机：搜索解析、假粉检测、邮件内容编排、谈判策略、Credit 扣减逻辑。所有 I/O 通过 DI 接口隔离，100% 可单测 | TypeScript 业务逻辑 + 状态机 |
-| **Services** | 外部依赖适配层：聚星数据 API、LLM 推理（OpenAI/Anthropic）、聚星邮件基础设施、Stripe、DB。接口定义在 Core，实现在 Services，通过 DI 注入 | 各 SDK + adapter pattern |
+| **Services** | 外部依赖适配层：聚星 Service 层（通过 KOLServer 薄 Controller 访问）、LLM 推理（OpenAI/Anthropic）、聚星邮件基础设施、Stripe、DB。接口定义在 Core，实现在 Services，通过 DI 注入 | 各 SDK + adapter pattern |
 
 #### 3.1.1 MCP Server 工程规范
 
@@ -1920,30 +1920,53 @@ nox search "US beauty TikTokers" --json | \
 | **邮件邀约基础设施** | 聚星已有完整邮件基础设施 | Day 1 复用 | 封装聚星邮件 Services 层接口（详见 3.6 节） |
 | **AI 谈判引擎** | 无 | Day 1 必须 | 多轮 LLM 推理 + 邮件往返自动化 |
 
-#### 需要适配的能力（聚星已有，需统一接口）
+#### 聚星数据接入方案
 
-> TODO：需探索聚星 KOLServer 源码，确认各 API 的接口规范、调用方式和性能特征（与邮件基础设施 3.6 节同方式）。
+> 设计原则：**不调用聚星现有 REST API**。聚星现有 API 是为 Web 仪表盘设计的（Tab 式端点拆分、十几个筛选参数、两套 Campaign 系统），不适合 Agent 消费。
+>
+> 正确做法：**在 KOLServer 中新建薄 Controller，直接复用聚星 Service 层代码**（搜索引擎、假粉算法、受众计算、ES 查询），只暴露 NoxInfluencer 需要的最小数据集。聚星代码改动最小（加几个 Controller，调现有 Service），API 契约由我们定义。
 
-| 能力 | 聚星现状 | 适配工作 |
-|------|---------|---------|
-| **搜索 API** | 标签搜索，6 平台覆盖 | 适配统一搜索接口，接收 Core 层 NLP 解析后的结构化查询 |
-| **假粉检测** | 三平台已有，行业 top | 适配统一 `authenticity` 接口（score 0-100 + fake_follower_pct + suspicious_signals） |
-| **受众画像** | YT/TikTok/IG 三平台已有 | 适配统一 `audience` 模型（countries + age_ranges + gender + interests） |
-| **频道/视频数据** | 6 平台全覆盖 | 适配统一 `Creator` 对象的 content_stats 字段 |
-| **品牌合作数据** | 主要 YT | 适配 `competitive_intel` Tool（v1.1）的数据源 |
+**从 Tool 需求反推数据接口**：
+
+NoxInfluencer 的 Services 层只需要 4 个聚星数据接口，每个对应一个 Tool 的数据需求：
+
+| Services 接口 | 服务的 Tool | 聚星复用的能力 | 说明 |
+|--------------|-----------|--------------|------|
+| `CreatorSearchService` | discover_creators | ES 搜索引擎 + 6 平台数据 | Core 层 NLP 输出结构化查询 → 调此接口 → 返回达人列表 |
+| `CreatorAnalysisService` | analyze_creator | 假粉检测 + 受众画像 + 频道数据 + 预估报价 | 聚星三平台假粉+受众一次调用返回，合并频道基础数据和定价 |
+| `CreatorContactService` | outreach_creators | 邮箱提取 + 联系方式发现 | 返回达人邮箱（聚星已有提取机制） |
+| `PricingBenchmarkService` | negotiate | 历史合作价格 + 赞助内容检测 | 同量级同品类达人的成交价分布，支撑谈判开价策略 |
+
+**`manage_campaigns` 不依赖聚星**——它的数据来源是 NoxInfluencer 自身的 outreach/negotiate 过程产生的记录，存储在 NoxInfluencer 自己的数据库中。
+
+**聚星侧实现方式**（在 KOLServer 中）：
+
+```
+NoxInfluencer (TypeScript)                    KOLServer (Java)
+┌──────────────┐    HTTP/Secret     ┌────────────────────────────────┐
+│  Services 层  │ ──────────────→  │  新 NoxApiController（薄接口）   │
+│  adapter      │                   │  ↓ 直接调用                     │
+└──────────────┘                   │  现有 SearchService             │
+                                   │  现有 StarDetailService          │
+                                   │  现有 AudienceResult 计算        │
+                                   │  现有 FakeFans 检测              │
+                                   │  现有 BrandVideoRelation 查询    │
+                                   └────────────────────────────────┘
+```
+
+聚星侧改动量：1 个新 Controller + 4 个端点，复用现有 Service 层，不改现有业务逻辑。
 
 #### 统一数据模型
 
 **Creator 模型**：所有 Tool 返回的达人数据使用统一的 `Creator` 对象。详见附录 B。
 
 核心设计原则：
+- **NoxInfluencer 自建 Creator ID**（`crt_` 前缀），内部映射聚星的 channelId + platform 复合键（聚星无跨平台统一 ID）
 - 字段命名跨平台一致（不暴露平台差异）
 - 字段缺失时返回 `null`（不省略字段）
 - 数值字段统一精度（粉丝数为整数，百分比为小数）
 
-**Campaign 模型**：`manage_campaigns` 返回的合作数据使用统一的 `Campaign` 对象，聚合 outreach 和 negotiate 产生的记录。
-
-> TODO：Campaign 数据模型定义依赖聚星 API 探索结果。需明确 Campaign-Creator 关联关系、阶段状态追踪（邀约→谈判→合同→发货→审稿→发布→结算）的数据来源。
+**Campaign 模型**：`manage_campaigns` 返回的合作数据使用统一的 `Campaign` 对象。数据来源是 NoxInfluencer 自身数据库（非聚星），聚合 outreach 发送记录和 negotiate 谈判记录，按阶段（邀约→谈判→合同→发货→审稿→发布→结算）追踪状态。
 
 ### 3.3 AI 推理层
 
@@ -2003,7 +2026,7 @@ Peter 的核心主张：**"whatever I wanna build, it starts as CLI… closing t
 │  所有 I/O 通过 DI 接口隔离，100% 可单测                │
 ├─────────────────────────────────────────────────────┤
 │  Services（外部依赖适配）                              │
-│  聚星数据 API / OpenAI / 聚星邮件 / Stripe / DB       │
+│  聚星 Service 层 / OpenAI / 聚星邮件 / Stripe / DB       │
 │  接口定义在 Core 层，实现在 Services 层                │
 └─────────────────────────────────────────────────────┘
 ```
@@ -2015,7 +2038,7 @@ Peter 的核心主张：**"whatever I wanna build, it starts as CLI… closing t
 | **Harness** | `nox` CLI 命令、`nox test-search` 回归脚本、`nox smoke` 冒烟测试 | 直接调用 Core，绕过 Shell，**缩短反馈回路** |
 | **Shell** | REST API 路由、MCP Server 协议适配（< 200 行）、Stripe webhook 处理、认证中间件、数据分级门控 | 薄 I/O 层，mock Services 后可集成测试 |
 | **Core** | 自然语言→结构化查询解析、Creator 数据标准化、Credit 扣减逻辑、谈判策略状态机、邮件内容编排、参数解析（宽进严出） | 业务逻辑 + 状态机，所有 I/O 通过 DI 接口隔离，**100% 可单测** |
-| **Services** | 聚星数据 API adapter、OpenAI adapter、聚星邮件 adapter、Stripe adapter、DB adapter | 接口定义在 Core，测试时替换为 mock 实现 |
+| **Services** | 聚星 Service 层 adapter（CreatorSearch / CreatorAnalysis / CreatorContact / PricingBenchmark）、OpenAI adapter、聚星邮件 adapter、Stripe adapter、DB adapter | 接口定义在 Core，测试时替换为 mock 实现 |
 
 **关键设计约束**：
 
@@ -2030,8 +2053,8 @@ Peter 的核心主张：**"whatever I wanna build, it starts as CLI… closing t
 |------|------|------|:-------:|
 | **L1 Unit + Lint** | 每次提交 | Core 纯逻辑：查询解析、Credit 计算、数据标准化、错误码映射、谈判状态机 | < 30 秒 |
 | **L2 Integration** | PR 合并前 | Shell 层：API 路由 + 认证 + Rate Limit + 数据分级门控（mock 外部服务，hermetic） | < 3 分钟 |
-| **L3 E2E** | PR 合并前 | 关键路径：注册→搜索→分析→邀约预览→谈判预览（mock LLM + mock 聚星 API） | < 5 分钟 |
-| **L4 Live Smoke** | Nightly | 真实 API Key 跑完整链路：聚星数据源 + 聚星假粉检测 + OpenAI + 聚星邮件 | 允许更慢 |
+| **L3 E2E** | PR 合并前 | 关键路径：注册→搜索→分析→邀约预览→谈判预览（mock LLM + mock 聚星 Service 层） | < 5 分钟 |
+| **L4 Live Smoke** | Nightly | 真实 API Key 跑完整链路：聚星 Service 层数据 + 假粉检测 + OpenAI + 聚星邮件 | 允许更慢 |
 
 **AI 组件的特殊测试问题**：
 
@@ -2308,7 +2331,7 @@ type NegotiationAction =
 
 ```
 Phase 1（W1-W8）—— 基础设施 + 核心能力
-├── W1-2  统一 Creator 数据模型设计 + 聚星数据层适配（含假粉检测 + 受众画像接口适配）
+├── W1-2  统一 Creator 数据模型设计 + KOLServer 薄 Controller 开发（复用聚星 Service 层：搜索 + 假粉 + 受众 + 报价）
 ├── W3-4  REST API 骨架（认证 / 限流 / Credit 追踪 / Stripe 集成）
 ├── W5-6  discover_creators + analyze_creator（含 AI 搜索解析）
 ├── W7-8  数据分级返回逻辑 + manage_campaigns 只读版
@@ -2332,7 +2355,7 @@ Phase 3（W15-W20）—— 包装 + 分发 + Beta + 上线
 
 | 角色 | 人数 | 职责 |
 |------|:----:|------|
-| 后端工程师 | 2 | REST API、数据层适配、Credit/计费系统、邮件基础设施 |
+| 后端工程师 | 2 | REST API、KOLServer 薄 Controller + Service 层对接、Credit/计费系统、邮件基础设施 |
 | AI 工程师 | 0.5 | 自然语言解析、邮件生成、谈判引擎（可由后端兼任） |
 | 前端/文档 | 0.5 | 注册页、Dashboard、文档站、Quick Start |
 | 产品（兼） | 0.5 | 可由现有 PM 兼任 |
@@ -2344,10 +2367,10 @@ Phase 3（W15-W20）—— 包装 + 分发 + Beta + 上线
 
 | 依赖 | 影响范围 | 风险 | 缓解 |
 |------|---------|:----:|------|
-| **聚星数据层 API 稳定性** | 全部 Tool | 高 | 早期对接，W1 确认 API 可用性和性能 |
-| **聚星搜索 API 改造** | discover_creators | 高 | AI 搜索解析层可解耦聚星搜索 API 的限制 |
-| **聚星假粉检测 + 受众画像 API 适配** | analyze_creator | 中 | 聚星已有能力，需适配统一接口（authenticity + audience 模型） |
-| **聚星邮件基础设施对接** | outreach_creators, negotiate | 中 | 需确认聚星邮件 API 可独立调用，W1 对接验证 |
+| **聚星 Service 层可复用性** | 全部 Tool | 中 | W1 在 KOLServer 新建薄 Controller，验证 Service 层代码可独立调用（脱离 Web 页面上下文） |
+| **聚星搜索引擎适配** | discover_creators | 高 | AI 搜索解析层将自然语言转为结构化查询，复用聚星 ES 搜索 Service；需验证 Service 层查询接口满足需求 |
+| **聚星假粉 + 受众 Service 适配** | analyze_creator | 中 | 聚星三平台假粉 + 受众已有成熟能力，复用 Service 层代码，适配统一 Creator 数据模型 |
+| **聚星邮件基础设施对接** | outreach_creators, negotiate | 中 | 需确认聚星邮件 Service 可独立调用（脱离 Campaign 流程），W1 对接验证 |
 | **Stripe 账号** | 计费系统 | 低 | 标准集成，风险可控 |
 | **OpenAI API 额度** | AI 推理层 | 低 | 可切换 Anthropic API 作为备选 |
 
@@ -2371,7 +2394,7 @@ Phase 3（W15-W20）—— 包装 + 分发 + Beta + 上线
 |---|------|------|---------|------|
 | T1 | API 框架 | 技术团队自主决策 | 建议 Hono on CF Workers（边缘部署，低延迟） | 技术团队决策 |
 | T2 | CLI 技术栈 | 技术团队自主决策 | 优先与 OpenClaw 保持一致 | 技术团队决策 |
-| T3 | 聚星数据层对接方式 | 调用聚星内部 API | ✅ 已决策：最低耦合 | ✅ 已决策 |
+| T3 | 聚星数据层对接方式 | KOLServer 新建薄 Controller + 复用 Service 层 | ✅ 已决策：不调用现有 REST API，复用 Service 层代码，API 契约由 NoxInfluencer 定义 | ✅ 已决策 |
 | T4 | 数据库选型 | 技术团队自主决策 | 使用现有空闲资源 | 技术团队决策 |
 | T5 | 邮件域名 | 技术团队自主决策 | 从现有域名中选择 | 技术团队决策 |
 

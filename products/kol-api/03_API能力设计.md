@@ -74,7 +74,7 @@ Pi（OpenClaw 底层引擎）用 4 个 Tool（read/write/edit/bash）驱动了 1
 │  所有 I/O 通过 DI 接口隔离，100% 可单测                       │
 ├────────────────────────────────────────────────────────────┤
 │  Services（外部依赖适配）                                     │
-│  聚星数据 API / OpenAI / 聚星邮件 / Stripe / DB              │
+│  聚星 Service 层 / OpenAI / 聚星邮件 / Stripe / DB           │
 └────────────────────────────────────────────────────────────┘
 
 终端型 Agent（Claude Code / OpenClaw）→ 直接 bash 调 CLI（Harness 层）
