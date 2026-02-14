@@ -27,7 +27,7 @@ CreatorDB 的 31 个 Tool（11 IG + 11 YT + 9 TikTok）本质是把 REST endpoin
 
 > Microsoft Research 发现：当 Tool 数量超过 20 个，Agent 任务完成率下降最高 **85%**。原因是上下文窗口被 Tool 描述占满，推理质量急剧下降。
 
-**NoxInfluencer 设计目标：7 个 Tool 覆盖全链路。Day 1 上线 5 个（P0：4 个全链路核心 + 1 个只读 CRM），数据验证后迭代增强 + 加入 2 个新 Tool（P1/P2）。**
+**NoxInfluencer 设计目标：7 个 Tool 覆盖全链路。Day 1 上线 5 个（P0：4 个全链路核心 + 1 个 Campaign 管理），数据验证后迭代增强 + 加入 2 个新 Tool（P1/P2）。**
 
 ### 1.2 设计原则
 
@@ -100,7 +100,8 @@ nox outreach @beautybyjess @glowwithme --brief "protein powder launch" --send
 nox negotiate @beautybyjess --max 900 --target 800 --preview
 nox negotiate @beautybyjess --max 900 --target 800 --start
 
-# manage_campaigns（只读版）
+# manage_campaigns
+nox campaigns create --name "Q1 Beauty" --brief "蛋白粉推广"
 nox campaigns
 nox campaigns --id cmp_001
 nox campaigns --creator @beautybyjess
@@ -157,10 +158,10 @@ v1 优先：**YouTube + TikTok + Instagram**（覆盖 95% 品牌场景）。
 
 | 阶段 | Tool | 理由 |
 |------|------|------|
-| **Day 1**（5 个） | discover_creators, analyze_creator, outreach_creators, negotiate, manage_campaigns（只读版） | P0 全链路核心：搜索→评估→邀约→谈判 + CRM 留存基础。覆盖 83%+ 人工成本（28% 信息密集 + 55% 沟通密集 + CRM 查询） |
+| **Day 1**（5 个） | discover_creators, analyze_creator, outreach_creators, negotiate, manage_campaigns（创建+查询） | P0 全链路核心：创建 Campaign → 搜索→评估→邀约→谈判 + CRM 查询。覆盖 83%+ 人工成本 |
 | **v1.1**（2 个新 + 1 个增强） | manage_campaigns 增强版（加写操作）, competitive_intel, track_performance | 基于 Day 1 真实调用数据验证需求后加入。Firecrawl 上线时也只有 2 个 Tool，`map` 和 `extract` 是用户使用三个月后根据调用日志中的失败模式才加的 |
 
-Day 1 增加 manage_campaigns 只读版的原因：02 明确 CRM 是"留存驱动力"，只读查询实现简单（无写操作风险），1 credit 低价驱动高频使用。写操作（set_alert / update_status）留到 v1.1 增强版。
+Day 1 的 manage_campaigns 支持创建 Campaign（定义营销目标和约束，作为全流程上下文）+ 只读查询。创建免费（0 credit），查询 1 credit 低价驱动高频使用。写操作（set_alert / update_status）留到 v1.1 增强版。
 
 ---
 
@@ -245,30 +246,35 @@ Day 1 增加 manage_campaigns 只读版的原因：02 明确 CRM 是"留存驱�
 1. **策略阶段**（`confirm: false`）：返回市场定价基准 + 该达人历史报价 + 建议谈判策略 + 预估成交价区间。**所有层级可用，不扣 credit。**
 2. **执行阶段**（`confirm: true`）：在预算范围内自动与达人邮件往返。每轮进展同步给品牌，达成一致后发合作确认邮件（需品牌最终审核）。**所有层级可用，每轮扣 5 credits——Credit 配额是唯一限制。**
 
-### 3.5 `manage_campaigns`（只读版）— "我的合作情况"
+### 3.5 `manage_campaigns` — "管理我的合作"
 
-**优先级**：P0（Day 1）| **Credit**：1 credit/次
+**优先级**：P0（Day 1）| **Credit**：创建 0 credit，查询 1 credit/次
 
-> Day 1 仅只读查询。写操作（`set_alert` / `update_status` / `add_note`）留到 v1.1 增强版。
+> Day 1 支持创建 Campaign（定义营销目标和约束）+ 只读查询。写操作（`set_alert` / `update_status`）留到 v1.1 增强版。
 
-**合并 02 能力**（Day 1 只读部分）：`get_collaboration_history` + `get_campaign_status`
+**合并 02 能力**：`get_collaboration_history` + `get_campaign_status`
 
 | 参数 | 必填 | 类型 | 说明 |
 |------|:----:|------|------|
-| （无必填参数） | | | 默认返回全部活跃 Campaign 概览 |
-| `campaign_id` | | string | 查看特定 Campaign |
+| `action` | | enum | create / list / get（默认 list） |
+| `campaign_id` | | string | 查看特定 Campaign（action=get 时使用） |
 | `creator_id` | | string | 查看与特定达人的合作历史 |
 | `status_filter` | | enum | active / completed / all |
+| `name` | | string | Campaign 名称（action=create 时） |
+| `brief` | | string | 营销目标描述（action=create 时） |
+| `budget_range` | | object | 预算范围（action=create 时） |
+| `target_audience` | | object | 目标受众（action=create 时） |
+| `platforms` | | array | 目标平台（action=create 时） |
 
-**返回**：Campaign 列表 + 每个 Campaign 的阶段进展（邀约→谈判→合同→发货→审稿→发布→结算）。
+**返回**：创建时返回 `campaign_id`；查询时返回 Campaign 列表 + 每个 Campaign 的阶段进展（邀约→谈判→合同→发货→审稿→发布→结算）。
 
-**关键设计**：低价（1 credit）高频查询提高留存，驱动付费的邀约+谈判操作。只读版实现简单（无写操作风险），CRM 查询是品牌日常高频需求。
+**关键设计**：创建免费（0 credit）降低使用门槛，Campaign 作为全流程上下文容器；查询低价（1 credit）高频使用提高留存，驱动付费的邀约+谈判操作。
 
 ### v1.1 Tool（数据验证后上线）
 
 #### `manage_campaigns` 增强版（v1.1）
 
-在 Day 1 只读版基础上增加写操作能力：
+在 Day 1 创建+查询版基础上增加写操作能力：
 
 | 新增参数 | 类型 | 说明 |
 |---------|------|------|
@@ -322,7 +328,7 @@ Day 1 增加 manage_campaigns 只读版的原因：02 明确 CRM 是"留存驱�
 {
   "success": true,
   "data": { ... },
-  "summary": "找到 15 位符合条件的美妆达人，互动率最高的是 @beautybyjess（4.2%）",
+  "summary": "找到 15 位 US 美妆 TikToker（10K-1M 粉丝）。互动率 Top 3：@beautybyjess（4.2%）、@glowwithme（3.8%）、@skincarequeen（3.5%）。12/15 真实粉丝率 >85%。（as of 2026-02-12）",
   "credits": {
     "used": 1,
     "remaining": 199,
@@ -336,12 +342,18 @@ Day 1 增加 manage_campaigns 只读版的原因：02 明确 CRM 是"留存驱�
 }
 ```
 
-### 4.2 `summary` 字段
+### 4.2 `summary` 字段——Agent 记忆的主要载体
 
-Agent 可直接将 `summary` 呈现给用户，无需再做二次处理。写法要求：
-- 中文/英文自适应（跟随用户语言）
-- 包含关键数字（数量、百分比、金额）
-- 一句话概括结果，不超过 100 字
+`summary` 是 Agent 存入记忆的核心内容。Agent 平台（OpenClaw MEMORY.md、Claude Project Memory、ChatGPT Memory）会自动将 Tool 返回的自然语言摘要存入日志，下次对话时重新注入上下文。因此 `summary` 的质量直接决定了"第 5 次使用"和"第 1 次使用"的体验差距。
+
+**写法要求**：
+- 中文/英文自适应（跟随 Agent 对话语言）
+- 包含**稳定标识符**（@handle、campaign_id）——方便跨会话引用
+- 包含**量化结果**（数量、百分比、金额）——决策所需的关键数字
+- 包含**时间标记**（as of 日期）——让缓存的记忆自然老化
+- 自包含可独立理解——无需配合 `data` 字段也能读懂
+- 避免会话性语言（"这次""刚才"）——记忆在未来会话中被回忆时仍然有意义
+- 不超过 200 字
 
 ### 4.3 Credit 余额始终透明
 
@@ -476,7 +488,7 @@ CreatorDB 因缺少 LICENSE 文件导致 Glama F 级、不可安装、零使用�
 | D5 | 必填参数数量 | 每 Tool 1-2 个 | 多参数必填 | Context7 模式：降低 Agent 构造参数的难度 |
 | D6 | description 长度 | ≥ 3 句话 | 一句话 | Anthropic 官方 + Arcade 54 模式 |
 | D7 | Credit 映射 | 与 01/02 完全一致 | 重新定义 | 保持三份文档一致性 |
-| D8 | 发布节奏 | Day 1 上 5 个（含 manage_campaigns 只读版），v1.1 加 2 个新 + 1 个增强 | 7 个同时上线 | Firecrawl 模式：带最小集上线，用调用数据驱动迭代。manage_campaigns 只读版加入 Day 1 因为 CRM 是留存驱动力（02 结论） |
+| D8 | 发布节奏 | Day 1 上 5 个（含 manage_campaigns 创建+查询），v1.1 加 2 个新 + 1 个增强 | 7 个同时上线 | Firecrawl 模式：带最小集上线，用调用数据驱动迭代。manage_campaigns 加入 Day 1 因为 Campaign 创建是全流程第一步 + CRM 查询是留存驱动力（02 结论） |
 | D9 | 接入层架构 | CLI-first，MCP/SKILL/GPT Action 是薄包装 | MCP-first | Pi/OpenClaw 验证：终端对 Agent 更友好（可组合/可观测/可验证）。CLI 覆盖终端型 Agent，MCP 覆盖非终端型 Agent，一套核心两个入口 |
 | D10 | 返回验证信息 | P2 实现，Day 1 先上基础返回 | Day 1 就含验证字段 | 有价值但实现成本高（需要搜索质量评分、数据新鲜度追踪、邮箱有效率统计等基础设施）。先跑通核心链路，再用数据驱动优化返回质量 |
 
@@ -527,22 +539,22 @@ CreatorDB 因缺少 LICENSE 文件导致 Glama F 级、不可安装、零使用�
 
 ## 附录：Tool Description 原文
 
-以下 7 段描述可直接用于 MCP metadata 中的 `description` 字段。Day 1 发布 5 个（前 5 段），v1.1 增加 2 个（后 2 段）。
+以下 7 段描述可直接用于 MCP metadata 中的 `description` 字段。Day 1 发布 5 个（前 5 段），v1.1 增加 2 个（后 2 段）。Description 中的 TIP 行用于引导 Agent 利用记忆——这是目前唯一有效的方式（MCP 无标准记忆协议）。
 
 **discover_creators**
-> Search and discover influencers across YouTube, TikTok, and Instagram using natural language queries. Returns a ranked list of creators with follower counts, engagement rates, authenticity flags, and estimated collaboration costs. Use this tool when a brand wants to find creators for a campaign — it handles search, initial screening, and basic evaluation in a single call. Supports filtering by platform, country, follower range, niche, and minimum engagement rate.
+> Search and discover influencers across YouTube, TikTok, and Instagram using natural language queries. Returns a ranked list of creators with follower counts, engagement rates, authenticity flags, and estimated collaboration costs. Use this tool when a brand wants to find creators for a campaign — it handles search, initial screening, and basic evaluation in a single call. Supports filtering by platform, country, follower range, niche, and minimum engagement rate. TIP: If the user has searched before, check your memory for their platform and niche preferences before asking again.
 
 **analyze_creator**
 > Get a deep analysis of a specific creator's profile, including authenticity scoring, audience demographics, content performance trends, and estimated pricing. Use this tool when a brand wants to evaluate whether a creator is trustworthy and a good fit before reaching out. Accepts either a creator ID (from discover_creators results) or a direct profile URL.
 
 **outreach_creators**
-> Send personalized outreach emails to a list of creators on behalf of a brand. Generates customized email content based on the campaign brief and each creator's profile. First call returns email previews for brand approval; second call with confirm=true sends the emails and enables response tracking with automatic follow-ups. Use this when a brand is ready to contact creators they've identified.
+> Send personalized outreach emails to a list of creators on behalf of a brand. Generates customized email content based on the campaign brief and each creator's profile. First call returns email previews for brand approval; second call with confirm=true sends the emails and enables response tracking with automatic follow-ups. Use this when a brand is ready to contact creators they've identified. TIP: Call manage_campaigns first to get the campaign context — it makes the outreach email more relevant.
 
 **negotiate**
 > Negotiate collaboration pricing with a creator within the brand's budget. First provides market pricing benchmarks and a recommended negotiation strategy; then, with brand approval, conducts automated email-based negotiation. Each round of negotiation is reported back to the brand in real-time. Use this when a creator has responded to outreach and pricing discussion begins.
 
-**manage_campaigns**（Day 1 只读版）
-> View active influencer campaigns, collaboration history, and creator relationships. Returns campaign status tracking (outreach → negotiation → contract → shipping → review → publish → payment) and per-creator progress. Use this when a brand asks about their ongoing collaborations or past partnerships. Day 1 is read-only; write operations (alerts, status updates) coming in v1.1.
+**manage_campaigns**（Day 1 创建+查询）
+> Create and view influencer marketing campaigns. Create a campaign to define goals, budget, and target audience before discovering creators. View active campaigns, collaboration history, and creator relationships with status tracking (outreach → negotiation → contract → shipping → review → publish → payment). Use this when a brand starts a new campaign or asks about their ongoing collaborations, or to recall past collaboration history. Creating a campaign is free; write operations (alerts, status updates) coming in v1.1.
 
 **manage_campaigns**（v1.1 增强版）
 > View and manage all active influencer campaigns, collaboration history, and creator relationships. Returns campaign status tracking (outreach → negotiation → contract → shipping → review → publish → payment), creator whitelist/blacklist, and active alerts. Supports write operations: set monitoring alerts, update collaboration status, and add notes. Use this when a brand wants to manage their ongoing collaborations or set up monitoring alerts.

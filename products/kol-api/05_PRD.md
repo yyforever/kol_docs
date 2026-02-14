@@ -75,9 +75,10 @@ NoxInfluencer 的交互模型不是"用户→网站"，而是"用户→Agent→A
 
 | 设计要点 | 说明 |
 |---------|------|
-| summary 字段质量 | 每次 Tool 返回包含自然语言摘要，Agent 自动存入日志，下次可回忆 |
+| summary 是记忆种子 | `summary` 字段是 Agent 存入记忆的主要载体。设计原则：含稳定标识符（@handle）、量化结果（数量/百分比/金额）、时间标记（as of），自包含可独立理解，避免会话性语言（"这次""刚才"） |
 | manage_campaigns 兜底 | 即使 Agent 记忆丢失，一次调用重建全部合作上下文 |
-| SKILL.md 引导 | Tool Description 提示 Agent 优先调 manage_campaigns 了解品牌历史 |
+| Tool Description 引导记忆行为 | 在 Description 中用自然语言提示 Agent 利用记忆（"If the user has searched before, check your memory..."），这是目前唯一有效的引导方式——MCP 无标准记忆协议 |
+| MCP annotations 软信号 | MCP 包装层使用 `annotations.audience`（user/assistant）和 `priority`（0-1）区分"给用户看的"和"给 Agent 推理用的"内容 |
 
 **效果演进**：
 
@@ -87,7 +88,7 @@ NoxInfluencer 的交互模型不是"用户→网站"，而是"用户→Agent→A
 | 第 5 次 | 品牌说"找达人"→ Agent 按历史偏好搜索，只确认关键变化 |
 | 第 20 次 | 品牌说"准备下月 Campaign"→ Agent 主动调 manage_campaigns 看上次效果，建议本次调整 |
 
-> **待研究**：如何在 SKILL.md / Tool Description 中引导 Agent 主动利用记忆？现有 MCP/Skill 规范无标准方式。上线后观察 Agent 实际行为，迭代 Description。
+> **设计结论**：MCP 无标准"记住这个"协议。引导 Agent 利用记忆的唯一有效方式是 Tool Description 中的自然语言提示（见附录 A）。`summary` 字段质量是最重要的设计面——它决定了 Agent 存什么、下次想起什么。上线后观察 Agent 实际记忆行为，迭代 summary 模板和 Description。
 
 ---
 
@@ -132,8 +133,11 @@ NoxInfluencer 的交互模型不是"用户→网站"，而是"用户→Agent→A
 **典型路径**：
 
 ```
+品牌："我要推广一款蛋白粉，预算 1 万美金，目标美国 18-34 岁女性"
+  → manage_campaigns (create) → 创建 Campaign，记录目标、预算、约束
+
 品牌："帮我找 10 个美妆 TikTok 达人"
-  → discover_creators → 秒级返回 10 个匹配达人
+  → discover_creators → 秒级返回 10 个匹配达人（自动关联 Campaign 上下文）
 
 品牌："分析一下第一个靠不靠谱"
   → analyze_creator → 完整画像 + 真假粉 87 分 + 受众 18-34 美国女性
@@ -246,7 +250,9 @@ Agent 配置是最大摩擦点。品牌营销经理不会编辑 JSON 或设环�
 
 ### 2.1 五个 Tool 详细 Spec
 
-Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈判）+ 1 个只读 CRM（合作状态查询）。覆盖 83%+ 人工成本（28% 信息密集 + 55% 沟通密集 + CRM 留存基础）。
+Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈判）+ 1 个 Campaign 管理（创建 + 只读查询）。覆盖 83%+ 人工成本（28% 信息密集 + 55% 沟通密集 + CRM 留存基础）。
+
+**完整流程**：创建 Campaign（定义目标和约束）→ 搜索达人 → 评估达人 → 邀约触达 → 谈判协商 → 查看合作状态。Campaign 是所有操作的上下文容器。
 
 ---
 
@@ -304,6 +310,10 @@ Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈�
       "type": "boolean",
       "default": false,
       "description": "是否包含受众概要"
+    },
+    "cursor": {
+      "type": "string",
+      "description": "分页游标（从上次返回的 next_cursor 获取），用于获取更多结果"
     }
   }
 }
@@ -341,13 +351,16 @@ Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈�
         }
       }
     ],
-    "total_matched": 47
+    "total_matched": 47,
+    "next_cursor": "cur_eyJwYWdlIjoyfQ"
   },
-  "summary": "找到 15 位符合条件的美妆达人，互动率最高的是 @beautybyjess（4.2%）",
+  "summary": "找到 47 位 US 美妆 TikToker（10K-1M 粉丝），本次返回前 15 位。互动率 Top 3：@beautybyjess（4.2%）、@glowwithme（3.8%）、@skincarequeen（3.5%）。12/15 真实粉丝率 >85%。还有更多结果，可继续查看。（as of 2026-02-12）",
   "credits": { "used": 1, "remaining": 199, "plan": "free" },
   "meta": { "request_id": "req_abc123", "latency_ms": 1200, "data_freshness": "2026-02-13T10:00:00Z" }
 }
 ```
+
+**语言自适应**：Tool 返回的 `summary` 字段和邮件内容自动适配语言——跟随 Agent 对话语境（Agent 用中文对话则 summary 中文，用英文则英文）。达人邀约邮件语言跟随达人所在地区或品牌指定语言。
 
 **行为描述**
 
@@ -357,6 +370,7 @@ Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈�
 4. 每位达人包含：基础画像 + 真假粉标记（粗粒度：trustworthy/moderate/suspicious）+ 互动率 + 预估合作费
 5. `include_audience: true` 时附加受众概要（不额外消耗 credit）
 6. `authenticity` 字段在 Free 层返回粗粒度（trustworthy/moderate/suspicious），Starter+ 返回精确分数
+7. 支持分页：返回 `next_cursor`，Agent 可传入 `cursor` 获取更多结果（每页消耗 1 credit）。Agent 可自然对话："还有更多吗？" → 自动翻页
 
 **边界条件**
 
@@ -365,6 +379,8 @@ Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈�
 | `query` 为空且无结构化参数 | 返回 400 `missing_query` |
 | 匹配结果为 0 | 返回空列表 + summary 建议放宽条件 |
 | `count` > 50 | 截断为 50，summary 中提示 |
+| 还有更多结果 | 返回 `next_cursor`，summary 中提示"还有更多结果" |
+| `cursor` 无效或已过期 | 返回 400 `invalid_cursor` |
 | 不支持的平台值 | 返回 400 `invalid_platform` |
 | credit 不足 | 返回 402 `insufficient_credits` + 升级链接 |
 
@@ -554,10 +570,18 @@ Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈�
       },
       "description": "预算范围"
     },
+    "campaign_id": {
+      "type": "string",
+      "description": "关联的 Campaign ID（从 manage_campaigns create 返回），用于上下文关联和状态追踪"
+    },
     "confirm": {
       "type": "boolean",
       "default": false,
       "description": "false=预览模式（不发送），true=确认发送"
+    },
+    "outreach_id": {
+      "type": "string",
+      "description": "确认发送时传入预览返回的 outreach_id（confirm=true 时传入，关联之前的预览结果）"
     }
   }
 }
@@ -633,7 +657,9 @@ Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈�
 | `creator_ids` 为空 | 返回 400 `missing_creator_ids` |
 | `creator_ids` 长度 > 50 | 返回 400 `too_many_creators`，提示上限 50 |
 | 部分达人无联系方式 | 预览中标记 `email_status: "not_found"`，发送时跳过 |
-| `confirm: true` 但无先前预览 | 允许直接发送（Agent 可能跳过预览） |
+| `confirm: true` 且传 `outreach_id` | 使用之前预览的邮件内容发送（推荐路径） |
+| `confirm: true` 但无 `outreach_id` | 允许直接发送，系统自动生成邮件内容（Agent 可能跳过预览） |
+| `outreach_id` 对应的预览已过期（> 24h） | 返回 400 `preview_expired`，提示重新预览 |
 | credit 不足以覆盖全部发送 | 返回 402 `insufficient_credits`，提示需要 N credits |
 | Free 层调用 `confirm: false`（预览） | 正常返回邮件预览，不扣 credit——让 Free 用户体验"啊哈时刻" |
 | Free 层调用 `confirm: true`（发送） | 返回 403 `upgrade_required`（发送邮件仅 Starter+ 可用） |
@@ -646,6 +672,7 @@ Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈�
 | `too_many_creators` | 400 | "单次邀约上限 50 人，请分批操作" |
 | `upgrade_required` | 403 | "发送邮件需要 Starter 套餐（$29/月）。Free 层可预览邮件内容（confirm: false），发送需升级" |
 | `insufficient_credits` | 402 | "邀约 {n} 人需要 {n×3} credits，余额 {remaining}" |
+| `preview_expired` | 400 | "预览已过期（超过 24 小时），请重新预览" |
 | `send_failed` | 500 | "部分邮件发送失败，已发送 {sent}/{total}，失败的将自动重试" |
 
 **验收标准**
@@ -675,6 +702,10 @@ Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈�
     "creator_id": {
       "type": "string",
       "description": "谈判对象"
+    },
+    "campaign_id": {
+      "type": "string",
+      "description": "关联的 Campaign ID（用于上下文关联和状态追踪）"
     },
     "budget_max": {
       "type": "number",
@@ -851,11 +882,11 @@ stalled ──品牌调整预算──→ in_progress（重启谈判，继续计
 
 ---
 
-#### 2.1.5 `manage_campaigns`（只读版）— "我的合作情况"
+#### 2.1.5 `manage_campaigns` — "管理我的合作"
 
-**Credit**：1 credit/次 | **HTTP**：`POST /v1/tools/manage_campaigns` | **CLI**：`nox campaigns`
+**Credit**：1 credit/次（查询）、0 credit（创建）| **HTTP**：`POST /v1/tools/manage_campaigns` | **CLI**：`nox campaigns`
 
-> Day 1 仅支持只读查询（品牌历史合作达人列表 + 合作阶段状态）。写操作（`set_alert` / `update_status`）留到 v1.1 增强版。
+> Day 1 支持**创建 Campaign + 只读查询**。Campaign 是整个营销流程的起点——品牌先定义目标和约束，后续 discover/outreach/negotiate 都关联到 Campaign 上下文。写操作（`set_alert` / `update_status`）留到 v1.1 增强版。
 
 **输入 Schema**
 
@@ -863,27 +894,81 @@ stalled ──品牌调整预算──→ in_progress（重启谈判，继续计
 {
   "type": "object",
   "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["create", "list", "get"],
+      "default": "list",
+      "description": "操作类型"
+    },
+    "name": {
+      "type": "string",
+      "description": "Campaign 名称（action=create 时必填）"
+    },
+    "brief": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "营销简介：品牌/产品/目标/调性（action=create 时必填）"
+    },
+    "budget_range": {
+      "type": "object",
+      "properties": {
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "currency": { "type": "string", "default": "USD" }
+      },
+      "description": "总预算范围（action=create）"
+    },
+    "target_audience": {
+      "type": "string",
+      "description": "目标受众描述，如 '18-34 岁美国女性，关注美妆和健身'（action=create）"
+    },
+    "platforms": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["youtube", "tiktok", "instagram"] },
+      "description": "目标平台（action=create，不传则不限）"
+    },
     "campaign_id": {
       "type": "string",
-      "description": "查看特定 Campaign"
+      "description": "查看特定 Campaign（action=get）"
     },
     "creator_id": {
       "type": "string",
-      "description": "查看与特定达人的合作历史"
+      "description": "查看与特定达人的合作历史（action=list/get）"
     },
     "status_filter": {
       "type": "string",
       "enum": ["active", "completed", "all"],
       "default": "all",
-      "description": "按状态过滤"
+      "description": "按状态过滤（action=list）"
     }
   }
 }
 ```
 
-> 无必填参数——不传参数时返回全部活跃 Campaign 概览。
+> `action=list` 时无必填参数，返回全部活跃 Campaign 概览。`action=create` 时 `name` 和 `brief` 必填——Agent 通过自然语言对话收集这些信息，也可以结合表单让品牌填写。
 
-**输出 Schema**
+**输出 Schema（action=create）**
+
+```json
+{
+  "success": true,
+  "data": {
+    "campaign_id": "cmp_001",
+    "name": "Q1 Protein Powder Launch",
+    "status": "active",
+    "brief": "推广蛋白粉，目标美国 18-34 岁女性健身爱好者",
+    "budget_range": { "min": 5000, "max": 10000, "currency": "USD" },
+    "target_audience": "18-34 岁美国女性，关注美妆和健身",
+    "platforms": ["tiktok", "instagram"],
+    "created_at": "2026-02-13T10:00:00Z"
+  },
+  "summary": "Campaign 'Q1 Protein Powder Launch' 已创建。接下来可以用 discover_creators 搜索匹配的达人",
+  "credits": { "used": 0, "remaining": 200, "plan": "free" },
+  "meta": { "request_id": "req_abc789", "latency_ms": 300 }
+}
+```
+
+**输出 Schema（action=list）**
 
 ```json
 {
@@ -921,26 +1006,29 @@ stalled ──品牌调整预算──→ in_progress（重启谈判，继续计
 
 **行为描述**
 
-1. 无参数时返回全部活跃 Campaign 概览（按最近活动时间排序）
-2. 传 `campaign_id` 时返回该 Campaign 的详细阶段进展（邀约→谈判→合同→发货→审稿→发布→结算）
-3. 传 `creator_id` 时返回与该达人的合作历史
-4. Day 1 仅只读——不支持 `set_alert`、`update_status`、`add_note` 等写操作
+1. **`action=create`**：创建 Campaign 并返回 `campaign_id`。Agent 通过自然语言对话收集 `name`、`brief`、`budget_range`、`target_audience` 等信息。创建不消耗 credit（仅建立上下文）
+2. **`action=list`**（默认）：返回全部活跃 Campaign 概览（按最近活动时间排序）
+3. **`action=get`**（传 `campaign_id`）：返回该 Campaign 的详细阶段进展（邀约→谈判→合同→发货→审稿→发布→结算）
+4. 传 `creator_id` 时返回与该达人的合作历史
+5. Day 1 不支持 `set_alert`、`update_status`、`add_note` 等写操作（v1.1）
 
 **边界条件**
 
 | 条件 | 行为 |
 |------|------|
-| 无任何 Campaign 数据 | 返回空列表 + summary 建议先用 outreach_creators |
+| `action=create` 缺少 `name` 或 `brief` | 返回 400 `missing_campaign_info`，提示 Agent 向品牌收集信息 |
+| 无任何 Campaign 数据 | 返回空列表 + summary 建议先创建 Campaign |
 | `campaign_id` 不存在 | 返回 404 `campaign_not_found` |
-| 尝试写操作（传 `action` 参数） | 返回 400 `readonly_mode` + 提示 v1.1 将支持写操作 |
+| 尝试 v1.1 写操作（`set_alert` 等） | 返回 400 `readonly_mode` + 提示 v1.1 将支持 |
 
 **验收标准**
 
+- [ ] `action=create` 成功创建 Campaign 并返回 campaign_id
+- [ ] 创建不消耗 credit
 - [ ] 无参数查询返回全部活跃 Campaign
 - [ ] 按 campaign_id 查询返回详细阶段进展
 - [ ] 按 creator_id 查询返回合作历史
 - [ ] 响应时间 < 2 秒（P95）
-- [ ] 写操作参数返回 400 readonly_mode
 - [ ] 返回格式符合统一信封规范
 
 ---
@@ -989,7 +1077,8 @@ API Key 配置到 Agent 环境变量 → 开始使用
 | `analyze_creator` | 2 | 请求成功后扣减 |
 | `outreach_creators` | 3/人 | `confirm: true` 发送成功后按实际发送人数扣减 |
 | `negotiate` | 5/轮 | `confirm: true` 每轮谈判完成后扣减 |
-| `manage_campaigns` | 1 | 请求成功后扣减 |
+| `manage_campaigns`（查询） | 1 | 请求成功后扣减 |
+| `manage_campaigns`（创建） | 0 | 创建 Campaign 免费（仅建立上下文） |
 
 **关键规则**：
 
@@ -1081,33 +1170,10 @@ Retry-After: 60
 
 > 来源：04 第 4.2 节 L4 定义。
 
-**L4 实现方案**：
+**L4 实现要求**：
 
-- **实现层级**：REST API 中间件层（Shell 层，非 Core 层）——数据分级是 I/O 关注点，Core 层返回完整数据，Shell 层根据 plan 过滤
-- **过滤逻辑**：每次请求根据 API Key 关联的 plan 查表，过滤 Creator 响应字段
-- **伪代码**：
-
-```typescript
-// Shell 层中间件（非 Core 层）
-function filterByPlan(creator: Creator, plan: Plan): Partial<Creator> {
-  const allowedFields = FIELD_ACCESS_MAP[plan]
-  return Object.fromEntries(
-    Object.entries(creator).filter(([key]) => allowedFields.includes(key))
-  )
-}
-
-// 字段访问映射表
-const FIELD_ACCESS_MAP = {
-  free: ['creator_id', 'platform', 'handle', 'display_name', 'followers',
-         'engagement_rate', 'content_count', 'country', 'niche',
-         'authenticity.verdict'],  // 仅粗粒度
-  starter: ['...free', 'authenticity.score', 'authenticity.fake_follower_pct',
-            'audience.countries', 'audience.gender', 'can_contact',
-            'estimated_cost'],
-  pro: ['...starter', 'audience.age_ranges', 'audience.interests',
-        'competitive_history']
-}
-```
+- **实现层级**：Shell 层中间件（非 Core 层）——Core 层返回完整数据，Shell 层根据用户 plan 过滤字段
+- **过滤逻辑**：每次请求根据 API Key 关联的 plan 查表，按上表过滤 Creator 响应字段。字段访问映射表由工程团队维护
 
 #### L7：ToS
 
@@ -1143,15 +1209,15 @@ name: nox-influencer
 description: AI-powered influencer marketing automation for brands
 commands:
   - name: search
-    description: Discover creators across YouTube, TikTok, and Instagram
+    description: Discover creators across YouTube, TikTok, and Instagram. Check your memory for past search preferences first.
   - name: analyze
     description: Deep analysis of a creator's profile and authenticity
   - name: outreach
-    description: Send personalized outreach emails to creators
+    description: Send personalized outreach emails to creators. Call campaigns first for context.
   - name: negotiate
     description: Negotiate collaboration pricing with creators
   - name: campaigns
-    description: View active campaigns and collaboration history
+    description: Create campaigns and view collaboration history. Use this FIRST to set context or recall past work.
 auth:
   type: api_key
   env: KOL_API_KEY
@@ -1181,6 +1247,7 @@ nox negotiate @beautybyjess --max 900 --target 800 --preview
 nox negotiate @beautybyjess --max 900 --target 800 --start
 
 # manage_campaigns
+nox campaigns create --name "Q1 Beauty" --brief "蛋白粉推广"
 nox campaigns
 nox campaigns --id cmp_001
 nox campaigns --creator @beautybyjess
@@ -1536,6 +1603,7 @@ Step 3: Follow the Quick Start guide → [Open Guide]
 | 邮件邀约 | 3/人 | 个性化邮件 + 自动 follow-up |
 | AI 谈价 | 5/轮 | 每轮谈判（典型 3 轮 = 15 credits） |
 | 查看合作 | 1 | 查看进行中的合作状态 |
+| 创建 Campaign | 0 | 定义营销目标和约束（免费） |
 
 **模块 3：Credit 模拟器**
 
@@ -1823,37 +1891,9 @@ NoxInfluencer 的 MCP Server 是 Core 的薄包装（< 200 行目标），仅做
 
 > MCP 2025-06 规范已废弃 SSE，统一使用 Streamable HTTP。两种传输模式从同一代码库构建。
 
-**日志**
+**日志**：文件日志（不走 stdio），通过环境变量配置级别。正常运行时 stdio 仅用于 MCP 协议通信。
 
-| 规范 | 要求 |
-|------|------|
-| 日志库 | Pino（文件日志，不走 stdio） |
-| 日志路径 | `~/Library/Logs/nox-influencer/` (macOS) / `~/.local/share/nox-influencer/logs/` (Linux) |
-| 日志级别 | 通过 `KOL_LOG_LEVEL` 环境变量配置，默认 `info` |
-| 缺失目录 | 自动创建 |
-| 进程退出 | flush logger 后再退出，确保最后的日志不丢 |
-
-**代码质量**
-
-| 规范 | 要求 |
-|------|------|
-| 单文件 | < 500 行 |
-| TypeScript | 零 linter / tsc 错误 |
-| 依赖 | 保持最新稳定版 |
-| npm 包内容 | 仅含 `dist/`、README、LICENSE |
-| 测试 | Vitest，含 TypeScript 单测 + E2E |
-
-**发布流程**
-
-发布前执行 `prepare-release` 脚本，自动校验：
-- git 状态干净
-- 依赖安全审计（`npm audit`）
-- 代码格式化 + lint
-- 全量测试通过
-- npm 包大小在限制内
-- 版本号正确递增（semver）
-
-校验全部通过后发布 beta → 验证 → 正式 release。
+**质量与发布**：MCP Server 代码 < 500 行目标，semver 版本管理，发布前自动校验（lint + 测试 + 安全审计），beta → 验证 → 正式 release。
 
 **CLI 命令对照**：
 
@@ -1874,7 +1914,8 @@ nox outreach @beautybyjess @glowwithme --brief "protein powder launch" --send
 nox negotiate @beautybyjess --max 900 --target 800 --preview
 nox negotiate @beautybyjess --max 900 --target 800 --start
 
-# manage_campaigns（只读版）
+# manage_campaigns
+nox campaigns create --name "Q1 Beauty" --brief "蛋白粉推广"
 nox campaigns
 nox campaigns --id cmp_001
 nox campaigns --creator @beautybyjess
@@ -2123,16 +2164,14 @@ Coding Agent 的核心循环是：写代码 → 跑测试 → 看输出 → 修�
 
 聚星已运营多年邮件系统，以下能力经验证可直接复用：
 
-| 能力 | 聚星现状 | NoxInfluencer 复用方式 |
-|------|---------|---------------------|
-| **发送通道** | 3 通道：Aliyun DirectMail（SMTP）、SendCloud（API）、Gmail 账号池（OAuth） | 封装为统一 `EmailTransport` 接口，通道选择策略在 Services 层 |
-| **账号池** | `kol_email_account_pool` 表，加权轮转、每日额度、回复率评分 | 直接复用，NoxInfluencer 按品牌隔离分配发送账号 |
-| **发送管控** | 800 封/天/账号、36 秒间隔、Redis 队列（`email_send_queue`）、失败重试 3 次 | 直接复用，NoxInfluencer 不改发送频控逻辑 |
-| **投递追踪** | 8 状态（待发送→已发送→已投递→已打开→已点击→已回复→退信→失败）、打开像素、点击短链（`url.noxinfluencer.com`） | 直接复用，NoxInfluencer 消费状态回调 |
-| **回复检测** | `private_message` 表，定时拉取收件箱匹配回复 | 直接复用，NoxInfluencer 订阅回复事件触发谈判流程 |
+| 能力 | 说明 | NoxInfluencer 复用方式 |
+|------|------|---------------------|
+| **多通道发送** | 3 个发送通道 + 账号池轮转 + 频控 | 封装为统一 `EmailTransport` 接口，直接复用 |
+| **投递追踪** | 完整状态链（发送→投递→打开→点击→回复→退信），含打开像素和点击短链 | 直接复用，NoxInfluencer 消费状态回调 |
+| **回复检测** | 定时拉取收件箱匹配回复 | 直接复用，回复事件触发谈判流程 |
 | **邮件域名** | `email.noxinfluencer.com` 已预热，SPF/DKIM/DMARC 已配置 | 直接复用，零预热成本 |
-| **反垃圾** | 260+ 敏感词库（3 类）、内容检测 | 直接复用 |
-| **模板引擎** | Velocity（.vm）+ 数据库模板存储 | NoxInfluencer 用 AI 生成邮件内容，模板引擎仅用于系统邮件（验证码、账单通知等） |
+| **反垃圾** | 敏感词库 + 内容检测 | 直接复用 |
+| **系统邮件** | 模板引擎 + 数据库模板 | 用于验证码、账单通知、credit 提醒等系统邮件。达人邀约邮件由 AI 生成内容 |
 
 #### 3.6.2 Services 层接口定义
 
@@ -2208,16 +2247,9 @@ type NegotiationAction =
 
 **不复用聚星的**：Campaign 任务编排、多步 Drip 序列、模板分类管理、A/B 测试框架。这些业务逻辑由 NoxInfluencer Core 层按自身产品需求重新设计。
 
-#### 3.6.4 对接计划
+#### 3.6.4 对接风险
 
-| 阶段 | 任务 | 产出 |
-|------|------|------|
-| **W1** | 确认聚星邮件 API 可独立调用（脱离 Campaign 流程） | API 接口文档 + 调用示例 |
-| **W2** | 实现 `EmailService` adapter，对接聚星发送 + 追踪 | Services 层代码 + 单元测试 |
-| **W3** | 实现回复检测 → Shell 层调度 → Core `processReply()` 闭环 | 回复事件驱动谈判状态机转换 |
-| **W4** | 联调 + Live Smoke 测试 | 完整邮件往返链路验证 |
-
-> **风险**：聚星邮件系统是否支持独立 API 调用（脱离 Campaign 上下文）需 W1 验证。如不支持，备选方案：直接调用底层 Aliyun DirectMail/SendCloud API，绕过聚星封装。
+> **关键验证**：聚星邮件系统是否支持独立调用（脱离现有 Campaign 流程）。如不支持，备选方案：直接调用底层发送通道 API，绕过聚星封装。需在 Phase 1 早期验证。
 
 ---
 
@@ -2269,7 +2301,7 @@ type NegotiationAction =
 #### `manage_campaigns`（增强版）— "管理我的合作"
 
 - **Credit**：1 credit/次 | **P1**
-- **增强内容**：在 Day 1 只读版基础上增加写操作：`set_alert`（配置提醒规则）、`update_status`（更新合作阶段）、`add_note`（添加备注）
+- **增强内容**：在 Day 1（创建 + 只读查询）基础上增加写操作：`set_alert`（配置提醒规则）、`update_status`（更新合作阶段）、`add_note`（添加备注）
 - **输入**：Day 1 只读参数 + `action`（`set_alert` / `update_status` / `add_note`）+ `action_params`
 - **返回**：Campaign 列表 + 阶段进展（邀约→谈判→合同→发货→审稿→发布→结算）+ 达人白/黑名单 + 活跃提醒
 - **设计目的**：低价（1 credit）高频 CRM 查询提高留存，驱动付费的邀约+谈判操作
@@ -2292,7 +2324,7 @@ type NegotiationAction =
 
 | Tool | 触发上线条件 | 数据来源 |
 |------|------------|---------|
-| `manage_campaigns`（增强版写操作） | Day 1 只读版使用 > 100 次/周 **且** 用户反馈需要写操作（提醒/状态更新） | 调用日志 + 用户反馈 |
+| `manage_campaigns`（增强版写操作） | Day 1 创建+查询版使用 > 100 次/周 **且** 用户反馈需要写操作（提醒/状态更新） | 调用日志 + 用户反馈 |
 | `competitive_intel` | 用户搜索中 > 15% 含竞品关键词（如 "Gymshark 合作了谁"） | 搜索 query 分析 |
 | `track_performance` | > 50 个品牌完成至少 1 个 campaign 全流程 | campaign 状态数据 |
 
@@ -2313,7 +2345,7 @@ type NegotiationAction =
 | 达人发现（搜索+筛选+评估） | P0 | Day 1 | 5 个 Tool + 四层架构 + 三平台分发 |
 | 邀约触达 | P0 | Day 1 | ↑ 同上 |
 | 谈判协商 | P0 | Day 1 | ↑ 同上 |
-| CRM 管理（只读） | P1 | Day 1 | ↑ 同上 |
+| CRM 管理（创建 + 只读查询） | P1 | Day 1 | ↑ 同上 |
 | CRM 管理（写操作：提醒/状态/备注） | P1 | v1.1 | 3 个增强/新 Tool |
 | 竞品对标 | P1 | v1.1 | ↑ 同上 |
 | 主动提醒与监控 | P1 | v1.1 | ↑ 同上（合并入 manage_campaigns 增强版） |
@@ -2334,7 +2366,7 @@ Phase 1（W1-W8）—— 基础设施 + 核心能力
 ├── W1-2  统一 Creator 数据模型设计 + KOLServer 薄 Controller 开发（复用聚星 Service 层：搜索 + 假粉 + 受众 + 报价）
 ├── W3-4  REST API 骨架（认证 / 限流 / Credit 追踪 / Stripe 集成）
 ├── W5-6  discover_creators + analyze_creator（含 AI 搜索解析）
-├── W7-8  数据分级返回逻辑 + manage_campaigns 只读版
+├── W7-8  数据分级返回逻辑 + manage_campaigns（创建 + 查询）
 
 Phase 2（W9-W14）—— 邀约 + 谈判 + CLI
 ├── W9-10   outreach_creators（邮件生成 + 发送 + 追踪 + follow-up）
@@ -2349,7 +2381,7 @@ Phase 3（W15-W20）—— 包装 + 分发 + Beta + 上线
 
 **总工作量：约 20 周（5 个月），2-3 人全职。**
 
-> 比初版 16 周增加 4 周缓冲，理由：(1) 邮件基础设施需要 2-4 周域名预热；(2) 协议适配层需覆盖 MCP + SKILL + GPT Action 三种格式；(3) Beta 反馈修复需要充足时间。范围也有调整：5 个 Day 1 Tool（新增 manage_campaigns 只读版）+ 四层架构 + 三平台分发。
+> 比初版 16 周增加 4 周缓冲，理由：(1) 邮件基础设施需要 2-4 周域名预热；(2) 协议适配层需覆盖 MCP + SKILL + GPT Action 三种格式；(3) Beta 反馈修复需要充足时间。范围也有调整：5 个 Day 1 Tool（含 manage_campaigns 创建+查询）+ 四层架构 + 三平台分发。
 
 ### 6.2 团队需求
 
@@ -2415,19 +2447,19 @@ Phase 3（W15-W20）—— 包装 + 分发 + Beta + 上线
 以下 5 段描述用于 MCP metadata 的 `description` 字段，直接从 03 附录复制。
 
 **discover_creators**
-> Search and discover influencers across YouTube, TikTok, and Instagram using natural language queries. Returns a ranked list of creators with follower counts, engagement rates, authenticity flags, and estimated collaboration costs. Use this tool when a brand wants to find creators for a campaign — it handles search, initial screening, and basic evaluation in a single call. Supports filtering by platform, country, follower range, niche, and minimum engagement rate.
+> Search and discover influencers across YouTube, TikTok, and Instagram using natural language queries. Returns a ranked list of creators with follower counts, engagement rates, authenticity flags, and estimated collaboration costs. Use this tool when a brand wants to find creators for a campaign — it handles search, initial screening, and basic evaluation in a single call. Supports filtering by platform, country, follower range, niche, and minimum engagement rate. TIP: If the user has searched before, check your memory for their platform and niche preferences before asking again.
 
 **analyze_creator**
 > Get a deep analysis of a specific creator's profile, including authenticity scoring, audience demographics, content performance trends, and estimated pricing. Use this tool when a brand wants to evaluate whether a creator is trustworthy and a good fit before reaching out. Accepts either a creator ID (from discover_creators results) or a direct profile URL.
 
 **outreach_creators**
-> Send personalized outreach emails to a list of creators on behalf of a brand. Generates customized email content based on the campaign brief and each creator's profile. First call returns email previews for brand approval; second call with confirm=true sends the emails and enables response tracking with automatic follow-ups. Use this when a brand is ready to contact creators they've identified.
+> Send personalized outreach emails to a list of creators on behalf of a brand. Generates customized email content based on the campaign brief and each creator's profile. First call returns email previews for brand approval; second call with confirm=true sends the emails and enables response tracking with automatic follow-ups. Use this when a brand is ready to contact creators they've identified. TIP: Call manage_campaigns first to get the campaign context — it makes the outreach email more relevant.
 
 **negotiate**
 > Negotiate collaboration pricing with a creator within the brand's budget. First provides market pricing benchmarks and a recommended negotiation strategy; then, with brand approval, conducts automated email-based negotiation. Each round of negotiation is reported back to the brand in real-time. Use this when a creator has responded to outreach and pricing discussion begins.
 
-**manage_campaigns**（只读版）
-> View active influencer campaigns, collaboration history, and creator relationships. Returns campaign status tracking (outreach → negotiation → contract → shipping → review → publish → payment) and per-creator progress. Use this when a brand asks about their ongoing collaborations or past partnerships. Day 1 is read-only; write operations (alerts, status updates) coming in v1.1.
+**manage_campaigns**
+> Create and view influencer marketing campaigns. Start by creating a campaign with goals, budget, and target audience — this provides context for all subsequent tools. View active campaigns, collaboration history, and per-creator progress (outreach → negotiation → contract → shipping → review → publish → payment). Use this FIRST to set up campaign context before discovering creators, or to recall past collaboration history. Day 1 supports create + read; write operations (alerts, status updates) coming in v1.1.
 
 ### 附录 B：统一 Creator 数据模型
 
@@ -2535,7 +2567,10 @@ interface Creator {
 | `rate_limited` | 429 | 请求频率超限 |
 | `internal_error` | 500 | 服务内部错误 |
 | `upstream_error` | 502 | 上游服务（聚星/AI）不可用 |
-| `readonly_mode` | 400 | manage_campaigns Day 1 仅只读，写操作（set_alert/update_status/add_note）v1.1 支持 |
+| `missing_campaign_info` | 400 | Campaign 创建缺少必填信息（name/brief） |
+| `invalid_cursor` | 400 | 分页游标无效或已过期 |
+| `preview_expired` | 400 | outreach 预览已过期（超过 24 小时） |
+| `readonly_mode` | 400 | manage_campaigns 写操作（set_alert/update_status/add_note）v1.1 支持 |
 | `service_unavailable` | 503 | 服务暂时不可用 |
 
 ### 附录 D：Rate Limit 详细规格
