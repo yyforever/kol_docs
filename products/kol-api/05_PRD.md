@@ -170,9 +170,9 @@ NoxInfluencer 的交互模型不是"用户→网站"，而是"用户→Agent→A
 | **情绪** | 从满意→依赖——"没有这个工具效率太低了" |
 | **Agent 自适应** | Agent 记住品牌偏好（平台/品类/预算/调性），搜索和邮件生成自动适配，不再逐次追问 |
 | **摩擦 🟡** | 跨会话连续性——昨天搜的达人今天怎么继续？→ Agent 记忆 + manage_campaigns 双保险 |
-| **摩擦 🟡** | 达人回复管理——outreach 发了邮件，达人回了怎么知道？→ Day 1 邮件通知（达人回复时系统自动发通知邮件给品牌）+ manage_campaigns 状态更新 |
+| **摩擦 🟡** | 达人回复管理——outreach 发了邮件，达人回了怎么知道？→ 通知 Agent（新一代 Agent 天生有 webhook 入口，详见 3.1.2）+ manage_campaigns 状态更新 |
 | **失败→恢复** | Credit 消耗完但未形成习惯→放弃 → Credit 低时发价值回顾邮件"你已找到 N 个达人" |
-| **产品需要** | manage_campaigns 完整覆盖合作状态；Tool 返回 summary 供 Agent 存入记忆；达人回复邮件通知（Day 1：系统邮件通知品牌注册邮箱） |
+| **产品需要** | manage_campaigns 完整覆盖合作状态；Tool 返回 summary 供 Agent 存入记忆；异步事件通知 Agent（达人回复、谈判进展） |
 | **度量** | WAU；每用户周均 Tool 调用次数；激活→W2 留存率（目标 > 50%） |
 
 ---
@@ -1929,6 +1929,30 @@ nox search "US beauty TikTokers" --json | \
   jq '[.[] | select(.engagement_rate > 0.05)]' | \
   nox outreach --stdin --brief "protein powder launch" --preview
 ```
+
+#### 3.1.2 异步事件通知
+
+邀约和谈判是异步操作——达人可能几小时后才回复。新一代 Agent（OpenClaw、Dust 等）天生有 webhook 入口，外部系统可以直接往 Agent 发消息。
+
+**通知流程**：
+
+```
+达人回复邮件 → 聚星邮件回调 → NoxInfluencer 后端 → POST 到品牌配置的 webhook URL → Agent 收到通知
+```
+
+**品牌配置**：在 NoxInfluencer 后台填一个 webhook URL。不管对方是 OpenClaw（`/hooks/agent`）、Slack incoming webhook 还是其他平台，我们往那儿 POST 就行。
+
+**通知内容**：每条通知包含事件类型、达人 handle、campaign_id、自然语言摘要、推荐下一步动作（告诉 Agent 该调哪个 Tool）。
+
+**Day 1 事件**：
+
+| 事件 | 触发 | 推荐动作 |
+|------|------|---------|
+| `creator_replied` | 达人回复邀约邮件 | 调 negotiate 开始谈价 |
+| `negotiation_update` | 谈判有新进展 | 审核对方还价 |
+| `negotiation_agreed` | 达人同意条款 | 审核确认邮件 |
+
+---
 
 ### 3.2 数据层
 

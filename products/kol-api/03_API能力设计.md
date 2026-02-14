@@ -244,7 +244,7 @@ Day 1 的 manage_campaigns 支持创建 Campaign（定义营销目标和约束�
 **两阶段执行**（human-in-the-loop）：
 
 1. **策略阶段**（`confirm: false`）：返回市场定价基准 + 该达人历史报价 + 建议谈判策略 + 预估成交价区间。**所有层级可用，不扣 credit。**
-2. **执行阶段**（`confirm: true`）：在预算范围内自动与达人邮件往返。每轮进展同步给品牌，达成一致后发合作确认邮件（需品牌最终审核）。**所有层级可用，每轮扣 5 credits——Credit 配额是唯一限制。**
+2. **执行阶段**（`confirm: true`）：在预算范围内自动与达人邮件往返。每轮进展通过 webhook 通知 Agent（新一代 Agent 天生有 webhook 入口），达成一致后发合作确认邮件（需品牌最终审核）。**所有层级可用，每轮扣 5 credits——Credit 配额是唯一限制。**
 
 ### 3.5 `manage_campaigns` — "管理我的合作"
 
