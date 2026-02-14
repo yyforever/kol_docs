@@ -69,12 +69,12 @@ Pi（OpenClaw 底层引擎）用 4 个 Tool（read/write/edit/bash）驱动了 1
 │  REST API / MCP Server / SKILL.md / GPT Action              │
 │  都直接调用 Core，仅做协议转换 + 认证 + 限流 + 数据分级门控      │
 ├────────────────────────────────────────────────────────────┤
-│  Core（纯业务逻辑）                                          │
-│  搜索解析、假粉检测、邮件生成、谈判策略、Credit 扣减...          │
-│  无 I/O 依赖，通过 DI 接收 Services                          │
+│  Core（业务逻辑 + 状态机）                                    │
+│  搜索解析、假粉检测、邮件内容编排、谈判策略、Credit 扣减        │
+│  所有 I/O 通过 DI 接口隔离，100% 可单测                       │
 ├────────────────────────────────────────────────────────────┤
 │  Services（外部依赖适配）                                     │
-│  聚星数据 API / OpenAI / Resend / Stripe / DB                │
+│  聚星数据 API / OpenAI / 聚星邮件 / Stripe / DB              │
 └────────────────────────────────────────────────────────────┘
 
 终端型 Agent（Claude Code / OpenClaw）→ 直接 bash 调 CLI（Harness 层）
@@ -180,7 +180,7 @@ Day 1 增加 manage_campaigns 只读版的原因：02 明确 CRM 是"留存驱�
 | `followers_range` | | object | — | `{min: 10000, max: 1000000}` |
 | `engagement_min` | | float | — | 最低互动率（0.03 = 3%） |
 | `niche` | | string | — | 内容品类 |
-| `count` | | int | 10 | 返回数量（上限 50） |
+| `count` | | int | 10 | 返回数量（上限受层级限制：Free 10、Starter 30、Pro+ 50） |
 | `include_audience` | | bool | false | 是否含受众概要 |
 
 **返回**：排序的达人清单，每人含基础画像 + 真假粉标记 + 互动率 + 预估合作费。数据深度按层级门控（Free 仅粗粒度真实性 + 基础指标，Starter+ 含联系方式和精确评分，详见 04 L4 数据分级返回 和 05 附录 D）。

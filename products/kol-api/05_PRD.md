@@ -792,6 +792,32 @@ Day 1 上线 5 个 Tool：4 个全链路核心（搜索→评估→邀约→谈�
 1. **策略阶段**（`confirm: false`）：返回市场定价基准 + 达人历史报价 + 建议谈判策略 + 预估成交价区间。**不扣 credit，不发邮件。**
 2. **执行阶段**（`confirm: true`）：在预算范围内自动与达人邮件往返。每轮进展同步给品牌。达成一致后生成合作确认邮件草稿（需品牌最终审核）。**每轮扣 5 credits。**
 
+**谈判状态机**（Core 层纯状态机，无 I/O）
+
+```
+idle ──confirm:false──→ strategy（返回策略预览，不扣 credit）
+  │
+  └──confirm:true───→ in_progress（发送首轮谈判邮件，扣 5 credits）
+                          │
+                          ├── 达人回复 ──→ in_progress（下一轮，扣 5 credits）
+                          ├── 达人同意 ──→ agreed（生成确认邮件草稿）
+                          ├── 达人拒绝 ──→ rejected
+                          ├── 超 5 轮未达成 ──→ stalled
+                          └── 报价超 budget_max 且无下降趋势 ──→ over_budget
+
+stalled ──品牌调整预算──→ in_progress（重启谈判，继续计轮次）
+```
+
+| 状态 | 含义 | 允许的转换 | Credit 影响 |
+|------|------|-----------|-----------|
+| `idle` | 初始状态 | → strategy / in_progress | 无 |
+| `strategy` | 策略预览已返回 | → in_progress（品牌确认启动） | 不扣 |
+| `in_progress` | 谈判进行中 | → agreed / rejected / stalled / over_budget | 每轮完成后扣 5 |
+| `agreed` | 达成一致 | 终态 | — |
+| `rejected` | 达人拒绝 | 终态 | — |
+| `stalled` | 超轮次暂停 | → in_progress（品牌调整后重启） | — |
+| `over_budget` | 超预算终止 | 终态 | — |
+
 **边界条件**
 
 | 条件 | 行为 |
@@ -973,6 +999,12 @@ API Key 配置到 Agent 环境变量 → 开始使用
 - 月度 credit 不累积（no rollover），防止攒 credit 后一次性搬取
 - Free 层 200 credits 一次性发放，用完即止（不按月重置）
 
+**扣减原子性**：
+
+- **同步操作**（discover / analyze / manage_campaigns）：业务操作与 Credit 扣减在同一数据库事务中，操作失败自动回滚
+- **批量操作**（outreach_creators `confirm: true`）：按实际成功发送人数扣减，部分失败时只扣成功部分。返回的 `credits.used` 反映实际扣减值
+- **异步操作**（negotiate `confirm: true`）：每轮完成后扣减（后扣减模式），轮次失败不扣该轮 credit。每次扣减使用幂等 key 防止重复扣减
+
 #### 2.2.3 Stripe 集成
 
 | 环节 | 实现 |
@@ -981,7 +1013,7 @@ API Key 配置到 Agent 环境变量 → 开始使用
 | **订阅管理** | Stripe Customer Portal → 升级/降级/取消 |
 | **Webhook** | 监听以下事件（详见 Webhook 处理逻辑表） |
 | **超额计费** | Stripe Metered Billing：credit 用完后按量计费，月底结算 |
-| **年付** | Stripe Price 配置年付选项，全档 20% off |
+| **年付** | Stripe Price 配置年付选项，全档 ~17% off（整数定价：$290/$990/$1,990 年） |
 
 **Webhook 事件处理逻辑**：
 
@@ -1039,7 +1071,7 @@ Retry-After: 60
 |---------|:----:|:-------:|:----:|
 | 达人名称 + 平台 + 粉丝数 | ✅ | ✅ | ✅ |
 | 互动率 + 内容量 | ✅ | ✅ | ✅ |
-| 真实性评分（粗粒度：高/中/低） | ✅ | ✅ | ✅ |
+| 真实性评分（粗粒度：trustworthy/moderate/suspicious） | ✅ | ✅ | ✅ |
 | 真实性评分（精确分数 + 可疑信号） | ❌ | ✅ | ✅ |
 | 受众画像（概要） | ❌ | ✅ | ✅ |
 | 受众画像（完整人口统计） | ❌ | ❌ | ✅ |
@@ -1246,6 +1278,478 @@ components:
 
 Day 1 不实现 Resource 的原因：Resource 协议语义是"免费可读数据"，与 Credit 计费机制冲突。待 Day 1 数据验证后，根据实际调用模式决定是否拆分。
 
+### 2.5 网站页面需求设计
+
+> 设计原则：NoxInfluencer 的主交互在 Agent 平台内（品牌→Agent→API），网站是**注册入口 + 管理后台 + 信任建立**，不是日常操作界面。
+>
+> 竞品参考：Firecrawl（Landing + Pricing 结构）、Tavily（双受众策略 + Credit 呈现）。关键差异——Firecrawl/Tavily 面向开发者用代码说话，NoxInfluencer 面向品牌营销人员用场景说话。
+
+---
+
+#### 2.5.1 Landing Page — noxinfluencer.com
+
+**用户目标**：30 秒内判断"这东西能不能帮我省时间"
+
+**入口**：Google 搜索（SEO）/ Agent 平台搜到 NoxInfluencer / 社区推荐 / 付费广告
+
+**核心模块**（按页面顺序）：
+
+| # | 模块 | 内容要求 | 参考 |
+|---|------|---------|------|
+| 1 | **Header** | Logo + Pricing + Docs + Quick Start + "Get Started Free" CTA。简洁，5 项以内 | Firecrawl: 精简导航 |
+| 2 | **Hero** | 主标题（品牌语言，不用技术术语）+ 副标题（量化价值）+ 双 CTA（"免费试用" + "看 Demo"） | Tavily: "Connect your AI agents to the web" |
+| 3 | **Social Proof Bar** | "Trusted by X brands" + 品牌 Logo 滚动（Day 1 没有客户时用数据规模替代："覆盖 YouTube / TikTok / Instagram 百万级达人"） | Firecrawl: "80,000+ companies" |
+| 4 | **痛点共鸣** | 3 张卡片：找人（3-5 天→30 秒）、邀约（333 封邮件→一句话）、谈判（55% 人工时间→AI 自动）。每张卡片：痛点数字 + 解决后状态 | Tavily 的 3-feature cards |
+| 5 | **工作流演示** | Agent 对话截图或动画：品牌说"帮我找 10 个美妆达人"→ Agent 返回结果列表→"联系前 5 个"→ 邮件预览。视觉化展示，不是代码 | Firecrawl: interactive demo（适配为对话截图） |
+| 6 | **数据实力** | 3-4 个关键数字：覆盖达人数、支持平台数、假粉检测准确率、AI 搜索响应时间 | Tavily: Stats Grid |
+| 7 | **平台兼容** | "Works with your AI assistant" + ChatGPT / Claude / OpenClaw Logo + 每个平台一行说明 | Firecrawl: Compatibility list |
+| 8 | **定价预览** | 4 档简化展示（Free $0 / Starter $29 / Pro $99 / Growth $199）+ "View full pricing" 链接 | Firecrawl: Pricing Teaser |
+| 9 | **FAQ** | 6-8 个问题：什么是 NoxInfluencer / 需要会编程吗 / 怎么收费 / 数据从哪来 / 安全吗 / 支持哪些平台 | Firecrawl: 3 类 FAQ accordion |
+| 10 | **底部 CTA** | 重复 Hero 的 CTA + 补充"Book a Demo"（面向大品牌） | Tavily: Footer CTA |
+| 11 | **Footer** | 产品链接 + 文档链接 + Legal（ToS / Privacy）+ 社交渠道 | 标准 |
+
+**Hero 文案方向**（供参考，最终文案需 A/B 测试）：
+
+| 候选 | 主标题 | 副标题 |
+|------|--------|--------|
+| A | AI finds your perfect creators in 30 seconds | Stop spending 3-5 days searching. Let your AI assistant handle influencer discovery, outreach, and negotiation. |
+| B | Influencer marketing on autopilot | Your AI assistant finds creators, sends outreach, and negotiates deals — you just approve. |
+| C | From brief to deal in one conversation | Tell your AI what you need. It finds creators, reaches out, and closes deals. |
+
+**关键约束**：
+
+- 全页面零技术术语（不出现 API、MCP、SDK、JSON 等词）
+- 不要"Developer"字样——品牌用户看到会觉得"不是给我用的"
+- 移动端优先（品牌营销人员移动端浏览占比高）
+- 页面加载 < 3 秒（LCP）
+
+**验收标准**：
+
+- [ ] 非技术用户（找 3 个营销人员）10 秒内能说出"这个产品是做什么的"
+- [ ] 页面没有任何技术术语（API、MCP、SDK、endpoint 等）
+- [ ] 双 CTA 可点击且指向正确（注册页 + Demo）
+- [ ] 移动端体验完整，无水平滚动
+- [ ] Lighthouse Performance > 90
+
+---
+
+#### 2.5.2 注册页 — noxinfluencer.com/signup
+
+**用户目标**：30 秒内完成注册，拿到 API Key
+
+**入口**：Landing page CTA / 定价页 CTA / Agent 平台内 upgrade_url
+
+**页面结构**：
+
+```
+┌─────────────────────────────────────┐
+│  Logo                               │
+│                                     │
+│  Create your free account           │
+│  Get 200 credits to start — no      │
+│  credit card required               │
+│                                     │
+│  ┌─────────────────────────────┐    │
+│  │ Work email*                 │    │
+│  ├─────────────────────────────┤    │
+│  │ Password*                   │    │
+│  ├─────────────────────────────┤    │
+│  │ Company name (optional)     │    │
+│  ├─────────────────────────────┤    │
+│  │ [Get Started Free]          │    │
+│  └─────────────────────────────┘    │
+│                                     │
+│  By signing up you agree to our     │
+│  Terms of Service and Privacy Policy│
+│                                     │
+│  Already have an account? Log in    │
+└─────────────────────────────────────┘
+```
+
+**字段规格**：
+
+| 字段 | 必填 | 校验规则 | 说明 |
+|------|:----:|---------|------|
+| Work email | ✅ | 格式校验 + 一次性邮箱屏蔽 + 竞品域名黑名单 + 同域名每日 ≤ 3 | 主标识 |
+| Password | ✅ | ≥ 8 字符 + 至少 1 数字/特殊字符 | 基础安全 |
+| Company name | ❌ | — | 用于个性化 + 分析 |
+
+**注册后流程**：
+
+```
+提交表单
+  ↓
+发送验证邮件（5 分钟内到达）
+  ↓
+显示"Check your email"页面（含重发链接）
+  ↓
+点击验证链接 → 跳转 Dashboard
+  ↓
+Dashboard 显示：API Key（一键复制）+ 200 credits + "Next: Set up your AI assistant" 引导
+```
+
+**验证邮件内容要求**：
+
+| 要素 | 规格 |
+|------|------|
+| 发件人 | NoxInfluencer <hello@noxinfluencer.com> |
+| 主题 | Verify your email — your API key is ready |
+| 正文 | 欢迎语 + 验证按钮 + 24h 过期说明 + 底部联系方式 |
+| 过期 | 24 小时，过期后可在登录页重新发送 |
+
+**验收标准**：
+
+- [ ] 注册→拿到 API Key 全程 < 60 秒（含邮箱验证）
+- [ ] 一次性邮箱（Guerrilla Mail 等）被拦截并显示友好提示
+- [ ] 验证邮件 < 30 秒送达（P95）
+- [ ] 注册后 Dashboard 自动显示 API Key + Quick Start 引导
+- [ ] 移动端注册体验完整
+
+---
+
+#### 2.5.3 Dashboard — noxinfluencer.com/dashboard
+
+**用户目标**：管理 API Key、查看用量、管理账单（日常操作在 Agent 平台，Dashboard 是管理后台）
+
+**入口**：注册成功后自动跳转 / 直接访问 / 网站 Header "Dashboard" 链接
+
+**页面结构**（单页 + Tab 切换，Day 1 保持极简）：
+
+**Tab 1：Overview（默认）**
+
+```
+┌───────────────────────────────────────────────────┐
+│  Welcome back, [Company Name]        [Plan Badge] │
+│                                                   │
+│  ┌─── Credits ────────────────────────────────┐   │
+│  │  ████████░░░░░░░░  1,247 / 2,000 used      │   │
+│  │  753 remaining · Resets Feb 28              │   │
+│  └────────────────────────────────────────────┘   │
+│                                                   │
+│  ┌─── API Key ────────────────────────────────┐   │
+│  │  kol_live_••••••••••••xxxx    [Copy] [Show] │   │
+│  │  Created: Feb 13 · Last used: 2 min ago    │   │
+│  └────────────────────────────────────────────┘   │
+│                                                   │
+│  ┌─── Quick Start ────────────────────────────┐   │
+│  │  Set up your AI assistant:                 │   │
+│  │  [ChatGPT] [Claude] [OpenClaw]             │   │
+│  └────────────────────────────────────────────┘   │
+│                                                   │
+│  ┌─── Recent Activity ────────────────────────┐   │
+│  │  Today 14:32  discover_creators  1 credit  │   │
+│  │  Today 14:30  analyze_creator    2 credits │   │
+│  │  Today 14:28  discover_creators  1 credit  │   │
+│  │  [View all activity →]                     │   │
+│  └────────────────────────────────────────────┘   │
+└───────────────────────────────────────────────────┘
+```
+
+**Tab 2：API Keys**
+
+| 功能 | 规格 |
+|------|------|
+| Key 列表 | 表格：名称 / Key（遮蔽）/ 创建时间 / 最后使用 / 操作 |
+| 创建 Key | "Create new key" → 命名 → 生成 → **仅显示一次**（提示用户立即复制） |
+| 吊销 Key | 需二次确认（"This will immediately stop all API calls using this key"） |
+| 数量限制 | 每账号最多 5 个 Key |
+
+**Tab 3：Usage & Billing**
+
+| 模块 | 内容 |
+|------|------|
+| 用量图表 | 过去 30 天每日 credit 消耗折线图，按 Tool 分色 |
+| 用量明细 | 表格：日期 / Tool / Credits / 状态。支持按日期范围和 Tool 类型筛选 |
+| 当前套餐 | 套餐名 + 价格 + Credit 额度 + 下次续费日期 |
+| 升级入口 | "Upgrade" 按钮 → 跳转定价页 |
+| 发票 | Stripe Customer Portal 链接（管理订阅 / 查看发票） |
+
+**Credit 余额警告**（视觉 + 行为）：
+
+| 余额阈值 | 视觉 | 行为 |
+|---------|------|------|
+| > 50% | 绿色进度条 | — |
+| 20%-50% | 黄色进度条 | — |
+| < 20% | 红色进度条 + Banner 警告 | 触发邮件：价值回顾 + 升级链接 |
+| 0% | 红色 + "Credits exhausted" | API 返回 402 + Dashboard 显示升级 CTA |
+
+**新用户首次登录引导**（仅首次显示）：
+
+```
+Step 1: Copy your API Key  [✓ Done]
+Step 2: Choose your AI assistant → [ChatGPT] [Claude] [OpenClaw]
+Step 3: Follow the Quick Start guide → [Open Guide]
+```
+
+**验收标准**：
+
+- [ ] Overview 页 1 秒内加载完成
+- [ ] API Key 复制后剪贴板内容正确
+- [ ] 新建 Key 仅显示一次，关闭后无法再查看完整 Key
+- [ ] 用量数据准实时（延迟 < 5 分钟）
+- [ ] Credit < 20% 时 Banner 警告自动显示
+- [ ] Stripe Customer Portal 跳转正常（管理订阅 / 查看发票）
+- [ ] 新用户首次登录看到引导步骤
+
+---
+
+#### 2.5.4 定价页 — noxinfluencer.com/pricing
+
+**用户目标**：理解"我需要多少钱"→ 选择合适的套餐 → 完成付费
+
+**入口**：Landing page "View pricing" / Dashboard "Upgrade" / API 返回的 upgrade_url / Agent 告诉品牌"credit 不够了"
+
+**页面结构**：
+
+**模块 1：套餐对比表**
+
+```
+         Free        Starter       Pro          Growth       Enterprise
+         $0          $29/mo        $99/mo       $199/mo      Custom
+         200 credits 2,000/mo      10,000/mo    30,000/mo    定制
+         (一次性)
+
+         [Current]   [Upgrade]     [Upgrade]    [Upgrade]    [Contact Sales]
+                                   ★ Most Popular
+```
+
+| 对比维度 | Free | Starter | Pro | Growth |
+|---------|------|---------|-----|--------|
+| Credits | 200（一次性） | 2,000/月 | 10,000/月 | 30,000/月 |
+| 超额单价 | 不可超 | $0.020 | $0.012 | $0.008 |
+| 达人搜索 | 基础（10条/次） | 30条/次 | 50条/次 | 50条/次 |
+| 真实性评分 | 粗粒度 | 精确分数 | 精确分数 | 精确分数 |
+| 受众画像 | ❌ | 概要 | 完整 | 完整 |
+| 联系方式 | ❌ | ✅ | ✅ | ✅ |
+| 邮件邀约 | 仅预览 | ✅ | ✅ | ✅ |
+| 年付折扣 | — | $290/年（省 $58） | $990/年（省 $198） | $1,990/年（省 $398） |
+| 支持 | 文档 | 邮件 | 优先邮件 | 优先邮件 |
+
+**模块 2：Credit 消耗说明**
+
+> 简单表格，让品牌理解"1 credit 能做什么"
+
+| 操作 | Credit 消耗 | 说明 |
+|------|:-----------:|------|
+| 搜索达人 | 1 | 一次搜索返回最多 10-50 位达人 |
+| 深度分析 | 2 | 单个达人的完整画像 + 真实性评分 |
+| 邮件邀约 | 3/人 | 个性化邮件 + 自动 follow-up |
+| AI 谈价 | 5/轮 | 每轮谈判（典型 3 轮 = 15 credits） |
+| 查看合作 | 1 | 查看进行中的合作状态 |
+
+**模块 3：Credit 模拟器**
+
+交互组件，品牌输入使用场景，系统计算所需 credits：
+
+```
+How many campaigns do you run per month?  [slider: 1-10]
+How many creators per campaign?           [slider: 5-50]
+Do you need AI negotiation?               [Yes] [No]
+
+───────────────────────────────────────
+Estimated monthly usage: ~2,400 credits
+Recommended plan: Pro ($99/mo, 10,000 credits)
+[Upgrade to Pro →]
+───────────────────────────────────────
+```
+
+模拟器计算逻辑：
+- 每个 campaign：1 次搜索 + N 个达人分析 + N 个达人邀约 = 1 + N × 2 + N × 3 = 1 + N × 5 credits
+- 如果需要谈判：假设 50% 达人进入谈判，每个典型 3 轮 = N × 0.5 × 15 credits（来源：03 第 5.3 节典型场景）
+- 加上 campaign 管理查询：每 campaign 约 5 次 = 5 credits
+- 总计 = campaigns × (1 + N × 5 + N × 0.5 × 15 × [谈判?1:0] + 5)
+
+**模块 4：FAQ（6 个问题）**
+
+1. 什么是 Credit？怎么计算用量？
+2. Credit 没用完会累积吗？（不会，月度重置）
+3. Credit 用完了会怎样？（Starter+ 可超额按量计费；Free 停止服务）
+4. 可以随时升级/降级吗？（可以，升级即时生效，降级月底生效）
+5. 支持什么支付方式？（Visa / Mastercard / PayPal via Stripe）
+6. 有退款政策吗？（未使用的当月额度不退，但可随时取消下月续费）
+
+**模块 5：Enterprise CTA**
+
+```
+Need more? Talk to us.
+Custom credits, SLA, dedicated support, and volume pricing.
+[Contact Sales →]
+```
+
+**验收标准**：
+
+- [ ] 套餐对比表在移动端可横向滚动或折叠显示
+- [ ] "Most Popular" 标识在 Pro 套餐上
+- [ ] Credit 模拟器交互流畅，参数变化后实时更新推荐
+- [ ] 年付/月付切换显示折扣金额
+- [ ] 每个套餐的 "Upgrade" 按钮正确跳转 Stripe Checkout
+- [ ] FAQ 手风琴展开/收起正常
+
+---
+
+#### 2.5.5 Quick Start 文档（按平台分页）
+
+**用户目标**：从注册到第一次成功搜索 < 5 分钟
+
+**入口**：Dashboard 引导 / Landing page / 文档站导航
+
+**总页面数**：3 页（ChatGPT + Claude + OpenClaw），Day 1 同时交付
+
+**每页统一结构**：
+
+```
+# Set up NoxInfluencer with [Platform Name]
+Time: ~3 minutes | No coding required
+
+## Before you start
+- A NoxInfluencer account (sign up free → link)
+- [Platform Name] installed on your device
+
+## Step 1: Get your API Key
+[Dashboard 截图：高亮 API Key 位置和 Copy 按钮]
+1. Log in to noxinfluencer.com/dashboard
+2. Copy your API Key
+
+## Step 2: Install NoxInfluencer
+[平台截图：逐步操作]
+（每个平台不同，见下方平台差异表）
+
+## Step 3: Try your first search
+Type this in your AI assistant:
+> "Find 10 beauty TikTok creators in the US with over 50K followers"
+
+You should see a list of creators with engagement rates and authenticity scores.
+
+## Step 4: Go deeper
+Try these:
+> "Analyze the top creator — is she trustworthy?"
+> "Draft outreach emails to the top 3"
+
+## Troubleshooting
+- "Tool not found" → [Check installation steps]
+- "Invalid API key" → [Verify key in Dashboard]
+- "No results" → [Try broadening your search criteria]
+
+## Next steps
+- [Pricing page] — See what you get with Starter
+- [Full documentation] — All 5 tools reference
+```
+
+**平台差异表**：
+
+| 平台 | Step 2 内容 | 技术难度 |
+|------|-----------|:--------:|
+| **ChatGPT** | App Store 搜索 "NoxInfluencer" → Install → 在设置中填入 API Key | 最低 |
+| **Claude** | Settings → MCP → Add Server → 填写配置（提供可复制的 JSON 片段） | 中 |
+| **OpenClaw** | 终端输入 `npx skills add nox-influencer` → 输入 API Key | 中 |
+
+**验收标准**：
+
+- [ ] 每页含 ≥ 3 张截图（对应 3 个 Step）
+- [ ] 非技术用户跟着步骤可以在 5 分钟内完成
+- [ ] 每页有 Troubleshooting 覆盖 3 个最常见问题
+- [ ] 3 个平台页面同时交付（不缺任何一个）
+
+---
+
+#### 2.5.6 文档站 — docs.noxinfluencer.com
+
+**用户目标**：找到具体 Tool 的使用方法和技术细节
+
+**入口**：Landing page "Docs" 链接 / Dashboard "View docs" / Quick Start "Full documentation" / 搜索引擎
+
+**受众**：主要是 Agency 技术人员和高级用户（品牌营销人员主要用 Quick Start，不会来文档站）
+
+**信息架构**：
+
+```
+docs.noxinfluencer.com
+├── Getting Started
+│   ├── What is NoxInfluencer（产品介绍）
+│   ├── Quick Start → ChatGPT / Claude / OpenClaw（链接到 2.5.5 的 3 页）
+│   └── Authentication（API Key 获取 + 传递方式）
+│
+├── Tools Reference（5 个 Tool，每个一页）
+│   ├── discover_creators — 搜索达人
+│   ├── analyze_creator — 深度分析
+│   ├── outreach_creators — 邮件邀约
+│   ├── negotiate — AI 谈价
+│   └── manage_campaigns — 合作管理
+│
+├── Guides（按场景组织）
+│   ├── Find creators for a campaign（搜索→评估完整流程）
+│   ├── Send outreach at scale（批量邀约最佳实践）
+│   └── Negotiate deals with AI（谈判策略指南）
+│
+├── API Reference
+│   ├── Base URL + Authentication
+│   ├── REST Endpoints（5 个）
+│   ├── Error Codes（附录 C 完整列表）
+│   ├── Rate Limits（附录 D）
+│   └── Changelog
+│
+├── Integrations
+│   ├── MCP Server（安装 + 配置）
+│   ├── ChatGPT GPT Action（配置指南）
+│   ├── OpenClaw SKILL（安装指南）
+│   └── CLI Tool（nox 命令参考）
+│
+└── Resources
+    ├── Pricing & Credits（Credit 消耗说明 + 层级对比）
+    ├── Data Coverage（支持平台 + 数据范围）
+    ├── Security & Privacy（数据保护说明）
+    └── llms.txt（LLM 优化的文档索引，供 Agent 消费）
+```
+
+**每个 Tool Reference 页面统一结构**（参考 Firecrawl Feature Docs）：
+
+1. 一句话说明 + 适用场景
+2. Credit 消耗 + HTTP 端点 + CLI 命令
+3. 输入参数表（参数名 / 类型 / 必填 / 说明）
+4. 输出示例（JSON，可折叠）
+5. 行为描述（按条件分支说明）
+6. 错误处理（错误码表）
+7. 代码示例（cURL / Python / Node.js，Tab 切换）
+
+**特殊页面：llms.txt**
+
+提供 LLM 优化的文档索引（参考 Firecrawl 的 `docs.firecrawl.dev/llms.txt`），让 Agent 平台能自动发现和理解 NoxInfluencer 的能力。
+
+**Day 1 优先级**：
+
+| 优先级 | 页面 | 理由 |
+|:------:|------|------|
+| P0 | Getting Started（3 页）| 注册→首次使用的必经路径 |
+| P0 | Tools Reference（5 页）| Agent 技术人员需要的核心参考 |
+| P0 | API Reference（1 页）| 含 Error Codes + Rate Limits |
+| P0 | llms.txt | Agent 自动发现 NoxInfluencer 的关键 |
+| P1 | Guides（3 页）| 上线后 1 个月内补充 |
+| P1 | Integrations（4 页）| 配合 Quick Start 补充深度内容 |
+| P2 | Resources | 上线后按需补充 |
+
+**验收标准**：
+
+- [ ] P0 页面全部完成（Getting Started + 5 Tool + API Reference + llms.txt）
+- [ ] 每个 Tool 页面含完整输入/输出示例
+- [ ] 文档站支持全文搜索
+- [ ] 移动端可读性正常
+- [ ] llms.txt 能被 Agent 平台正确解析
+
+---
+
+#### 2.5.7 页面优先级与工期映射
+
+| 页面 | 优先级 | 工期对应 | 负责 |
+|------|:------:|---------|------|
+| Landing page | Day 1 | W15（Phase 3） | 前端 0.5 人 |
+| 注册页 | Day 1 | W3-4（Phase 1，随 API 骨架一起） | 后端 + 前端 |
+| Dashboard | Day 1 | W7-8（Phase 1，随 Credit 系统一起） | 前端 0.5 人 |
+| 定价页 | Day 1 | W15（Phase 3） | 前端 0.5 人 |
+| Quick Start（3 页） | Day 1 | W15（Phase 3） | 前端/文档 0.5 人 |
+| 文档站（P0 页面） | Day 1 | W15（Phase 3） | 前端/文档 0.5 人 |
+
+> 注册页和 Dashboard 比 Landing page 早开发——注册页是 API Key 发放的前端入口（Phase 1 就需要），Dashboard 是 Credit 系统的管理界面（Phase 1 末尾需要）。Landing page 和定价页在 Phase 3 包装阶段完成。
+
 ---
 
 ## 三、技术架构
@@ -1262,12 +1766,12 @@ Day 1 不实现 Resource 的原因：Resource 协议语义是"免费可读数据
 │  REST API / MCP Server / SKILL.md / GPT Action              │
 │  都直接调用 Core，仅做协议转换 + 认证 + 限流 + 数据分级门控    │
 ├────────────────────────────────────────────────────────────┤
-│  Core（纯业务逻辑）                                          │
-│  搜索解析、假粉检测、邮件生成、谈判策略、Credit 扣减...        │
-│  无 I/O 依赖，通过 DI 接收 Services                          │
+│  Core（业务逻辑 + 状态机）                                    │
+│  搜索解析、假粉检测、邮件内容编排、谈判策略、Credit 扣减      │
+│  所有 I/O 通过 DI 接口隔离，100% 可单测                      │
 ├────────────────────────────────────────────────────────────┤
 │  Services（外部依赖适配）                                     │
-│  聚星数据 API / OpenAI / Resend / Stripe / DB                │
+│  聚星数据 API / OpenAI / 聚星邮件 / Stripe / DB              │
 │  接口定义在 Core 层，实现在 Services 层                       │
 └────────────────────────────────────────────────────────────┘
 ```
@@ -1280,8 +1784,8 @@ Day 1 不实现 Resource 的原因：Resource 协议语义是"免费可读数据
 |----|------|------------|
 | **Harness** | `nox` CLI 命令，直接调用 Core，验证入口 + 回归测试 | Node.js（commander/oclif）或 Go （技术团队决策） |
 | **Shell** | REST API + MCP Server + SKILL.md + GPT Action，都是 Core 的薄包装，仅做协议转换 + 认证 + 限流 + 数据分级门控 | REST: Fastify/Hono （技术团队决策）；MCP: `@modelcontextprotocol/sdk`；SKILL: CLI 映射；GPT Action: OpenAPI spec |
-| **Core** | 纯业务逻辑：搜索解析、假粉检测、邮件生成、谈判策略、Credit 扣减。无 I/O 依赖，100% 可单测 | TypeScript 纯函数 + 状态机 |
-| **Services** | 外部依赖适配层：聚星数据 API、OpenAI、Resend、Stripe、DB。接口定义在 Core，实现在 Services，通过 DI 注入 | 各 SDK + adapter pattern |
+| **Core** | 业务逻辑 + 状态机：搜索解析、假粉检测、邮件内容编排、谈判策略、Credit 扣减逻辑。所有 I/O 通过 DI 接口隔离，100% 可单测 | TypeScript 业务逻辑 + 状态机 |
+| **Services** | 外部依赖适配层：聚星数据 API、LLM 推理（OpenAI/Anthropic）、聚星邮件基础设施、Stripe、DB。接口定义在 Core，实现在 Services，通过 DI 注入 | 各 SDK + adapter pattern |
 
 #### 3.1.1 MCP Server 工程规范
 
@@ -1297,7 +1801,7 @@ NoxInfluencer 的 MCP Server 是 Core 的薄包装（< 200 行目标），仅做
 |----------------|---------------------------|
 | MCP 协议握手 + 传输（stdio / Streamable HTTP） | 参数解析（宽进严出） |
 | 将 MCP Tool call 参数转为 Core 函数调用 | 业务校验 + 错误处理 |
-| 将 Core 返回转为 MCP 协议响应 | Credit 扣减 + 数据分级 |
+| 将 Core 返回转为 MCP 协议响应 + 数据分级过滤 | Credit 扣减逻辑 |
 | 认证（读取 `KOL_API_KEY` 环境变量） | 所有业务逻辑 |
 
 **配置与行为**
@@ -1413,24 +1917,33 @@ nox search "US beauty TikTokers" --json | \
 |------|------|-----------|---------|
 | **AI 自然语言搜索** | 现有是标签搜索，无 NLP | Day 1 必须 | LLM 将自然语言解析为结构化查询 → 调用聚星搜索 API |
 | **跨平台统一数据模型** | 各平台字段结构不一致 | Day 1 必须 | 设计统一 Creator 对象（见附录 B） |
-| **邮件邀约基础设施** | 无 | Day 1 必须 | Resend 或 AWS SES + 邮件模板 + 投递追踪 |
+| **邮件邀约基础设施** | 聚星已有完整邮件基础设施 | Day 1 复用 | 封装聚星邮件 Services 层接口（详见 3.6 节） |
 | **AI 谈判引擎** | 无 | Day 1 必须 | 多轮 LLM 推理 + 邮件往返自动化 |
 
 #### 需要适配的能力（聚星已有，需统一接口）
 
+> TODO：需探索聚星 KOLServer 源码，确认各 API 的接口规范、调用方式和性能特征（与邮件基础设施 3.6 节同方式）。
+
 | 能力 | 聚星现状 | 适配工作 |
 |------|---------|---------|
+| **搜索 API** | 标签搜索，6 平台覆盖 | 适配统一搜索接口，接收 Core 层 NLP 解析后的结构化查询 |
 | **假粉检测** | 三平台已有，行业 top | 适配统一 `authenticity` 接口（score 0-100 + fake_follower_pct + suspicious_signals） |
 | **受众画像** | YT/TikTok/IG 三平台已有 | 适配统一 `audience` 模型（countries + age_ranges + gender + interests） |
+| **频道/视频数据** | 6 平台全覆盖 | 适配统一 `Creator` 对象的 content_stats 字段 |
+| **品牌合作数据** | 主要 YT | 适配 `competitive_intel` Tool（v1.1）的数据源 |
 
-#### 统一 Creator 数据模型
+#### 统一数据模型
 
-所有 Tool 返回的达人数据使用统一的 `Creator` 对象。详见附录 B。
+**Creator 模型**：所有 Tool 返回的达人数据使用统一的 `Creator` 对象。详见附录 B。
 
 核心设计原则：
 - 字段命名跨平台一致（不暴露平台差异）
 - 字段缺失时返回 `null`（不省略字段）
 - 数值字段统一精度（粉丝数为整数，百分比为小数）
+
+**Campaign 模型**：`manage_campaigns` 返回的合作数据使用统一的 `Campaign` 对象，聚合 outreach 和 negotiate 产生的记录。
+
+> TODO：Campaign 数据模型定义依赖聚星 API 探索结果。需明确 Campaign-Creator 关联关系、阶段状态追踪（邀约→谈判→合同→发货→审稿→发布→结算）的数据来源。
 
 ### 3.3 AI 推理层
 
@@ -1458,7 +1971,7 @@ nox search "US beauty TikTokers" --json | \
 | **部署** | Cloudflare Workers + Hono 或 AWS Lambda + API Gateway | （技术团队决策）。独立服务，不依赖聚星主站 |
 | **数据库** | PostgreSQL（Supabase 或 RDS） | 用户账号、API Key、credit 追踪、谈判记录 |
 | **缓存** | Redis（Upstash 或 ElastiCache） | 搜索结果缓存、rate limit 计数器 |
-| **邮件服务** | Resend（首选）或 AWS SES | 邀约邮件发送、投递追踪、退信处理 |
+| **邮件服务** | 聚星邮件基础设施（Aliyun DirectMail + SendCloud + Gmail 账号池） | 邀约邮件发送、投递追踪、退信处理（详见 3.6 节） |
 | **AI 推理 API** | OpenAI API（GPT-4o / 4o-mini） | 自然语言解析、邮件生成、谈判推理 |
 | **支付** | Stripe（Checkout + Billing + Webhooks） | 订阅管理、超额计费、发票 |
 | **监控** | Sentry（错误追踪）+ Grafana/Datadog（指标） | 错误率、延迟、credit 消耗分布 |
@@ -1485,12 +1998,12 @@ Peter 的核心主张：**"whatever I wanna build, it starts as CLI… closing t
 │  REST API + MCP Server + SKILL.md + GPT Action       │
 │  仅做协议转换、认证、限流、数据分级门控                  │
 ├─────────────────────────────────────────────────────┤
-│  Core（纯业务逻辑）                                   │
-│  搜索解析、假粉检测、邮件生成、谈判策略、Credit 扣减    │
-│  无 I/O 依赖，通过 DI 接收 Services                   │
+│  Core（业务逻辑 + 状态机）                             │
+│  搜索解析、假粉检测、邮件内容编排、谈判策略、Credit 扣减 │
+│  所有 I/O 通过 DI 接口隔离，100% 可单测                │
 ├─────────────────────────────────────────────────────┤
 │  Services（外部依赖适配）                              │
-│  聚星数据 API / OpenAI / Resend / Stripe / DB         │
+│  聚星数据 API / OpenAI / 聚星邮件 / Stripe / DB       │
 │  接口定义在 Core 层，实现在 Services 层                │
 └─────────────────────────────────────────────────────┘
 ```
@@ -1501,8 +2014,8 @@ Peter 的核心主张：**"whatever I wanna build, it starts as CLI… closing t
 |----|---------|----------|
 | **Harness** | `nox` CLI 命令、`nox test-search` 回归脚本、`nox smoke` 冒烟测试 | 直接调用 Core，绕过 Shell，**缩短反馈回路** |
 | **Shell** | REST API 路由、MCP Server 协议适配（< 200 行）、Stripe webhook 处理、认证中间件、数据分级门控 | 薄 I/O 层，mock Services 后可集成测试 |
-| **Core** | 自然语言→结构化查询解析、Creator 数据标准化、Credit 扣减逻辑、谈判策略状态机、邮件模板渲染、参数解析（宽进严出） | 纯函数 / 纯状态机，无外部依赖，**100% 可单测** |
-| **Services** | 聚星数据 API adapter、OpenAI adapter、Resend adapter、Stripe adapter、DB adapter | 接口定义在 Core，测试时替换为 mock 实现 |
+| **Core** | 自然语言→结构化查询解析、Creator 数据标准化、Credit 扣减逻辑、谈判策略状态机、邮件内容编排、参数解析（宽进严出） | 业务逻辑 + 状态机，所有 I/O 通过 DI 接口隔离，**100% 可单测** |
+| **Services** | 聚星数据 API adapter、OpenAI adapter、聚星邮件 adapter、Stripe adapter、DB adapter | 接口定义在 Core，测试时替换为 mock 实现 |
 
 **关键设计约束**：
 
@@ -1518,7 +2031,7 @@ Peter 的核心主张：**"whatever I wanna build, it starts as CLI… closing t
 | **L1 Unit + Lint** | 每次提交 | Core 纯逻辑：查询解析、Credit 计算、数据标准化、错误码映射、谈判状态机 | < 30 秒 |
 | **L2 Integration** | PR 合并前 | Shell 层：API 路由 + 认证 + Rate Limit + 数据分级门控（mock 外部服务，hermetic） | < 3 分钟 |
 | **L3 E2E** | PR 合并前 | 关键路径：注册→搜索→分析→邀约预览→谈判预览（mock LLM + mock 聚星 API） | < 5 分钟 |
-| **L4 Live Smoke** | Nightly | 真实 API Key 跑完整链路：聚星数据源 + 聚星假粉检测 + OpenAI + Resend | 允许更慢 |
+| **L4 Live Smoke** | Nightly | 真实 API Key 跑完整链路：聚星数据源 + 聚星假粉检测 + OpenAI + 聚星邮件 | 允许更慢 |
 
 **AI 组件的特殊测试问题**：
 
@@ -1578,6 +2091,110 @@ Coding Agent 的核心循环是：写代码 → 跑测试 → 看输出 → 修�
 - "这个达人的数据是 30 天前的，我提醒品牌数据可能不够新"
 
 **P2 触发条件**：Day 1 调用日志显示 Agent 对同一 Tool 的重复调用率 > 20%（说明 Agent 在盲目重试，缺少自我判断信息）。
+
+### 3.6 邮件基础设施
+
+> 架构原则：**聚星提供 Services 层传输能力，NoxInfluencer Core 层拥有邀约/谈判/通知等业务逻辑。** 不继承聚星的 Campaign 流程编排层，只封装三个原语：发送、接收、追踪。
+
+#### 3.6.1 聚星已有能力（Services 层复用）
+
+聚星已运营多年邮件系统，以下能力经验证可直接复用：
+
+| 能力 | 聚星现状 | NoxInfluencer 复用方式 |
+|------|---------|---------------------|
+| **发送通道** | 3 通道：Aliyun DirectMail（SMTP）、SendCloud（API）、Gmail 账号池（OAuth） | 封装为统一 `EmailTransport` 接口，通道选择策略在 Services 层 |
+| **账号池** | `kol_email_account_pool` 表，加权轮转、每日额度、回复率评分 | 直接复用，NoxInfluencer 按品牌隔离分配发送账号 |
+| **发送管控** | 800 封/天/账号、36 秒间隔、Redis 队列（`email_send_queue`）、失败重试 3 次 | 直接复用，NoxInfluencer 不改发送频控逻辑 |
+| **投递追踪** | 8 状态（待发送→已发送→已投递→已打开→已点击→已回复→退信→失败）、打开像素、点击短链（`url.noxinfluencer.com`） | 直接复用，NoxInfluencer 消费状态回调 |
+| **回复检测** | `private_message` 表，定时拉取收件箱匹配回复 | 直接复用，NoxInfluencer 订阅回复事件触发谈判流程 |
+| **邮件域名** | `email.noxinfluencer.com` 已预热，SPF/DKIM/DMARC 已配置 | 直接复用，零预热成本 |
+| **反垃圾** | 260+ 敏感词库（3 类）、内容检测 | 直接复用 |
+| **模板引擎** | Velocity（.vm）+ 数据库模板存储 | NoxInfluencer 用 AI 生成邮件内容，模板引擎仅用于系统邮件（验证码、账单通知等） |
+
+#### 3.6.2 Services 层接口定义
+
+NoxInfluencer Core 层通过以下接口消费聚星邮件能力（接口定义在 Core，实现在 Services）：
+
+```typescript
+// Core 层定义的接口（接口定义在 Core，实现在 Services）
+interface EmailService {
+  // 批量发送：Core 生成邮件内容，Services 负责传输
+  batchSend(emails: OutboundEmail[]): Promise<SendResult[]>
+
+  // 查询投递状态
+  getDeliveryStatus(messageIds: string[]): Promise<DeliveryStatus[]>
+}
+
+// Core 层定义的 LLM 推理接口（与 EmailService 同为 DI 注入的 Services 接口）
+interface LLMService {
+  // 自然语言→结构化查询、邮件内容生成、谈判策略推理
+  complete(prompt: string, options?: LLMOptions): Promise<string>
+}
+
+// 谈判状态机的回复处理（Core 层纯函数，Shell 层调度）
+// Shell 层接收回复事件后调用此函数，Core 层不主动订阅事件
+interface NegotiationEngine {
+  processReply(negotiationId: string, reply: InboundEmail): NegotiationAction
+}
+
+interface OutboundEmail {
+  to: string                    // 达人邮箱
+  from_account?: string         // 指定发送账号（可选，默认自动分配）
+  subject: string
+  html_body: string             // Core 层 AI 生成的邮件内容
+  text_body: string             // 纯文本回退
+  reply_to: string              // 回复地址（用于回复检测）
+  metadata: {
+    brand_id: string
+    creator_id: string
+    campaign_id?: string
+    email_type: 'outreach' | 'negotiation' | 'follow_up'
+  }
+}
+
+interface DeliveryStatus {
+  message_id: string
+  status: 'queued' | 'sent' | 'delivered' | 'opened' | 'clicked' | 'replied' | 'bounced' | 'failed'
+  updated_at: string
+}
+
+interface InboundEmail {
+  message_id: string            // 关联的原始发送 message_id
+  from: string                  // 达人回复邮箱
+  subject: string
+  body: string
+  received_at: string
+}
+
+// Core 层纯函数返回值：指示 Shell 层执行的下一步动作
+type NegotiationAction =
+  | { action: 'send_counter'; email: OutboundEmail }    // 发送下一轮报价
+  | { action: 'agreed'; confirmation_draft: string }     // 达成一致
+  | { action: 'stalled'; reason: string }                // 超轮次暂停
+  | { action: 'rejected'; reason: string }               // 达人拒绝
+  | { action: 'over_budget'; last_quote: number }        // 超预算终止
+```
+
+#### 3.6.3 架构边界（关键约束）
+
+| 层 | 负责 | 不负责 |
+|----|------|-------|
+| **Shell** | 接收回复事件，调用 Core 的 `processReply()` 获取下一步动作，执行动作（发送邮件/更新状态） | 邮件内容生成、谈判策略、发送时机决策 |
+| **Core** | 邮件内容编排（通过 LLMService DI）、邀约策略、谈判状态机（纯函数 `processReply` → `NegotiationAction`）、发送时机决策 | 发送通道选择、频控、投递追踪实现、事件监听 |
+| **Services（聚星邮件）** | SMTP/API 发送、账号池轮转、频控、投递追踪、回复检测、反垃圾 | 邮件内容生成、业务流程编排、发送策略 |
+
+**不复用聚星的**：Campaign 任务编排、多步 Drip 序列、模板分类管理、A/B 测试框架。这些业务逻辑由 NoxInfluencer Core 层按自身产品需求重新设计。
+
+#### 3.6.4 对接计划
+
+| 阶段 | 任务 | 产出 |
+|------|------|------|
+| **W1** | 确认聚星邮件 API 可独立调用（脱离 Campaign 流程） | API 接口文档 + 调用示例 |
+| **W2** | 实现 `EmailService` adapter，对接聚星发送 + 追踪 | Services 层代码 + 单元测试 |
+| **W3** | 实现回复检测 → Shell 层调度 → Core `processReply()` 闭环 | 回复事件驱动谈判状态机转换 |
+| **W4** | 联调 + Live Smoke 测试 | 完整邮件往返链路验证 |
+
+> **风险**：聚星邮件系统是否支持独立 API 调用（脱离 Campaign 上下文）需 W1 验证。如不支持，备选方案：直接调用底层 Aliyun DirectMail/SendCloud API，绕过聚星封装。
 
 ---
 
@@ -1664,6 +2281,23 @@ Coding Agent 的核心循环是：写代码 → 跑测试 → 看输出 → 修�
 | **L5** | Canary Records + 数据指纹 | 积累足够用户数据后部署 |
 | **L6** | KYB（Growth+ 客户身份验证）+ 已知竞品屏蔽 + 年付绑定 | Growth 层用户 > 10 时启动 |
 
+### 5.4 场景→版本映射
+
+02 中定义的用户场景与工程版本的对应关系。Day 1 覆盖 P0 全链路（83% 人工成本），v1.1 补齐 CRM 写操作和高价值洞察，v1.2 闭环效果追踪。
+
+| 02 场景 | 02 优先级 | 工程版本 | 容量级别 |
+|---------|:---------:|---------|---------|
+| 达人发现（搜索+筛选+评估） | P0 | Day 1 | 5 个 Tool + 四层架构 + 三平台分发 |
+| 邀约触达 | P0 | Day 1 | ↑ 同上 |
+| 谈判协商 | P0 | Day 1 | ↑ 同上 |
+| CRM 管理（只读） | P1 | Day 1 | ↑ 同上 |
+| CRM 管理（写操作：提醒/状态/备注） | P1 | v1.1 | 3 个增强/新 Tool |
+| 竞品对标 | P1 | v1.1 | ↑ 同上 |
+| 主动提醒与监控 | P1 | v1.1 | ↑ 同上（合并入 manage_campaigns 增强版） |
+| 效果追踪 | P2 | v1.2 | 1 个新 Tool + 数据管线 |
+
+> v1.1/v1.2 不设日历时间，上线由 5.2 节数据指标触发。
+
 ---
 
 ## 六、上线计划
@@ -1713,7 +2347,7 @@ Phase 3（W15-W20）—— 包装 + 分发 + Beta + 上线
 | **聚星数据层 API 稳定性** | 全部 Tool | 高 | 早期对接，W1 确认 API 可用性和性能 |
 | **聚星搜索 API 改造** | discover_creators | 高 | AI 搜索解析层可解耦聚星搜索 API 的限制 |
 | **聚星假粉检测 + 受众画像 API 适配** | analyze_creator | 中 | 聚星已有能力，需适配统一接口（authenticity + audience 模型） |
-| **Resend/SES 账号** | outreach_creators, negotiate | 中 | 邮件域名预热需 2-4 周，Phase 1 就启动 |
+| **聚星邮件基础设施对接** | outreach_creators, negotiate | 中 | 需确认聚星邮件 API 可独立调用，W1 对接验证 |
 | **Stripe 账号** | 计费系统 | 低 | 标准集成，风险可控 |
 | **OpenAI API 额度** | AI 推理层 | 低 | 可切换 Anthropic API 作为备选 |
 
