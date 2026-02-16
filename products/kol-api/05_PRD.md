@@ -71,24 +71,24 @@ NoxInfluencer 的交互模型不是"用户→网站"，而是"用户→Agent→A
 | **Claude** | Project Memory |
 | **ChatGPT** | Memory |
 
-**NoxInfluencer 的设计职责**：不是管记忆，而是让 Tool 返回的数据"记忆友好"——
+**NoxInfluencer 的记忆架构**：两层互补——
 
-| 设计要点 | 说明 |
-|---------|------|
-| summary 是记忆种子 | `summary` 字段是 Agent 存入记忆的主要载体。设计原则：含稳定标识符（@handle）、量化结果（数量/百分比/金额）、时间标记（as of），自包含可独立理解，避免会话性语言（"这次""刚才"） |
-| manage_campaigns 兜底 | 即使 Agent 记忆丢失，一次调用重建全部合作上下文 |
-| Tool Description 引导记忆行为 | 在 Description 中用自然语言提示 Agent 利用记忆（"If the user has searched before, check your memory..."），这是目前唯一有效的引导方式——MCP 无标准记忆协议 |
-| MCP annotations 软信号 | MCP 包装层使用 `annotations.audience`（user/assistant）和 `priority`（0-1）区分"给用户看的"和"给 Agent 推理用的"内容 |
+| 层 | 机制 | 说明 |
+|---|---------|------|
+| **长期记忆（跨会话）** | `manage_campaigns` 是品牌的持久化经验库 | Agent 调用即可获取历史 Campaign、合作达人、效果数据。即使 Agent 自身记忆清空，一次调用重建全部上下文 |
+| **短期记忆（会话内）** | `summary` 字段是当次对话的记忆种子 | 设计原则：含稳定标识符（@handle）、量化结果、时间标记（as of），自包含可独立理解 |
+| **引导层** | Tool Description 自然语言提示 | 提示 Agent 查历史（"If the user has searched before, call manage_campaigns first..."），引导 Agent 先查后搜 |
+| **信号层** | MCP annotations 软信号 | `annotations.audience`（user/assistant）和 `priority`（0-1）区分"给用户看的"和"给 Agent 推理用的" |
 
 **效果演进**：
 
-| 使用次数 | Agent 行为 |
-|---------|-----------|
-| 第 1 次 | 品牌说"找达人"→ Agent 追问平台、品类、预算 |
-| 第 5 次 | 品牌说"找达人"→ Agent 按历史偏好搜索，只确认关键变化 |
-| 第 20 次 | 品牌说"准备下月 Campaign"→ Agent 主动调 manage_campaigns 看上次效果，建议本次调整 |
+| 使用次数 | Agent 行为 | 依赖机制 |
+|---------|-----------|---------|
+| 第 1 次 | 品牌说"找达人"→ Agent 追问平台、品类、预算 | 无历史数据 |
+| 第 5 次 | 品牌说"找达人"→ Agent 先调 `manage_campaigns` 查历史偏好，按偏好搜索，只确认关键变化 | 长期记忆 |
+| 第 20 次 | 品牌说"准备下月 Campaign"→ Agent 主动查上次效果，建议本次调整 | 长期记忆 + 引导层 |
 
-> **设计结论**：MCP 无标准"记住这个"协议。引导 Agent 利用记忆的唯一有效方式是 Tool Description 中的自然语言提示（见附录 A）。`summary` 字段质量是最重要的设计面——它决定了 Agent 存什么、下次想起什么。上线后观察 Agent 实际记忆行为，迭代 summary 模板和 Description。
+> **设计结论**：Agent 的记忆不靠 Agent 平台，靠我们自己的 Tool。`manage_campaigns` 是品牌经验的持久化存储，`summary` 是会话内的上下文桥梁，Tool Description 引导 Agent 养成"先查历史再行动"的习惯。上线后观察实际调用模式，迭代引导策略。
 
 ---
 
@@ -1208,7 +1208,7 @@ name: nox-influencer
 description: AI-powered influencer marketing automation for brands
 commands:
   - name: search
-    description: Discover creators across YouTube, TikTok, and Instagram. Check your memory for past search preferences first.
+    description: Discover creators across YouTube, TikTok, and Instagram. Call campaigns first to check past preferences and history.
   - name: analyze
     description: Deep analysis of a creator's profile and authenticity
   - name: outreach
@@ -2473,7 +2473,7 @@ Phase 3（W15-W20）—— 包装 + 分发 + Beta + 上线
 以下 5 段描述用于 MCP metadata 的 `description` 字段，直接从 03 附录复制。
 
 **discover_creators**
-> Search and discover influencers across YouTube, TikTok, and Instagram using natural language queries. Returns a ranked list of creators with follower counts, engagement rates, authenticity flags, and estimated collaboration costs. Use this tool when a brand wants to find creators for a campaign — it handles search, initial screening, and basic evaluation in a single call. Supports filtering by platform, country, follower range, niche, and minimum engagement rate. TIP: If the user has searched before, check your memory for their platform and niche preferences before asking again.
+> Search and discover influencers across YouTube, TikTok, and Instagram using natural language queries. Returns a ranked list of creators with follower counts, engagement rates, authenticity flags, and estimated collaboration costs. Use this tool when a brand wants to find creators for a campaign — it handles search, initial screening, and basic evaluation in a single call. Supports filtering by platform, country, follower range, niche, and minimum engagement rate. TIP: If the user has an active campaign, call manage_campaigns first to get their preferences and history — avoid re-asking what you already know.
 
 **analyze_creator**
 > Get a deep analysis of a specific creator's profile, including authenticity scoring, audience demographics, content performance trends, and estimated pricing. Use this tool when a brand wants to evaluate whether a creator is trustworthy and a good fit before reaching out. Accepts either a creator ID (from discover_creators results) or a direct profile URL.

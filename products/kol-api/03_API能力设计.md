@@ -342,9 +342,9 @@ Day 1 的 manage_campaigns 支持创建 Campaign（定义营销目标和约束�
 }
 ```
 
-### 4.2 `summary` 字段——Agent 记忆的主要载体
+### 4.2 `summary` 字段——会话内的上下文桥梁
 
-`summary` 是 Agent 存入记忆的核心内容。Agent 平台（OpenClaw MEMORY.md、Claude Project Memory、ChatGPT Memory）会自动将 Tool 返回的自然语言摘要存入日志，下次对话时重新注入上下文。因此 `summary` 的质量直接决定了"第 5 次使用"和"第 1 次使用"的体验差距。
+`summary` 是当次对话中 Agent 串联多步操作的上下文载体。跨会话的长期记忆由 `manage_campaigns`（品牌的持久化经验库）承担——Agent 调一次即可重建历史偏好和合作记录。`summary` 的价值在于让当次对话中的搜索→评估→邀约→谈判链路流畅衔接。
 
 **写法要求**：
 - 中文/英文自适应（跟随 Agent 对话语言）
@@ -539,10 +539,10 @@ CreatorDB 因缺少 LICENSE 文件导致 Glama F 级、不可安装、零使用�
 
 ## 附录：Tool Description 原文
 
-以下 7 段描述可直接用于 MCP metadata 中的 `description` 字段。Day 1 发布 5 个（前 5 段），v1.1 增加 2 个（后 2 段）。Description 中的 TIP 行用于引导 Agent 利用记忆——这是目前唯一有效的方式（MCP 无标准记忆协议）。
+以下 7 段描述可直接用于 MCP metadata 中的 `description` 字段。Day 1 发布 5 个（前 5 段），v1.1 增加 2 个（后 2 段）。Description 中的 TIP 行引导 Agent "先查历史再行动"——让 Agent 养成调 `manage_campaigns` 查品牌经验库的习惯。
 
 **discover_creators**
-> Search and discover influencers across YouTube, TikTok, and Instagram using natural language queries. Returns a ranked list of creators with follower counts, engagement rates, authenticity flags, and estimated collaboration costs. Use this tool when a brand wants to find creators for a campaign — it handles search, initial screening, and basic evaluation in a single call. Supports filtering by platform, country, follower range, niche, and minimum engagement rate. TIP: If the user has searched before, check your memory for their platform and niche preferences before asking again.
+> Search and discover influencers across YouTube, TikTok, and Instagram using natural language queries. Returns a ranked list of creators with follower counts, engagement rates, authenticity flags, and estimated collaboration costs. Use this tool when a brand wants to find creators for a campaign — it handles search, initial screening, and basic evaluation in a single call. Supports filtering by platform, country, follower range, niche, and minimum engagement rate. TIP: If the user has an active campaign, call manage_campaigns first to get their preferences and history — avoid re-asking what you already know.
 
 **analyze_creator**
 > Get a deep analysis of a specific creator's profile, including authenticity scoring, audience demographics, content performance trends, and estimated pricing. Use this tool when a brand wants to evaluate whether a creator is trustworthy and a good fit before reaching out. Accepts either a creator ID (from discover_creators results) or a direct profile URL.
