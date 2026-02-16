@@ -115,11 +115,10 @@ NoxInfluencer 的交互模型不是"用户→网站"，而是"用户→Agent→A
 
 | 维度 | 内容 |
 |------|------|
-| **行为** | 注册（邮箱 + 密码，30 秒）→ 邮箱验证 → Dashboard + API Key + 200 credits → 按教程配置 Agent |
-| **认知负荷** | 注册低、**配置 Agent 高**——非开发者可能需要编辑 JSON 或设环境变量 |
-| **情绪** | 期待（注册简单）→ 可能焦虑（配置 Agent 不会弄） |
+| **行为** | Google / GitHub 一键注册（10 秒）→ Dashboard + API Key + 200 credits → 按教程配置 Agent |
+| **认知负荷** | 注册极低（OAuth 无需记密码）、**配置 Agent 高**——非开发者可能需要编辑 JSON 或设环境变量 |
+| **情绪** | 期待（注册零摩擦）→ 可能焦虑（配置 Agent 不会弄） |
 | **摩擦 🔴** | **Agent 配置是最大摩擦点**——非开发者卡在 JSON 编辑 / 环境变量 |
-| **摩擦 🟡** | 邮箱验证延迟 |
 | **失败→恢复** | 配置失败→放弃 → 每个平台截图级 Step-by-step 教程 + "一键配置"脚本降低门槛 |
 | **产品需要** | 极简注册页 + Dashboard（Key 一键复制 + 下一步引导）+ 每个 Agent 平台的 Quick Start |
 | **度量** | 注册→首次 API 调用转化率（目标 > 60%）；注册→首次调用时间 P50 < 10 分钟 |
@@ -1040,9 +1039,9 @@ stalled ──品牌调整预算──→ in_progress（重启谈判，继续计
 ```
 品牌访问 noxinfluencer.com/signup
         ↓
-邮箱 + 密码注册（30 秒，无 Sales Call）
+Google / GitHub OAuth 一键注册（10 秒，无需记密码，无 Sales Call）
         ↓
-邮箱验证 → 即时获得 API Key（格式：kol_live_xxx / kol_test_xxx）
+即时获得 API Key（格式：kol_live_xxx / kol_test_xxx）
         ↓
 200 一次性免费 credits 到账
         ↓
@@ -1053,19 +1052,19 @@ API Key 配置到 Agent 环境变量 → 开始使用
 
 | 项目 | 规格 |
 |------|------|
+| 注册方式 | Google OAuth + GitHub OAuth（优先）；保留邮箱+密码作为备选 |
 | API Key 格式 | `kol_live_` + 32 字符随机串（生产环境） |
 | API Key 传递 | `Authorization: Bearer kol_live_xxx` header |
 | Key 管理 | 支持生成、吊销、查看用量；每账号最多 5 个 Key |
-| 注册信息 | 邮箱（必填）、公司名（可选）、用途（可选） |
-| 邮箱验证 | 发送验证邮件，验证后激活 Key |
+| 账号标识 | OAuth 返回的邮箱作为主标识，公司名（可选）用于个性化 |
 
 **注册防滥用（Day 1）**：
 
 | 机制 | 规则 | 说明 |
 |------|------|------|
-| 同域名限频 | 同一邮箱域名（如 @gmail.com）每日注册上限 3 个 | 防止批量注册白嫖免费 credit |
-| 竞品域名黑名单 | 已知竞品公司域名禁止注册 | Day 1 仅域名检测，成本低 |
-| 一次性邮箱屏蔽 | 屏蔽 Guerrilla Mail、Temp Mail 等一次性邮箱域名 | 防止无限注册 |
+| OAuth 账号去重 | 同一 Google/GitHub 账号只能注册一次 | OAuth 天然防一次性邮箱 |
+| 竞品域名黑名单 | 已知竞品公司邮箱域名禁止注册 | Day 1 仅域名检测，成本低 |
+| 同 IP 限频 | 同一 IP 每日注册上限 5 个 | 防止脚本批量注册 |
 
 **v1.1 增强**：增加设备指纹 + IP 关联分析，检测同一设备/IP 多账号注册行为。
 
@@ -1402,7 +1401,7 @@ Day 1 不实现 Resource 的原因：Resource 协议语义是"免费可读数据
 
 #### 2.5.2 注册页 — noxinfluencer.com/signup
 
-**用户目标**：30 秒内完成注册，拿到 API Key
+**用户目标**：10 秒内完成注册，拿到 API Key
 
 **入口**：Landing page CTA / 定价页 CTA / Agent 平台内 upgrade_url
 
@@ -1417,13 +1416,19 @@ Day 1 不实现 Resource 的原因：Resource 协议语义是"免费可读数据
 │  credit card required               │
 │                                     │
 │  ┌─────────────────────────────┐    │
+│  │ 🔵 Continue with Google     │    │
+│  ├─────────────────────────────┤    │
+│  │ ⚫ Continue with GitHub     │    │
+│  └─────────────────────────────┘    │
+│                                     │
+│  ────── or ──────                   │
+│                                     │
+│  ┌─────────────────────────────┐    │
 │  │ Work email*                 │    │
 │  ├─────────────────────────────┤    │
 │  │ Password*                   │    │
 │  ├─────────────────────────────┤    │
-│  │ Company name (optional)     │    │
-│  ├─────────────────────────────┤    │
-│  │ [Get Started Free]          │    │
+│  │ [Sign up with email]        │    │
 │  └─────────────────────────────┘    │
 │                                     │
 │  By signing up you agree to our     │
@@ -1433,42 +1438,39 @@ Day 1 不实现 Resource 的原因：Resource 协议语义是"免费可读数据
 └─────────────────────────────────────┘
 ```
 
-**字段规格**：
+**注册方式优先级**：
 
-| 字段 | 必填 | 校验规则 | 说明 |
-|------|:----:|---------|------|
-| Work email | ✅ | 格式校验 + 一次性邮箱屏蔽 + 竞品域名黑名单 + 同域名每日 ≤ 3 | 主标识 |
-| Password | ✅ | ≥ 8 字符 + 至少 1 数字/特殊字符 | 基础安全 |
-| Company name | ❌ | — | 用于个性化 + 分析 |
+| 方式 | 优先级 | 说明 |
+|------|:------:|------|
+| Google OAuth | ✅ 主推 | 品牌营销人员多用 Google Workspace，一键完成，无需记密码 |
+| GitHub OAuth | ✅ 主推 | 开发者 / Agent 用户多用 GitHub，覆盖技术决策者 |
+| 邮箱 + 密码 | 备选 | 折叠在 "or" 分隔线下方，覆盖无法使用 OAuth 的企业用户 |
 
-**注册后流程**：
+**OAuth 注册流程**：
 
 ```
-提交表单
+点击 "Continue with Google/GitHub"
   ↓
-发送验证邮件（5 分钟内到达）
+OAuth 授权（Google/GitHub 弹窗）
   ↓
-显示"Check your email"页面（含重发链接）
+授权成功 → 自动创建账号（取 OAuth 返回的邮箱 + 头像 + 姓名）
   ↓
-点击验证链接 → 跳转 Dashboard
-  ↓
-Dashboard 显示：API Key（一键复制）+ 200 credits + "Next: Set up your AI assistant" 引导
+跳转 Dashboard：API Key（一键复制）+ 200 credits + "Next: Set up your AI assistant" 引导
 ```
 
-**验证邮件内容要求**：
+**邮箱注册流程**（备选）：
 
-| 要素 | 规格 |
-|------|------|
-| 发件人 | NoxInfluencer <hello@noxinfluencer.com> |
-| 主题 | Verify your email — your API key is ready |
-| 正文 | 欢迎语 + 验证按钮 + 24h 过期说明 + 底部联系方式 |
-| 过期 | 24 小时，过期后可在登录页重新发送 |
+```
+填写邮箱 + 密码 → 提交
+  ↓
+发送验证邮件 → 点击链接验证 → 跳转 Dashboard
+```
 
 **验收标准**：
 
-- [ ] 注册→拿到 API Key 全程 < 60 秒（含邮箱验证）
-- [ ] 一次性邮箱（Guerrilla Mail 等）被拦截并显示友好提示
-- [ ] 验证邮件 < 30 秒送达（P95）
+- [ ] Google/GitHub 注册→拿到 API Key 全程 < 15 秒
+- [ ] OAuth 按钮视觉突出，邮箱注册折叠在下方
+- [ ] 竞品域名邮箱（OAuth 返回的邮箱）被拦截并显示友好提示
 - [ ] 注册后 Dashboard 自动显示 API Key + Quick Start 引导
 - [ ] 移动端注册体验完整
 
@@ -2283,7 +2285,7 @@ type NegotiationAction =
 
 | # | 要求 | 验收标准 |
 |---|------|---------|
-| 1 | **自助注册** | 邮箱注册 → 30 秒内获得 API Key，无需 Sales Call |
+| 1 | **自助注册** | Google / GitHub OAuth 一键注册 → 10 秒内获得 API Key，无需 Sales Call |
 | 2 | **OpenAPI 3.1 spec** | 覆盖全部 5 个 Day 1 Tool，可自动生成文档和 SDK |
 | 3 | **5 分钟 Quick Start** | 从注册到第一次成功搜索 < 5 分钟的教程 |
 | 4 | **结构化错误响应** | 统一格式 `{success, error: {code, message, upgrade_url}}`，面向 Agent 推理 |
