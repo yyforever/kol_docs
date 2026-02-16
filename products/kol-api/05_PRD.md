@@ -1519,7 +1519,7 @@ OAuth 授权（Google/GitHub 弹窗）
 | 功能 | 规格 |
 |------|------|
 | Key 列表 | 表格：名称 / Key（遮蔽）/ 创建时间 / 最后使用 / 操作 |
-| 创建 Key | "Create new key" → 命名 → 生成 → **仅显示一次**（提示用户立即复制） |
+| 创建 Key | "Create new key" → 命名 → 生成 → Dashboard 中可随时查看完整 Key（遮蔽显示，点击 Reveal 展开） |
 | 吊销 Key | 需二次确认（"This will immediately stop all API calls using this key"） |
 | 数量限制 | 每账号最多 5 个 Key |
 
