@@ -13,8 +13,8 @@ const PARAMS = [
   {
     name: "platform",
     type: "string",
-    required: true,
-    description: 'Social platform. One of: "youtube", "instagram", "tiktok", "twitter"',
+    required: false,
+    description: 'Social platform filter. One of: "youtube", "instagram", "tiktok"',
   },
   {
     name: "niche",
@@ -64,25 +64,20 @@ const PARAMS = [
     required: false,
     description: "Results per page (1-100). Default: 20",
   },
-  {
-    name: "page",
-    type: "integer",
-    required: false,
-    description: "Page number for pagination. Default: 1",
-  },
 ]
 
-const CURL_EXAMPLE = `curl -X GET "https://api.noxinfluencer.com/v1/creators/search" \\
-  -H "Authorization: Bearer nox_live_7kF3...x9Qm" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "platform": "youtube",
-    "niche": "technology",
-    "min_subscribers": 100000,
-    "country": "US",
-    "sort_by": "engagement_rate",
-    "limit": 5
-  }'`
+const REQUEST_EXAMPLE = `POST /v1/tools/discover_creators
+Authorization: Bearer nox_live_7kF3...x9Qm
+Content-Type: application/json
+
+{
+  "platform": "youtube",
+  "niche": "technology",
+  "min_subscribers": 100000,
+  "country": "US",
+  "sort_by": "engagement_rate",
+  "limit": 5
+}`
 
 const RESPONSE_EXAMPLE = `{
   "success": true,
@@ -119,9 +114,12 @@ const RESPONSE_EXAMPLE = `{
     "page": 1,
     "limit": 5
   },
+  "summary": "Found 2,847 technology creators on YouTube in the US. Top result: Google for Developers (2.84M subscribers, 3.2% engagement).",
+  "credits": {
+    "used": 1,
+    "remaining": 199
+  },
   "meta": {
-    "credits_used": 5,
-    "credits_remaining": 195,
     "rate_limit_remaining": 57
   }
 }`
@@ -131,19 +129,19 @@ export default function DiscoverCreatorsPage() {
     <div className="space-y-10">
       <div>
         <div className="mb-3 flex items-center gap-3">
-          <Badge className="bg-green-100 text-green-700">GET</Badge>
+          <Badge className="bg-blue-100 text-blue-700">POST</Badge>
           <code className="text-sm text-muted-foreground">
-            /v1/creators/search
+            /v1/tools/discover_creators
           </code>
         </div>
         <h1 className="text-3xl font-bold text-nox-dark">Discover Creators</h1>
         <p className="mt-2 text-lg text-muted-foreground">
           Search and filter 10M+ creator profiles across YouTube, Instagram,
-          TikTok, and Twitter/X.
+          and TikTok.
         </p>
         <div className="mt-3 flex items-center gap-4 text-sm text-muted-foreground">
           <span>
-            Cost: <strong className="text-nox-brand">5 credits</strong> per call
+            Cost: <strong className="text-nox-brand">1 credit</strong> per call
           </span>
           <span>
             Rate limit: <strong>varies by plan</strong>
@@ -203,7 +201,7 @@ export default function DiscoverCreatorsPage() {
         <h2 className="mb-4 text-xl font-semibold text-nox-dark">
           Example Request
         </h2>
-        <CodeBlock title="curl" language="bash" code={CURL_EXAMPLE} />
+        <CodeBlock title="HTTP" language="http" code={REQUEST_EXAMPLE} />
       </div>
 
       {/* Example Response */}
@@ -248,7 +246,18 @@ export default function DiscoverCreatorsPage() {
                   unauthorized
                 </TableCell>
                 <TableCell className="text-sm text-muted-foreground">
-                  Invalid or missing API key
+                  Invalid or missing key
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <Badge variant="secondary">402</Badge>
+                </TableCell>
+                <TableCell className="font-mono text-sm">
+                  insufficient_credits
+                </TableCell>
+                <TableCell className="text-sm text-muted-foreground">
+                  Credit balance exhausted — upgrade your plan
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -259,7 +268,7 @@ export default function DiscoverCreatorsPage() {
                   rate_limited
                 </TableCell>
                 <TableCell className="text-sm text-muted-foreground">
-                  Rate limit or credit limit exceeded
+                  Too many requests — slow down
                 </TableCell>
               </TableRow>
               <TableRow>

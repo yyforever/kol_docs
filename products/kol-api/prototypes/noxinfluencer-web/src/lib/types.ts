@@ -2,8 +2,10 @@ export interface Plan {
   id: string
   name: string
   price: number | null
+  yearlyPrice?: number
   credits: number | null
   rateLimit: string
+  overageRate?: number
   features: string[]
   highlighted?: boolean
   ctaLabel: string
@@ -37,7 +39,7 @@ export interface ApiKey {
 
 export interface UsageRecord {
   date: string
-  endpoint: string
+  tool: string
   calls: number
   credits: number
 }

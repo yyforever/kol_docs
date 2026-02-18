@@ -1,84 +1,135 @@
+"use client"
+
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { CodeBlock } from "@/components/nox/code-block"
-import { ArrowRight } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ArrowRight, AlertCircle } from "lucide-react"
 
-const STEPS = [
-  {
-    number: "1",
-    title: "Create an Account & Get Your API Key",
-    description:
-      "Sign up for a free account and generate your first API key from the dashboard.",
-    code: null,
-  },
-  {
-    number: "2",
-    title: "Make Your First API Call",
-    description:
-      "Use your API key to search for creators. Here's a simple example using curl:",
-    code: {
-      title: "Search for tech creators on YouTube",
-      language: "bash",
-      content: `curl -X GET "https://api.noxinfluencer.com/v1/creators/search" \\
-  -H "Authorization: Bearer YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "platform": "youtube",
-    "niche": "technology",
-    "min_subscribers": 100000,
-    "max_subscribers": 5000000,
-    "limit": 10
-  }'`,
-    },
-  },
-  {
-    number: "3",
-    title: "Parse the Response",
-    description: "The API returns structured JSON with creator details, metrics, and audience data:",
-    code: {
-      title: "Response",
-      language: "json",
-      content: `{
-  "success": true,
-  "data": {
-    "creators": [
+const PLATFORM_GUIDES = {
+  chatgpt: {
+    name: "ChatGPT",
+    steps: [
       {
-        "id": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
-        "name": "Google for Developers",
-        "platform": "youtube",
-        "subscribers": 2840000,
-        "avg_views": 45200,
-        "engagement_rate": 3.2,
-        "niche": ["technology", "programming"],
-        "country": "US"
-      }
+        number: "1",
+        title: "Get Your Key",
+        description:
+          "Sign up for a free NoxInfluencer account and copy your key from the Dashboard > API Keys page.",
+      },
+      {
+        number: "2",
+        title: "Install the NoxInfluencer Plugin",
+        description:
+          "In ChatGPT, go to Plugins and search for \"NoxInfluencer\". Click Install, then paste your key when prompted.",
+      },
+      {
+        number: "3",
+        title: "Try Your First Search",
+        description:
+          "Ask ChatGPT something like: \"Find me 10 beauty creators on Instagram with 50K-500K followers in the US.\" The plugin will call NoxInfluencer and return results inline.",
+      },
+      {
+        number: "4",
+        title: "Go Deeper",
+        description:
+          "Try follow-up commands like \"Analyze the top 3 creators\" or \"Send outreach to @creator with my campaign brief.\" Each tool works through natural conversation.",
+      },
     ],
-    "total": 2847,
-    "page": 1
   },
-  "meta": { "credits_used": 5, "credits_remaining": 195 }
-}`,
-    },
+  claude: {
+    name: "Claude",
+    steps: [
+      {
+        number: "1",
+        title: "Get Your Key",
+        description:
+          "Sign up for a free NoxInfluencer account and copy your key from the Dashboard > API Keys page.",
+      },
+      {
+        number: "2",
+        title: "Connect via MCP",
+        description:
+          "Add the NoxInfluencer MCP server to your Claude configuration. Paste your key in the environment settings.",
+      },
+      {
+        number: "3",
+        title: "Try Your First Search",
+        description:
+          "Tell Claude: \"Use NoxInfluencer to find tech YouTubers with over 100K subscribers.\" Claude will use the discover_creators tool and present results.",
+      },
+      {
+        number: "4",
+        title: "Go Deeper",
+        description:
+          "Ask Claude to \"Analyze the audience of @MKBHD\" or \"Draft outreach emails for the top 5 creators.\" All 5 tools are available through natural conversation.",
+      },
+    ],
   },
-]
+  openclaw: {
+    name: "OpenClaw",
+    steps: [
+      {
+        number: "1",
+        title: "Get Your Key",
+        description:
+          "Sign up for a free NoxInfluencer account and copy your key from the Dashboard > API Keys page.",
+      },
+      {
+        number: "2",
+        title: "Add NoxInfluencer Tools",
+        description:
+          "In OpenClaw, go to Settings > Tools and add the NoxInfluencer integration. Paste your key when prompted.",
+      },
+      {
+        number: "3",
+        title: "Try Your First Search",
+        description:
+          "Ask OpenClaw: \"Find fitness creators on TikTok with high engagement rates.\" The tools will automatically activate.",
+      },
+      {
+        number: "4",
+        title: "Go Deeper",
+        description:
+          "Build automated workflows: discover creators, analyze their audiences, send outreach, and manage campaigns — all through natural language.",
+      },
+    ],
+  },
+}
 
 const NEXT_STEPS = [
   {
-    title: "Discover Creators",
+    title: "Discover Creators Tool",
     description: "Learn all search parameters and filters",
     href: "/docs/tools/discover-creators",
   },
   {
-    title: "API Keys",
-    description: "Manage your API keys and permissions",
+    title: "Manage Your Keys",
+    description: "Create and manage keys from the dashboard",
     href: "/dashboard/api-keys",
   },
   {
-    title: "Pricing",
-    description: "Understand credit costs for each endpoint",
+    title: "Pricing & Credits",
+    description: "Understand credit costs for each tool",
     href: "/pricing",
+  },
+]
+
+const TROUBLESHOOTING = [
+  {
+    problem: "\"Invalid key\" error",
+    solution:
+      "Make sure you are using a key that starts with nox_live_ (production) or nox_test_ (staging). Check for extra spaces when pasting.",
+  },
+  {
+    problem: "\"Insufficient credits\" (402 error)",
+    solution:
+      "Your credit balance is zero. Upgrade your plan or wait for the next billing cycle to get more credits.",
+  },
+  {
+    problem: "Plugin/tool not showing up",
+    solution:
+      "Refresh your AI assistant, make sure the plugin is installed and enabled, and verify your key is active in the NoxInfluencer dashboard.",
   },
 ]
 
@@ -93,34 +144,56 @@ export default function QuickStartPage() {
           Get Started in 5 Minutes
         </h1>
         <p className="mt-2 text-lg text-muted-foreground">
-          Three steps to your first API call
+          Connect NoxInfluencer to your AI assistant and run your first search
         </p>
       </div>
 
-      {/* Steps */}
-      <div className="space-y-10">
-        {STEPS.map((step) => (
-          <div key={step.number} className="flex gap-4">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-nox-brand text-sm font-bold text-white">
-              {step.number}
+      {/* Platform Tabs */}
+      <Tabs defaultValue="chatgpt" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="chatgpt">ChatGPT</TabsTrigger>
+          <TabsTrigger value="claude">Claude</TabsTrigger>
+          <TabsTrigger value="openclaw">OpenClaw</TabsTrigger>
+        </TabsList>
+        {Object.entries(PLATFORM_GUIDES).map(([key, guide]) => (
+          <TabsContent key={key} value={key} className="mt-6">
+            <div className="space-y-8">
+              {guide.steps.map((step) => (
+                <div key={step.number} className="flex gap-4">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-nox-brand text-sm font-bold text-white">
+                    {step.number}
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-semibold text-nox-dark">
+                      {step.title}
+                    </h2>
+                    <p className="mt-1 text-muted-foreground">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="min-w-0 flex-1 space-y-4">
-              <div>
-                <h2 className="text-xl font-semibold text-nox-dark">
-                  {step.title}
-                </h2>
-                <p className="mt-1 text-muted-foreground">{step.description}</p>
-              </div>
-              {step.code && (
-                <CodeBlock
-                  title={step.code.title}
-                  language={step.code.language}
-                  code={step.code.content}
-                />
-              )}
-            </div>
-          </div>
+          </TabsContent>
         ))}
+      </Tabs>
+
+      {/* Troubleshooting */}
+      <div className="border-t pt-10">
+        <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-nox-dark">
+          <AlertCircle className="h-5 w-5 text-muted-foreground" />
+          Troubleshooting
+        </h2>
+        <div className="space-y-4">
+          {TROUBLESHOOTING.map((item) => (
+            <div key={item.problem} className="rounded-lg border p-4">
+              <p className="font-medium text-nox-dark">{item.problem}</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {item.solution}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Next Steps */}

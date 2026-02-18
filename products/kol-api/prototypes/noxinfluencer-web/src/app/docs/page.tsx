@@ -6,16 +6,15 @@ import {
   Rocket,
   BookOpen,
   Wrench,
-  Code2,
   Shield,
-  Webhook,
+  CreditCard,
 } from "lucide-react"
 
 const DOC_CATEGORIES = [
   {
     icon: Rocket,
     title: "Quick Start",
-    description: "Get up and running in 5 minutes with your first API call",
+    description: "Connect to ChatGPT, Claude, or OpenClaw in 5 minutes",
     href: "/docs/quick-start",
   },
   {
@@ -26,26 +25,26 @@ const DOC_CATEGORIES = [
   },
   {
     icon: Wrench,
-    title: "Tools Reference",
-    description: "Complete reference for all API endpoints",
+    title: "Tool Reference",
+    description: "Complete reference for all 5 NoxInfluencer tools",
     href: "/docs/tools/discover-creators",
-  },
-  {
-    icon: Code2,
-    title: "SDKs & Libraries",
-    description: "Official client libraries for Python, Node.js, and Go",
-    href: "/docs",
   },
   {
     icon: Shield,
     title: "Authentication",
-    description: "API key management, scopes, and security best practices",
+    description: "Key management, security, and best practices",
     href: "/docs",
   },
   {
-    icon: Webhook,
-    title: "Webhooks",
-    description: "Real-time event notifications for your application",
+    icon: CreditCard,
+    title: "Credits & Billing",
+    description: "Understand credit costs and manage your usage",
+    href: "/pricing",
+  },
+  {
+    icon: Search,
+    title: "Error Codes",
+    description: "Troubleshoot common errors and status codes",
     href: "/docs",
   },
 ]
@@ -56,7 +55,7 @@ export default function DocsHomePage() {
       <div>
         <h1 className="text-3xl font-bold text-nox-dark">Documentation</h1>
         <p className="mt-2 text-lg text-muted-foreground">
-          Everything you need to integrate NoxInfluencer API into your product
+          Everything you need to use NoxInfluencer with your favorite AI assistant
         </p>
       </div>
 

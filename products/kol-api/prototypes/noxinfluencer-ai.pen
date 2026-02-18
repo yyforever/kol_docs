@@ -87,6 +87,16 @@
                   "fontFamily": "Inter",
                   "fontSize": 15,
                   "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "px8EH",
+                  "name": "loginTxt",
+                  "fill": "#1A1A1A",
+                  "content": "Log in",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "500"
                 }
               ]
             },
@@ -1815,6 +1825,36 @@
                   "fontFamily": "Inter",
                   "fontSize": 18,
                   "fontWeight": "bold"
+                },
+                {
+                  "type": "text",
+                  "id": "75Fog",
+                  "name": "d1",
+                  "fill": "#E5E7EB",
+                  "content": "·",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "Jbs81",
+                  "name": "d2",
+                  "fill": "#6B7280",
+                  "content": "Docs",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "RjpOr",
+                  "name": "d3",
+                  "fill": "#6B7280",
+                  "content": "Pricing",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "500"
                 }
               ]
             },
@@ -2235,6 +2275,36 @@
                   "fontFamily": "Inter",
                   "fontSize": 18,
                   "fontWeight": "bold"
+                },
+                {
+                  "type": "text",
+                  "id": "0sn1O",
+                  "name": "a1",
+                  "fill": "#E5E7EB",
+                  "content": "·",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "vRKeS",
+                  "name": "a2",
+                  "fill": "#6B7280",
+                  "content": "Docs",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "W4kqR",
+                  "name": "a3",
+                  "fill": "#6B7280",
+                  "content": "Pricing",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "500"
                 }
               ]
             },
@@ -2764,6 +2834,36 @@
                   "fontFamily": "Inter",
                   "fontSize": 18,
                   "fontWeight": "bold"
+                },
+                {
+                  "type": "text",
+                  "id": "RwusQ",
+                  "name": "b1",
+                  "fill": "#E5E7EB",
+                  "content": "·",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "wjV8c",
+                  "name": "b2",
+                  "fill": "#6B7280",
+                  "content": "Docs",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "V5ifE",
+                  "name": "b3",
+                  "fill": "#6B7280",
+                  "content": "Pricing",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "500"
                 }
               ]
             },
@@ -3481,6 +3581,16 @@
                   "name": "pHn3",
                   "fill": "$text-secondary",
                   "content": "Quick Start",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "9URMq",
+                  "name": "pLogin",
+                  "fill": "#1A1A1A",
+                  "content": "Log in",
                   "fontFamily": "Inter",
                   "fontSize": 14,
                   "fontWeight": "500"
@@ -4611,7 +4721,7 @@
       "type": "frame",
       "id": "b47A5",
       "x": 0,
-      "y": 3500,
+      "y": 3733,
       "name": "5. Docs Home",
       "width": 1440,
       "fill": "$bg-warm",
@@ -4623,6 +4733,14 @@
           "name": "Header",
           "width": "fill_container",
           "height": 64,
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "#E5E7EB"
+          },
           "padding": [
             0,
             48
@@ -4633,10 +4751,11 @@
               "type": "text",
               "id": "EeGu6",
               "name": "logo",
+              "fill": "#FF6B35",
               "content": "NoxInfluencer",
               "fontFamily": "Inter",
               "fontSize": 18,
-              "fontWeight": "normal"
+              "fontWeight": "bold"
             },
             {
               "type": "frame",
@@ -4649,15 +4768,17 @@
                   "type": "text",
                   "id": "6xwze",
                   "name": "n1",
+                  "fill": "#FF6B35",
                   "content": "Guides",
                   "fontFamily": "Inter",
                   "fontSize": 14,
-                  "fontWeight": "normal"
+                  "fontWeight": "600"
                 },
                 {
                   "type": "text",
                   "id": "ifEpM",
                   "name": "n2",
+                  "fill": "#6B7280",
                   "content": "API Reference",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -4667,6 +4788,7 @@
                   "type": "text",
                   "id": "8UbvT",
                   "name": "n3",
+                  "fill": "#6B7280",
                   "content": "Tools",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -4676,6 +4798,7 @@
                   "type": "text",
                   "id": "zGpyX",
                   "name": "n4",
+                  "fill": "#6B7280",
                   "content": "Changelog",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -4685,6 +4808,7 @@
                   "type": "frame",
                   "id": "7xrCN",
                   "name": "dashBtn",
+                  "fill": "#FF6B35",
                   "cornerRadius": 6,
                   "padding": [
                     8,
@@ -4696,10 +4820,11 @@
                       "type": "text",
                       "id": "nNeyu",
                       "name": "dashTxt",
+                      "fill": "#FFFFFF",
                       "content": "Dashboard",
                       "fontFamily": "Inter",
                       "fontSize": 13,
-                      "fontWeight": "normal"
+                      "fontWeight": "600"
                     }
                   ]
                 }
@@ -4712,6 +4837,7 @@
           "id": "6Let8",
           "name": "Hero",
           "width": "fill_container",
+          "fill": "#FFF5F0",
           "layout": "vertical",
           "gap": 16,
           "padding": [
@@ -4724,16 +4850,18 @@
               "type": "text",
               "id": "kaPEZ",
               "name": "heroTitle",
+              "fill": "#1A1A1A",
               "content": "NoxInfluencer API Documentation",
               "textAlign": "center",
               "fontFamily": "Inter",
               "fontSize": 36,
-              "fontWeight": "normal"
+              "fontWeight": "bold"
             },
             {
               "type": "text",
               "id": "w5ALB",
               "name": "heroSub",
+              "fill": "#6B7280",
               "content": "Everything you need to integrate influencer intelligence into your workflow",
               "textAlign": "center",
               "fontFamily": "Inter",
@@ -4746,7 +4874,13 @@
               "name": "searchBar",
               "width": 560,
               "height": 48,
+              "fill": "#FFFFFF",
               "cornerRadius": 8,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E5E7EB"
+              },
               "padding": [
                 0,
                 16
@@ -4757,6 +4891,7 @@
                   "type": "text",
                   "id": "8Ocud",
                   "name": "searchTxt",
+                  "fill": "#9CA3AF",
                   "content": "Search documentation...",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -4771,247 +4906,317 @@
           "id": "DvVXS",
           "name": "Categories",
           "width": "fill_container",
+          "layout": "vertical",
           "gap": 24,
-          "padding": 48,
+          "padding": [
+            48,
+            80
+          ],
           "justifyContent": "center",
           "children": [
             {
               "type": "frame",
-              "id": "zcsu5",
-              "name": "c1",
-              "width": 400,
-              "cornerRadius": 12,
-              "layout": "vertical",
-              "gap": 12,
-              "padding": 24,
+              "id": "gVhW9",
+              "name": "CardRow1",
+              "width": "fill_container",
+              "gap": 24,
               "children": [
                 {
-                  "type": "text",
-                  "id": "rjZRk",
-                  "name": "c1icon",
-                  "content": "🚀",
-                  "fontFamily": "Inter",
-                  "fontSize": 28,
-                  "fontWeight": "normal"
+                  "type": "frame",
+                  "id": "zcsu5",
+                  "name": "c1",
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E5E7EB"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "rjZRk",
+                      "name": "c1icon",
+                      "content": "🚀",
+                      "fontFamily": "Inter",
+                      "fontSize": 28,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "T955L",
+                      "name": "c1title",
+                      "fill": "#1A1A1A",
+                      "content": "Quick Start",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "bold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "mHVij",
+                      "name": "c1desc",
+                      "fill": "#6B7280",
+                      "content": "Get up and running in 5 minutes. Install, authenticate, and make your first API call.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
                 },
                 {
-                  "type": "text",
-                  "id": "T955L",
-                  "name": "c1title",
-                  "content": "Quick Start",
-                  "fontFamily": "Inter",
-                  "fontSize": 18,
-                  "fontWeight": "normal"
+                  "type": "frame",
+                  "id": "yBZZA",
+                  "name": "c2",
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E5E7EB"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "FozC0",
+                      "name": "c2icon",
+                      "content": "🔍",
+                      "fontFamily": "Inter",
+                      "fontSize": 28,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Zyya4",
+                      "name": "c2title",
+                      "fill": "#1A1A1A",
+                      "content": "Tool Reference",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "bold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "2Fz3D",
+                      "name": "c2desc",
+                      "fill": "#6B7280",
+                      "content": "Complete reference for all 5 API tools: discover, profile, audience, content, and outreach.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
                 },
                 {
-                  "type": "text",
-                  "id": "mHVij",
-                  "name": "c1desc",
-                  "content": "Get up and running in 5 minutes. Install, authenticate, and make your first API call.",
-                  "lineHeight": 1.5,
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
+                  "type": "frame",
+                  "id": "ZAGMv",
+                  "name": "c3",
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E5E7EB"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "VnlHE",
+                      "name": "c3icon",
+                      "content": "🔑",
+                      "fontFamily": "Inter",
+                      "fontSize": 28,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "f6KJI",
+                      "name": "c3title",
+                      "fill": "#1A1A1A",
+                      "content": "Authentication",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "bold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "AyNM6",
+                      "name": "c3desc",
+                      "fill": "#6B7280",
+                      "content": "API key management, OAuth flows, and security best practices.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
                 }
               ]
             },
             {
               "type": "frame",
-              "id": "yBZZA",
-              "name": "c2",
-              "width": 400,
-              "cornerRadius": 12,
-              "layout": "vertical",
-              "gap": 12,
-              "padding": 24,
+              "id": "vUVqH",
+              "name": "CardRow2",
+              "width": "fill_container",
+              "gap": 24,
               "children": [
                 {
-                  "type": "text",
-                  "id": "FozC0",
-                  "name": "c2icon",
-                  "content": "🔍",
-                  "fontFamily": "Inter",
-                  "fontSize": 28,
-                  "fontWeight": "normal"
+                  "type": "frame",
+                  "id": "nS2fb",
+                  "name": "c4",
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E5E7EB"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "L3uZi",
+                      "name": "c4icon",
+                      "content": "💰",
+                      "fontFamily": "Inter",
+                      "fontSize": 28,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "YQA9O",
+                      "name": "c4title",
+                      "fill": "#1A1A1A",
+                      "content": "Billing & Credits",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "bold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ltARx",
+                      "name": "c4desc",
+                      "fill": "#6B7280",
+                      "content": "Understand credit costs, usage tracking, rate limits, and plan upgrades.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
                 },
                 {
-                  "type": "text",
-                  "id": "Zyya4",
-                  "name": "c2title",
-                  "content": "Tool Reference",
-                  "fontFamily": "Inter",
-                  "fontSize": 18,
-                  "fontWeight": "normal"
+                  "type": "frame",
+                  "id": "P3Osv",
+                  "name": "c5",
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E5E7EB"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kIhWY",
+                      "name": "c5icon",
+                      "content": "🤖",
+                      "fontFamily": "Inter",
+                      "fontSize": 28,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ZZSoc",
+                      "name": "c5title",
+                      "fill": "#1A1A1A",
+                      "content": "MCP & Agent Integration",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "bold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ZIVU5",
+                      "name": "c5desc",
+                      "fill": "#6B7280",
+                      "content": "Connect NoxInfluencer to Claude, ChatGPT, and other AI agents via MCP protocol.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
                 },
                 {
-                  "type": "text",
-                  "id": "2Fz3D",
-                  "name": "c2desc",
-                  "content": "Complete reference for all 5 API tools: discover, profile, audience, content, and outreach.",
-                  "lineHeight": 1.5,
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "ZAGMv",
-              "name": "c3",
-              "width": 400,
-              "cornerRadius": 12,
-              "layout": "vertical",
-              "gap": 12,
-              "padding": 24,
-              "children": [
-                {
-                  "type": "text",
-                  "id": "VnlHE",
-                  "name": "c3icon",
-                  "content": "🔑",
-                  "fontFamily": "Inter",
-                  "fontSize": 28,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "f6KJI",
-                  "name": "c3title",
-                  "content": "Authentication",
-                  "fontFamily": "Inter",
-                  "fontSize": 18,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "AyNM6",
-                  "name": "c3desc",
-                  "content": "API key management, OAuth flows, and security best practices.",
-                  "lineHeight": 1.5,
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "nS2fb",
-              "name": "c4",
-              "width": 400,
-              "cornerRadius": 12,
-              "layout": "vertical",
-              "gap": 12,
-              "padding": 24,
-              "children": [
-                {
-                  "type": "text",
-                  "id": "L3uZi",
-                  "name": "c4icon",
-                  "content": "💰",
-                  "fontFamily": "Inter",
-                  "fontSize": 28,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "YQA9O",
-                  "name": "c4title",
-                  "content": "Billing & Credits",
-                  "fontFamily": "Inter",
-                  "fontSize": 18,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "ltARx",
-                  "name": "c4desc",
-                  "content": "Understand credit costs, usage tracking, rate limits, and plan upgrades.",
-                  "lineHeight": 1.5,
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "P3Osv",
-              "name": "c5",
-              "width": 400,
-              "cornerRadius": 12,
-              "layout": "vertical",
-              "gap": 12,
-              "padding": 24,
-              "children": [
-                {
-                  "type": "text",
-                  "id": "kIhWY",
-                  "name": "c5icon",
-                  "content": "🤖",
-                  "fontFamily": "Inter",
-                  "fontSize": 28,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "ZZSoc",
-                  "name": "c5title",
-                  "content": "MCP & Agent Integration",
-                  "fontFamily": "Inter",
-                  "fontSize": 18,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "ZIVU5",
-                  "name": "c5desc",
-                  "content": "Connect NoxInfluencer to Claude, ChatGPT, and other AI agents via MCP protocol.",
-                  "lineHeight": 1.5,
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
-                }
-              ]
-            },
-            {
-              "type": "frame",
-              "id": "xHwuJ",
-              "name": "c6",
-              "width": 400,
-              "cornerRadius": 12,
-              "layout": "vertical",
-              "gap": 12,
-              "padding": 24,
-              "children": [
-                {
-                  "type": "text",
-                  "id": "1WMxK",
-                  "name": "c6icon",
-                  "content": "📘",
-                  "fontFamily": "Inter",
-                  "fontSize": 28,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "Jzbne",
-                  "name": "c6title",
-                  "content": "SDK & CLI",
-                  "fontFamily": "Inter",
-                  "fontSize": 18,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "natXQ",
-                  "name": "c6desc",
-                  "content": "Node.js SDK, Python SDK, and the nox CLI for terminal-based workflows.",
-                  "lineHeight": 1.5,
-                  "fontFamily": "Inter",
-                  "fontSize": 14,
-                  "fontWeight": "normal"
+                  "type": "frame",
+                  "id": "xHwuJ",
+                  "name": "c6",
+                  "width": "fill_container",
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E5E7EB"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "1WMxK",
+                      "name": "c6icon",
+                      "content": "📘",
+                      "fontFamily": "Inter",
+                      "fontSize": 28,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Jzbne",
+                      "name": "c6title",
+                      "fill": "#1A1A1A",
+                      "content": "SDK & CLI",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "bold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "natXQ",
+                      "name": "c6desc",
+                      "fill": "#6B7280",
+                      "content": "Node.js SDK, Python SDK, and the nox CLI for terminal-based workflows.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
                 }
               ]
             }
@@ -5022,8 +5227,8 @@
     {
       "type": "frame",
       "id": "SVqGh",
-      "x": 1540,
-      "y": 3500,
+      "x": 1550,
+      "y": 3733,
       "name": "6. Quick Start",
       "width": 1440,
       "height": 1200,
@@ -5036,6 +5241,14 @@
           "name": "Header",
           "width": "fill_container",
           "height": 64,
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "#E5E7EB"
+          },
           "padding": [
             0,
             48
@@ -5046,10 +5259,11 @@
               "type": "text",
               "id": "xjlXg",
               "name": "logo",
+              "fill": "#FF6B35",
               "content": "NoxInfluencer",
               "fontFamily": "Inter",
               "fontSize": 18,
-              "fontWeight": "normal"
+              "fontWeight": "bold"
             },
             {
               "type": "frame",
@@ -5062,15 +5276,17 @@
                   "type": "text",
                   "id": "QWELn",
                   "name": "n1",
+                  "fill": "#FF6B35",
                   "content": "Guides",
                   "fontFamily": "Inter",
                   "fontSize": 14,
-                  "fontWeight": "normal"
+                  "fontWeight": "600"
                 },
                 {
                   "type": "text",
                   "id": "nKidN",
                   "name": "n2",
+                  "fill": "#6B7280",
                   "content": "API Reference",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5080,6 +5296,7 @@
                   "type": "text",
                   "id": "DeQzo",
                   "name": "n3",
+                  "fill": "#6B7280",
                   "content": "Tools",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5089,6 +5306,7 @@
                   "type": "text",
                   "id": "NSzkb",
                   "name": "n4",
+                  "fill": "#6B7280",
                   "content": "Changelog",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5098,6 +5316,7 @@
                   "type": "frame",
                   "id": "MNMXG",
                   "name": "dbtn",
+                  "fill": "#FF6B35",
                   "cornerRadius": 6,
                   "padding": [
                     8,
@@ -5109,10 +5328,11 @@
                       "type": "text",
                       "id": "ccPlF",
                       "name": "dtxt",
+                      "fill": "#FFFFFF",
                       "content": "Dashboard",
                       "fontFamily": "Inter",
                       "fontSize": 13,
-                      "fontWeight": "normal"
+                      "fontWeight": "600"
                     }
                   ]
                 }
@@ -5133,6 +5353,14 @@
               "name": "Sidebar",
               "width": 240,
               "height": "fill_container",
+              "fill": "#F8F8F8",
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "right": 1
+                },
+                "fill": "#E5E7EB"
+              },
               "layout": "vertical",
               "gap": 8,
               "padding": [
@@ -5144,25 +5372,28 @@
                   "type": "text",
                   "id": "HvC8w",
                   "name": "sTitle",
+                  "fill": "#9CA3AF",
                   "content": "GETTING STARTED",
                   "fontFamily": "Inter",
                   "fontSize": 11,
-                  "fontWeight": "normal",
+                  "fontWeight": "bold",
                   "letterSpacing": 1
                 },
                 {
                   "type": "text",
                   "id": "NUTtW",
                   "name": "sLink1",
+                  "fill": "#FF6B35",
                   "content": "Quick Start",
                   "fontFamily": "Inter",
                   "fontSize": 14,
-                  "fontWeight": "normal"
+                  "fontWeight": "600"
                 },
                 {
                   "type": "text",
                   "id": "9CYs8",
                   "name": "sLink2",
+                  "fill": "#6B7280",
                   "content": "Authentication",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5172,6 +5403,7 @@
                   "type": "text",
                   "id": "aM26R",
                   "name": "sLink3",
+                  "fill": "#6B7280",
                   "content": "Rate Limits",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5181,16 +5413,18 @@
                   "type": "text",
                   "id": "paddW",
                   "name": "sTitle2",
+                  "fill": "#9CA3AF",
                   "content": "TOOLS",
                   "fontFamily": "Inter",
                   "fontSize": 11,
-                  "fontWeight": "normal",
+                  "fontWeight": "bold",
                   "letterSpacing": 1
                 },
                 {
                   "type": "text",
                   "id": "8XFeY",
                   "name": "sLink4",
+                  "fill": "#6B7280",
                   "content": "discover_creators",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5200,6 +5434,7 @@
                   "type": "text",
                   "id": "9y13t",
                   "name": "sLink5",
+                  "fill": "#6B7280",
                   "content": "get_profile",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5209,6 +5444,7 @@
                   "type": "text",
                   "id": "VGa3J",
                   "name": "sLink6",
+                  "fill": "#6B7280",
                   "content": "get_audience",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5218,6 +5454,7 @@
                   "type": "text",
                   "id": "mBqu2",
                   "name": "sLink7",
+                  "fill": "#6B7280",
                   "content": "get_content",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5227,6 +5464,7 @@
                   "type": "text",
                   "id": "H36GX",
                   "name": "sLink8",
+                  "fill": "#6B7280",
                   "content": "send_outreach",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5251,6 +5489,7 @@
                   "type": "text",
                   "id": "Acjx1",
                   "name": "breadcrumb",
+                  "fill": "#9CA3AF",
                   "content": "Docs  /  Getting Started  /  Quick Start",
                   "fontFamily": "Inter",
                   "fontSize": 13,
@@ -5260,15 +5499,17 @@
                   "type": "text",
                   "id": "gOpLx",
                   "name": "title",
+                  "fill": "#1A1A1A",
                   "content": "Quick Start Guide",
                   "fontFamily": "Inter",
                   "fontSize": 32,
-                  "fontWeight": "normal"
+                  "fontWeight": "bold"
                 },
                 {
                   "type": "text",
                   "id": "XZc3K",
                   "name": "intro",
+                  "fill": "#6B7280",
                   "content": "Get your first API call working in under 5 minutes.",
                   "lineHeight": 1.6,
                   "fontFamily": "Inter",
@@ -5296,6 +5537,7 @@
                           "name": "s1badge",
                           "width": 32,
                           "height": 32,
+                          "fill": "#FF6B35",
                           "cornerRadius": 16,
                           "justifyContent": "center",
                           "alignItems": "center",
@@ -5304,10 +5546,11 @@
                               "type": "text",
                               "id": "QguZA",
                               "name": "s1num",
+                              "fill": "#FFFFFF",
                               "content": "1",
                               "fontFamily": "Inter",
                               "fontSize": 14,
-                              "fontWeight": "normal"
+                              "fontWeight": "bold"
                             }
                           ]
                         },
@@ -5315,10 +5558,11 @@
                           "type": "text",
                           "id": "7FtK7",
                           "name": "s1title",
+                          "fill": "#1A1A1A",
                           "content": "Install the CLI",
                           "fontFamily": "Inter",
                           "fontSize": 20,
-                          "fontWeight": "normal"
+                          "fontWeight": "600"
                         }
                       ]
                     },
@@ -5327,6 +5571,7 @@
                       "id": "6lm9p",
                       "name": "s1code",
                       "width": "fill_container",
+                      "fill": "#1E1E2E",
                       "cornerRadius": 8,
                       "layout": "vertical",
                       "padding": 16,
@@ -5335,6 +5580,7 @@
                           "type": "text",
                           "id": "ruRC2",
                           "name": "s1line",
+                          "fill": "#E2E8F0",
                           "content": "npm install -g @noxinfluencer/cli",
                           "fontFamily": "monospace",
                           "fontSize": 13,
@@ -5365,6 +5611,7 @@
                           "name": "s2badge",
                           "width": 32,
                           "height": 32,
+                          "fill": "#FF6B35",
                           "cornerRadius": 16,
                           "justifyContent": "center",
                           "alignItems": "center",
@@ -5373,10 +5620,11 @@
                               "type": "text",
                               "id": "jFbb9",
                               "name": "s2num",
+                              "fill": "#FFFFFF",
                               "content": "2",
                               "fontFamily": "Inter",
                               "fontSize": 14,
-                              "fontWeight": "normal"
+                              "fontWeight": "bold"
                             }
                           ]
                         },
@@ -5384,10 +5632,11 @@
                           "type": "text",
                           "id": "zQBuB",
                           "name": "s2title",
+                          "fill": "#1A1A1A",
                           "content": "Set your API key",
                           "fontFamily": "Inter",
                           "fontSize": 20,
-                          "fontWeight": "normal"
+                          "fontWeight": "600"
                         }
                       ]
                     },
@@ -5395,6 +5644,7 @@
                       "type": "text",
                       "id": "3WLLJ",
                       "name": "s2desc",
+                      "fill": "#6B7280",
                       "content": "Get your API key from Dashboard → API Keys, then set it:",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
@@ -5406,6 +5656,7 @@
                       "id": "C03lh",
                       "name": "s2code",
                       "width": "fill_container",
+                      "fill": "#1E1E2E",
                       "cornerRadius": 8,
                       "layout": "vertical",
                       "padding": 16,
@@ -5414,6 +5665,7 @@
                           "type": "text",
                           "id": "vPNCZ",
                           "name": "s2line",
+                          "fill": "#E2E8F0",
                           "content": "export NOX_API_KEY=your_api_key_here",
                           "fontFamily": "monospace",
                           "fontSize": 13,
@@ -5444,6 +5696,7 @@
                           "name": "s3badge",
                           "width": 32,
                           "height": 32,
+                          "fill": "#FF6B35",
                           "cornerRadius": 16,
                           "justifyContent": "center",
                           "alignItems": "center",
@@ -5452,10 +5705,11 @@
                               "type": "text",
                               "id": "9L5c6",
                               "name": "s3num",
+                              "fill": "#FFFFFF",
                               "content": "3",
                               "fontFamily": "Inter",
                               "fontSize": 14,
-                              "fontWeight": "normal"
+                              "fontWeight": "bold"
                             }
                           ]
                         },
@@ -5463,10 +5717,11 @@
                           "type": "text",
                           "id": "K93Ya",
                           "name": "s3title",
+                          "fill": "#1A1A1A",
                           "content": "Make your first call",
                           "fontFamily": "Inter",
                           "fontSize": 20,
-                          "fontWeight": "normal"
+                          "fontWeight": "600"
                         }
                       ]
                     },
@@ -5475,6 +5730,7 @@
                       "id": "ARVlc",
                       "name": "s3code",
                       "width": "fill_container",
+                      "fill": "#1E1E2E",
                       "cornerRadius": 8,
                       "layout": "vertical",
                       "gap": 4,
@@ -5484,6 +5740,7 @@
                           "type": "text",
                           "id": "hZH48",
                           "name": "s3l1",
+                          "fill": "#E2E8F0",
                           "content": "nox search \"beauty influencers in USA\" \\",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -5493,6 +5750,7 @@
                           "type": "text",
                           "id": "zorq8",
                           "name": "s3l2",
+                          "fill": "#E2E8F0",
                           "content": "  --platform youtube \\",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -5502,6 +5760,7 @@
                           "type": "text",
                           "id": "3uq0Z",
                           "name": "s3l3",
+                          "fill": "#E2E8F0",
                           "content": "  --min-followers 10000",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -5515,16 +5774,18 @@
                   "type": "text",
                   "id": "aWuJ3",
                   "name": "respTitle",
+                  "fill": "#1A1A1A",
                   "content": "Example Response",
                   "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "normal"
+                  "fontWeight": "600"
                 },
                 {
                   "type": "frame",
                   "id": "WhWuu",
                   "name": "respCode",
                   "width": "fill_container",
+                  "fill": "#1E1E2E",
                   "cornerRadius": 8,
                   "layout": "vertical",
                   "gap": 2,
@@ -5534,6 +5795,7 @@
                       "type": "text",
                       "id": "sSxU3",
                       "name": "r1",
+                      "fill": "#E2E8F0",
                       "content": "{",
                       "fontFamily": "Inter",
                       "fontSize": 12,
@@ -5543,6 +5805,7 @@
                       "type": "text",
                       "id": "PvSRN",
                       "name": "r2",
+                      "fill": "#E2E8F0",
                       "content": "  \"creators\": [",
                       "fontFamily": "Inter",
                       "fontSize": 12,
@@ -5552,6 +5815,7 @@
                       "type": "text",
                       "id": "0DOpo",
                       "name": "r3",
+                      "fill": "#E2E8F0",
                       "content": "    { \"name\": \"BeautyByLisa\",",
                       "fontFamily": "Inter",
                       "fontSize": 12,
@@ -5561,6 +5825,7 @@
                       "type": "text",
                       "id": "XKpMr",
                       "name": "r4",
+                      "fill": "#E2E8F0",
                       "content": "      \"platform\": \"youtube\",",
                       "fontFamily": "Inter",
                       "fontSize": 12,
@@ -5570,6 +5835,7 @@
                       "type": "text",
                       "id": "7I2ka",
                       "name": "r5",
+                      "fill": "#E2E8F0",
                       "content": "      \"followers\": 245000,",
                       "fontFamily": "Inter",
                       "fontSize": 12,
@@ -5579,6 +5845,7 @@
                       "type": "text",
                       "id": "yJNLQ",
                       "name": "r6",
+                      "fill": "#E2E8F0",
                       "content": "      \"engagement_rate\": 4.2 }",
                       "fontFamily": "Inter",
                       "fontSize": 12,
@@ -5588,6 +5855,7 @@
                       "type": "text",
                       "id": "u94rK",
                       "name": "r7",
+                      "fill": "#E2E8F0",
                       "content": "  ],",
                       "fontFamily": "Inter",
                       "fontSize": 12,
@@ -5597,6 +5865,7 @@
                       "type": "text",
                       "id": "Fe2QY",
                       "name": "r8",
+                      "fill": "#E2E8F0",
                       "content": "  \"credits_used\": 1",
                       "fontFamily": "Inter",
                       "fontSize": 12,
@@ -5606,6 +5875,7 @@
                       "type": "text",
                       "id": "pLMYn",
                       "name": "r9",
+                      "fill": "#E2E8F0",
                       "content": "}",
                       "fontFamily": "Inter",
                       "fontSize": 12,
@@ -5618,6 +5888,7 @@
                   "id": "fe94R",
                   "name": "NextSteps",
                   "width": "fill_container",
+                  "fill": "#FFF5F0",
                   "cornerRadius": 12,
                   "layout": "vertical",
                   "gap": 12,
@@ -5627,15 +5898,17 @@
                       "type": "text",
                       "id": "XaRIe",
                       "name": "nsTitle",
+                      "fill": "#1A1A1A",
                       "content": "Next Steps",
                       "fontFamily": "Inter",
                       "fontSize": 18,
-                      "fontWeight": "normal"
+                      "fontWeight": "600"
                     },
                     {
                       "type": "text",
                       "id": "VJQ7B",
                       "name": "ns1",
+                      "fill": "#FF6B35",
                       "content": "→  Explore all 5 tools in the Tool Reference",
                       "fontFamily": "Inter",
                       "fontSize": 14,
@@ -5645,6 +5918,7 @@
                       "type": "text",
                       "id": "uRZVS",
                       "name": "ns2",
+                      "fill": "#FF6B35",
                       "content": "→  Manage your API keys in the Dashboard",
                       "fontFamily": "Inter",
                       "fontSize": 14,
@@ -5654,6 +5928,7 @@
                       "type": "text",
                       "id": "FJzKo",
                       "name": "ns3",
+                      "fill": "#FF6B35",
                       "content": "→  Set up MCP integration for AI agents",
                       "fontFamily": "Inter",
                       "fontSize": 14,
@@ -5671,7 +5946,7 @@
       "type": "frame",
       "id": "ncxgT",
       "x": 3080,
-      "y": 3500,
+      "y": 3733,
       "name": "7. Tool Reference",
       "width": 1440,
       "height": 1200,
@@ -5684,6 +5959,14 @@
           "name": "Header",
           "width": "fill_container",
           "height": 64,
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "bottom": 1
+            },
+            "fill": "#E5E7EB"
+          },
           "padding": [
             0,
             48
@@ -5694,10 +5977,11 @@
               "type": "text",
               "id": "TymZc",
               "name": "logo",
+              "fill": "#FF6B35",
               "content": "NoxInfluencer",
               "fontFamily": "Inter",
               "fontSize": 18,
-              "fontWeight": "normal"
+              "fontWeight": "bold"
             },
             {
               "type": "frame",
@@ -5710,6 +5994,7 @@
                   "type": "text",
                   "id": "QLwnu",
                   "name": "n1",
+                  "fill": "#6B7280",
                   "content": "Guides",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5719,6 +6004,7 @@
                   "type": "text",
                   "id": "yw6Ng",
                   "name": "n2",
+                  "fill": "#6B7280",
                   "content": "API Reference",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5728,15 +6014,17 @@
                   "type": "text",
                   "id": "PcOZi",
                   "name": "n3",
+                  "fill": "#FF6B35",
                   "content": "Tools",
                   "fontFamily": "Inter",
                   "fontSize": 14,
-                  "fontWeight": "normal"
+                  "fontWeight": "600"
                 },
                 {
                   "type": "text",
                   "id": "Mul3r",
                   "name": "n4",
+                  "fill": "#6B7280",
                   "content": "Changelog",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5746,6 +6034,7 @@
                   "type": "frame",
                   "id": "KI2o1",
                   "name": "dbtn",
+                  "fill": "#FF6B35",
                   "cornerRadius": 6,
                   "padding": [
                     8,
@@ -5757,10 +6046,11 @@
                       "type": "text",
                       "id": "4NcRr",
                       "name": "dtxt",
+                      "fill": "#FFFFFF",
                       "content": "Dashboard",
                       "fontFamily": "Inter",
                       "fontSize": 13,
-                      "fontWeight": "normal"
+                      "fontWeight": "600"
                     }
                   ]
                 }
@@ -5781,6 +6071,14 @@
               "name": "Sidebar",
               "width": 240,
               "height": "fill_container",
+              "fill": "#F8F8F8",
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "right": 1
+                },
+                "fill": "#E5E7EB"
+              },
               "layout": "vertical",
               "gap": 8,
               "padding": [
@@ -5792,25 +6090,28 @@
                   "type": "text",
                   "id": "ZdeO8",
                   "name": "sTitle",
+                  "fill": "#9CA3AF",
                   "content": "TOOLS",
                   "fontFamily": "Inter",
                   "fontSize": 11,
-                  "fontWeight": "normal",
+                  "fontWeight": "bold",
                   "letterSpacing": 1
                 },
                 {
                   "type": "text",
                   "id": "5Pwtj",
                   "name": "sl1",
+                  "fill": "#FF6B35",
                   "content": "discover_creators",
                   "fontFamily": "Inter",
                   "fontSize": 14,
-                  "fontWeight": "normal"
+                  "fontWeight": "600"
                 },
                 {
                   "type": "text",
                   "id": "fW669",
                   "name": "sl2",
+                  "fill": "#6B7280",
                   "content": "get_profile",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5820,6 +6121,7 @@
                   "type": "text",
                   "id": "vzvtu",
                   "name": "sl3",
+                  "fill": "#6B7280",
                   "content": "get_audience",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5829,6 +6131,7 @@
                   "type": "text",
                   "id": "oHYZX",
                   "name": "sl4",
+                  "fill": "#6B7280",
                   "content": "get_content",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5838,6 +6141,7 @@
                   "type": "text",
                   "id": "lN8Ml",
                   "name": "sl5",
+                  "fill": "#6B7280",
                   "content": "send_outreach",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5847,16 +6151,18 @@
                   "type": "text",
                   "id": "ZxwHB",
                   "name": "sTitle2",
+                  "fill": "#9CA3AF",
                   "content": "RESOURCES",
                   "fontFamily": "Inter",
                   "fontSize": 11,
-                  "fontWeight": "normal",
+                  "fontWeight": "bold",
                   "letterSpacing": 1
                 },
                 {
                   "type": "text",
                   "id": "qcW2l",
                   "name": "sl6",
+                  "fill": "#6B7280",
                   "content": "Error Codes",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5866,6 +6172,7 @@
                   "type": "text",
                   "id": "9h4PP",
                   "name": "sl7",
+                  "fill": "#6B7280",
                   "content": "Rate Limits",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -5890,6 +6197,7 @@
                   "type": "text",
                   "id": "14juN",
                   "name": "bc",
+                  "fill": "#9CA3AF",
                   "content": "Docs  /  Tools  /  discover_creators",
                   "fontFamily": "Inter",
                   "fontSize": 13,
@@ -5899,15 +6207,17 @@
                   "type": "text",
                   "id": "dB6JQ",
                   "name": "title",
+                  "fill": "#1A1A1A",
                   "content": "discover_creators",
                   "fontFamily": "Inter",
                   "fontSize": 28,
-                  "fontWeight": "normal"
+                  "fontWeight": "bold"
                 },
                 {
                   "type": "text",
                   "id": "otz6f",
                   "name": "desc",
+                  "fill": "#6B7280",
                   "content": "Search and discover influencers across YouTube, Instagram, and TikTok with powerful filtering.",
                   "lineHeight": 1.6,
                   "fontFamily": "Inter",
@@ -5925,6 +6235,7 @@
                       "type": "frame",
                       "id": "pbqP7",
                       "name": "costBadge",
+                      "fill": "#FFF5F0",
                       "cornerRadius": 4,
                       "padding": [
                         4,
@@ -5935,10 +6246,11 @@
                           "type": "text",
                           "id": "hgNua",
                           "name": "costTxt",
+                          "fill": "#FF6B35",
                           "content": "1 credit / call",
                           "fontFamily": "Inter",
                           "fontSize": 12,
-                          "fontWeight": "normal"
+                          "fontWeight": "600"
                         }
                       ]
                     },
@@ -5946,6 +6258,7 @@
                       "type": "frame",
                       "id": "oXPpy",
                       "name": "methBadge",
+                      "fill": "#EFF6FF",
                       "cornerRadius": 4,
                       "padding": [
                         4,
@@ -5956,10 +6269,11 @@
                           "type": "text",
                           "id": "Neu6k",
                           "name": "methTxt",
+                          "fill": "#3B82F6",
                           "content": "POST /v1/tools/discover",
                           "fontFamily": "Inter",
                           "fontSize": 12,
-                          "fontWeight": "normal"
+                          "fontWeight": "600"
                         }
                       ]
                     }
@@ -5969,10 +6283,11 @@
                   "type": "text",
                   "id": "XSZl2",
                   "name": "paramTitle",
+                  "fill": "#1A1A1A",
                   "content": "Parameters",
                   "fontFamily": "Inter",
                   "fontSize": 18,
-                  "fontWeight": "normal"
+                  "fontWeight": "600"
                 },
                 {
                   "type": "frame",
@@ -5980,6 +6295,11 @@
                   "name": "ParamTable",
                   "width": "fill_container",
                   "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E5E7EB"
+                  },
                   "layout": "vertical",
                   "children": [
                     {
@@ -5987,6 +6307,14 @@
                       "id": "Q4oMi",
                       "name": "thead",
                       "width": "fill_container",
+                      "fill": "#F8F8F8",
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": {
+                          "bottom": 1
+                        },
+                        "fill": "#E5E7EB"
+                      },
                       "padding": [
                         10,
                         16
@@ -5996,37 +6324,41 @@
                           "type": "text",
                           "id": "RXPSQ",
                           "name": "th1",
+                          "fill": "#6B7280",
                           "content": "Parameter",
                           "fontFamily": "Inter",
                           "fontSize": 12,
-                          "fontWeight": "normal"
+                          "fontWeight": "bold"
                         },
                         {
                           "type": "text",
                           "id": "NEpnu",
                           "name": "th2",
+                          "fill": "#6B7280",
                           "content": "Type",
                           "fontFamily": "Inter",
                           "fontSize": 12,
-                          "fontWeight": "normal"
+                          "fontWeight": "bold"
                         },
                         {
                           "type": "text",
                           "id": "4K990",
                           "name": "th3",
+                          "fill": "#6B7280",
                           "content": "Required",
                           "fontFamily": "Inter",
                           "fontSize": 12,
-                          "fontWeight": "normal"
+                          "fontWeight": "bold"
                         },
                         {
                           "type": "text",
                           "id": "TOIHq",
                           "name": "th4",
+                          "fill": "#6B7280",
                           "content": "Description",
                           "fontFamily": "Inter",
                           "fontSize": 12,
-                          "fontWeight": "normal"
+                          "fontWeight": "bold"
                         }
                       ]
                     },
@@ -6035,6 +6367,13 @@
                       "id": "cr1St",
                       "name": "row1",
                       "width": "fill_container",
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": {
+                          "bottom": 1
+                        },
+                        "fill": "#E5E7EB"
+                      },
                       "padding": [
                         10,
                         16
@@ -6044,15 +6383,17 @@
                           "type": "text",
                           "id": "nijoI",
                           "name": "r1c1",
+                          "fill": "#1A1A1A",
                           "content": "query",
                           "fontFamily": "Inter",
                           "fontSize": 13,
-                          "fontWeight": "normal"
+                          "fontWeight": "600"
                         },
                         {
                           "type": "text",
                           "id": "Uga3j",
                           "name": "r1c2",
+                          "fill": "#6B7280",
                           "content": "string",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -6062,15 +6403,17 @@
                           "type": "text",
                           "id": "8ziOe",
                           "name": "r1c3",
+                          "fill": "#FF6B35",
                           "content": "Yes",
                           "fontFamily": "Inter",
                           "fontSize": 13,
-                          "fontWeight": "normal"
+                          "fontWeight": "600"
                         },
                         {
                           "type": "text",
                           "id": "IqBGV",
                           "name": "r1c4",
+                          "fill": "#6B7280",
                           "content": "Natural language search query",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -6083,6 +6426,13 @@
                       "id": "6mNBR",
                       "name": "row2",
                       "width": "fill_container",
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": {
+                          "bottom": 1
+                        },
+                        "fill": "#E5E7EB"
+                      },
                       "padding": [
                         10,
                         16
@@ -6092,15 +6442,17 @@
                           "type": "text",
                           "id": "WemUc",
                           "name": "r2c1",
+                          "fill": "#1A1A1A",
                           "content": "platform",
                           "fontFamily": "Inter",
                           "fontSize": 13,
-                          "fontWeight": "normal"
+                          "fontWeight": "600"
                         },
                         {
                           "type": "text",
                           "id": "NHLMO",
                           "name": "r2c2",
+                          "fill": "#6B7280",
                           "content": "string",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -6110,6 +6462,7 @@
                           "type": "text",
                           "id": "66jEU",
                           "name": "r2c3",
+                          "fill": "#6B7280",
                           "content": "No",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -6119,6 +6472,7 @@
                           "type": "text",
                           "id": "VKpE2",
                           "name": "r2c4",
+                          "fill": "#6B7280",
                           "content": "youtube | instagram | tiktok",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -6131,6 +6485,13 @@
                       "id": "2g5yL",
                       "name": "row3",
                       "width": "fill_container",
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": {
+                          "bottom": 1
+                        },
+                        "fill": "#E5E7EB"
+                      },
                       "padding": [
                         10,
                         16
@@ -6140,15 +6501,17 @@
                           "type": "text",
                           "id": "OnLvN",
                           "name": "r3c1",
+                          "fill": "#1A1A1A",
                           "content": "min_followers",
                           "fontFamily": "Inter",
                           "fontSize": 13,
-                          "fontWeight": "normal"
+                          "fontWeight": "600"
                         },
                         {
                           "type": "text",
                           "id": "nCiOr",
                           "name": "r3c2",
+                          "fill": "#6B7280",
                           "content": "integer",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -6158,6 +6521,7 @@
                           "type": "text",
                           "id": "o1tO2",
                           "name": "r3c3",
+                          "fill": "#6B7280",
                           "content": "No",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -6167,6 +6531,7 @@
                           "type": "text",
                           "id": "y0NEX",
                           "name": "r3c4",
+                          "fill": "#6B7280",
                           "content": "Minimum follower count filter",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -6179,6 +6544,13 @@
                       "id": "AgWHZ",
                       "name": "row4",
                       "width": "fill_container",
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": {
+                          "bottom": 1
+                        },
+                        "fill": "#E5E7EB"
+                      },
                       "padding": [
                         10,
                         16
@@ -6188,15 +6560,17 @@
                           "type": "text",
                           "id": "jbDCL",
                           "name": "r4c1",
+                          "fill": "#1A1A1A",
                           "content": "country",
                           "fontFamily": "Inter",
                           "fontSize": 13,
-                          "fontWeight": "normal"
+                          "fontWeight": "600"
                         },
                         {
                           "type": "text",
                           "id": "arlYn",
                           "name": "r4c2",
+                          "fill": "#6B7280",
                           "content": "string",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -6206,6 +6580,7 @@
                           "type": "text",
                           "id": "3EL8O",
                           "name": "r4c3",
+                          "fill": "#6B7280",
                           "content": "No",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -6215,6 +6590,7 @@
                           "type": "text",
                           "id": "xM1dP",
                           "name": "r4c4",
+                          "fill": "#6B7280",
                           "content": "ISO 3166-1 country code (e.g. US, KR)",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -6236,15 +6612,17 @@
                           "type": "text",
                           "id": "OYIqQ",
                           "name": "r5c1",
+                          "fill": "#1A1A1A",
                           "content": "limit",
                           "fontFamily": "Inter",
                           "fontSize": 13,
-                          "fontWeight": "normal"
+                          "fontWeight": "600"
                         },
                         {
                           "type": "text",
                           "id": "2RT4t",
                           "name": "r5c2",
+                          "fill": "#6B7280",
                           "content": "integer",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -6254,6 +6632,7 @@
                           "type": "text",
                           "id": "9IZzS",
                           "name": "r5c3",
+                          "fill": "#6B7280",
                           "content": "No",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -6263,6 +6642,7 @@
                           "type": "text",
                           "id": "qzL00",
                           "name": "r5c4",
+                          "fill": "#6B7280",
                           "content": "Results per page (default: 20, max: 100)",
                           "fontFamily": "Inter",
                           "fontSize": 13,
@@ -6276,16 +6656,18 @@
                   "type": "text",
                   "id": "rXtmx",
                   "name": "curlTitle",
+                  "fill": "#1A1A1A",
                   "content": "Example Request",
                   "fontFamily": "Inter",
                   "fontSize": 18,
-                  "fontWeight": "normal"
+                  "fontWeight": "600"
                 },
                 {
                   "type": "frame",
                   "id": "7yCBi",
                   "name": "curlCode",
                   "width": "fill_container",
+                  "fill": "#1E1E2E",
                   "cornerRadius": 8,
                   "layout": "vertical",
                   "gap": 2,
@@ -6295,6 +6677,7 @@
                       "type": "text",
                       "id": "U9OzF",
                       "name": "cl1",
+                      "fill": "#E2E8F0",
                       "content": "curl -X POST https://api.noxinfluencer.com/v1/tools/discover \\",
                       "fontFamily": "Inter",
                       "fontSize": 12,
@@ -6304,6 +6687,7 @@
                       "type": "text",
                       "id": "bxo4J",
                       "name": "cl2",
+                      "fill": "#E2E8F0",
                       "content": "  -H \"Authorization: Bearer $NOX_API_KEY\" \\",
                       "fontFamily": "Inter",
                       "fontSize": 12,
@@ -6313,6 +6697,7 @@
                       "type": "text",
                       "id": "jleX0",
                       "name": "cl3",
+                      "fill": "#E2E8F0",
                       "content": "  -H \"Content-Type: application/json\" \\",
                       "fontFamily": "Inter",
                       "fontSize": 12,
@@ -6322,6 +6707,7 @@
                       "type": "text",
                       "id": "Nl95U",
                       "name": "cl4",
+                      "fill": "#E2E8F0",
                       "content": "  -d '{\"query\": \"beauty influencers\", \"platform\": \"youtube\"}'",
                       "fontFamily": "Inter",
                       "fontSize": 12,
@@ -6339,11 +6725,21 @@
       "type": "frame",
       "id": "jlVYY",
       "x": 4620,
-      "y": 3500,
+      "y": 3733,
       "name": "8. API Key Modal",
       "width": 520,
       "fill": "$bg-surface",
       "cornerRadius": 16,
+      "effect": {
+        "type": "shadow",
+        "shadowType": "outer",
+        "color": "#0000001F",
+        "offset": {
+          "x": 0,
+          "y": 8
+        },
+        "blur": 24
+      },
       "layout": "vertical",
       "gap": 24,
       "padding": 32,
@@ -6355,6 +6751,7 @@
           "name": "icon",
           "width": 56,
           "height": 56,
+          "fill": "#ECFDF5",
           "cornerRadius": 28,
           "justifyContent": "center",
           "alignItems": "center",
@@ -6363,10 +6760,11 @@
               "type": "text",
               "id": "7rX2F",
               "name": "check",
+              "fill": "#10B981",
               "content": "✓",
               "fontFamily": "Inter",
               "fontSize": 28,
-              "fontWeight": "normal"
+              "fontWeight": "bold"
             }
           ]
         },
@@ -6374,15 +6772,17 @@
           "type": "text",
           "id": "JRn56",
           "name": "mtitle",
+          "fill": "#1A1A1A",
           "content": "API Key Created!",
           "fontFamily": "Inter",
           "fontSize": 22,
-          "fontWeight": "normal"
+          "fontWeight": "bold"
         },
         {
           "type": "text",
           "id": "mMMqs",
           "name": "mdesc",
+          "fill": "#6B7280",
           "content": "Your new API key is ready. You can view it anytime from your Dashboard.",
           "lineHeight": 1.5,
           "textAlign": "center",
@@ -6402,10 +6802,11 @@
               "type": "text",
               "id": "Byz0q",
               "name": "keyLabel",
+              "fill": "#6B7280",
               "content": "API Key",
               "fontFamily": "Inter",
               "fontSize": 12,
-              "fontWeight": "normal"
+              "fontWeight": "600"
             },
             {
               "type": "frame",
@@ -6413,7 +6814,13 @@
               "name": "keyRow",
               "width": "fill_container",
               "height": 44,
+              "fill": "#F8F8F8",
               "cornerRadius": 8,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E5E7EB"
+              },
               "padding": [
                 0,
                 12
@@ -6424,6 +6831,7 @@
                   "type": "text",
                   "id": "wl9Jh",
                   "name": "keyVal",
+                  "fill": "#1A1A1A",
                   "content": "nox_sk_a3f8...●●●●●●●●",
                   "fontFamily": "Inter",
                   "fontSize": 13,
@@ -6440,19 +6848,21 @@
                       "type": "text",
                       "id": "Syg7B",
                       "name": "revealBtn",
+                      "fill": "#FF6B35",
                       "content": "Reveal",
                       "fontFamily": "Inter",
                       "fontSize": 12,
-                      "fontWeight": "normal"
+                      "fontWeight": "600"
                     },
                     {
                       "type": "text",
                       "id": "E5MdJ",
                       "name": "copyBtn",
+                      "fill": "#3B82F6",
                       "content": "Copy",
                       "fontFamily": "Inter",
                       "fontSize": 12,
-                      "fontWeight": "normal"
+                      "fontWeight": "600"
                     }
                   ]
                 }
@@ -6472,10 +6882,11 @@
               "type": "text",
               "id": "a0RD9",
               "name": "nameLabel",
+              "fill": "#6B7280",
               "content": "Key Name",
               "fontFamily": "Inter",
               "fontSize": 12,
-              "fontWeight": "normal"
+              "fontWeight": "600"
             },
             {
               "type": "frame",
@@ -6483,7 +6894,13 @@
               "name": "nameInput",
               "width": "fill_container",
               "height": 44,
+              "fill": "#FFFFFF",
               "cornerRadius": 8,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E5E7EB"
+              },
               "padding": [
                 0,
                 12
@@ -6494,6 +6911,7 @@
                   "type": "text",
                   "id": "xmFRd",
                   "name": "nameTxt",
+                  "fill": "#1A1A1A",
                   "content": "Production Key",
                   "fontFamily": "Inter",
                   "fontSize": 14,
@@ -6509,6 +6927,7 @@
           "name": "doneBtn",
           "width": "fill_container",
           "height": 44,
+          "fill": "#FF6B35",
           "cornerRadius": 8,
           "justifyContent": "center",
           "alignItems": "center",
@@ -6517,10 +6936,11 @@
               "type": "text",
               "id": "vCsW1",
               "name": "doneTxt",
+              "fill": "#FFFFFF",
               "content": "Done",
               "fontFamily": "Inter",
               "fontSize": 14,
-              "fontWeight": "normal"
+              "fontWeight": "600"
             }
           ]
         }
@@ -6530,11 +6950,21 @@
       "type": "frame",
       "id": "mbq1q",
       "x": 5200,
-      "y": 3500,
+      "y": 3733,
       "name": "9. Revoke Key Modal",
       "width": 460,
       "fill": "$bg-surface",
       "cornerRadius": 16,
+      "effect": {
+        "type": "shadow",
+        "shadowType": "outer",
+        "color": "#0000001F",
+        "offset": {
+          "x": 0,
+          "y": 8
+        },
+        "blur": 24
+      },
       "layout": "vertical",
       "gap": 20,
       "padding": 32,
@@ -6546,6 +6976,7 @@
           "name": "warnIcon",
           "width": 48,
           "height": 48,
+          "fill": "#FEF2F2",
           "cornerRadius": 24,
           "justifyContent": "center",
           "alignItems": "center",
@@ -6565,15 +6996,17 @@
           "type": "text",
           "id": "dhB9f",
           "name": "rtitle",
+          "fill": "#DC2626",
           "content": "Revoke API Key?",
           "fontFamily": "Inter",
           "fontSize": 20,
-          "fontWeight": "normal"
+          "fontWeight": "bold"
         },
         {
           "type": "text",
           "id": "l0dRn",
           "name": "rdesc",
+          "fill": "#6B7280",
           "content": "This will immediately stop all API calls using this key. This action cannot be undone.",
           "lineHeight": 1.5,
           "fontFamily": "Inter",
@@ -6585,6 +7018,7 @@
           "id": "AJxs0",
           "name": "keyCard",
           "width": "fill_container",
+          "fill": "#FEF2F2",
           "cornerRadius": 8,
           "layout": "vertical",
           "gap": 8,
@@ -6594,15 +7028,17 @@
               "type": "text",
               "id": "tEkAT",
               "name": "kcName",
+              "fill": "#1A1A1A",
               "content": "Production Key",
               "fontFamily": "Inter",
               "fontSize": 14,
-              "fontWeight": "normal"
+              "fontWeight": "600"
             },
             {
               "type": "text",
               "id": "a9lKq",
               "name": "kcKey",
+              "fill": "#6B7280",
               "content": "nox_sk_a3f8...●●●●",
               "fontFamily": "Inter",
               "fontSize": 13,
@@ -6612,6 +7048,7 @@
               "type": "text",
               "id": "C6FhV",
               "name": "kcDate",
+              "fill": "#9CA3AF",
               "content": "Created: Jan 15, 2025  •  Last used: 2 hours ago",
               "fontFamily": "Inter",
               "fontSize": 12,
@@ -6631,10 +7068,11 @@
               "type": "text",
               "id": "VFOz3",
               "name": "confirmLabel",
+              "fill": "#6B7280",
               "content": "Type \"REVOKE\" to confirm",
               "fontFamily": "Inter",
               "fontSize": 13,
-              "fontWeight": "normal"
+              "fontWeight": "600"
             },
             {
               "type": "frame",
@@ -6642,7 +7080,13 @@
               "name": "confirmInput",
               "width": "fill_container",
               "height": 44,
+              "fill": "#FFFFFF",
               "cornerRadius": 8,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#DC2626"
+              },
               "padding": [
                 0,
                 12
@@ -6653,10 +7097,11 @@
                   "type": "text",
                   "id": "mzklR",
                   "name": "confirmTxt",
+                  "fill": "#DC2626",
                   "content": "REVOKE",
                   "fontFamily": "Inter",
                   "fontSize": 14,
-                  "fontWeight": "normal"
+                  "fontWeight": "600"
                 }
               ]
             }
@@ -6675,6 +7120,7 @@
               "name": "cancelBtn",
               "width": "fill_container",
               "height": 44,
+              "fill": "#F3F4F6",
               "cornerRadius": 8,
               "justifyContent": "center",
               "alignItems": "center",
@@ -6683,10 +7129,11 @@
                   "type": "text",
                   "id": "SiNf0",
                   "name": "cancelTxt",
+                  "fill": "#6B7280",
                   "content": "Cancel",
                   "fontFamily": "Inter",
                   "fontSize": 14,
-                  "fontWeight": "normal"
+                  "fontWeight": "600"
                 }
               ]
             },
@@ -6696,6 +7143,7 @@
               "name": "revokeBtn",
               "width": "fill_container",
               "height": 44,
+              "fill": "#DC2626",
               "cornerRadius": 8,
               "justifyContent": "center",
               "alignItems": "center",
@@ -6704,10 +7152,11 @@
                   "type": "text",
                   "id": "RVpcG",
                   "name": "revokeTxt",
+                  "fill": "#FFFFFF",
                   "content": "Revoke Key",
                   "fontFamily": "Inter",
                   "fontSize": 14,
-                  "fontWeight": "normal"
+                  "fontWeight": "600"
                 }
               ]
             }
@@ -6719,7 +7168,7 @@
       "type": "frame",
       "id": "Umli1",
       "x": 4620,
-      "y": 4100,
+      "y": 4333,
       "name": "10. Credit Warning States",
       "width": 1200,
       "fill": "$bg-warm",
@@ -6732,15 +7181,17 @@
           "type": "text",
           "id": "SFtS3",
           "name": "wsTitle",
+          "fill": "#1A1A1A",
           "content": "Credit Warning States",
           "fontFamily": "Inter",
           "fontSize": 22,
-          "fontWeight": "normal"
+          "fontWeight": "bold"
         },
         {
           "type": "text",
           "id": "W45qn",
           "name": "wsDesc",
+          "fill": "#6B7280",
           "content": "Dashboard banners shown at different credit thresholds",
           "fontFamily": "Inter",
           "fontSize": 14,
@@ -6758,7 +7209,13 @@
               "id": "zbqzg",
               "name": "w1",
               "width": "fill_container",
+              "fill": "#FFFBEB",
               "cornerRadius": 12,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#F59E0B"
+              },
               "layout": "vertical",
               "gap": 12,
               "padding": 20,
@@ -6776,16 +7233,18 @@
                       "name": "w1dot",
                       "width": 8,
                       "height": 8,
+                      "fill": "#F59E0B",
                       "cornerRadius": 4
                     },
                     {
                       "type": "text",
                       "id": "5cuIK",
                       "name": "w1label",
+                      "fill": "#D97706",
                       "content": "LOW CREDITS",
                       "fontFamily": "Inter",
                       "fontSize": 11,
-                      "fontWeight": "normal",
+                      "fontWeight": "bold",
                       "letterSpacing": 1
                     }
                   ]
@@ -6794,15 +7253,17 @@
                   "type": "text",
                   "id": "ofgoK",
                   "name": "w1title",
+                  "fill": "#92400E",
                   "content": "Credits Running Low",
                   "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "normal"
+                  "fontWeight": "600"
                 },
                 {
                   "type": "text",
                   "id": "Daafo",
                   "name": "w1desc",
+                  "fill": "#92400E",
                   "content": "You have 15 credits remaining (15% of your plan). Consider upgrading to avoid interruption.",
                   "lineHeight": 1.5,
                   "fontFamily": "Inter",
@@ -6813,6 +7274,7 @@
                   "type": "frame",
                   "id": "Erlrg",
                   "name": "w1btn",
+                  "fill": "#F59E0B",
                   "cornerRadius": 6,
                   "padding": [
                     8,
@@ -6825,10 +7287,11 @@
                       "type": "text",
                       "id": "hzLrs",
                       "name": "w1btxt",
+                      "fill": "#FFFFFF",
                       "content": "Upgrade Plan",
                       "fontFamily": "Inter",
                       "fontSize": 13,
-                      "fontWeight": "normal"
+                      "fontWeight": "600"
                     }
                   ]
                 },
@@ -6836,6 +7299,7 @@
                   "type": "text",
                   "id": "jAH1B",
                   "name": "w1pct",
+                  "fill": "#D97706",
                   "content": "Triggers at < 20% remaining",
                   "fontFamily": "Inter",
                   "fontSize": 11,
@@ -6849,7 +7313,13 @@
               "id": "H4P1m",
               "name": "w2",
               "width": "fill_container",
+              "fill": "#FEF2F2",
               "cornerRadius": 12,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#EF4444"
+              },
               "layout": "vertical",
               "gap": 12,
               "padding": 20,
@@ -6867,16 +7337,18 @@
                       "name": "w2dot",
                       "width": 8,
                       "height": 8,
+                      "fill": "#EF4444",
                       "cornerRadius": 4
                     },
                     {
                       "type": "text",
                       "id": "HXJaY",
                       "name": "w2label",
+                      "fill": "#DC2626",
                       "content": "CRITICAL",
                       "fontFamily": "Inter",
                       "fontSize": 11,
-                      "fontWeight": "normal",
+                      "fontWeight": "bold",
                       "letterSpacing": 1
                     }
                   ]
@@ -6885,15 +7357,17 @@
                   "type": "text",
                   "id": "tXZb9",
                   "name": "w2title",
+                  "fill": "#991B1B",
                   "content": "Credits Almost Exhausted",
                   "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "normal"
+                  "fontWeight": "600"
                 },
                 {
                   "type": "text",
                   "id": "H9bEG",
                   "name": "w2desc",
+                  "fill": "#991B1B",
                   "content": "Only 3 credits left. API calls will fail when credits reach zero.",
                   "lineHeight": 1.5,
                   "fontFamily": "Inter",
@@ -6904,6 +7378,7 @@
                   "type": "frame",
                   "id": "3NMZ1",
                   "name": "w2btn",
+                  "fill": "#EF4444",
                   "cornerRadius": 6,
                   "padding": [
                     8,
@@ -6916,10 +7391,11 @@
                       "type": "text",
                       "id": "FPc62",
                       "name": "w2btxt",
+                      "fill": "#FFFFFF",
                       "content": "Add Credits Now",
                       "fontFamily": "Inter",
                       "fontSize": 13,
-                      "fontWeight": "normal"
+                      "fontWeight": "600"
                     }
                   ]
                 },
@@ -6927,6 +7403,7 @@
                   "type": "text",
                   "id": "ksdLx",
                   "name": "w2pct",
+                  "fill": "#DC2626",
                   "content": "Triggers at < 5% remaining",
                   "fontFamily": "Inter",
                   "fontSize": 11,
@@ -6940,7 +7417,13 @@
               "id": "NQfuS",
               "name": "w3",
               "width": "fill_container",
+              "fill": "#F3F4F6",
               "cornerRadius": 12,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#9CA3AF"
+              },
               "layout": "vertical",
               "gap": 12,
               "padding": 20,
@@ -6958,16 +7441,18 @@
                       "name": "w3dot",
                       "width": 8,
                       "height": 8,
+                      "fill": "#6B7280",
                       "cornerRadius": 4
                     },
                     {
                       "type": "text",
                       "id": "0nNqs",
                       "name": "w3label",
+                      "fill": "#6B7280",
                       "content": "EXHAUSTED",
                       "fontFamily": "Inter",
                       "fontSize": 11,
-                      "fontWeight": "normal",
+                      "fontWeight": "bold",
                       "letterSpacing": 1
                     }
                   ]
@@ -6976,15 +7461,17 @@
                   "type": "text",
                   "id": "eDkNU",
                   "name": "w3title",
+                  "fill": "#374151",
                   "content": "No Credits Remaining",
                   "fontFamily": "Inter",
                   "fontSize": 16,
-                  "fontWeight": "normal"
+                  "fontWeight": "600"
                 },
                 {
                   "type": "text",
                   "id": "x46Hw",
                   "name": "w3desc",
+                  "fill": "#374151",
                   "content": "All API calls will return HTTP 429. Upgrade your plan or wait for monthly reset.",
                   "lineHeight": 1.5,
                   "fontFamily": "Inter",
@@ -6996,6 +7483,7 @@
                   "id": "8SPXd",
                   "name": "w3code",
                   "width": "fill_container",
+                  "fill": "#1E1E2E",
                   "cornerRadius": 6,
                   "layout": "vertical",
                   "gap": 2,
@@ -7005,6 +7493,7 @@
                       "type": "text",
                       "id": "Nh5lh",
                       "name": "w3l1",
+                      "fill": "#EF4444",
                       "content": "HTTP/1.1 429 Too Many Requests",
                       "fontFamily": "Inter",
                       "fontSize": 11,
@@ -7014,6 +7503,7 @@
                       "type": "text",
                       "id": "DO0VI",
                       "name": "w3l2",
+                      "fill": "#E2E8F0",
                       "content": "{",
                       "fontFamily": "Inter",
                       "fontSize": 11,
@@ -7023,6 +7513,7 @@
                       "type": "text",
                       "id": "pI9Qx",
                       "name": "w3l3",
+                      "fill": "#E2E8F0",
                       "content": "  \"error\": \"credits_exhausted\",",
                       "fontFamily": "Inter",
                       "fontSize": 11,
@@ -7032,6 +7523,7 @@
                       "type": "text",
                       "id": "RsoOb",
                       "name": "w3l4",
+                      "fill": "#E2E8F0",
                       "content": "  \"message\": \"No credits remaining\"",
                       "fontFamily": "Inter",
                       "fontSize": 11,
@@ -7041,6 +7533,7 @@
                       "type": "text",
                       "id": "IdaDa",
                       "name": "w3l5",
+                      "fill": "#E2E8F0",
                       "content": "}",
                       "fontFamily": "Inter",
                       "fontSize": 11,
@@ -7052,6 +7545,7 @@
                   "type": "frame",
                   "id": "sx1BN",
                   "name": "w3btn",
+                  "fill": "#6B7280",
                   "cornerRadius": 6,
                   "padding": [
                     8,
@@ -7064,10 +7558,11 @@
                       "type": "text",
                       "id": "Yblup",
                       "name": "w3btxt",
+                      "fill": "#FFFFFF",
                       "content": "Upgrade Plan",
                       "fontFamily": "Inter",
                       "fontSize": 13,
-                      "fontWeight": "normal"
+                      "fontWeight": "600"
                     }
                   ]
                 },
@@ -7075,6 +7570,7 @@
                   "type": "text",
                   "id": "5yDwD",
                   "name": "w3pct",
+                  "fill": "#6B7280",
                   "content": "Triggers at 0 credits",
                   "fontFamily": "Inter",
                   "fontSize": 11,

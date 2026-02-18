@@ -27,7 +27,7 @@ const WARNING_CONFIG = {
     className: "border-orange-200 bg-orange-50",
     iconClassName: "text-orange-600",
     description: (pct: number) =>
-      `${pct}% of credits consumed. Your API access may be interrupted soon.`,
+      `${pct}% of credits consumed. Your tools may stop working soon.`,
   },
   exhausted: {
     icon: XCircle,
@@ -36,7 +36,7 @@ const WARNING_CONFIG = {
     className: "border-red-200 bg-red-50",
     iconClassName: "text-red-600",
     description: () =>
-      "All credits have been used. API calls will return 429 errors until credits are replenished.",
+      "All credits have been used. Tool calls will return 402 errors. Upgrade your plan to continue.",
   },
 }
 

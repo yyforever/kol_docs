@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Code2 } from "lucide-react"
+import { ArrowRight, Play } from "lucide-react"
 
 export function HeroSection() {
   return (
@@ -10,15 +10,15 @@ export function HeroSection() {
           <div>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border bg-white px-4 py-1.5 text-sm">
               <span className="h-2 w-2 rounded-full bg-green-500" />
-              API v2 now available
+              Works with ChatGPT, Claude & OpenClaw
             </div>
             <h1 className="text-4xl font-bold leading-tight tracking-tight text-nox-dark md:text-5xl lg:text-6xl">
-              Influencer Data,{" "}
-              <span className="text-nox-brand">One API Call Away</span>
+              AI Finds Your Perfect Creators{" "}
+              <span className="text-nox-brand">in 30 Seconds</span>
             </h1>
             <p className="mt-6 max-w-lg text-lg text-muted-foreground">
-              Access 10M+ creator profiles across YouTube, Instagram, TikTok & X.
-              Build influencer marketing features into your product in minutes.
+              Discover creators, analyze audiences, send outreach, and negotiate
+              deals — just describe what you need in plain language.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link href="/signup">
@@ -30,39 +30,64 @@ export function HeroSection() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-              <Link href="/docs/quick-start">
+              <Link href="#workflow-demo">
                 <Button size="lg" variant="outline">
-                  <Code2 className="mr-2 h-4 w-4" />
-                  Quick Start
+                  <Play className="mr-2 h-4 w-4" />
+                  See How It Works
                 </Button>
               </Link>
             </div>
             <p className="mt-4 text-sm text-muted-foreground">
-              Free plan includes 200 credits/month. No credit card required.
+              Start with 200 free credits. No credit card required.
             </p>
           </div>
 
+          {/* Agent Conversation Mockup */}
           <div className="hidden md:block">
-            <div className="rounded-xl border bg-nox-dark p-6 font-mono text-sm shadow-2xl">
-              <div className="mb-4 flex gap-2">
-                <span className="h-3 w-3 rounded-full bg-red-500" />
-                <span className="h-3 w-3 rounded-full bg-yellow-500" />
-                <span className="h-3 w-3 rounded-full bg-green-500" />
+            <div className="rounded-xl border bg-white p-6 shadow-2xl">
+              <div className="mb-4 flex items-center gap-2 border-b pb-3">
+                <div className="h-3 w-3 rounded-full bg-nox-brand" />
+                <span className="text-sm font-medium text-nox-dark">
+                  NoxInfluencer AI
+                </span>
               </div>
-              <pre className="text-green-400">
-                <code>{`curl -X GET \\
-  "https://api.noxinfluencer.com/v1/creators/search" \\
-  -H "Authorization: Bearer nox_live_7kF3..." \\
-  -d '{"niche": "tech", "platform": "youtube"}'`}</code>
-              </pre>
-              <div className="mt-4 border-t border-white/10 pt-4 text-white/60">
-                <code>{`{
-  "creators": [
-    { "name": "MKBHD", "subscribers": "19.4M" },
-    { "name": "Linus Tech Tips", "subscribers": "16.1M" }
-  ],
-  "total": 2847
-}`}</code>
+              <div className="space-y-4">
+                {/* User message */}
+                <div className="flex justify-end">
+                  <div className="max-w-[80%] rounded-2xl rounded-tr-md bg-nox-brand px-4 py-2.5 text-sm text-white">
+                    Find me 5 tech YouTubers with 100K-1M subs in the US
+                  </div>
+                </div>
+                {/* AI response */}
+                <div className="flex justify-start">
+                  <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-gray-100 px-4 py-3 text-sm text-nox-dark">
+                    <p className="mb-2 font-medium">Found 5 creators matching your criteria:</p>
+                    <div className="space-y-1.5 text-xs text-muted-foreground">
+                      <p>1. <strong className="text-nox-dark">TechLinked</strong> — 892K subs, 5.1% engagement</p>
+                      <p>2. <strong className="text-nox-dark">Dave2D</strong> — 678K subs, 4.8% engagement</p>
+                      <p>3. <strong className="text-nox-dark">ShortCircuit</strong> — 534K subs, 3.9% engagement</p>
+                    </div>
+                    <p className="mt-2 text-xs text-muted-foreground">+ 2 more results. 1 credit used.</p>
+                  </div>
+                </div>
+                {/* User follow-up */}
+                <div className="flex justify-end">
+                  <div className="max-w-[80%] rounded-2xl rounded-tr-md bg-nox-brand px-4 py-2.5 text-sm text-white">
+                    Send outreach to the top 3
+                  </div>
+                </div>
+                {/* AI response */}
+                <div className="flex justify-start">
+                  <div className="max-w-[85%] rounded-2xl rounded-tl-md bg-gray-100 px-4 py-2.5 text-sm text-nox-dark">
+                    <p className="text-xs text-muted-foreground">
+                      Drafting personalized emails for 3 creators...
+                    </p>
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className="h-2 w-2 animate-pulse rounded-full bg-nox-brand" />
+                      <span className="text-xs font-medium text-nox-brand">Preparing outreach</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

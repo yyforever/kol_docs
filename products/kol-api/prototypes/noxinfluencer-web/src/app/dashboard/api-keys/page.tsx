@@ -15,10 +15,15 @@ import {
 import { ApiKeyModal } from "@/components/nox/api-key-modal"
 import { RevokeKeyModal } from "@/components/nox/revoke-key-modal"
 import { MOCK_API_KEYS } from "@/lib/mock-data"
-import { Eye, EyeOff } from "lucide-react"
+import { Eye, EyeOff, Copy, Check } from "lucide-react"
+
+const MAX_KEYS = 5
 
 export default function ApiKeysPage() {
   const [revealedKeys, setRevealedKeys] = useState<Record<string, boolean>>({})
+  const [copiedKey, setCopiedKey] = useState<string | null>(null)
+
+  const activeCount = MOCK_API_KEYS.filter((k) => k.status === "active").length
 
   function toggleReveal(keyId: string) {
     setRevealedKeys((prev) => ({
@@ -27,13 +32,22 @@ export default function ApiKeysPage() {
     }))
   }
 
+  function handleCopy(keyId: string) {
+    navigator.clipboard.writeText("nox_live_sk7kF3mRt9Qp2wLx8vBn4hYj6dUcAe1iOs5gNz0q")
+    setCopiedKey(keyId)
+    setTimeout(() => setCopiedKey(null), 2000)
+  }
+
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-nox-dark">API Keys</h1>
           <p className="text-muted-foreground">
-            Manage your API keys for authentication
+            Manage your keys for authentication &middot;{" "}
+            <span className="font-medium text-nox-dark">
+              {activeCount} of {MAX_KEYS} keys used
+            </span>
           </p>
         </div>
         <ApiKeyModal />
@@ -67,18 +81,32 @@ export default function ApiKeysPage() {
                           : key.prefix}
                       </code>
                       {key.status === "active" && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-6 w-6 p-0"
-                          onClick={() => toggleReveal(key.id)}
-                        >
-                          {revealedKeys[key.id] ? (
-                            <EyeOff className="h-3.5 w-3.5" />
-                          ) : (
-                            <Eye className="h-3.5 w-3.5" />
-                          )}
-                        </Button>
+                        <>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 w-6 p-0"
+                            onClick={() => toggleReveal(key.id)}
+                          >
+                            {revealedKeys[key.id] ? (
+                              <EyeOff className="h-3.5 w-3.5" />
+                            ) : (
+                              <Eye className="h-3.5 w-3.5" />
+                            )}
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 w-6 p-0"
+                            onClick={() => handleCopy(key.id)}
+                          >
+                            {copiedKey === key.id ? (
+                              <Check className="h-3.5 w-3.5 text-green-600" />
+                            ) : (
+                              <Copy className="h-3.5 w-3.5" />
+                            )}
+                          </Button>
+                        </>
                       )}
                     </div>
                   </TableCell>

@@ -15,9 +15,9 @@ export default function SignUpPage() {
           <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-nox-brand">
             <Flame className="h-6 w-6 text-white" />
           </div>
-          <CardTitle className="text-2xl">Create your account</CardTitle>
+          <CardTitle className="text-2xl">Create your free account</CardTitle>
           <p className="text-sm text-muted-foreground">
-            Start with 200 free credits. No credit card required.
+            Get 200 credits to start — no credit card required.
           </p>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -58,22 +58,8 @@ export default function SignUpPage() {
             </span>
           </div>
 
-          {/* Email Form */}
+          {/* Email Form — no First/Last name fields */}
           <div className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="mb-1 block text-sm font-medium">
-                  First name
-                </label>
-                <Input placeholder="Alex" />
-              </div>
-              <div>
-                <label className="mb-1 block text-sm font-medium">
-                  Last name
-                </label>
-                <Input placeholder="Chen" />
-              </div>
-            </div>
             <div>
               <label className="mb-1 block text-sm font-medium">
                 Work email

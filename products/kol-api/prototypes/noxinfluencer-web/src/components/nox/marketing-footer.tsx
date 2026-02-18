@@ -6,7 +6,7 @@ const FOOTER_COLUMNS = [
     title: "Product",
     links: [
       { label: "Pricing", href: "/pricing" },
-      { label: "API Docs", href: "/docs" },
+      { label: "Documentation", href: "/docs" },
       { label: "Quick Start", href: "/docs/quick-start" },
       { label: "Changelog", href: "/docs" },
     ],
@@ -15,7 +15,7 @@ const FOOTER_COLUMNS = [
     title: "Resources",
     links: [
       { label: "Documentation", href: "/docs" },
-      { label: "API Reference", href: "/docs/tools/discover-creators" },
+      { label: "Tool Reference", href: "/docs/tools/discover-creators" },
       { label: "Status Page", href: "/docs" },
       { label: "Community", href: "/docs" },
     ],
@@ -42,7 +42,7 @@ export function MarketingFooter() {
               <span className="font-bold">NoxInfluencer</span>
             </Link>
             <p className="mt-3 text-sm text-white/60">
-              Influencer marketing intelligence API for modern teams.
+              AI-powered influencer marketing tools for modern teams.
             </p>
           </div>
           {FOOTER_COLUMNS.map((col) => (

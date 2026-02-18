@@ -1,3 +1,6 @@
+"use client"
+
+import { useState } from "react"
 import { PlanCard } from "@/components/nox/plan-card"
 import { FAQSection } from "@/components/nox/faq-section"
 import { PLANS, CREDIT_COSTS, PRICING_FAQS } from "@/lib/constants"
@@ -10,8 +13,11 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 
 export default function PricingPage() {
+  const [yearly, setYearly] = useState(false)
+
   return (
     <div className="py-16">
       {/* Header */}
@@ -26,12 +32,35 @@ export default function PricingPage() {
           Start free and scale as your usage grows. No hidden fees, no
           surprises.
         </p>
+
+        {/* Monthly / Yearly Toggle */}
+        <div className="mt-8 inline-flex items-center gap-3 rounded-full border bg-muted/50 p-1">
+          <Button
+            variant={yearly ? "ghost" : "default"}
+            size="sm"
+            className={yearly ? "" : "bg-nox-brand text-white hover:bg-nox-brand/90"}
+            onClick={() => setYearly(false)}
+          >
+            Monthly
+          </Button>
+          <Button
+            variant={yearly ? "default" : "ghost"}
+            size="sm"
+            className={yearly ? "bg-nox-brand text-white hover:bg-nox-brand/90" : ""}
+            onClick={() => setYearly(true)}
+          >
+            Yearly
+            <Badge className="ml-2 bg-green-100 text-green-700 text-[10px]">
+              Save 17%
+            </Badge>
+          </Button>
+        </div>
       </div>
 
       {/* Plan Cards */}
-      <div className="mx-auto mt-12 grid max-w-6xl gap-6 px-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto mt-12 grid max-w-6xl gap-6 px-6 md:grid-cols-2 lg:grid-cols-5">
         {PLANS.map((plan) => (
-          <PlanCard key={plan.id} plan={plan} />
+          <PlanCard key={plan.id} plan={plan} yearly={yearly} />
         ))}
       </div>
 
@@ -57,10 +86,10 @@ export default function PricingPage() {
       {/* Credit Cost Table */}
       <div className="mx-auto mt-20 max-w-4xl px-6">
         <h2 className="mb-2 text-center text-2xl font-bold text-nox-dark">
-          Credit Cost Per API Call
+          Credit Cost Per Tool
         </h2>
         <p className="mb-8 text-center text-muted-foreground">
-          Each endpoint consumes a fixed number of credits per call
+          Each tool uses a fixed number of credits per action
         </p>
         <div className="overflow-hidden rounded-lg border">
           <Table>
@@ -73,7 +102,7 @@ export default function PricingPage() {
             </TableHeader>
             <TableBody>
               {CREDIT_COSTS.map((cost) => (
-                <TableRow key={cost.endpoint}>
+                <TableRow key={cost.tool}>
                   <TableCell>
                     <div>
                       <p className="font-medium">{cost.tool}</p>

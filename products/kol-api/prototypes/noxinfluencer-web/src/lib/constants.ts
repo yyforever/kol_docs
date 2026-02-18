@@ -8,8 +8,8 @@ export const PLANS: Plan[] = [
     credits: 200,
     rateLimit: "10 req/min",
     features: [
-      "200 credits/month",
-      "Basic creator search",
+      "200 one-time credits",
+      "Basic creator discovery",
       "Community support",
       "10 requests/minute",
     ],
@@ -18,34 +18,54 @@ export const PLANS: Plan[] = [
   {
     id: "starter",
     name: "Starter",
-    price: 49,
-    credits: 5000,
-    rateLimit: "60 req/min",
+    price: 29,
+    yearlyPrice: 290,
+    credits: 2000,
+    rateLimit: "30 req/min",
+    overageRate: 0.02,
     features: [
-      "5,000 credits/month",
-      "All search endpoints",
+      "2,000 credits/month",
+      "All 5 tools",
       "Email support",
-      "60 requests/minute",
-      "Audience overlap analysis",
+      "30 requests/minute",
     ],
-    ctaLabel: "Start Free Trial",
+    ctaLabel: "Get Started",
+  },
+  {
+    id: "pro",
+    name: "Pro",
+    price: 99,
+    yearlyPrice: 990,
+    credits: 10000,
+    rateLimit: "60 req/min",
+    overageRate: 0.012,
+    features: [
+      "10,000 credits/month",
+      "All 5 tools",
+      "Priority email support",
+      "60 requests/minute",
+      "Campaign management",
+    ],
+    highlighted: true,
+    ctaLabel: "Get Started",
   },
   {
     id: "growth",
     name: "Growth",
     price: 199,
-    credits: 25000,
-    rateLimit: "200 req/min",
+    yearlyPrice: 1990,
+    credits: 30000,
+    rateLimit: "120 req/min",
+    overageRate: 0.008,
     features: [
-      "25,000 credits/month",
-      "All endpoints + bulk",
+      "30,000 credits/month",
+      "All 5 tools + bulk",
       "Priority support",
-      "200 requests/minute",
-      "Campaign tracking",
+      "120 requests/minute",
+      "Campaign management",
       "Webhook notifications",
     ],
-    highlighted: true,
-    ctaLabel: "Start Free Trial",
+    ctaLabel: "Get Started",
   },
   {
     id: "enterprise",
@@ -68,39 +88,33 @@ export const PLANS: Plan[] = [
 export const CREDIT_COSTS: CreditCost[] = [
   {
     tool: "Discover Creators",
-    endpoint: "/v1/creators/search",
-    creditsPerCall: 5,
+    endpoint: "POST /v1/tools/discover_creators",
+    creditsPerCall: 1,
     description: "Search creators by niche, platform, audience size",
   },
   {
-    tool: "Creator Profile",
-    endpoint: "/v1/creators/{id}",
-    creditsPerCall: 3,
-    description: "Detailed creator analytics and metrics",
-  },
-  {
-    tool: "Audience Overlap",
-    endpoint: "/v1/creators/overlap",
-    creditsPerCall: 10,
-    description: "Compare audience overlap between creators",
-  },
-  {
-    tool: "Campaign Estimate",
-    endpoint: "/v1/campaigns/estimate",
-    creditsPerCall: 8,
-    description: "Estimate campaign reach and cost",
-  },
-  {
-    tool: "Content Analysis",
-    endpoint: "/v1/content/analyze",
-    creditsPerCall: 6,
-    description: "Analyze content performance and trends",
-  },
-  {
-    tool: "Bulk Search",
-    endpoint: "/v1/creators/bulk",
+    tool: "Analyze Creator",
+    endpoint: "POST /v1/tools/analyze_creator",
     creditsPerCall: 2,
-    description: "Bulk creator lookup (per creator)",
+    description: "Detailed creator analytics and audience insights",
+  },
+  {
+    tool: "Outreach Creators",
+    endpoint: "POST /v1/tools/outreach_creators",
+    creditsPerCall: 3,
+    description: "Generate and send personalized outreach per creator",
+  },
+  {
+    tool: "Negotiate",
+    endpoint: "POST /v1/tools/negotiate",
+    creditsPerCall: 5,
+    description: "AI-assisted price negotiation per round",
+  },
+  {
+    tool: "Manage Campaigns",
+    endpoint: "POST /v1/tools/manage_campaigns",
+    creditsPerCall: 1,
+    description: "Track and manage active campaigns (0-1 credits)",
   },
 ]
 
@@ -118,7 +132,7 @@ export const DASHBOARD_NAV: NavLink[] = [
 
 export const DOCS_NAV: NavLink[] = [
   { label: "Guides", href: "/docs" },
-  { label: "API Reference", href: "/docs/tools/discover-creators" },
+  { label: "Tool Reference", href: "/docs/tools/discover-creators" },
   { label: "Tools", href: "/docs/tools/discover-creators" },
   { label: "Changelog", href: "/docs" },
 ]
@@ -136,9 +150,10 @@ export const DOCS_SIDEBAR: { section: string; links: NavLink[] }[] = [
     section: "Tools",
     links: [
       { label: "Discover Creators", href: "/docs/tools/discover-creators" },
-      { label: "Creator Profile", href: "/docs" },
-      { label: "Audience Overlap", href: "/docs" },
-      { label: "Campaign Estimate", href: "/docs" },
+      { label: "Analyze Creator", href: "/docs/tools/analyze-creator" },
+      { label: "Outreach Creators", href: "/docs/tools/outreach-creators" },
+      { label: "Negotiate", href: "/docs/tools/negotiate" },
+      { label: "Manage Campaigns", href: "/docs/tools/manage-campaigns" },
     ],
   },
   {
@@ -146,36 +161,51 @@ export const DOCS_SIDEBAR: { section: string; links: NavLink[] }[] = [
     links: [
       { label: "Rate Limits", href: "/docs" },
       { label: "Error Codes", href: "/docs" },
-      { label: "SDKs & Libraries", href: "/docs" },
+      { label: "Credit Guide", href: "/docs" },
     ],
   },
 ]
 
 export const LANDING_FAQS: FAQItem[] = [
   {
-    question: "What is NoxInfluencer API?",
+    question: "What is NoxInfluencer?",
     answer:
-      "NoxInfluencer API provides programmatic access to influencer discovery, analytics, and campaign management tools. Build influencer marketing features directly into your product.",
+      "NoxInfluencer is an AI-powered influencer marketing platform. It helps brands discover creators, analyze their audiences, send outreach, and negotiate deals — all through natural language conversations with your favorite AI assistant.",
+  },
+  {
+    question: "Do I need to know how to code?",
+    answer:
+      "Not at all! NoxInfluencer works with AI assistants like ChatGPT, Claude, and OpenClaw. Just describe what you need in plain language — no technical skills required.",
+  },
+  {
+    question: "Where does the data come from?",
+    answer:
+      "We aggregate public data from YouTube, Instagram, and TikTok, covering 10M+ creator profiles. Our data is updated daily to give you the freshest engagement metrics and audience insights.",
+  },
+  {
+    question: "Is my data safe?",
+    answer:
+      "Absolutely. We use industry-standard encryption for all data in transit and at rest. Your campaign data and creator lists are private to your account. We never share your information with third parties.",
   },
   {
     question: "How does credit-based pricing work?",
     answer:
-      "Each API call consumes credits based on its complexity. Simple lookups cost 2-3 credits, while advanced analytics cost 5-10 credits. Unused credits do not roll over.",
+      "Each action uses a small number of credits — discovering creators costs 1 credit, analyzing a creator costs 2, and so on. Start with 200 free credits to try everything out, then upgrade when you need more.",
   },
   {
     question: "Which platforms are supported?",
     answer:
-      "We support YouTube, Instagram, TikTok, and Twitter/X. Each platform provides creator search, profile analytics, and audience insights.",
+      "We support YouTube, Instagram, and TikTok. Each platform provides creator discovery, profile analytics, and audience insights.",
   },
   {
-    question: "Can I try the API before purchasing?",
+    question: "Can I try it before purchasing?",
     answer:
-      "Yes! The Free plan includes 200 credits/month with no credit card required. This is enough to test all endpoints and build a proof of concept.",
+      "Yes! The Free plan includes 200 one-time credits with no credit card required. That is enough to discover dozens of creators and test all five tools.",
   },
   {
     question: "What kind of support do you offer?",
     answer:
-      "Free plan users get community support. Starter and Growth plans include email support with 24-hour response time. Enterprise plans get a dedicated account manager and SLA.",
+      "Free plan users get community support. Starter and Pro plans include email support with 24-hour response time. Growth plans get priority support, and Enterprise plans include a dedicated account manager with SLA.",
   },
 ]
 
@@ -183,12 +213,12 @@ export const PRICING_FAQS: FAQItem[] = [
   {
     question: "Can I change plans at any time?",
     answer:
-      "Yes, you can upgrade or downgrade your plan at any time. When upgrading, you'll be charged the prorated difference. When downgrading, the change takes effect at the next billing cycle.",
+      "Yes, you can upgrade or downgrade your plan at any time. When upgrading, you will be charged the prorated difference. When downgrading, the change takes effect at the next billing cycle.",
   },
   {
     question: "What happens when I run out of credits?",
     answer:
-      "API calls will return a 429 status code when credits are exhausted. You can upgrade your plan or purchase additional credit packs from the Usage & Billing page.",
+      "Tool calls will return a 402 status code when credits are exhausted. You can upgrade your plan or purchase additional credit packs from the Usage & Billing page.",
   },
   {
     question: "Do unused credits roll over?",
@@ -196,9 +226,19 @@ export const PRICING_FAQS: FAQItem[] = [
       "No, credits reset at the beginning of each billing cycle. We recommend monitoring your usage in the dashboard to optimize your plan selection.",
   },
   {
-    question: "Is there a free trial for paid plans?",
+    question: "Is there a yearly discount?",
     answer:
-      "Yes, Starter and Growth plans include a 14-day free trial. No credit card required to start. You can cancel anytime during the trial period.",
+      "Yes! Pay annually and save 17% compared to monthly billing. You can switch between monthly and yearly billing at any time from your account settings.",
+  },
+  {
+    question: "How much does each tool cost?",
+    answer:
+      "Discover Creators costs 1 credit, Analyze Creator costs 2 credits, Outreach costs 3 credits per creator, Negotiate costs 5 credits per round, and Manage Campaigns costs 0-1 credits. See the credit table above for details.",
+  },
+  {
+    question: "Do I need to know how to code?",
+    answer:
+      "No! NoxInfluencer works with AI assistants like ChatGPT, Claude, and OpenClaw. Just talk to your AI assistant in plain language and it handles the rest.",
   },
 ]
 
@@ -206,12 +246,28 @@ export const PLATFORM_LOGOS = [
   { name: "YouTube", color: "#FF0000" },
   { name: "Instagram", color: "#E4405F" },
   { name: "TikTok", color: "#000000" },
-  { name: "Twitter/X", color: "#1DA1F2" },
 ]
 
 export const LANDING_STATS = [
   { value: "10M+", label: "Creator Profiles" },
-  { value: "4", label: "Platforms" },
-  { value: "99.9%", label: "API Uptime" },
-  { value: "<200ms", label: "Avg Response" },
+  { value: "3", label: "Platforms" },
+  { value: "5", label: "AI Tools" },
+]
+
+export const AI_PLATFORMS = [
+  {
+    name: "ChatGPT",
+    description: "Use NoxInfluencer tools directly in ChatGPT conversations",
+    color: "#10A37F",
+  },
+  {
+    name: "Claude",
+    description: "Integrate with Claude for AI-powered influencer research",
+    color: "#D97706",
+  },
+  {
+    name: "OpenClaw",
+    description: "Connect through OpenClaw for automated workflows",
+    color: "#6366F1",
+  },
 ]

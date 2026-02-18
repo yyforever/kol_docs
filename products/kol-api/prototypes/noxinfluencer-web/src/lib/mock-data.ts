@@ -6,7 +6,7 @@ export const MOCK_USER: UserProfile = {
   avatar: "AC",
   plan: "Growth",
   creditsUsed: 18750,
-  creditsTotal: 25000,
+  creditsTotal: 30000,
   billingCycle: "Jan 15 - Feb 14, 2026",
 }
 
@@ -38,14 +38,14 @@ export const MOCK_API_KEYS: ApiKey[] = [
 ]
 
 export const MOCK_USAGE: UsageRecord[] = [
-  { date: "2026-02-18", endpoint: "/v1/creators/search", calls: 245, credits: 1225 },
-  { date: "2026-02-18", endpoint: "/v1/creators/{id}", calls: 189, credits: 567 },
-  { date: "2026-02-17", endpoint: "/v1/creators/search", calls: 312, credits: 1560 },
-  { date: "2026-02-17", endpoint: "/v1/creators/overlap", calls: 45, credits: 450 },
-  { date: "2026-02-17", endpoint: "/v1/content/analyze", calls: 78, credits: 468 },
-  { date: "2026-02-16", endpoint: "/v1/creators/search", calls: 198, credits: 990 },
-  { date: "2026-02-16", endpoint: "/v1/campaigns/estimate", calls: 34, credits: 272 },
-  { date: "2026-02-15", endpoint: "/v1/creators/bulk", calls: 500, credits: 1000 },
+  { date: "2026-02-18", tool: "discover_creators", calls: 245, credits: 245 },
+  { date: "2026-02-18", tool: "analyze_creator", calls: 189, credits: 378 },
+  { date: "2026-02-17", tool: "discover_creators", calls: 312, credits: 312 },
+  { date: "2026-02-17", tool: "outreach_creators", calls: 45, credits: 135 },
+  { date: "2026-02-17", tool: "negotiate", calls: 78, credits: 390 },
+  { date: "2026-02-16", tool: "discover_creators", calls: 198, credits: 198 },
+  { date: "2026-02-16", tool: "manage_campaigns", calls: 34, credits: 34 },
+  { date: "2026-02-15", tool: "analyze_creator", calls: 500, credits: 1000 },
 ]
 
 export const MOCK_INVOICES: Invoice[] = [
@@ -55,8 +55,9 @@ export const MOCK_INVOICES: Invoice[] = [
 ]
 
 export const MOCK_RECENT_ACTIVITY = [
-  { action: "API key created", detail: "Production App", time: "2 hours ago" },
-  { action: "Plan upgraded", detail: "Starter → Growth", time: "3 days ago" },
-  { action: "Credit alert", detail: "75% credits used", time: "5 days ago" },
-  { action: "API key revoked", detail: "Old Integration", time: "2 months ago" },
+  { tool: "discover_creators", detail: "Found 47 tech creators on YouTube", credits: 1, time: "2 hours ago" },
+  { tool: "analyze_creator", detail: "Analyzed @MKBHD audience demographics", credits: 2, time: "3 hours ago" },
+  { tool: "outreach_creators", detail: "Sent outreach to 12 creators", credits: 36, time: "5 hours ago" },
+  { tool: "negotiate", detail: "Negotiation round with @LinusTechTips", credits: 5, time: "1 day ago" },
+  { tool: "manage_campaigns", detail: "Updated Q1 Tech Campaign status", credits: 1, time: "2 days ago" },
 ]

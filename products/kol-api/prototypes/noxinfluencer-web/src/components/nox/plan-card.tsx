@@ -7,9 +7,14 @@ import type { Plan } from "@/lib/types"
 
 interface PlanCardProps {
   plan: Plan
+  yearly?: boolean
 }
 
-export function PlanCard({ plan }: PlanCardProps) {
+export function PlanCard({ plan, yearly = false }: PlanCardProps) {
+  const displayPrice = yearly && plan.yearlyPrice != null
+    ? Math.round(plan.yearlyPrice / 12)
+    : plan.price
+
   return (
     <Card
       className={`relative flex flex-col ${
@@ -26,10 +31,10 @@ export function PlanCard({ plan }: PlanCardProps) {
       <CardHeader>
         <CardTitle className="text-lg">{plan.name}</CardTitle>
         <div className="mt-2">
-          {plan.price !== null ? (
+          {displayPrice !== null ? (
             <div className="flex items-baseline gap-1">
               <span className="text-4xl font-bold text-nox-dark">
-                ${plan.price}
+                ${displayPrice}
               </span>
               <span className="text-muted-foreground">/month</span>
             </div>
@@ -37,9 +42,14 @@ export function PlanCard({ plan }: PlanCardProps) {
             <span className="text-4xl font-bold text-nox-dark">Custom</span>
           )}
         </div>
+        {yearly && plan.yearlyPrice != null && (
+          <p className="mt-0.5 text-xs text-green-600 font-medium">
+            Save 17% — ${plan.yearlyPrice}/yr
+          </p>
+        )}
         {plan.credits !== null && (
           <p className="mt-1 text-sm text-muted-foreground">
-            {plan.credits.toLocaleString()} credits/month
+            {plan.credits.toLocaleString()} {plan.id === "free" ? "one-time credits" : "credits/month"}
           </p>
         )}
       </CardHeader>
