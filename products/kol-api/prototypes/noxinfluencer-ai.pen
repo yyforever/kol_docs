@@ -239,7 +239,7 @@
                           "id": "mCPJZ",
                           "name": "hb2t",
                           "fill": "$text-primary",
-                          "content": "View Docs",
+                          "content": "See How It Works",
                           "fontFamily": "Inter",
                           "fontSize": 16,
                           "fontWeight": "500"
@@ -255,7 +255,6 @@
               "id": "hof8A",
               "name": "Hero Visual",
               "width": "fill_container",
-              "height": 420,
               "fill": "$bg-surface",
               "cornerRadius": 16,
               "stroke": {
@@ -274,60 +273,192 @@
                 "blur": 32
               },
               "layout": "vertical",
-              "gap": 12,
+              "gap": 10,
               "padding": 24,
               "children": [
                 {
                   "type": "frame",
-                  "id": "CQuYd",
-                  "name": "codeBlock",
+                  "id": "sUJEz",
+                  "name": "chatHeader",
                   "width": "fill_container",
-                  "fill": "$bg-dark",
-                  "cornerRadius": 12,
-                  "padding": 20,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "#E5E7EB"
+                  },
+                  "padding": [
+                    8,
+                    16
+                  ],
                   "children": [
                     {
                       "type": "text",
-                      "id": "VyDyb",
-                      "name": "hvct",
-                      "fill": "#E0E0E0",
-                      "content": "nox search \"beauty influencer\" --platform youtube --min-subs 10000",
+                      "id": "Or1bP",
+                      "name": "chatHT",
+                      "fill": "#9CA3AF",
+                      "content": "ChatGPT  ·  NoxInfluencer",
                       "fontFamily": "Inter",
                       "fontSize": 13,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "x3YQY",
+                  "name": "userMsg1",
+                  "fill": "#EFF6FF",
+                  "cornerRadius": [
+                    16,
+                    16,
+                    4,
+                    16
+                  ],
+                  "padding": [
+                    10,
+                    16
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "m84UC",
+                      "name": "m1t",
+                      "fill": "#1E3A5F",
+                      "content": "Find beauty creators on YouTube with 100K+ followers",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
                       "fontWeight": "normal"
                     }
                   ]
                 },
                 {
                   "type": "frame",
-                  "id": "MemZT",
-                  "name": "resultCard",
+                  "id": "UNTtO",
+                  "name": "aiResp1",
                   "width": "fill_container",
-                  "height": "fill_container",
-                  "fill": "$bg-muted",
-                  "cornerRadius": 12,
+                  "fill": "#F9FAFB",
+                  "cornerRadius": [
+                    16,
+                    16,
+                    16,
+                    4
+                  ],
                   "layout": "vertical",
-                  "gap": 8,
-                  "padding": 16,
+                  "gap": 6,
+                  "padding": [
+                    12,
+                    16
+                  ],
                   "children": [
                     {
                       "type": "text",
-                      "id": "qeay0",
-                      "name": "hvn",
-                      "fill": "$text-primary",
-                      "content": "Found 247 creators matching your criteria",
+                      "id": "QYENA",
+                      "name": "r1h",
+                      "fill": "#1A1A1A",
+                      "content": "Found 247 creators matching your criteria:",
                       "fontFamily": "Inter",
-                      "fontSize": 14,
+                      "fontSize": 13,
                       "fontWeight": "600"
                     },
                     {
                       "type": "text",
-                      "id": "dYT6w",
-                      "name": "hvd",
-                      "fill": "$text-secondary",
-                      "content": "Top match: @BeautyByMia · 524K subs · 4.8% eng rate · Beauty & Skincare",
+                      "id": "c6Trf",
+                      "name": "r1a",
+                      "fill": "#6B7280",
+                      "content": "1. BeautyByMia · 524K subs · 4.8% engagement",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "rZ9Gx",
+                      "name": "r1b",
+                      "fill": "#6B7280",
+                      "content": "2. GlowUpGuru · 189K subs · 3.8% engagement",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Cjesf",
+                      "name": "r1c",
+                      "fill": "#6B7280",
+                      "content": "3. SkinFirst · 156K subs · 5.1% engagement",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "xWuw8",
+                  "name": "userMsg2",
+                  "fill": "#EFF6FF",
+                  "cornerRadius": [
+                    16,
+                    16,
+                    4,
+                    16
+                  ],
+                  "padding": [
+                    10,
+                    16
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "iFneU",
+                      "name": "m2t",
+                      "fill": "#1E3A5F",
+                      "content": "Send outreach to the top 3",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "zGWJf",
+                  "name": "aiResp2",
+                  "width": "fill_container",
+                  "fill": "#F0FDF4",
+                  "cornerRadius": [
+                    16,
+                    16,
+                    16,
+                    4
+                  ],
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": [
+                    12,
+                    16
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "LY9IG",
+                      "name": "r2h",
+                      "fill": "#166534",
+                      "content": "Done — 3 personalized emails drafted and sent",
                       "fontFamily": "Inter",
                       "fontSize": 13,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "qZZ7E",
+                      "name": "r2s",
+                      "fill": "#6B7280",
+                      "content": "Used 9 credits (3 per creator) · 191 remaining",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
                       "fontWeight": "normal"
                     }
                   ]
@@ -433,7 +564,7 @@
                       "id": "NgE29",
                       "name": "pc1t",
                       "fill": "$text-primary",
-                      "content": "Hours Searching for Creators",
+                      "content": "3-5 Days Finding Creators",
                       "fontFamily": "Inter",
                       "fontSize": 18,
                       "fontWeight": "bold"
@@ -443,7 +574,7 @@
                       "id": "SWHXq",
                       "name": "pc1d",
                       "fill": "$text-secondary",
-                      "content": "AI discovers the perfect creators in seconds, not days",
+                      "content": "AI discovers the perfect match in 30 seconds — not days of manual searching.",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
                       "fontSize": 14,
@@ -481,7 +612,7 @@
                       "id": "i9fdM",
                       "name": "pc2t",
                       "fill": "$text-primary",
-                      "content": "Manual Outreach One by One",
+                      "content": "333 Manual Outreach Emails",
                       "fontFamily": "Inter",
                       "fontSize": 18,
                       "fontWeight": "bold"
@@ -491,7 +622,7 @@
                       "id": "aVNyo",
                       "name": "pc2d",
                       "fill": "$text-secondary",
-                      "content": "Batch outreach with personalized templates at scale",
+                      "content": "One sentence to your AI assistant sends personalized outreach at scale.",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
                       "fontSize": 14,
@@ -529,7 +660,7 @@
                       "id": "bqizz",
                       "name": "pc3t",
                       "fill": "$text-primary",
-                      "content": "Spreadsheet Campaign Tracking",
+                      "content": "55% of Time on Negotiations",
                       "fontFamily": "Inter",
                       "fontSize": 18,
                       "fontWeight": "bold"
@@ -539,7 +670,7 @@
                       "id": "wGdaL",
                       "name": "pc3d",
                       "fill": "$text-secondary",
-                      "content": "Real-time dashboards track performance automatically",
+                      "content": "AI handles price negotiation automatically — just set your budget.",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
                       "fontSize": 14,
@@ -1722,6 +1853,47 @@
                   ]
                 },
                 {
+                  "type": "text",
+                  "id": "WUoJ8",
+                  "name": "pwL",
+                  "fill": "$text-secondary",
+                  "content": "Password",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "zHOfR",
+                  "name": "pwI",
+                  "width": "fill_container",
+                  "height": 44,
+                  "fill": "$bg-surface",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$border-subtle"
+                  },
+                  "padding": [
+                    0,
+                    12
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "8fjLB",
+                      "name": "pwIT",
+                      "fill": "$text-tertiary",
+                      "content": "••••••••",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
                   "type": "frame",
                   "id": "5JvR5",
                   "name": "emBtn",
@@ -1957,7 +2129,7 @@
               "id": "szAPu",
               "name": "dQs",
               "fill": "$orange-primary",
-              "content": "New to the API? Follow the Quick Start Guide →",
+              "content": "Set up your AI assistant: ChatGPT · Claude · OpenClaw →",
               "fontFamily": "Inter",
               "fontSize": 14,
               "fontWeight": "500"
@@ -2011,11 +2183,31 @@
                       "fontWeight": "bold"
                     },
                     {
+                      "type": "frame",
+                      "id": "spJgt",
+                      "name": "progressBg",
+                      "width": "fill_container",
+                      "height": 8,
+                      "fill": "#F3F4F6",
+                      "cornerRadius": 4,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "nSsJ5",
+                          "name": "progressFill",
+                          "width": 100,
+                          "height": 8,
+                          "fill": "#F59E0B",
+                          "cornerRadius": 4
+                        }
+                      ]
+                    },
+                    {
                       "type": "text",
                       "id": "NRDed",
                       "name": "dc1d",
                       "fill": "$orange-primary",
-                      "content": "of 2,000 remaining · Resets Feb 23",
+                      "content": "of 2,000 remaining",
                       "fontFamily": "Inter",
                       "fontSize": 12,
                       "fontWeight": "normal"
@@ -2058,7 +2250,7 @@
                       "id": "FC86C",
                       "name": "dc2v",
                       "fill": "$text-primary",
-                      "content": "nox_sk_a1b2••••••••n3n4",
+                      "content": "nox_live_a1b2••••••••n3n4",
                       "fontFamily": "Inter",
                       "fontSize": 14,
                       "fontWeight": "normal"
@@ -2214,7 +2406,7 @@
                       "id": "P4Kg0",
                       "name": "ra2r",
                       "fill": "$text-secondary",
-                      "content": "-3 credits   5 min ago",
+                      "content": "-2 credits   5 min ago",
                       "fontFamily": "Inter",
                       "fontSize": 12,
                       "fontWeight": "normal"
@@ -3145,7 +3337,7 @@
                       "id": "9kwlS",
                       "name": "chL1",
                       "fill": "$text-secondary",
-                      "content": "● discover_creators  ● analyze_creator  ● outreach  ● other",
+                      "content": "● discover_creators  ● analyze_creator  ● outreach_creators  ● negotiate  ● manage_campaigns",
                       "fontFamily": "Inter",
                       "fontSize": 12,
                       "fontWeight": "normal"
@@ -3438,6 +3630,272 @@
                           "name": "dr2dt",
                           "fill": "$text-secondary",
                           "content": "35%",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "cIFkE",
+                  "name": "dr3",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border-subtle"
+                  },
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "GvF35",
+                      "name": "dr3a",
+                      "width": 240,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "vIWNn",
+                          "name": "dr3at",
+                          "fill": "$text-primary",
+                          "content": "outreach_creators",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "72Veb",
+                      "name": "dr3b",
+                      "width": 120,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "j2S4z",
+                          "name": "dr3bt",
+                          "fill": "$text-primary",
+                          "content": "24",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "rNWNE",
+                      "name": "dr3c",
+                      "width": 160,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "rWUxR",
+                          "name": "dr3ct",
+                          "fill": "$text-primary",
+                          "content": "72",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "qCaUA",
+                      "name": "dr3d",
+                      "width": "fill_container",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "waYGp",
+                          "name": "dr3dt",
+                          "fill": "$text-secondary",
+                          "content": "10%",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "4OCTM",
+                  "name": "dr4",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border-subtle"
+                  },
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "8yPMC",
+                      "name": "dr4a",
+                      "width": 240,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "NjcSq",
+                          "name": "dr4at",
+                          "fill": "$text-primary",
+                          "content": "negotiate",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "dZjiB",
+                      "name": "dr4b",
+                      "width": 120,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "KjNCk",
+                          "name": "dr4bt",
+                          "fill": "$text-primary",
+                          "content": "8",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "QPEjL",
+                      "name": "dr4c",
+                      "width": 160,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "YIlyj",
+                          "name": "dr4ct",
+                          "fill": "$text-primary",
+                          "content": "40",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "FSnof",
+                      "name": "dr4d",
+                      "width": "fill_container",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "vbZEC",
+                          "name": "dr4dt",
+                          "fill": "$text-secondary",
+                          "content": "5%",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "HdqSW",
+                  "name": "dr5",
+                  "width": "fill_container",
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "X2PIR",
+                      "name": "dr5a",
+                      "width": 240,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Ph1hQ",
+                          "name": "dr5at",
+                          "fill": "$text-primary",
+                          "content": "manage_campaigns",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "IjLhg",
+                      "name": "dr5b",
+                      "width": 120,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "m3WXV",
+                          "name": "dr5bt",
+                          "fill": "$text-primary",
+                          "content": "32",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "gdO96",
+                      "name": "dr5c",
+                      "width": 160,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "QpSBB",
+                          "name": "dr5ct",
+                          "fill": "$text-primary",
+                          "content": "32",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tiG5H",
+                      "name": "dr5d",
+                      "width": "fill_container",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "PmfIN",
+                          "name": "dr5dt",
+                          "fill": "$text-secondary",
+                          "content": "5%",
                           "fontFamily": "Inter",
                           "fontSize": 13,
                           "fontWeight": "normal"
@@ -4198,7 +4656,7 @@
                       "id": "SrrZm",
                       "name": "pGrf2",
                       "fill": "$text-secondary",
-                      "content": "✓ Dedicated account manager",
+                      "content": "✓ Webhook notifications",
                       "fontFamily": "Inter",
                       "fontSize": 13,
                       "fontWeight": "normal"
@@ -4208,7 +4666,7 @@
                       "id": "p6XHJ",
                       "name": "pGrf3",
                       "fill": "$text-secondary",
-                      "content": "✓ Custom integrations",
+                      "content": "✓ 120 requests/minute",
                       "fontFamily": "Inter",
                       "fontSize": 13,
                       "fontWeight": "normal"
@@ -4554,6 +5012,13 @@
                   "id": "cRfbv",
                   "name": "cr4",
                   "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border-subtle"
+                  },
                   "padding": [
                     12,
                     20
@@ -4589,6 +5054,54 @@
                           "name": "cr4bt",
                           "fill": "$text-primary",
                           "content": "5 credits per round",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kFGmy",
+                  "name": "cr5",
+                  "width": "fill_container",
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "kwDbd",
+                      "name": "cr5a",
+                      "width": 240,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "dDX8U",
+                          "name": "cr5at",
+                          "fill": "$text-primary",
+                          "content": "manage_campaigns",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "2FTbh",
+                      "name": "cr5b",
+                      "width": "fill_container",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "BMWQl",
+                          "name": "cr5bt",
+                          "fill": "$text-primary",
+                          "content": "0-1 credits",
                           "fontFamily": "Inter",
                           "fontSize": 13,
                           "fontWeight": "normal"
@@ -4703,6 +5216,166 @@
                       "type": "text",
                       "id": "l6iPG",
                       "name": "pfq2a",
+                      "fill": "$text-secondary",
+                      "content": "+",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "NPsQk",
+                  "name": "pfq3",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border-subtle"
+                  },
+                  "padding": [
+                    16,
+                    0
+                  ],
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "erupP",
+                      "name": "pfq3t",
+                      "fill": "$text-primary",
+                      "content": "Do unused credits roll over?",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "veJMv",
+                      "name": "pfq3a",
+                      "fill": "$text-secondary",
+                      "content": "+",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "girEQ",
+                  "name": "pfq4",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border-subtle"
+                  },
+                  "padding": [
+                    16,
+                    0
+                  ],
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "oP0oS",
+                      "name": "pfq4t",
+                      "fill": "$text-primary",
+                      "content": "Is there a yearly discount?",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "8iiIv",
+                      "name": "pfq4a",
+                      "fill": "$text-secondary",
+                      "content": "+",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "EybMg",
+                  "name": "pfq5",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border-subtle"
+                  },
+                  "padding": [
+                    16,
+                    0
+                  ],
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "0cl82",
+                      "name": "pfq5t",
+                      "fill": "$text-primary",
+                      "content": "How much does each tool cost?",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "riPpO",
+                      "name": "pfq5a",
+                      "fill": "$text-secondary",
+                      "content": "+",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "LpibH",
+                  "name": "pfq6",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border-subtle"
+                  },
+                  "padding": [
+                    16,
+                    0
+                  ],
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "XBZrs",
+                      "name": "pfq6t",
+                      "fill": "$text-primary",
+                      "content": "Do I need to know how to code?",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "zmNC9",
+                      "name": "pfq6a",
                       "fill": "$text-secondary",
                       "content": "+",
                       "fontFamily": "Inter",
@@ -5009,7 +5682,7 @@
                       "id": "2Fz3D",
                       "name": "c2desc",
                       "fill": "#6B7280",
-                      "content": "Complete reference for all 5 API tools: discover, profile, audience, content, and outreach.",
+                      "content": "Complete reference for all 5 tools: discover_creators, analyze_creator, outreach_creators, negotiate, and manage_campaigns.",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
                       "fontSize": 14,
@@ -5435,7 +6108,7 @@
                   "id": "9y13t",
                   "name": "sLink5",
                   "fill": "#6B7280",
-                  "content": "get_profile",
+                  "content": "analyze_creator",
                   "fontFamily": "Inter",
                   "fontSize": 14,
                   "fontWeight": "normal"
@@ -5445,7 +6118,7 @@
                   "id": "VGa3J",
                   "name": "sLink6",
                   "fill": "#6B7280",
-                  "content": "get_audience",
+                  "content": "outreach_creators",
                   "fontFamily": "Inter",
                   "fontSize": 14,
                   "fontWeight": "normal"
@@ -5455,7 +6128,7 @@
                   "id": "mBqu2",
                   "name": "sLink7",
                   "fill": "#6B7280",
-                  "content": "get_content",
+                  "content": "negotiate",
                   "fontFamily": "Inter",
                   "fontSize": 14,
                   "fontWeight": "normal"
@@ -5465,7 +6138,7 @@
                   "id": "H36GX",
                   "name": "sLink8",
                   "fill": "#6B7280",
-                  "content": "send_outreach",
+                  "content": "manage_campaigns",
                   "fontFamily": "Inter",
                   "fontSize": 14,
                   "fontWeight": "normal"
@@ -5510,11 +6183,95 @@
                   "id": "XZc3K",
                   "name": "intro",
                   "fill": "#6B7280",
-                  "content": "Get your first API call working in under 5 minutes.",
+                  "content": "Set up NoxInfluencer with your favorite AI assistant in under 5 minutes.",
                   "lineHeight": 1.6,
                   "fontFamily": "Inter",
                   "fontSize": 16,
                   "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "KPU8q",
+                  "name": "TabBar",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 2
+                    },
+                    "fill": "#E5E7EB"
+                  },
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "W8eVB",
+                      "name": "tab1",
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": {
+                          "bottom": 2
+                        },
+                        "fill": "#FF6B35"
+                      },
+                      "padding": [
+                        10,
+                        24
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "jrxki",
+                          "name": "t1t",
+                          "fill": "#FF6B35",
+                          "content": "ChatGPT",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "MtByd",
+                      "name": "tab2",
+                      "padding": [
+                        10,
+                        24
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "NuAG3",
+                          "name": "t2t",
+                          "fill": "#6B7280",
+                          "content": "Claude",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "vEzDf",
+                      "name": "tab3",
+                      "padding": [
+                        10,
+                        24
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "KfQeq",
+                          "name": "t3t",
+                          "fill": "#6B7280",
+                          "content": "OpenClaw",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
                 },
                 {
                   "type": "frame",
@@ -5559,7 +6316,7 @@
                           "id": "7FtK7",
                           "name": "s1title",
                           "fill": "#1A1A1A",
-                          "content": "Install the CLI",
+                          "content": "Get your API key",
                           "fontFamily": "Inter",
                           "fontSize": 20,
                           "fontWeight": "600"
@@ -5571,8 +6328,13 @@
                       "id": "6lm9p",
                       "name": "s1code",
                       "width": "fill_container",
-                      "fill": "#1E1E2E",
-                      "cornerRadius": 8,
+                      "fill": "#FFF5F0",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#FFDDD0"
+                      },
                       "layout": "vertical",
                       "padding": 16,
                       "children": [
@@ -5580,10 +6342,11 @@
                           "type": "text",
                           "id": "ruRC2",
                           "name": "s1line",
-                          "fill": "#E2E8F0",
-                          "content": "npm install -g @noxinfluencer/cli",
-                          "fontFamily": "monospace",
-                          "fontSize": 13,
+                          "fill": "#374151",
+                          "content": "1. Go to Dashboard → API Keys\n2. Click \"Create new key\" → name it\n3. Copy the key — you'll need it next",
+                          "lineHeight": 1.8,
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
                           "fontWeight": "normal"
                         }
                       ]
@@ -5633,7 +6396,7 @@
                           "id": "zQBuB",
                           "name": "s2title",
                           "fill": "#1A1A1A",
-                          "content": "Set your API key",
+                          "content": "Add to ChatGPT",
                           "fontFamily": "Inter",
                           "fontSize": 20,
                           "fontWeight": "600"
@@ -5645,7 +6408,7 @@
                       "id": "3WLLJ",
                       "name": "s2desc",
                       "fill": "#6B7280",
-                      "content": "Get your API key from Dashboard → API Keys, then set it:",
+                      "content": "Connect NoxInfluencer to your ChatGPT account:",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
                       "fontSize": 14,
@@ -5656,8 +6419,13 @@
                       "id": "C03lh",
                       "name": "s2code",
                       "width": "fill_container",
-                      "fill": "#1E1E2E",
-                      "cornerRadius": 8,
+                      "fill": "#FFF5F0",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#FFDDD0"
+                      },
                       "layout": "vertical",
                       "padding": 16,
                       "children": [
@@ -5665,10 +6433,11 @@
                           "type": "text",
                           "id": "vPNCZ",
                           "name": "s2line",
-                          "fill": "#E2E8F0",
-                          "content": "export NOX_API_KEY=your_api_key_here",
-                          "fontFamily": "monospace",
-                          "fontSize": 13,
+                          "fill": "#374151",
+                          "content": "1. Open ChatGPT → Explore GPTs\n2. Search \"NoxInfluencer\" → click Start\n3. When prompted, paste your API key",
+                          "lineHeight": 1.8,
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
                           "fontWeight": "normal"
                         }
                       ]
@@ -5718,7 +6487,7 @@
                           "id": "K93Ya",
                           "name": "s3title",
                           "fill": "#1A1A1A",
-                          "content": "Make your first call",
+                          "content": "Try your first search",
                           "fontFamily": "Inter",
                           "fontSize": 20,
                           "fontWeight": "600"
@@ -5730,40 +6499,44 @@
                       "id": "ARVlc",
                       "name": "s3code",
                       "width": "fill_container",
-                      "fill": "#1E1E2E",
-                      "cornerRadius": 8,
+                      "fill": "#F0F9FF",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 1,
+                        "fill": "#BAE6FD"
+                      },
                       "layout": "vertical",
-                      "gap": 4,
+                      "gap": 8,
                       "padding": 16,
                       "children": [
                         {
                           "type": "text",
                           "id": "hZH48",
                           "name": "s3l1",
-                          "fill": "#E2E8F0",
-                          "content": "nox search \"beauty influencers in USA\" \\",
+                          "fill": "#1A1A1A",
+                          "content": "You: Find 10 beauty creators on YouTube",
                           "fontFamily": "Inter",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "fontSize": 14,
+                          "fontWeight": "500"
                         },
                         {
                           "type": "text",
                           "id": "zorq8",
                           "name": "s3l2",
-                          "fill": "#E2E8F0",
-                          "content": "  --platform youtube \\",
+                          "fill": "#1A1A1A",
+                          "content": "      with 100K+ followers",
                           "fontFamily": "Inter",
-                          "fontSize": 13,
-                          "fontWeight": "normal"
+                          "fontSize": 14,
+                          "fontWeight": "500"
                         },
                         {
                           "type": "text",
                           "id": "3uq0Z",
                           "name": "s3l3",
-                          "fill": "#E2E8F0",
-                          "content": "  --min-followers 10000",
+                          "fill": "#1E1E2E",
                           "fontFamily": "Inter",
-                          "fontSize": 13,
+                          "fontSize": 2,
                           "fontWeight": "normal"
                         }
                       ]
@@ -5775,110 +6548,69 @@
                   "id": "aWuJ3",
                   "name": "respTitle",
                   "fill": "#1A1A1A",
-                  "content": "Example Response",
+                  "content": "4    Go deeper — try more commands",
                   "fontFamily": "Inter",
-                  "fontSize": 16,
+                  "fontSize": 20,
                   "fontWeight": "600"
                 },
                 {
                   "type": "frame",
-                  "id": "WhWuu",
-                  "name": "respCode",
+                  "id": "QsFxZ",
+                  "name": "Step4Examples",
                   "width": "fill_container",
-                  "fill": "#1E1E2E",
-                  "cornerRadius": 8,
+                  "fill": "#FFF5F0",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#FFDDD0"
+                  },
                   "layout": "vertical",
-                  "gap": 2,
-                  "padding": 16,
+                  "gap": 8,
+                  "padding": 20,
                   "children": [
                     {
                       "type": "text",
-                      "id": "sSxU3",
-                      "name": "r1",
-                      "fill": "#E2E8F0",
-                      "content": "{",
+                      "id": "IvupX",
+                      "name": "s4a",
+                      "fill": "#374151",
+                      "content": "\"Analyze BeautyByLisa's audience demographics\"",
+                      "lineHeight": 1.6,
                       "fontFamily": "Inter",
-                      "fontSize": 12,
+                      "fontSize": 14,
                       "fontWeight": "normal"
                     },
                     {
                       "type": "text",
-                      "id": "PvSRN",
-                      "name": "r2",
-                      "fill": "#E2E8F0",
-                      "content": "  \"creators\": [",
+                      "id": "HDKP1",
+                      "name": "s4b",
+                      "fill": "#374151",
+                      "content": "\"Draft outreach email to BeautyByLisa about our protein powder\"",
+                      "lineHeight": 1.6,
                       "fontFamily": "Inter",
-                      "fontSize": 12,
+                      "fontSize": 14,
                       "fontWeight": "normal"
                     },
                     {
                       "type": "text",
-                      "id": "0DOpo",
-                      "name": "r3",
-                      "fill": "#E2E8F0",
-                      "content": "    { \"name\": \"BeautyByLisa\",",
+                      "id": "AkxAS",
+                      "name": "s4c",
+                      "fill": "#374151",
+                      "content": "\"Start negotiation with BeautyByLisa, budget $500\"",
+                      "lineHeight": 1.6,
                       "fontFamily": "Inter",
-                      "fontSize": 12,
+                      "fontSize": 14,
                       "fontWeight": "normal"
                     },
                     {
                       "type": "text",
-                      "id": "XKpMr",
-                      "name": "r4",
-                      "fill": "#E2E8F0",
-                      "content": "      \"platform\": \"youtube\",",
+                      "id": "dbYG1",
+                      "name": "s4d",
+                      "fill": "#374151",
+                      "content": "\"Show me my active campaigns\"",
+                      "lineHeight": 1.6,
                       "fontFamily": "Inter",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "text",
-                      "id": "7I2ka",
-                      "name": "r5",
-                      "fill": "#E2E8F0",
-                      "content": "      \"followers\": 245000,",
-                      "fontFamily": "Inter",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "text",
-                      "id": "yJNLQ",
-                      "name": "r6",
-                      "fill": "#E2E8F0",
-                      "content": "      \"engagement_rate\": 4.2 }",
-                      "fontFamily": "Inter",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "text",
-                      "id": "u94rK",
-                      "name": "r7",
-                      "fill": "#E2E8F0",
-                      "content": "  ],",
-                      "fontFamily": "Inter",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "text",
-                      "id": "Fe2QY",
-                      "name": "r8",
-                      "fill": "#E2E8F0",
-                      "content": "  \"credits_used\": 1",
-                      "fontFamily": "Inter",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "text",
-                      "id": "pLMYn",
-                      "name": "r9",
-                      "fill": "#E2E8F0",
-                      "content": "}",
-                      "fontFamily": "Inter",
-                      "fontSize": 12,
+                      "fontSize": 14,
                       "fontWeight": "normal"
                     }
                   ]
@@ -5929,7 +6661,7 @@
                       "id": "FJzKo",
                       "name": "ns3",
                       "fill": "#FF6B35",
-                      "content": "→  Set up MCP integration for AI agents",
+                      "content": "→  Set up integration for Claude or OpenClaw",
                       "fontFamily": "Inter",
                       "fontSize": 14,
                       "fontWeight": "normal"
@@ -6270,7 +7002,7 @@
                           "id": "Neu6k",
                           "name": "methTxt",
                           "fill": "#3B82F6",
-                          "content": "POST /v1/tools/discover",
+                          "content": "POST /v1/tools/discover_creators",
                           "fontFamily": "Inter",
                           "fontSize": 12,
                           "fontWeight": "600"
@@ -6473,7 +7205,7 @@
                           "id": "VKpE2",
                           "name": "r2c4",
                           "fill": "#6B7280",
-                          "content": "youtube | instagram | tiktok",
+                          "content": "youtube | instagram | tiktok | all",
                           "fontFamily": "Inter",
                           "fontSize": 13,
                           "fontWeight": "normal"
@@ -6678,7 +7410,7 @@
                       "id": "U9OzF",
                       "name": "cl1",
                       "fill": "#E2E8F0",
-                      "content": "curl -X POST https://api.noxinfluencer.com/v1/tools/discover \\",
+                      "content": "curl -X POST https://api.noxinfluencer.com/v1/tools/discover_creators \\",
                       "fontFamily": "Inter",
                       "fontSize": 12,
                       "fontWeight": "normal"
