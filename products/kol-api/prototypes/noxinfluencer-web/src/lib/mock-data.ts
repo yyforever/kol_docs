@@ -51,7 +51,7 @@ export const MOCK_USAGE: UsageRecord[] = [
 export const MOCK_INVOICES: Invoice[] = [
   { id: "INV-2026-002", date: "2026-02-01", amount: 199, status: "paid", plan: "Growth" },
   { id: "INV-2026-001", date: "2026-01-01", amount: 199, status: "paid", plan: "Growth" },
-  { id: "INV-2025-012", date: "2025-12-01", amount: 49, status: "paid", plan: "Starter" },
+  { id: "INV-2025-012", date: "2025-12-01", amount: 29, status: "paid", plan: "Starter" },
 ]
 
 export const MOCK_RECENT_ACTIVITY = [

@@ -190,7 +190,7 @@ export const LANDING_FAQS: FAQItem[] = [
   {
     question: "How does credit-based pricing work?",
     answer:
-      "Each action uses a small number of credits — discovering creators costs 1 credit, analyzing a creator costs 2, and so on. Start with 200 free credits to try everything out, then upgrade when you need more.",
+      "Each action uses a small number of credits — discovering creators costs 1 credit, analyzing a creator costs 2, and so on. Start with 200 one-time credits to try everything out, then upgrade when you need more.",
   },
   {
     question: "Which platforms are supported?",
@@ -248,7 +248,7 @@ export const PRICING_FAQS: FAQItem[] = [
   {
     question: "What is your refund policy?",
     answer:
-      "If you are not satisfied, contact us within 14 days of your payment for a full refund. Unused credits from the current billing cycle will be refunded pro-rata.",
+      "Credits reset monthly and unused credits are non-refundable. You can cancel your subscription at any time to stop future billing — changes take effect at the next billing cycle.",
   },
 ]
 

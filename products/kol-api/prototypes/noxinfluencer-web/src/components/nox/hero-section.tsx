@@ -38,7 +38,7 @@ export function HeroSection() {
               </Link>
             </div>
             <p className="mt-4 text-sm text-muted-foreground">
-              Start with 200 free credits. No credit card required.
+              Start with 200 one-time credits. No credit card required.
             </p>
           </div>
 
