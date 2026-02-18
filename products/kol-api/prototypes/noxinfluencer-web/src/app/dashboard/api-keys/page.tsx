@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -65,7 +64,6 @@ export default function ApiKeysPage() {
                 <TableHead>Key</TableHead>
                 <TableHead>Created</TableHead>
                 <TableHead>Last Used</TableHead>
-                <TableHead>Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -115,18 +113,6 @@ export default function ApiKeysPage() {
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">
                     {key.lastUsed ?? "Never"}
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={key.status === "active" ? "default" : "secondary"}
-                      className={
-                        key.status === "active"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-gray-100 text-gray-500"
-                      }
-                    >
-                      {key.status}
-                    </Badge>
                   </TableCell>
                   <TableCell className="text-right">
                     {key.status === "active" ? (

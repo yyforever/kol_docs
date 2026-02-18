@@ -17,7 +17,7 @@ export default function SignUpPage() {
           </div>
           <CardTitle className="text-2xl">Create your free account</CardTitle>
           <p className="text-sm text-muted-foreground">
-            Get 200 credits to start — no credit card required.
+            Get 200 credits to start — no credit card required
           </p>
         </CardHeader>
         <CardContent className="space-y-4">
