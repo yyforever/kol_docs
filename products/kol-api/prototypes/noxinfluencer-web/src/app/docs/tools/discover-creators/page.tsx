@@ -11,58 +11,58 @@ import {
 
 const PARAMS = [
   {
+    name: "query",
+    type: "string",
+    required: true,
+    description: 'Natural language search query, e.g. "US beauty TikTokers with 10K-1M followers"',
+  },
+  {
     name: "platform",
     type: "string",
     required: false,
-    description: 'Social platform filter. One of: "youtube", "instagram", "tiktok"',
-  },
-  {
-    name: "niche",
-    type: "string",
-    required: false,
-    description: "Creator niche/category filter (e.g., \"technology\", \"beauty\")",
-  },
-  {
-    name: "min_subscribers",
-    type: "integer",
-    required: false,
-    description: "Minimum subscriber/follower count",
-  },
-  {
-    name: "max_subscribers",
-    type: "integer",
-    required: false,
-    description: "Maximum subscriber/follower count",
+    description: 'Platform filter: "youtube", "tiktok", "instagram", or "all" (default)',
   },
   {
     name: "country",
     type: "string",
     required: false,
-    description: "ISO 3166-1 alpha-2 country code (e.g., \"US\", \"JP\")",
+    description: 'ISO 3166-1 alpha-2 country code (e.g., "US", "JP")',
   },
   {
-    name: "language",
+    name: "followers_range",
+    type: "object",
+    required: false,
+    description: "Follower count range with min/max (e.g., {min: 10000, max: 1000000})",
+  },
+  {
+    name: "engagement_min",
+    type: "number",
+    required: false,
+    description: "Minimum engagement rate as decimal (e.g., 0.03 = 3%)",
+  },
+  {
+    name: "niche",
     type: "string",
     required: false,
-    description: "Content language filter (ISO 639-1, e.g., \"en\")",
+    description: 'Content category filter (e.g., "beauty", "fitness", "tech")',
   },
   {
-    name: "min_engagement_rate",
-    type: "float",
-    required: false,
-    description: "Minimum engagement rate percentage (e.g., 2.5)",
-  },
-  {
-    name: "sort_by",
-    type: "string",
-    required: false,
-    description: 'Sort field: "subscribers", "engagement_rate", "avg_views". Default: "subscribers"',
-  },
-  {
-    name: "limit",
+    name: "count",
     type: "integer",
     required: false,
-    description: "Results per page (1-100). Default: 20",
+    description: "Number of results to return (1-50). Default: 10",
+  },
+  {
+    name: "include_audience",
+    type: "boolean",
+    required: false,
+    description: "Include audience demographics summary. Default: false",
+  },
+  {
+    name: "cursor",
+    type: "string",
+    required: false,
+    description: "Pagination cursor from previous response's next_cursor field",
   },
 ]
 
@@ -71,12 +71,12 @@ Authorization: Bearer nox_live_7kF3...x9Qm
 Content-Type: application/json
 
 {
-  "platform": "youtube",
-  "niche": "technology",
-  "min_subscribers": 100000,
+  "query": "US beauty TikTokers with 10K-1M followers",
+  "platform": "tiktok",
   "country": "US",
-  "sort_by": "engagement_rate",
-  "limit": 5
+  "followers_range": { "min": 10000, "max": 1000000 },
+  "engagement_min": 0.03,
+  "count": 5
 }`
 
 const RESPONSE_EXAMPLE = `{
@@ -84,42 +84,42 @@ const RESPONSE_EXAMPLE = `{
   "data": {
     "creators": [
       {
-        "id": "UC_x5XG1OV2P6uZZ5FSM9Ttw",
-        "name": "Google for Developers",
-        "platform": "youtube",
-        "subscribers": 2840000,
-        "avg_views": 45200,
-        "engagement_rate": 3.2,
-        "niche": ["technology", "programming"],
+        "creator_id": "crt_abc123",
+        "platform": "tiktok",
+        "handle": "@beautybyjess",
+        "display_name": "Beauty by Jess",
+        "followers": 123000,
+        "engagement_rate": 0.042,
+        "content_count": 342,
         "country": "US",
-        "language": "en",
-        "avatar_url": "https://yt3.ggpht.com/...",
-        "profile_url": "https://youtube.com/c/GoogleDevelopers"
+        "niche": ["beauty", "skincare"],
+        "avatar_url": "https://...",
+        "profile_url": "https://tiktok.com/@beautybyjess"
       },
       {
-        "id": "UCBcRF18a7Qf58cCRy5xuWwQ",
-        "name": "TechLinked",
-        "platform": "youtube",
-        "subscribers": 1920000,
-        "avg_views": 312000,
-        "engagement_rate": 5.1,
-        "niche": ["technology", "news"],
+        "creator_id": "crt_def456",
+        "platform": "tiktok",
+        "handle": "@glowupguru",
+        "display_name": "Glow Up Guru",
+        "followers": 89000,
+        "engagement_rate": 0.051,
+        "content_count": 218,
         "country": "US",
-        "language": "en",
-        "avatar_url": "https://yt3.ggpht.com/...",
-        "profile_url": "https://youtube.com/c/TechLinked"
+        "niche": ["beauty", "lifestyle"],
+        "avatar_url": "https://...",
+        "profile_url": "https://tiktok.com/@glowupguru"
       }
     ],
     "total": 2847,
-    "page": 1,
-    "limit": 5
+    "next_cursor": "cur_page2_abc"
   },
-  "summary": "Found 2,847 technology creators on YouTube in the US. Top result: Google for Developers (2.84M subscribers, 3.2% engagement).",
+  "summary": "Found 2,847 beauty creators on TikTok in the US with 10K-1M followers. Top match: @beautybyjess (123K followers, 4.2% engagement).",
   "credits": {
     "used": 1,
     "remaining": 199
   },
   "meta": {
+    "request_id": "req_abc123",
     "rate_limit_remaining": 57
   }
 }`
@@ -136,8 +136,8 @@ export default function DiscoverCreatorsPage() {
         </div>
         <h1 className="text-3xl font-bold text-nox-dark">Discover Creators</h1>
         <p className="mt-2 text-lg text-muted-foreground">
-          Search and filter 10M+ creator profiles across YouTube, Instagram,
-          and TikTok.
+          Search and discover 10M+ creator profiles across YouTube, Instagram,
+          and TikTok using natural language queries.
         </p>
         <div className="mt-3 flex items-center gap-4 text-sm text-muted-foreground">
           <span>

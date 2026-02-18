@@ -52,6 +52,11 @@ export function PlanCard({ plan, yearly = false }: PlanCardProps) {
             {plan.credits.toLocaleString()} {plan.id === "free" ? "one-time credits" : "credits/month"}
           </p>
         )}
+        {plan.overageRate != null && (
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            Overage: ${plan.overageRate.toFixed(3)}/credit
+          </p>
+        )}
       </CardHeader>
       <CardContent className="flex flex-1 flex-col">
         <ul className="flex-1 space-y-3">

@@ -240,6 +240,16 @@ export const PRICING_FAQS: FAQItem[] = [
     answer:
       "No! NoxInfluencer works with AI assistants like ChatGPT, Claude, and OpenClaw. Just talk to your AI assistant in plain language and it handles the rest.",
   },
+  {
+    question: "What payment methods do you accept?",
+    answer:
+      "We accept Visa, Mastercard, and PayPal through Stripe. All payments are processed securely with industry-standard encryption.",
+  },
+  {
+    question: "What is your refund policy?",
+    answer:
+      "If you are not satisfied, contact us within 14 days of your payment for a full refund. Unused credits from the current billing cycle will be refunded pro-rata.",
+  },
 ]
 
 export const PLATFORM_LOGOS = [
