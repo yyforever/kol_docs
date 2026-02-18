@@ -356,7 +356,7 @@
               "id": "pEREl",
               "name": "spt",
               "fill": "$text-secondary",
-              "content": "Covering 100M+ creators across YouTube, Instagram, and TikTok",
+              "content": "Covering 10M+ creators across YouTube, Instagram, and TikTok",
               "fontFamily": "Inter",
               "fontSize": 15,
               "fontWeight": "normal"
@@ -576,7 +576,7 @@
                   "id": "1AF5R",
                   "name": "s1n",
                   "fill": "$text-primary",
-                  "content": "100M+",
+                  "content": "10M+",
                   "fontFamily": "Inter",
                   "fontSize": 40,
                   "fontWeight": "bold"
@@ -636,7 +636,7 @@
                   "id": "07UTH",
                   "name": "s3n",
                   "fill": "$text-primary",
-                  "content": "7",
+                  "content": "5",
                   "fontFamily": "Inter",
                   "fontSize": 40,
                   "fontWeight": "bold"
@@ -756,7 +756,7 @@
                       "id": "bIdyG",
                       "name": "pl1t",
                       "fill": "$text-primary",
-                      "content": "Claude MCP",
+                      "content": "ChatGPT",
                       "fontFamily": "Inter",
                       "fontSize": 16,
                       "fontWeight": "bold"
@@ -794,7 +794,7 @@
                       "id": "BRrYZ",
                       "name": "pl2t",
                       "fill": "$text-primary",
-                      "content": "Cursor",
+                      "content": "Claude",
                       "fontFamily": "Inter",
                       "fontSize": 16,
                       "fontWeight": "bold"
@@ -832,7 +832,7 @@
                       "id": "yi8iO",
                       "name": "pl3t",
                       "fill": "$text-primary",
-                      "content": "Windsurf",
+                      "content": "OpenClaw",
                       "fontFamily": "Inter",
                       "fontSize": 16,
                       "fontWeight": "bold"
@@ -925,7 +925,7 @@
                       "id": "qxQZ6",
                       "name": "prFd",
                       "fill": "$text-secondary",
-                      "content": "200 credits/month",
+                      "content": "200 credits (one-time)",
                       "fontFamily": "Inter",
                       "fontSize": 14,
                       "fontWeight": "normal"
@@ -2614,7 +2614,7 @@
                           "id": "Lubgz",
                           "name": "akR1c2t",
                           "fill": "$text-primary",
-                          "content": "nox_sk_a1b2••••••••m3n4",
+                          "content": "nox_live_a1b2••••••••m3n4",
                           "fontFamily": "Inter",
                           "fontSize": 13,
                           "fontWeight": "normal"
@@ -2717,7 +2717,7 @@
                           "id": "lnajQ",
                           "name": "akR2c2t",
                           "fill": "$text-primary",
-                          "content": "nox_sk_test••••••••x9z0",
+                          "content": "nox_test_a1b2••••••••x9z0",
                           "fontFamily": "Inter",
                           "fontSize": 13,
                           "fontWeight": "normal"
@@ -3791,7 +3791,7 @@
                   "id": "8KKxx",
                   "name": "pFd",
                   "fill": "$text-secondary",
-                  "content": "200 credits/month",
+                  "content": "200 credits (one-time)",
                   "fontFamily": "Inter",
                   "fontSize": 14,
                   "fontWeight": "normal"
@@ -3908,7 +3908,7 @@
                       "id": "fnqRE",
                       "name": "pStbt",
                       "fill": "$text-primary",
-                      "content": "Start Free Trial",
+                      "content": "Get Started",
                       "fontFamily": "Inter",
                       "fontSize": 14,
                       "fontWeight": "600"
@@ -3927,7 +3927,7 @@
                       "id": "8whdO",
                       "name": "pStf1",
                       "fill": "$text-secondary",
-                      "content": "✓ All 7 tools",
+                      "content": "✓ All 5 tools",
                       "fontFamily": "Inter",
                       "fontSize": 13,
                       "fontWeight": "normal"
@@ -4031,7 +4031,7 @@
                       "id": "CkH8S",
                       "name": "pProbt",
                       "fill": "$text-white",
-                      "content": "Start Free Trial",
+                      "content": "Get Started",
                       "fontFamily": "Inter",
                       "fontSize": 14,
                       "fontWeight": "600"
@@ -4169,7 +4169,7 @@
                       "id": "YNJaJ",
                       "name": "pGrbt",
                       "fill": "$text-primary",
-                      "content": "Start Free Trial",
+                      "content": "Get Started",
                       "fontFamily": "Inter",
                       "fontSize": 14,
                       "fontWeight": "600"
@@ -4485,7 +4485,7 @@
                           "id": "FLTKc",
                           "name": "cr2bt",
                           "fill": "$text-primary",
-                          "content": "3 credits",
+                          "content": "2 credits",
                           "fontFamily": "Inter",
                           "fontSize": 13,
                           "fontWeight": "normal"
@@ -4540,7 +4540,7 @@
                           "id": "xCRiz",
                           "name": "cr3bt",
                           "fill": "$text-primary",
-                          "content": "5 credits per email",
+                          "content": "3 credits per creator",
                           "fontFamily": "Inter",
                           "fontSize": 13,
                           "fontWeight": "normal"
@@ -4588,7 +4588,7 @@
                           "id": "x5vhx",
                           "name": "cr4bt",
                           "fill": "$text-primary",
-                          "content": "10 credits per round",
+                          "content": "5 credits per round",
                           "fontFamily": "Inter",
                           "fontSize": 13,
                           "fontWeight": "normal"
@@ -6112,7 +6112,7 @@
                   "id": "fW669",
                   "name": "sl2",
                   "fill": "#6B7280",
-                  "content": "get_profile",
+                  "content": "analyze_creator",
                   "fontFamily": "Inter",
                   "fontSize": 14,
                   "fontWeight": "normal"
@@ -6122,7 +6122,7 @@
                   "id": "vzvtu",
                   "name": "sl3",
                   "fill": "#6B7280",
-                  "content": "get_audience",
+                  "content": "outreach_creators",
                   "fontFamily": "Inter",
                   "fontSize": 14,
                   "fontWeight": "normal"
@@ -6132,7 +6132,7 @@
                   "id": "oHYZX",
                   "name": "sl4",
                   "fill": "#6B7280",
-                  "content": "get_content",
+                  "content": "negotiate",
                   "fontFamily": "Inter",
                   "fontSize": 14,
                   "fontWeight": "normal"
@@ -6142,7 +6142,7 @@
                   "id": "lN8Ml",
                   "name": "sl5",
                   "fill": "#6B7280",
-                  "content": "send_outreach",
+                  "content": "manage_campaigns",
                   "fontFamily": "Inter",
                   "fontSize": 14,
                   "fontWeight": "normal"
@@ -6832,7 +6832,7 @@
                   "id": "wl9Jh",
                   "name": "keyVal",
                   "fill": "#1A1A1A",
-                  "content": "nox_sk_a3f8...●●●●●●●●",
+                  "content": "nox_live_a3f8...●●●●●●●●",
                   "fontFamily": "Inter",
                   "fontSize": 13,
                   "fontWeight": "normal"
@@ -7472,7 +7472,7 @@
                   "id": "x46Hw",
                   "name": "w3desc",
                   "fill": "#374151",
-                  "content": "All API calls will return HTTP 429. Upgrade your plan or wait for monthly reset.",
+                  "content": "All tool calls will return HTTP 402. Upgrade your plan to continue.",
                   "lineHeight": 1.5,
                   "fontFamily": "Inter",
                   "fontSize": 13,
@@ -7494,7 +7494,7 @@
                       "id": "Nh5lh",
                       "name": "w3l1",
                       "fill": "#EF4444",
-                      "content": "HTTP/1.1 429 Too Many Requests",
+                      "content": "HTTP/1.1 402 Payment Required",
                       "fontFamily": "Inter",
                       "fontSize": 11,
                       "fontWeight": "normal"
@@ -7514,7 +7514,7 @@
                       "id": "pI9Qx",
                       "name": "w3l3",
                       "fill": "#E2E8F0",
-                      "content": "  \"error\": \"credits_exhausted\",",
+                      "content": "  \"error\": \"insufficient_credits\",",
                       "fontFamily": "Inter",
                       "fontSize": 11,
                       "fontWeight": "normal"
