@@ -40,6 +40,66 @@
 
 ---
 
+## 原型
+
+`prototypes/` 目录包含两套原型产物，分别用于设计评审和前端开发：
+
+| 产物 | 路径 | 用途 |
+|------|------|------|
+| Pencil 交互原型 | [`prototypes/noxinfluencer-ai.pen`](prototypes/noxinfluencer-ai.pen) | 12 页高保真设计稿，用于设计评审和视觉对齐 |
+| Next.js 可交互 Demo | [`prototypes/noxinfluencer-web/`](prototypes/noxinfluencer-web/) | 基于设计稿的静态 UI 实现，可本地运行 |
+
+### Pencil 交互原型（12 页）
+
+用 [Pencil](https://pencil.evolv.ai) 创建的完整交互原型，覆盖全部页面和组件状态：
+
+| # | 页面 | 类型 |
+|---|------|------|
+| 1 | Landing Page | 营销页 |
+| 2 | Sign Up | 营销页 |
+| 3 | Dashboard Overview | Dashboard |
+| 4 | Dashboard API Keys | Dashboard |
+| 5 | Dashboard Usage & Billing | Dashboard |
+| 6 | Pricing | 营销页 |
+| 7 | Docs Home | 文档 |
+| 8 | Quick Start | 文档 |
+| 9 | Tool Reference (Discover Creators) | 文档 |
+| 10 | API Key 创建成功弹窗 | Dialog 组件 |
+| 11 | Revoke Key 确认弹窗 | Dialog 组件 |
+| 12 | Credit Warning 三态 (low/critical/exhausted) | Alert 组件 |
+
+### Next.js 可交互 Demo
+
+基于 Pencil 原型实现的前端静态 UI，Day 1 无后端，后续对接 API。
+
+**技术栈：** Next.js 15 (App Router) + React 19 + TypeScript + Tailwind CSS v4 + shadcn/ui
+
+**快速启动：**
+
+```bash
+cd prototypes/noxinfluencer-web
+pnpm install
+pnpm dev
+```
+
+**路由一览（9 页）：**
+
+| 路由 | 页面 |
+|------|------|
+| `/` | Landing Page — hero, 统计, 功能, 平台, 定价预览, FAQ, CTA |
+| `/signup` | 注册 — Google/GitHub OAuth + 邮箱表单 |
+| `/pricing` | 定价 — 4 套餐卡, Enterprise, credit 成本表, FAQ |
+| `/dashboard` | Dashboard 概览 — 欢迎, 3 统计卡, 最近活动 |
+| `/dashboard/api-keys` | API Keys — 密钥表 + 创建弹窗 + 吊销弹窗 + 遮蔽/Reveal |
+| `/dashboard/usage` | 用量与账单 — 套餐卡, credit 进度条, 用量表, 发票, 3 种告警 |
+| `/docs` | 文档首页 — 搜索框, 6 分类卡片 (3×2) |
+| `/docs/quick-start` | 快速开始 — 3 步指南 + 代码块 |
+| `/docs/tools/discover-creators` | Tool 参考 — 参数表, curl 示例, JSON 响应, 错误码 |
+
+**导航闭环：** Landing → SignUp → Dashboard → Docs → Pricing → Landing
+
+---
+
 ## 调研素材
 
 | 文件 | 内容 | 状态 |
