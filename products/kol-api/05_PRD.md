@@ -1041,7 +1041,7 @@ stalled ──品牌调整预算──→ in_progress（重启谈判，继续计
         ↓
 Google / GitHub OAuth 一键注册（10 秒，无需记密码，无 Sales Call）
         ↓
-即时获得 API Key（格式：kol_live_xxx / kol_test_xxx）
+即时获得 API Key（格式：nox_live_xxx / nox_test_xxx）
         ↓
 200 一次性免费 credits 到账
         ↓
@@ -1053,8 +1053,8 @@ API Key 配置到 Agent 环境变量 → 开始使用
 | 项目 | 规格 |
 |------|------|
 | 注册方式 | Google OAuth + GitHub OAuth（优先）；保留邮箱+密码作为备选 |
-| API Key 格式 | `kol_live_` + 32 字符随机串（生产环境） |
-| API Key 传递 | `Authorization: Bearer kol_live_xxx` header |
+| API Key 格式 | `nox_live_` + 32 字符随机串（生产环境）；测试环境 `nox_test_` |
+| API Key 传递 | `Authorization: Bearer nox_live_xxx` header |
 | Key 管理 | 支持生成、吊销、查看用量；每账号最多 5 个 Key |
 | 账号标识 | OAuth 返回的邮箱作为主标识，公司名（可选）用于个性化 |
 
@@ -1496,7 +1496,7 @@ OAuth 授权（Google/GitHub 弹窗）
 │  └────────────────────────────────────────────┘   │
 │                                                   │
 │  ┌─── API Key ────────────────────────────────┐   │
-│  │  kol_live_••••••••••••xxxx    [Copy] [Show] │   │
+│  │  nox_live_••••••••••••xxxx    [Copy] [Show] │   │
 │  │  Created: Feb 13 · Last used: 2 min ago    │   │
 │  └────────────────────────────────────────────┘   │
 │                                                   │
@@ -1554,7 +1554,7 @@ Step 3: Follow the Quick Start guide → [Open Guide]
 
 - [ ] Overview 页 1 秒内加载完成
 - [ ] API Key 复制后剪贴板内容正确
-- [ ] 新建 Key 仅显示一次，关闭后无法再查看完整 Key
+- [ ] API Key 在 Dashboard 中可随时查看（遮蔽显示，点击 Reveal 展开）
 - [ ] 用量数据准实时（延迟 < 5 分钟）
 - [ ] Credit < 20% 时 Banner 警告自动显示
 - [ ] Stripe Customer Portal 跳转正常（管理订阅 / 查看发票）
