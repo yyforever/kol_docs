@@ -211,7 +211,7 @@
                           "id": "yU0Hg",
                           "name": "hb1t",
                           "fill": "$text-white",
-                          "content": "Start Free →",
+                          "content": "Get Started Free",
                           "fontFamily": "Inter",
                           "fontSize": 16,
                           "fontWeight": "600"
@@ -1065,6 +1065,54 @@
                 },
                 {
                   "type": "frame",
+                  "id": "FsX0V",
+                  "name": "prS",
+                  "width": "fill_container",
+                  "fill": "$bg-surface",
+                  "cornerRadius": 16,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$border-subtle"
+                  },
+                  "layout": "vertical",
+                  "gap": 16,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "oK6nm",
+                      "name": "sn",
+                      "fill": "$text-secondary",
+                      "content": "Starter",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "Ynbk1",
+                      "name": "sp",
+                      "fill": "$text-primary",
+                      "content": "$29",
+                      "fontFamily": "Inter",
+                      "fontSize": 36,
+                      "fontWeight": "bold"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ppgk5",
+                      "name": "sd",
+                      "fill": "$text-secondary",
+                      "content": "2,000 credits/month",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
                   "id": "yg02j",
                   "name": "prP",
                   "width": "fill_container",
@@ -1247,7 +1295,7 @@
                       "id": "83BTp",
                       "name": "fq1t",
                       "fill": "$text-primary",
-                      "content": "What happens when I run out of credits?",
+                      "content": "What is NoxInfluencer?",
                       "fontFamily": "Inter",
                       "fontSize": 15,
                       "fontWeight": "500"
@@ -1288,7 +1336,7 @@
                       "id": "UeREl",
                       "name": "fq2t",
                       "fill": "$text-primary",
-                      "content": "Can I switch plans at any time?",
+                      "content": "Do I need to know how to code?",
                       "fontFamily": "Inter",
                       "fontSize": 15,
                       "fontWeight": "500"
@@ -1310,6 +1358,13 @@
                   "id": "wWGR8",
                   "name": "fq3",
                   "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border-subtle"
+                  },
                   "padding": [
                     20,
                     24
@@ -1322,7 +1377,7 @@
                       "id": "IU0vu",
                       "name": "fq3t",
                       "fill": "$text-primary",
-                      "content": "Do unused credits roll over?",
+                      "content": "Where does the data come from?",
                       "fontFamily": "Inter",
                       "fontSize": 15,
                       "fontWeight": "500"
@@ -1331,6 +1386,204 @@
                       "type": "text",
                       "id": "fz6Tn",
                       "name": "fq3a",
+                      "fill": "$text-secondary",
+                      "content": "+",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "8O1tl",
+                  "name": "fq4",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border-subtle"
+                  },
+                  "padding": [
+                    20,
+                    24
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "qTixP",
+                      "name": "fq4t",
+                      "fill": "$text-primary",
+                      "content": "Is my data safe?",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "PZo77",
+                      "name": "fq4a",
+                      "fill": "$text-secondary",
+                      "content": "+",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "JU69j",
+                  "name": "fq5",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border-subtle"
+                  },
+                  "padding": [
+                    20,
+                    24
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "y6Bro",
+                      "name": "fq5t",
+                      "fill": "$text-primary",
+                      "content": "How does credit-based pricing work?",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "A7EKb",
+                      "name": "fq5a",
+                      "fill": "$text-secondary",
+                      "content": "+",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "AZ4G3",
+                  "name": "fq6",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border-subtle"
+                  },
+                  "padding": [
+                    20,
+                    24
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Ye6pa",
+                      "name": "fq6t",
+                      "fill": "$text-primary",
+                      "content": "Which platforms are supported?",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "YHZMk",
+                      "name": "fq6a",
+                      "fill": "$text-secondary",
+                      "content": "+",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "aPDy6",
+                  "name": "fq7",
+                  "width": "fill_container",
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$border-subtle"
+                  },
+                  "padding": [
+                    20,
+                    24
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "egGQp",
+                      "name": "fq7t",
+                      "fill": "$text-primary",
+                      "content": "Can I try it before purchasing?",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "tSSVP",
+                      "name": "fq7a",
+                      "fill": "$text-secondary",
+                      "content": "+",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "B2tEz",
+                  "name": "fq8",
+                  "width": "fill_container",
+                  "padding": [
+                    20,
+                    24
+                  ],
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Ufj15",
+                      "name": "fq8t",
+                      "fill": "$text-primary",
+                      "content": "What kind of support do you offer?",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "EOeBG",
+                      "name": "fq8a",
                       "fill": "$text-secondary",
                       "content": "+",
                       "fontFamily": "Inter",
@@ -1417,6 +1670,34 @@
                   "name": "ctaBt",
                   "fill": "$orange-primary",
                   "content": "Get Started Free",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "bold"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "xIx06",
+              "name": "ctaB2",
+              "cornerRadius": 10,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#FFFFFF80"
+              },
+              "padding": [
+                16,
+                40
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "b6vpe",
+                  "name": "demoBtnT",
+                  "fill": "$text-white",
+                  "content": "Book a Demo",
                   "fontFamily": "Inter",
                   "fontSize": 18,
                   "fontWeight": "bold"
@@ -1549,7 +1830,7 @@
                   "id": "Us7YY",
                   "name": "fc2b",
                   "fill": "#FFFFFFAA",
-                  "content": "API Reference",
+                  "content": "Tool Reference",
                   "fontFamily": "Inter",
                   "fontSize": 13,
                   "fontWeight": "normal"
