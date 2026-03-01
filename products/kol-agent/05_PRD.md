@@ -1,7 +1,7 @@
 # 05 PRD — 工程团队开工文档
 
-> 状态：**草稿 v0.1**
-> 更新：2026-02-27
+> 状态：**草稿 v0.2**
+> 更新：2026-03-01
 > 依赖：`01_定位与假设.md`（v0.6）、`02_用户场景.md`（v0.2）、`03_产品设计.md`（v0.4）、`04_定价与商业模式.md`（v0.2）
 > 本文回答：**工程团队拿到这份文档，就能开工。**
 
@@ -24,7 +24,7 @@
 | **P0：小品牌/DTC** | 年收入 $10 万-$500 万，1-3 人团队，创始人兼做营销 |
 | **P0：中国出海 DTC** | 年收入 $50 万-$2,000 万，2-5 人团队，40 万聚星存量客户 |
 | **P1：MCN/Agency** | 服务 5-20 品牌客户，需要客户数据隔离 |
-| 痛点 | 搜索+邀约+谈判占 83%+ 人工时间——后者是最大成本黑洞 |
+| 痛点 | 搜索+筛选+评估+邀约+谈判占 83%+ 人工时间（邀约+谈判 55% 是最大成本黑洞） |
 | 替代方案 | 手动搜索（3-5 天）、Agency（$2K-8K/月）、SaaS（$5K-30K/年）+ 大量人力 |
 
 > 来源：01 §三。
@@ -114,14 +114,14 @@ kol-agent 使用 **外部 7 + 内部 6 = 13 个 Tool**（< 20 上限）。
 
 | Tool | 用途 |
 |------|------|
-| `memory_write` | 写入品牌记忆 |
-| `memory_search` | 语义搜索品牌记忆 |
-| `brand_profile_update` | 更新品牌画像 |
-| `notification_send` | 发送通知给品牌 |
-| `approval_request` | 请求品牌审批 |
-| `schedule_task` | 调度定时任务 |
+| `nox_email_check` | 检查达人邮件回复（对接聚星邮件系统 API） |
+| `nox_email_read` | 读取邮件内容 |
+| `nox_notify` | 通知品牌（Chat/Dashboard 推送，含审批请求） |
+| `nox_schedule` | 设置定时任务（follow-up/提醒，复用 OpenClaw cron） |
+| `nox_brand_profile` | 读写品牌画像 |
+| `nox_memory` | 读写品牌长期记忆（write/search/recent） |
 
-> 详见 03 §三（外部 Tool）和 §四（内部 Tool）的完整设计。
+> 详见 03 §三（外部 Tool）和 §3.3（内部 Tool）的完整设计。
 
 ### 2.3 场景→MVP 映射
 
@@ -166,7 +166,7 @@ kol-agent 使用 **外部 7 + 内部 6 = 13 个 Tool**（< 20 上限）。
 
 ### 3.1 多租户架构
 
-> 从 03 v0.3 §七移入。部署模式是内部实现细节，对用户透明。
+> 从 03 §七移入。部署模式是内部实现细节，对用户透明。
 
 #### 3.1.1 对用户透明的订阅制
 
@@ -240,7 +240,7 @@ AgentPod
 
 ### 3.2 聚星后端集成
 
-> 从 03 v0.3 §八移入。
+> 从 03 §八移入。
 
 #### 3.2.1 集成架构
 
@@ -282,7 +282,7 @@ kol-agent 作为独立微服务，与聚星 Java 后端通过 API 互调：
 
 ### 3.3 邮件系统集成
 
-> 从 03 v0.3 §8.4 移入。
+> 从 03 §8.4 移入。
 
 参考 GOG Skill 的模式——Agent 主动轮询而非被动等 webhook：
 
@@ -320,7 +320,7 @@ Agent（heartbeat/cron 驱动）
 │  ├── Tools: kol-api Core 层（7 外部）             │
 │  │   discover·analyze·outreach·negotiate·manage  │
 │  ├── 内部 Tools（6 个）                           │
-│  │   memory·brand_profile·notification·approval  │
+│  │   email_check·notify·schedule·brand_profile·memory │
 │  ├── Context: 7 层（详见 03 §二）                 │
 │  └── 记忆: 三层（详见 03 §四）                    │
 ├──────────── API 互相调用 ────────────────────────┤
@@ -347,6 +347,125 @@ Agent（heartbeat/cron 驱动）
 | LLM | Claude / GPT-4 / 混合，实施时研发自定 | ⚪ |
 | 数据库 | kol-agent 不自建数据库，结构化数据走 Core 层（D19） | ✅ |
 
+### 3.6 数据模型概览
+
+> kol-agent 不自建数据库（D19），结构化数据走 Core 层。以下模型定义的是 **Agent workspace 中的文件结构**（非结构化记忆）和 **Core 层关键实体**（结构化数据）。
+
+#### 3.6.1 Brand Context 文件结构（Agent workspace）
+
+每个品牌的 workspace 目录即 Agent 的全部非结构化上下文：
+
+```
+brands/{brand_id}/
+├── brand_profile.md        # 品牌画像（半静态，品牌填写 + Agent 维护）
+├── brand_process.md        # 品牌内部流程（品牌定义）
+├── SOUL.md                 # Agent 人格（默认版/Enterprise 可自定义）
+├── MEMORY.md               # 品牌长期记忆（Agent 自主维护）
+└── memory/
+    ├── 2026-03-01.md       # 日记忆
+    └── ...
+```
+
+#### 3.6.2 Brand Profile Schema
+
+品牌画像由 Onboarding 引导填写（3 步），后续 Agent 自动补充维护。
+
+```yaml
+# brand_profile.md 结构化字段（Agent 解析用）
+brand:
+  name: string                    # 品牌名称
+  industry: string                # 行业（美妆/健身/科技/食品/...）
+  markets: [string]               # 目标市场（US/UK/DE/...）
+  website: string                 # 品牌官网
+  language: string                # 品牌沟通语言（中文/英文/...）
+
+creator_preferences:
+  platforms: [string]             # 平台优先级（instagram/tiktok/youtube）
+  follower_range: [min, max]      # 粉丝量级范围
+  content_style: [string]         # 内容风格标签
+  blacklist: [string]             # 黑名单达人
+  whitelist: [string]             # 白名单达人（优先合作）
+
+budget:
+  per_campaign: [min, max]        # 单 Campaign 预算范围
+  per_creator: [min, max]         # 单个达人上限
+  preferred_model: string         # 偏好合作形式（fixed/product+commission/...）
+
+# 以下字段由 Agent 工作中自动维护
+learned_preferences:              # Agent 发现的隐性偏好
+  best_roi_type: string           # 历史最佳 ROI 达人类型
+  avg_deal_price: number          # 历史合作均价
+  response_pattern: string        # 品牌响应规律
+```
+
+#### 3.6.3 Brand Process Schema
+
+品牌内部流程定义 Agent 的行为边界。SMB 可使用默认模板，Enterprise 按需定制。
+
+```yaml
+# brand_process.md 结构化字段
+approval_chain:
+  search: "auto"                  # 搜索：Agent 自主
+  outreach_send: "manager"        # 邮约发送：需 [角色] 确认
+  negotiation_start: "manager"    # 开始谈判：需 [角色] 确认
+  negotiation_accept:
+    under: 500                    # < $500 Agent 可自主接受
+    under_limit: "manager"        # $500-$2000 需 manager
+    over_limit: "vp"              # > $2000 需 VP
+  contract: "manual"              # 合同：始终人工
+
+contacts:                         # 审批人映射
+  manager: {name: "...", notify: "chat"}
+  vp: {name: "...", notify: "chat+email"}
+
+constraints:                      # 合规约束
+  competitor_exclusion: [string]  # 竞品排除列表
+  content_labels: [string]        # 必须包含的标签（#ad 等）
+  audience_min_age_pct: number    # 未成年受众占比上限
+
+# Enterprise 扩展：系统对接
+integrations:                     # 可选，Enterprise 品牌使用
+  approval_api: string            # 外部审批系统 endpoint
+  contract_api: string            # 合同系统（DocuSign 等）
+  crm_sync_api: string            # 品牌 CRM 同步
+```
+
+#### 3.6.4 Core 层关键实体（结构化数据，由 kol-api 管理）
+
+> 以下为 kol-agent 视角的关键实体。完整 schema 由 Core 层（kol-api）定义和维护，kol-agent 通过 Tool 读写，不直接操作数据库。具体字段由技术团队确认。
+
+| 实体 | 关键字段 | 对应 Tool |
+|------|---------|----------|
+| **Campaign** | id, brand_id, name, status, budget, target_count, created_at | manage_campaigns |
+| **Creator** | id, platform, handle, followers, engagement_rate, fraud_score | discover_creators |
+| **CreatorRelationship** | brand_id, creator_id, status(prospect/active/paused/blacklisted), tags, notes | manage_campaigns |
+| **OutreachAttempt** | campaign_id, creator_id, email_status, sent_at, opened_at, replied_at | outreach_creators |
+| **Negotiation** | campaign_id, creator_id, rounds[], current_offer, status, final_price | negotiate |
+| **Collaboration** | campaign_id, creator_id, deal_terms, content_status, performance | manage_campaigns |
+
+### 3.7 聚星后端 API 概览
+
+> 聚星 Java 后端已有完整 API 体系。以下为 kol-agent 需对接的 API 分组，具体接口规格、认证方式、数据格式由技术团队确认。
+
+#### 3.7.1 kol-agent → 聚星（Agent 调平台）
+
+| API 分组 | 用途 | 调用时机 | 接口数（估） |
+|---------|------|---------|:----:|
+| **认证与权限** | 品牌身份验证、订阅等级、配额余量 | Agent 启动 + 每次操作前 | 3-5 |
+| **达人数据** | 搜索、画像、评估、历史数据 | discover/analyze Tool 调用 | 5-8 |
+| **邮件服务** | 发送邮件、查询回复、投递状态 | outreach/email_check Tool 调用 | 4-6 |
+| **合作数据** | Campaign CRUD、达人关系、谈判记录 | manage_campaigns Tool 调用 | 6-10 |
+
+#### 3.7.2 聚星 → kol-agent（平台调 Agent）
+
+| API 分组 | 用途 | 调用时机 | 接口数（估） |
+|---------|------|---------|:----:|
+| **消息转发** | 品牌在 Chat 发送的消息 | 品牌操作 Chat | 1-2 |
+| **审批回调** | 品牌在 Dashboard 点击审批按钮的结果 | 品牌操作 Dashboard | 2-3 |
+| **Agent 状态** | 查询 Agent 在线状态、当前任务 | Dashboard 展示 | 1-2 |
+
+> 总计约 25-35 个接口。Core 层封装了大部分复杂性，kol-agent 直接面对的接口主要是内部 6 Tool 对应的服务端实现。
+
 ---
 
 ## 四、工程要求
@@ -361,7 +480,7 @@ Agent（heartbeat/cron 驱动）
 | 4 | **L1 保守模式** | 邮约逐封审批、谈判每步审批、follow-up 需审批 |
 | 5 | **Agent 主动通知** | heartbeat/cron 驱动：达人回复→通知、截止提醒→通知、策略建议→通知 |
 | 6 | **品牌记忆隔离** | 每品牌独立 Context 目录（SOUL.md + brand_profile.md + MEMORY.md + memory/） |
-| 7 | **13 Tool 集成** | 外部 7（复用 kol-api Core 层）+ 内部 6（记忆/通知/审批/调度） |
+| 7 | **13 Tool 集成** | 外部 7（复用 kol-api Core 层）+ 内部 6（邮件检查/通知/调度/品牌画像/记忆） |
 | 8 | **审批超时处理** | 首次提醒 → 二次提醒 → 暂停（参考 02 §4.3） |
 | 9 | **Free 试用** | 14 天 + 1 Campaign 配额，到期数据保留 30 天 |
 | 10 | **配额系统** | 8 维度配额（Campaign/搜索/邮件/谈判/CRM/对话/报表/存储），柔性上限 |
@@ -384,6 +503,19 @@ Agent（heartbeat/cron 驱动）
 | 2 | AgentPod Enterprise 部署（独立容器 + 自定义 SOUL.md） |
 | 3 | 私有化部署选项 |
 | 4 | 效果追踪报表 |
+
+### 4.4 非功能要求
+
+| 维度 | 要求 | 备注 |
+|------|------|------|
+| **响应时间** | Chat 消息 → Agent 开始回复 < 3 秒 | LLM 首 token 延迟 |
+| **搜索延迟** | 达人搜索请求 → 返回结果 < 5 秒 | Core 层 + 聚星数据 API |
+| **邮件送达** | 邮件提交 → 实际送达 < 5 分钟 | 聚星邮件基础设施 SLA |
+| **可用性** | Starter/Pro 99%，Enterprise 99.5%+ | Enterprise 含 SLA |
+| **品牌数据隔离** | 共享实例：应用层隔离（brand_id 级别访问控制）| 非 Enterprise 最低要求 |
+| **并发** | 单共享实例支持 100+ 品牌同时在线 | Agent 按需激活，非全部常驻 |
+| **记忆容量** | 单品牌 MEMORY.md + daily files < 配额存储上限 | 参考 04 §3.2 |
+| **Onboarding 完成率** | 3 步引导 > 80% 完成率 | 产品指标，非硬性技术指标 |
 
 ---
 
@@ -450,6 +582,65 @@ Phase 3（W15-W20）—— 包装 + Beta + 上线
 | **聚星邮件系统独立调用** | outreach + negotiate | 中 | W1 验证聚星邮件 Service 可独立调用（脱离 Campaign 流程） |
 | **聚星用户系统** | 注册/权限/支付 | 低 | 复用现有系统 |
 | **OpenClaw 运行时** | Agent 核心 | 低 | 已有成熟版本 |
+
+### 6.4 Beta 测试计划
+
+#### 思路
+
+从存量客户中筛选有真实达人邀约需求的品牌，主动询问参与意愿。核心是**找对人**——不是所有存量客户都适合 Beta，要找那些当前确实在手动做邀约、有痛点、有动力尝试新方式的。
+
+#### 筛选信号
+
+| 信号 | 理由 |
+|------|------|
+| 近期邮件邀约活跃（月发 50+ 封） | 最直接的需求指标——正在做这件事的人才需要 Agent |
+| 近期有搜索/浏览达人行为 | 有活跃的营销需求 |
+| 团队规模小（< 5 人） | 人力不足 = Agent 价值最高 |
+| 主动找过客服咨询效率工具 | 最强购买信号 |
+
+#### 节奏
+
+- **不设固定批次/人数**——先从 5-10 个最匹配的客户开始，跑通后再扩
+- **每个种子用户都要有专人跟进**——Beta 阶段质量 > 数量
+- **出海和海外本土都要覆盖**——两条线都需要验证信号
+- **Beta 成功标准**：参考 §1.3 Beta 指标（Campaign 完成率 > 60%、AI 邀约响应率 ≥ 人工 80%、NPS > 30）
+
+### 6.5 存量用户引入计划
+
+40 万存量客户的引入不是一次性切换，而是渐进式露出：
+
+```
+Phase 3 Beta 期（W17-18）
+├── 仅对 Beta 用户开放 Agent 栏目
+├── 其他用户看不到入口
+└── 收集反馈、调优
+
+公开发布（W19-20）
+├── 聚星平台首页 Banner + 侧边栏新增"AI Agent"入口
+├── 登录后弹窗引导（可关闭，不强推）
+├── 保留所有现有功能不变——Agent 是新增栏目，不影响手动操作
+└── 新注册用户默认看到 Agent 引导
+
+发布后 M1-M3
+├── 根据使用数据调整入口位置和引导策略
+├── 向活跃用户推送 Agent 功能介绍（邮件/站内信）
+└── 不做强制迁移，品牌自由选择手动操作 or Agent
+```
+
+**核心原则**：Agent 是**加法**不是替代——品牌随时可以在"手动操作"和"Agent 自动"之间切换，不强制任何人使用 Agent。
+
+### 6.6 监控与可观测性
+
+| 维度 | 监控内容 | 告警阈值 |
+|------|---------|---------|
+| **Agent 健康** | heartbeat 执行状态、Tool 调用成功率 | Tool 失败率 > 5% |
+| **业务指标** | 日活品牌数、Campaign 创建数、邮件发送量、谈判轮次 | 日环比下降 > 30% |
+| **LLM 质量** | Agent 响应延迟、幻觉率（品牌投诉/纠正次数） | P95 延迟 > 10s |
+| **邮件系统** | 送达率、退信率、回复率 | 送达率 < 95% |
+| **配额** | 各维度配额消耗分布、超限频率 | 用于校准配额数值 |
+| **成本** | LLM token 消耗/品牌/月、服务器资源利用率 | 单用户月成本 > $15（Starter 毛利红线） |
+
+> Dashboard 可复用聚星现有监控基础设施，Agent 侧指标通过 OpenClaw 原生日志采集。
 
 ---
 
@@ -518,14 +709,16 @@ Phase 3（W15-W20）—— 包装 + Beta + 上线
 | 产品定位 | 一句话 | 场景验证 | 设计实现 | — | 概述 | ✅ |
 | 原则 P1-P7 | 定义 | — | 遵循 | — | 约束 | ✅ |
 | 5 场景 | — | 详设 | 原型覆盖 | — | MVP 映射 | ✅ |
-| Tool 设计 | 概述 | 场景交互 | 13 Tool 详设 | — | 清单 | ✅ |
-| 记忆架构 | 概述 | CRM 基础 | 三层详设 | — | 引用 | ✅ |
-| HITL/渐进放权 | §6.3a 概述 | 审批节点 | §六 UI 详设 | — | 工程要求 | ✅ |
+| Tool 设计 | 概述 | 场景交互 | 13 Tool 详设 | — | 清单 + API 概览 | ✅ |
+| 记忆架构 | 概述 | CRM 基础 | 三层详设 | — | 数据模型(§3.6) | ✅ |
+| HITL/渐进放权 | §6.3a 概述 | 审批节点 | §六 UI 详设 | — | 工程要求 + Brand Process Schema | ✅ |
 | 多租户 | §8 概述 | Enterprise 场景 | §七 引用 | — | §3.1 详设 | ✅ |
-| 聚星集成 | §8 概述 | — | §七 引用 | — | §3.2 详设 | ✅ |
+| 聚星集成 | §8 概述 | — | §七 引用 | — | §3.2 + §3.7 API 概览 | ✅ |
 | 定价 | §七 概述 | 功能矩阵 | — | 详设 | 引用 | ✅ |
-| 成功标准 | §十 定义 | — | — | — | 引用 | ✅ |
+| 成功标准 | §十 定义 | — | — | — | 引用 + Beta 计划(§6.4) | ✅ |
 | 决策清单 | D1-D12 | D11-D12 | D13-D31 | D22-D26 | 汇总 | ✅ |
+| 数据模型 | — | — | Brand Profile/Process 示例 | 配额维度 | Schema 定义(§3.6) | ✅ |
+| 存量用户 | 40万提及 | 发现路径 A | — | — | 引入计划(§6.5) | ✅ |
 
 ---
 
