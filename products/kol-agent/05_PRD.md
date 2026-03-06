@@ -423,6 +423,16 @@ constraints:                      # 合规约束
   content_labels: [string]        # 必须包含的标签（#ad 等）
   audience_min_age_pct: number    # 未成年受众占比上限
 
+negotiation_terms:                # 非标条款默认立场（Agent 范围内可自主处理，超出升级人工）
+  exclusivity_max_months: 3       # 排他期可自主接受上限（月）
+  usage_rights_max_months: 6      # 内容使用权可自主接受上限（月）
+  whitelisting_max_days: 30       # 白名单/Spark Ads 可自主接受上限（天）
+  review_rounds_max: 3            # 内容审核修改轮数上限
+  commission_max_pct: 15          # 混合付费佣金上限（%）
+  always_escalate:                # 始终升级人工的条款类型
+    - "exclusive_paid_ads"        # 全渠道付费广告独家使用权
+    - "exclusivity_over_6m"       # 排他期超 6 个月
+
 # Enterprise 扩展：系统对接
 integrations:                     # 可选，Enterprise 品牌使用
   approval_api: string            # 外部审批系统 endpoint
@@ -689,6 +699,10 @@ Phase 3 Beta 期（W17-18）
 | D29 | 审批呈现方式 | Chat 内嵌按钮 + Dashboard 独立审批页 | 03 | ✅ |
 | D30 | 通知渠道 | Chat 主渠道 + Dashboard 待办 + 邮件超时 | 03 | ✅ |
 | D31 | Agency 模式 | 品牌空间列表为主导航 | 03 | ✅（Enterprise） |
+| D32 | 谈判轮次上限 | 无硬上限，僵局检测升级人工（天花板 50 轮防极端） | 03 | ✅ |
+| D33 | 非标条款处理 | Brand Process 预定义 5 类高频条款默认立场和 Agent 自主权范围，超出升级人工 | 03 | ✅ |
+| D34 | 谈判僵局检测 | 连续 3 轮让步 <2% / 达人明确拒绝 / 超 7 天无进展 → 升级人工 | 03 | ✅ |
+| D35 | 谈判数据反哺 | 品牌级优先（Agent 沉淀品牌偏好/达人经验/策略效果到品牌记忆），大盘聚合 P2 后续 | 03 | ✅ |
 
 ### 定价决策
 
@@ -716,7 +730,9 @@ Phase 3 Beta 期（W17-18）
 | 聚星集成 | §8 概述 | — | §七 引用 | — | §3.2 + §3.7 API 概览 | ✅ |
 | 定价 | §七 概述 | 功能矩阵 | — | 详设 | 引用 | ✅ |
 | 成功标准 | §十 定义 | — | — | — | 引用 + Beta 计划(§6.4) | ✅ |
-| 决策清单 | D1-D12 | D11-D12 | D13-D31 | D22-D26 | 汇总 | ✅ |
+| 决策清单 | D1-D12 | D11-D12 | D13-D35 | D22-D26 | 汇总 | ✅ |
+| 谈判僵局/非标条款 | — | 僵局检测(§4.2) | D32-D34 详设 | — | Schema + 决策汇总 | ✅ |
+| 谈判数据反哺 | P3 品牌级记忆 | — | D35 品牌级优先 | — | — | ✅ |
 | 数据模型 | — | — | Brand Profile/Process 示例 | 配额维度 | Schema 定义(§3.6) | ✅ |
 | 存量用户 | 40万提及 | 发现路径 A | — | — | 引入计划(§6.5) | ✅ |
 
