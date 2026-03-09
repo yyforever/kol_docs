@@ -38,7 +38,7 @@ const PARAMS = [
     name: "confirm",
     type: "boolean",
     required: false,
-    description: "false = preview mode (no send, no credits). true = send emails (3 credits/creator). Default: false",
+    description: "false = preview mode (no send, no credits). true = send emails (10 credits/creator). Default: false",
   },
   {
     name: "outreach_id",
@@ -78,7 +78,7 @@ const RESPONSE_EXAMPLE = `{
         }
       }
     ],
-    "total_cost_credits": 6,
+    "total_cost_credits": 20,
     "contactable": 2,
     "not_contactable": 0
   },
@@ -110,7 +110,7 @@ export default function OutreachCreatorsPage() {
         </p>
         <div className="mt-3 flex items-center gap-4 text-sm text-muted-foreground">
           <span>
-            Cost: <strong className="text-nox-brand">3 credits</strong> per creator
+            Cost: <strong className="text-nox-brand">10 credits</strong> per creator
           </span>
           <span>
             Rate limit: <strong>varies by plan</strong>
@@ -123,7 +123,7 @@ export default function OutreachCreatorsPage() {
         <h3 className="font-semibold text-blue-900">Two-phase execution</h3>
         <ol className="mt-2 space-y-1 text-sm text-blue-800">
           <li><strong>1. Preview</strong> (<code>confirm: false</code>) — See email drafts, response rate estimates. No credits charged.</li>
-          <li><strong>2. Send</strong> (<code>confirm: true</code>) — Confirm and send emails. 3 credits per creator. Auto follow-up in 3 days.</li>
+          <li><strong>2. Send</strong> (<code>confirm: true</code>) — Confirm and send emails. 10 credits per creator. Auto follow-up in 3 days.</li>
         </ol>
       </div>
 

@@ -2687,7 +2687,7 @@
                       "id": "P4Kg0",
                       "name": "ra2r",
                       "fill": "$text-secondary",
-                      "content": "-2 credits   5 min ago",
+                      "content": "-5 credits   5 min ago",
                       "fontFamily": "Inter",
                       "fontSize": 12,
                       "fontWeight": "normal"
@@ -5224,7 +5224,7 @@
                           "id": "FLTKc",
                           "name": "cr2bt",
                           "fill": "$text-primary",
-                          "content": "2 credits",
+                          "content": "5 credits",
                           "fontFamily": "Inter",
                           "fontSize": 13,
                           "fontWeight": "normal"
@@ -5279,7 +5279,7 @@
                           "id": "xCRiz",
                           "name": "cr3bt",
                           "fill": "$text-primary",
-                          "content": "3 credits per creator",
+                          "content": "10 credits per creator",
                           "fontFamily": "Inter",
                           "fontSize": 13,
                           "fontWeight": "normal"
@@ -5382,7 +5382,7 @@
                           "id": "BMWQl",
                           "name": "cr5bt",
                           "fill": "$text-primary",
-                          "content": "0-1 credits",
+                          "content": "0 credits",
                           "fontFamily": "Inter",
                           "fontSize": 13,
                           "fontWeight": "normal"

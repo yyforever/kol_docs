@@ -113,9 +113,9 @@ export default function ManageCampaignsPage() {
         </p>
         <div className="mt-3 flex items-center gap-4 text-sm text-muted-foreground">
           <span>
-            Cost: <strong className="text-nox-brand">0-1 credit</strong> per call
+            Cost: <strong className="text-nox-brand">0 credits</strong> per call
           </span>
-          <span className="text-xs">(create = 0, list/get = 1)</span>
+          <span className="text-xs">(create / list / get are all free)</span>
           <span>
             Rate limit: <strong>varies by plan</strong>
           </span>
@@ -127,8 +127,8 @@ export default function ManageCampaignsPage() {
         <h3 className="font-semibold text-blue-900">Available actions</h3>
         <div className="mt-2 space-y-1 text-sm text-blue-800">
           <div><code>create</code> — Define a new campaign with goals, budget, and target audience. <strong>0 credits.</strong></div>
-          <div><code>list</code> — View all campaigns (filterable by status). <strong>1 credit.</strong></div>
-          <div><code>get</code> — Get details for a specific campaign. <strong>1 credit.</strong></div>
+          <div><code>list</code> — View all campaigns (filterable by status). <strong>0 credits.</strong></div>
+          <div><code>get</code> — Get details for a specific campaign. <strong>0 credits.</strong></div>
         </div>
       </div>
 
@@ -230,17 +230,6 @@ export default function ManageCampaignsPage() {
                 </TableCell>
                 <TableCell className="text-sm text-muted-foreground">
                   Campaign brief is required for create action
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <Badge variant="secondary">402</Badge>
-                </TableCell>
-                <TableCell className="font-mono text-sm">
-                  insufficient_credits
-                </TableCell>
-                <TableCell className="text-sm text-muted-foreground">
-                  Credit balance exhausted — upgrade your plan
                 </TableCell>
               </TableRow>
               <TableRow>

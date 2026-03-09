@@ -95,13 +95,13 @@ export const CREDIT_COSTS: CreditCost[] = [
   {
     tool: "Analyze Creator",
     endpoint: "POST /v1/tools/analyze_creator",
-    creditsPerCall: 2,
+    creditsPerCall: 5,
     description: "Detailed creator analytics and audience insights",
   },
   {
     tool: "Outreach Creators",
     endpoint: "POST /v1/tools/outreach_creators",
-    creditsPerCall: 3,
+    creditsPerCall: 10,
     description: "Generate and send personalized outreach per creator",
   },
   {
@@ -113,8 +113,8 @@ export const CREDIT_COSTS: CreditCost[] = [
   {
     tool: "Manage Campaigns",
     endpoint: "POST /v1/tools/manage_campaigns",
-    creditsPerCall: 1,
-    description: "Track and manage active campaigns (0-1 credits)",
+    creditsPerCall: 0,
+    description: "Track and manage active campaigns (free)",
   },
 ]
 
@@ -190,7 +190,7 @@ export const LANDING_FAQS: FAQItem[] = [
   {
     question: "How does credit-based pricing work?",
     answer:
-      "Each action uses a small number of credits — discovering creators costs 1 credit, analyzing a creator costs 2, and so on. Start with 200 one-time credits to try everything out, then upgrade when you need more.",
+      "Each action uses credits based on value — discovering creators costs 1 credit, analyzing a creator costs 5, outreach costs 10 per creator, and campaign management is free. Start with 200 one-time credits to try everything out, then upgrade when you need more.",
   },
   {
     question: "Which platforms are supported?",
@@ -218,7 +218,7 @@ export const PRICING_FAQS: FAQItem[] = [
   {
     question: "What happens when I run out of credits?",
     answer:
-      "Tool calls will return a 402 status code when credits are exhausted. You can upgrade your plan or purchase additional credit packs from the Usage & Billing page.",
+      "Tool calls will return a 402 status code when credits are exhausted. You can upgrade your plan, or wait for the next billing cycle if you are on a paid subscription.",
   },
   {
     question: "Do unused credits roll over?",
@@ -233,7 +233,7 @@ export const PRICING_FAQS: FAQItem[] = [
   {
     question: "How much does each tool cost?",
     answer:
-      "Discover Creators costs 1 credit, Analyze Creator costs 2 credits, Outreach costs 3 credits per creator, Negotiate costs 5 credits per round, and Manage Campaigns costs 0-1 credits. See the credit table above for details.",
+      "Discover Creators costs 1 credit, Analyze Creator costs 5 credits, Outreach costs 10 credits per creator, Negotiate costs 5 credits per round, and Manage Campaigns is free. See the credit table above for details.",
   },
   {
     question: "Do I need to know how to code?",

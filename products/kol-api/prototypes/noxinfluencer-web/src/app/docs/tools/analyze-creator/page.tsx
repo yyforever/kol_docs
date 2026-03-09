@@ -78,8 +78,8 @@ const RESPONSE_EXAMPLE = `{
   },
   "summary": "@beautybyjess — authenticity 87/100, 123K followers, 4.2% engagement. Audience: primarily US women aged 18-34. Estimated cost: $800-1,200.",
   "credits": {
-    "used": 2,
-    "remaining": 197
+    "used": 5,
+    "remaining": 195
   },
   "meta": {
     "request_id": "req_def456",
@@ -105,7 +105,7 @@ export default function AnalyzeCreatorPage() {
         </p>
         <div className="mt-3 flex items-center gap-4 text-sm text-muted-foreground">
           <span>
-            Cost: <strong className="text-nox-brand">2 credits</strong> per call
+            Cost: <strong className="text-nox-brand">5 credits</strong> per call
           </span>
           <span>
             Rate limit: <strong>varies by plan</strong>
