@@ -141,8 +141,8 @@ NoxInfluencer 的交互模型不是"用户→网站"，而是"用户→Agent→A
 品牌："分析一下第一个靠不靠谱"
   → analyze_creator → 完整画像 + 频道链接 + 真假粉 87 分 + 受众 18-34 美国女性
 
-品牌："把前 3 个加入 watchlist，盯一下最近 30 天走势"
-  → track_performance → 3 个频道的粉丝/播放/互动趋势 + 异常波动
+品牌："把前 3 个加入 watchlist，给每人选 2 条合作视频，盯一下最近 30 天走势"
+  → track_performance(start/query) → 6 条视频、2 个 15 天周期的趋势 + 异常波动
   ★ 激活标志：analyze 或 track 被调用 = 品牌认可搜索质量并愿意继续下钻
 ```
 
@@ -391,7 +391,7 @@ Day 1 上线 4 个 Tool：3 个 P0 核心（搜索→评估→监控）+ 1 个 C
 - [ ] 自然语言查询 "US beauty TikTokers 10K-1M followers" 返回 ≥ 5 条结果
 - [ ] 结构化参数搜索（platform + country + followers_range）返回正确过滤结果
 - [ ] 响应时间 < 3 秒（P95）
-- [ ] 搜索结果不返回 `handle`、频道链接、外部 channel id 等可外链字段
+- [ ] `result_mode=protected` 的搜索结果不返回 `handle`、频道链接、外部 channel id 等可外链字段
 - [ ] credit 不足时返回 402 + upgrade_url
 - [ ] 返回格式符合统一信封规范（success + data + summary + credits + meta）
 
@@ -399,7 +399,7 @@ Day 1 上线 4 个 Tool：3 个 P0 核心（搜索→评估→监控）+ 1 个 C
 
 #### 2.1.2 `analyze_creator` — "这个达人靠谱吗"
 
-**Credit**：按维度计费（全维度 5 credits） | **HTTP**：`POST /v1/tools/analyze_creator` | **CLI**：`nox analyze`
+**Credit**：按维度计费（全维度 1.7 credits） | **HTTP**：`POST /v1/tools/analyze_creator` | **CLI**：`nox analyze`
 
 **输入 Schema**
 
@@ -430,7 +430,7 @@ Day 1 上线 4 个 Tool：3 个 P0 核心（搜索→评估→监控）+ 1 个 C
     "creator_id": "crt_abc123",
     "modules": {
       "overview": {
-        "credit_cost": 1,
+        "credit_cost": 0.4,
         "platform": "tiktok",
         "handle": "@beautybyjess",
         "display_name": "Beauty by Jess",
@@ -446,7 +446,7 @@ Day 1 上线 4 个 Tool：3 个 P0 核心（搜索→评估→监控）+ 1 个 C
         }
       },
       "audience": {
-        "credit_cost": 2,
+        "credit_cost": 0.5,
         "countries": [
           { "code": "US", "pct": 0.45 },
           { "code": "GB", "pct": 0.12 },
@@ -460,7 +460,7 @@ Day 1 上线 4 个 Tool：3 个 P0 核心（搜索→评估→监控）+ 1 个 C
         "interests": ["beauty", "fashion", "wellness"]
       },
       "content": {
-        "credit_cost": 1,
+        "credit_cost": 0.4,
         "recent_content": [
           {
             "title": "30-Day Skincare Challenge",
@@ -476,7 +476,7 @@ Day 1 上线 4 个 Tool：3 个 P0 核心（搜索→评估→监控）+ 1 个 C
         }
       },
       "brand": {
-        "credit_cost": 1,
+        "credit_cost": 0.4,
         "authenticity": {
           "score": 87,
           "fake_follower_pct": 0.08,
@@ -491,7 +491,7 @@ Day 1 上线 4 个 Tool：3 个 P0 核心（搜索→评估→监控）+ 1 个 C
     }
   },
   "summary": "crt_abc123 已返回全维度分析：数据总览、粉丝受众、内容分析、品牌分析。频道链接已解锁，核心受众为 18-34 岁美国女性，品牌契合度较高（as of 2026-03-10）",
-  "credits": { "used": 5, "remaining": 5, "plan": "free" },
+  "credits": { "used": 1.7, "remaining": 8.3, "plan": "free" },
   "meta": { "request_id": "req_def456", "latency_ms": 1800, "data_freshness": "2026-03-10T10:00:00Z" }
 }
 ```
@@ -499,9 +499,10 @@ Day 1 上线 4 个 Tool：3 个 P0 核心（搜索→评估→监控）+ 1 个 C
 **行为描述**
 
 1. 仅接受 `creator_id`（必须来自 `discover_creators` 返回）
-2. 支持按 `modules` 选择维度：`overview(1)` / `audience(2)` / `content(1)` / `brand(1)`
-3. 默认不传 `modules` 时返回全维度（合计 5 credits）
+2. 支持按 `modules` 选择维度：`overview(0.4)` / `audience(0.5)` / `content(0.4)` / `brand(0.4)`
+3. 默认不传 `modules` 时返回全维度（合计 1.7 credits）
 4. `overview` 返回频道链接、外部频道 ID 等可关联字段；`audience` / `content` / `brand` 返回深度分析数据
+5. Credit 余额和 ledger 以 `0.1 credit` 为最小精度；每个模块价格都高于对应的内部风控下限
 
 **边界条件**
 
@@ -531,24 +532,38 @@ Day 1 上线 4 个 Tool：3 个 P0 核心（搜索→评估→监控）+ 1 个 C
 
 #### 2.1.3 `track_performance` — "这个频道最近表现怎么样"
 
-**Credit**：3 credits / creator / 15 天 | **HTTP**：`POST /v1/tools/track_performance` | **CLI**：`nox track`
+**Credit**：`start` = 1.5 credits / video / 15 天；`query` = 0 credit | **HTTP**：`POST /v1/tools/track_performance` | **CLI**：`nox track`
 
 **输入 Schema**
 
 ```json
 {
   "type": "object",
-  "required": ["creator_id"],
   "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["start", "query"],
+      "default": "query",
+      "description": "start=创建监控任务并立即扣费；query=查询已创建监控任务结果"
+    },
+    "monitor_id": {
+      "type": "string",
+      "description": "已创建监控任务 ID（action=query 时必填）"
+    },
     "creator_id": {
       "type": "string",
-      "description": "NoxInfluencer 内部 ID（来自 discover_creators 或 manage_campaigns）"
+      "description": "NoxInfluencer 内部 ID（action=start 时必填，来自 discover_creators 或 manage_campaigns）"
     },
-    "window": {
-      "type": "string",
-      "enum": ["15d"],
-      "default": "15d",
-      "description": "Day 1 默认监控周期"
+    "video_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "需要监控的视频 ID 列表（action=start 时必填，按条计费）"
+    },
+    "cycles": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 1,
+      "description": "15 天周期数；超过 15 天按倍数乘"
     },
     "metrics": {
       "type": "array",
@@ -565,7 +580,10 @@ Day 1 上线 4 个 Tool：3 个 P0 核心（搜索→评估→监控）+ 1 个 C
 {
   "success": true,
   "data": {
+    "monitor_id": "mon_abc123",
     "creator_id": "crt_abc123",
+    "video_ids": ["vid_1", "vid_2"],
+    "cycles": 1,
     "window": "15d",
     "trends": {
       "followers_delta": 2300,
@@ -583,30 +601,32 @@ Day 1 上线 4 个 Tool：3 个 P0 核心（搜索→评估→监控）+ 1 个 C
       "engagement_slightly_down"
     ]
   },
-  "summary": "crt_abc123 近 15 天粉丝增长 2,300，播放上涨 18%，互动率小幅下降 4%，整体仍高于同量级美妆达人基准（as of 2026-03-10）",
-  "credits": { "used": 3, "remaining": 7, "plan": "free" },
+  "summary": "已为 crt_abc123 的 2 条视频创建 1 个 15 天监控周期，monitor_id=mon_abc123。本次扣费 3.0 credits；后续 query 不再重复扣费（as of 2026-03-10）",
+  "credits": { "used": 3.0, "remaining": 7.0, "plan": "free" },
   "meta": { "request_id": "req_trk123", "latency_ms": 2200, "data_freshness": "2026-03-10T10:00:00Z" }
 }
 ```
 
 **行为描述**
 
-1. 仅接受内部 `creator_id`，不支持直接用外部链接监控
-2. 默认返回近 15 天的粉丝、播放、互动和发帖频率变化
-3. 同时返回与同量级同品类 creator 的对比基准，帮助品牌判断是否值得继续关注或复投
-4. 这是 Day 1 的核心留存能力，不依赖执行自动化即可成立
+1. `action=start` 仅接受内部 `creator_id` + `video_ids`，不支持直接用外部链接监控
+2. 启动监控时按 `视频条数 × 15 天周期数 × 1.5 credits` 立即扣费；同一任务的后续 `query` 不重复扣费
+3. `action=query` 返回近 15 天的粉丝、播放、互动和发帖频率变化，以及与同量级同品类 creator 的对比基准
+4. 这是 Day 1 的核心留存能力，不依赖执行自动化即可成立，因为品牌常常已有合作中的达人需要直接监控效果
 
 **边界条件**
 
 | 条件 | 行为 |
 |------|------|
-| 未提供 `creator_id` | 返回 400 `missing_creator` |
-| `creator_id` 不存在 | 返回 404 `creator_not_found` |
-| credit 不足（< 3） | 返回 402 `insufficient_credits` |
+| `action=start` 未提供 `creator_id` 或 `video_ids` | 返回 400 `missing_monitor_target` |
+| `action=query` 未提供 `monitor_id` | 返回 400 `missing_monitor_id` |
+| `creator_id` / `monitor_id` 不存在 | 返回 404 `creator_or_monitor_not_found` |
+| credit 不足（低于本次监控创建所需） | 返回 402 `insufficient_credits` |
 
 **验收标准**
 
-- [ ] 通过 `creator_id` 查询返回 15 天趋势
+- [ ] `action=start` 创建监控任务时按 `视频数 × 周期数` 正确扣费
+- [ ] `action=query` 查询同一任务结果时不重复扣费
 - [ ] 返回同量级同品类 benchmark
 - [ ] 可返回异常波动提示
 - [ ] 响应时间 < 5 秒（P95）
@@ -1106,6 +1126,57 @@ stalled ──品牌调整预算──→ in_progress（重启谈判，继续计
 
 ---
 
+#### 2.1.7 `get_contacts` — "解锁这个达人的联系方式（v1.1 预留）"
+
+**Credit**：2 credits / creator | **HTTP**：`POST /v1/tools/get_contacts` | **CLI**：`nox contacts`
+
+> `get_contacts` 对应邮箱 / 联系方式解锁，不属于 `analyze_creator` 的四个深度模块，也不内化到 `outreach_creators` 中。
+
+**输入 Schema**
+
+```json
+{
+  "type": "object",
+  "required": ["creator_id"],
+  "properties": {
+    "creator_id": {
+      "type": "string",
+      "description": "NoxInfluencer 内部 ID（来自 discover_creators 或 analyze_creator）"
+    }
+  }
+}
+```
+
+**输出 Schema**
+
+```json
+{
+  "success": true,
+  "data": {
+    "creator_id": "crt_abc123",
+    "contacts": [
+      {
+        "type": "email",
+        "value": "hello@beautybyjess.com",
+        "deliverability_score": 0.82,
+        "verified_at": "2026-03-10T10:00:00Z"
+      }
+    ]
+  },
+  "summary": "crt_abc123 的联系方式已解锁，包含 1 个已验证邮箱，可达性评分 0.82（as of 2026-03-10）",
+  "credits": { "used": 2.0, "remaining": 8.0, "plan": "free" },
+  "meta": { "request_id": "req_ctc123", "latency_ms": 1200, "data_freshness": "2026-03-10T10:00:00Z" }
+}
+```
+
+**行为描述**
+
+1. 联系方式是独立商品，不和普通深度分析绑定
+2. 仅接受内部 `creator_id`，不支持直接用外部 URL 解锁邮箱
+3. Day 1 不上线，但计费、风控和字段分层从 PRD 开始统一
+
+---
+
 ### 2.2 认证与计费
 
 #### 2.2.1 自助注册 + API Key 发放
@@ -1148,8 +1219,13 @@ API Key 配置到 Agent 环境变量 → 开始使用
 |------|:---------:|---------|
 | `discover_creators`（`protected`） | 1 | 请求成功后扣减 |
 | `discover_creators`（`basic_info`） | 4 | 请求成功后扣减 |
-| `analyze_creator` | 5 | 请求成功后扣减 |
-| `track_performance` | 3 | 请求成功后扣减 |
+| `analyze_creator.overview` | 0.4 | 请求成功后扣减 |
+| `analyze_creator.audience` | 0.5 | 请求成功后扣减 |
+| `analyze_creator.content` | 0.4 | 请求成功后扣减 |
+| `analyze_creator.brand` | 0.4 | 请求成功后扣减 |
+| `track_performance.start` | 1.5 / video / 15 天 | 创建监控任务成功后扣减 |
+| `track_performance.query` | 0 | 查询已创建监控任务结果不扣减 |
+| `get_contacts` | 2 / creator | 请求成功后扣减（v1.1） |
 | `outreach_creators` | 10/人 | `confirm: true` 发送成功后按实际发送人数扣减（v1.2） |
 | `negotiate` | 5/轮 | `confirm: true` 每轮谈判完成后扣减（v1.2） |
 | `manage_campaigns`（查询） | 0 | 不扣减（免费记忆层） |
@@ -1160,15 +1236,16 @@ API Key 配置到 Agent 环境变量 → 开始使用
 - 预览模式（`confirm: false`）不扣 credit
 - 请求失败（4xx/5xx）不扣 credit
 - 每次返回都包含 `credits.remaining`，余额透明
+- Credit ledger 以 `0.1 credit` 为最小精度，支持 `0.4` / `0.5` / `1.5` 这类计费
 - 月度 credit 不累积（no rollover），防止攒 credit 后一次性搬取
 - Free 层 10 credits 一次性发放，用完即止（不按月重置）
 
 **扣减原子性**：
 
-- **同步操作**（discover / analyze / track）：业务操作与 Credit 扣减在同一数据库事务中，操作失败自动回滚
+- **同步操作**（discover / analyze / get_contacts / `track_performance.start`）：业务操作与 Credit 扣减在同一数据库事务中，操作失败自动回滚
 - **批量操作**（outreach_creators `confirm: true`）：按实际成功发送人数扣减，部分失败时只扣成功部分。返回的 `credits.used` 反映实际扣减值
 - **异步操作**（negotiate `confirm: true`）：每轮完成后扣减（后扣减模式），轮次失败不扣该轮 credit。每次扣减使用幂等 key 防止重复扣减
-- **免费操作**（manage_campaigns create/list/get）：不进入 Credit 扣减链路，仅记录审计日志和 rate limit
+- **免费操作**（manage_campaigns create/list/get / `track_performance.query`）：不进入 Credit 扣减链路，仅记录审计日志和 rate limit
 
 #### 2.2.3 Stripe 集成
 
@@ -1196,8 +1273,8 @@ API Key 配置到 Agent 环境变量 → 开始使用
 
 | 层级 | 月费 | Credits/月 | 超额单价 | 数据权限 |
 |------|------|:---------:|---------|---------|
-| **Free** | `￥0 / $0` | 10（一次性） | 不可超 | 默认保护搜索 + 1 次完整 research loop |
-| **Starter** | `￥290 / $29` | 200 | `￥1.8 / $0.18` | 搜索、四维 analyze、15 天监控 |
+| **Free** | `￥0 / $0` | 10（一次性） | 不可超 | 默认保护搜索 + 受限 `basic_info` + 模块 analyze + 15 天视频监控 |
+| **Starter** | `￥290 / $29` | 200 | `￥1.8 / $0.18` | 搜索、四维 analyze、15 天视频监控 |
 | **Pro** | `￥990 / $99` | 800 | `￥1.5 / $0.15` | 更高并发 + 更低边际成本 |
 | **Growth** | `￥1,990 / $199` | 1,800 | `￥1.2 / $0.12` | 高频研究团队 + 更高 rate limit |
 | **Enterprise** | 定制 | 定制 | 定制 | 大批量基础信息、合同、SLA、专属支持 |
@@ -1235,6 +1312,15 @@ Credit 额度制让批量搬取在经济上不可行。默认保护搜索搬取 
 | Pro | 20 | 1,000 | 3 | 3,000 |
 | Growth | 40 | 3,000 | 5 | 10,000 |
 
+**`discover_creators.basic_info` route-specific rate limit**：
+
+| 层级 | 每分钟 | 每日 |
+|------|:------:|:----:|
+| Free | 1 | 2 |
+| Starter | 2 | 20 |
+| Pro | 5 | 100 |
+| Growth | 10 | 300 |
+
 **Rate Limit 响应头**（每次返回）：
 
 ```
@@ -1255,7 +1341,7 @@ Retry-After: 60
 | 真实性精确分数 + 可疑信号 | ❌ | ❌ | ✅（`brand`） |
 | 受众画像 | ❌ | ❌ | ✅（`audience`） |
 | 内容分析 | ❌ | ❌ | ✅（`content`） |
-| 联系方式（邮箱） | ❌ | ❌ | 仅独立收费项 / outreach 流程 |
+| 联系方式（邮箱） | ❌ | ❌ | `get_contacts` 独立返回 |
 | 预估合作费用 | ✅（区间） | ✅（区间） | ✅（`overview`） |
 | 竞品合作历史 | ❌ | ❌ | `competitive_intel` 单独返回 |
 
@@ -1302,9 +1388,9 @@ commands:
   - name: search
     description: Discover creators across YouTube, TikTok, and Instagram. Returns protected candidate results with internal IDs only.
   - name: analyze
-    description: Deep analysis of a creator's profile, authenticity, audience, and direct profile links
+    description: Deep analysis of a creator's overview, audience, content, and brand modules, billed separately with direct profile links unlocked in overview
   - name: track
-    description: Track a creator's recent follower, view, and engagement trends
+    description: Start or query a creator monitoring job billed by video and 15-day cycle, with free follow-up queries
   - name: campaigns
     description: Create campaigns and view watchlists/history. Use this FIRST to set context or recall past work.
 auth:
@@ -1591,8 +1677,8 @@ OAuth 授权（Google/GitHub 弹窗）
 │  └────────────────────────────────────────────┘   │
 │                                                   │
 │  ┌─── Recent Activity ────────────────────────┐   │
-│  │  Today 14:32  track_performance   3 credits │   │
-│  │  Today 14:30  analyze_creator     5 credits │   │
+│  │  Today 14:32  track_performance   3.0 credits │  │
+│  │  Today 14:30  analyze_creator     1.7 credits │  │
 │  │  Today 14:28  discover_creators   1 credit  │   │
 │  │  [View all activity →]                     │   │
 │  └────────────────────────────────────────────┘   │
@@ -1673,8 +1759,8 @@ Step 3: Follow the Quick Start guide → [Open Guide]
 | 超额单价 | 不可超 | `￥1.8 / $0.18` | `￥1.5 / $0.15` | `￥1.2 / $0.12` |
 | 默认搜索 | 20 个 creator/次 | 20 个 creator/次 | 20 个 creator/次 | 20 个 creator/次 |
 | 基础信息搜索 | 4 credits / 页 | 4 credits / 页 | 4 credits / 页 | 4 credits / 页 |
-| 频道链接 | analyze 可见 | analyze 可见 | analyze 可见 | analyze 可见 |
-| 深度分析 | 四维度拆分 / 全维 5 credits | 同左 | 同左 | 同左 |
+| 频道链接 | `basic_info` / `overview` 可见 | 同左 | 同左 | 同左 |
+| 深度分析 | 四维度拆分 / 全维 1.7 credits | 同左 | 同左 | 同左 |
 | 效果监控 | ✅ | ✅ | ✅ | ✅ |
 | 竞品对标 | ❌ | ❌ | ✅ | ✅ |
 | 年付折扣 | — | `￥2,900 / $290` | `￥9,900 / $990` | `￥19,900 / $1,990` |
@@ -1688,8 +1774,9 @@ Step 3: Follow the Quick Start guide → [Open Guide]
 |------|:-----------:|------|
 | 默认搜索 | 1 | 一次搜索返回最多 20 个候选 creator_id |
 | 搜索含基础信息 | 4 | 同一搜索能力的高价档位，返回 URL / 外部 ID |
-| 深度分析（全维度） | 5 | `数据总览 1 + 粉丝受众 2 + 内容分析 1 + 品牌分析 1` |
-| 效果追踪 | 3 | 单个频道 15 天监控周期 + benchmark |
+| 深度分析（全维度） | 1.7 | `数据总览 0.4 + 粉丝受众 0.5 + 内容分析 0.4 + 品牌分析 0.4` |
+| 效果监控启动 | 1.5 / video / 15 天 | 创建监控任务时扣费；后续 query 免费 |
+| 联系方式解锁 | 2 | `get_contacts` 独立收费项（v1.1） |
 | 查看合作 / Watchlist | 0 | 查看历史上下文（免费） |
 | 创建 Campaign | 0 | 定义营销目标和约束（免费） |
 | 竞品对标 | 10 | 品牌合作历史与达人池分析（付费洞察项） |
@@ -1704,17 +1791,17 @@ How many creators per campaign?           [slider: 5-50]
 Do you need AI negotiation?               [Yes] [No]
 
 ───────────────────────────────────────
-Estimated monthly usage: ~155 credits
+Estimated monthly usage: ~163 credits
 Recommended plan: Starter (￥290 / $29/mo, 200 credits)
 [Upgrade to Starter →]
 ───────────────────────────────────────
 ```
 
 模拟器计算逻辑：
-- 每个 campaign：1 次搜索 + N 个达人分析 + M 次监控 = 1 + N × 5 + M × 3 credits
+- 每个 campaign：1 次搜索 + N 个达人分析 + M 条视频监控 = 1 + N × 1.7 + M × 1.5 credits
 - 监控通常只覆盖 shortlist，默认 `M = N × 0.3`
 - Campaign 管理不额外收费：查询和创建均为 0 credits
-- 总计 = campaigns × (1 + N × 5 + M × 3)
+- 总计 = campaigns × (1 + N × 1.7 + M × 1.5)
 
 **模块 4：FAQ（6 个问题）**
 
@@ -2418,12 +2505,12 @@ type NegotiationAction =
 - **返回**：竞品达人合作清单 + 合作类型分布 + 效果最佳案例 + 可挖角达人（未签独家）
 - **设计目的**：高价值洞察，品牌对竞品信息付费意愿高
 
-#### `track_performance` — "效果怎么样"
+#### `get_contacts` — "解锁这个达人的联系方式"
 
-- **Credit**：3 credits / creator / 15 天 | **P0（Day 1）**
-- **输入**：`creator_id`（必填）、`window`（15d）、`metrics`（可选：followers/views/engagement/posting_frequency）
-- **返回**：频道趋势 + 同品类基准对比 + 异常波动提示
-- **设计目的**：把频道效果监控做成 Day 1 留存能力，而不是后置功能
+- **Credit**：2 credits / creator | **P1（v1.1）**
+- **输入**：`creator_id`（必填）
+- **返回**：已验证邮箱 / 联系方式 + 可达性评分 + 最后验证时间
+- **设计目的**：联系方式作为独立商品出售，不绑在 analyze 或 outreach 中
 
 ### 5.2 触发条件（不是日历时间，是数据指标）
 
@@ -2431,7 +2518,7 @@ type NegotiationAction =
 |------|------------|---------|
 | `manage_campaigns`（增强版写操作） | Day 1 创建+查询版使用 > 100 次/周 **且** 用户反馈需要写操作（提醒/状态更新） | 调用日志 + 用户反馈 |
 | `competitive_intel` | 用户搜索中 > 15% 含竞品关键词（如 "Gymshark 合作了谁"） | 搜索 query 分析 |
-| `track_performance` | Day 1 直接上线 | 高价值留存能力，且与搜索/分析闭环强相关 |
+| `get_contacts` | 分析后继续寻找联系方式的会话占比 > 20% | 会话日志 + 用户反馈 |
 
 ### 5.3 v1.1 防搬层（Day 1 之后迭代）
 
@@ -2480,7 +2567,7 @@ Phase 2（W9-W14）—— DX + 分发 + Beta
 
 Phase 3（W15-W20）—— 包装 + 上线 + v1.1 预研
 ├── W15-16 修复 Beta 反馈 + 上架 Glama/ClawHub/ChatGPT + 公开发布
-├── W17-18 competitive_intel / manage_campaigns 增强版预研
+├── W17-18 competitive_intel / get_contacts / manage_campaigns 增强版预研
 ├── W19-20 outreach / negotiate 技术可行性验证
 ```
 
@@ -2558,7 +2645,7 @@ Phase 3（W15-W20）—— 包装 + 上线 + v1.1 预研
 > Get a deep analysis of a specific creator identified by creator_id from discover_creators. Supports four billable modules: overview, audience, content, and brand. Returns profile links, external IDs, audience demographics, content performance trends, authenticity scoring, and brand-fit signals based on the requested modules. Use this tool when a brand wants to evaluate whether a creator is trustworthy, relevant, and worth contacting or tracking.
 
 **track_performance**
-> Track an individual creator or channel over a 15-day monitoring cycle. Returns follower growth, view trends, engagement changes, posting frequency, anomaly flags, and comparisons against similar creators. Use this when a brand wants to monitor whether a creator is gaining or losing momentum before reinvesting or reaching out.
+> Start or query a creator monitoring job over one or more 15-day cycles. Starting a monitoring job bills by video and cycle, while querying an existing monitor is free. Returns follower growth, view trends, engagement changes, posting frequency, anomaly flags, and comparisons against similar creators. Use this when a brand already has active creators and needs to keep tracking whether their content is gaining or losing momentum.
 
 **manage_campaigns**
 > Create and view campaign context for creator research. Create a campaign to define goals, budget, and target audience before discovering creators. View active campaigns, saved creator watchlists, and recent analyze/track snapshots so the agent can reconstruct history across sessions. Day 1 supports create + read; write operations (alerts, status updates) coming in v1.1.
