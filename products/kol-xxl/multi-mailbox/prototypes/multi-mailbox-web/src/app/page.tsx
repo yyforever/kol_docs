@@ -1,29 +1,35 @@
+"use client"
+
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 const demos = [
   {
-    href: "/sender-settings",
+    slug: "sender-settings",
     title: "1. 发件设置",
     desc: "谷歌邮箱 / 企业邮箱 tab — 多邮箱列表 + 添加",
   },
   {
-    href: "/create-project",
+    slug: "create-project",
     title: "2. 创建邮件项目",
     desc: "二级发件人选择 — 类型 radio + 邮箱 checkbox",
   },
   {
-    href: "/edit-email",
+    slug: "edit-email",
     title: "3. 编辑邮件",
     desc: "发件人下拉 — 与创建项目一致的二级选择",
   },
   {
-    href: "/message-center",
+    slug: "message-center",
     title: "4. 消息中心",
     desc: "回复框 — 发件人切换（单选）",
   },
 ]
 
 export default function HomePage() {
+  const pathname = usePathname()
+  const base = pathname.replace(/\/$/, "")
+
   return (
     <div className="min-h-screen bg-muted/30 flex items-center justify-center p-8">
       <div className="max-w-xl w-full space-y-6">
@@ -36,8 +42,8 @@ export default function HomePage() {
         <div className="space-y-3">
           {demos.map((d) => (
             <Link
-              key={d.href}
-              href={d.href}
+              key={d.slug}
+              href={`${base}/${d.slug}`}
               className="block rounded-lg border bg-card p-4 hover:border-primary/50 hover:shadow-sm transition-all"
             >
               <div className="font-medium">{d.title}</div>
