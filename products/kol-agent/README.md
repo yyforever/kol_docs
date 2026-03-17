@@ -3,7 +3,7 @@
 > 战略路线 2 | 优先级：与 kol-api 并行
 > 调研基础：[10.8 R4 (3.95)](../../research/market/20_机会方向/10_AI_Agent生态/10.8_R4_最终评分.md)
 > 战略决策：[08_战略决策.md](../../research/market/00_导航与框架/08_战略决策.md)
-> 基础设施：[AgentPod](../../../../agentpod/)（多租户 Agent 容器隔离）
+> 基础设施：AgentPod（多租户 Agent 容器隔离；仓库路径待补充）
 
 ---
 
