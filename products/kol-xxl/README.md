@@ -17,6 +17,12 @@
 - UI/UX 微调
 - 数据展示优化
 
+## 已建主题
+
+| 主题 | 说明 | 状态 |
+|------|------|------|
+| [multi-mailbox/](multi-mailbox/) | 邮件发件设置支持多 Gmail / 企业邮箱的需求整理与原型 | 需求梳理中 |
+
 ## 不包含
 
 - 新产品线规划（→ kol-api / kol-agent / kol-creator）
