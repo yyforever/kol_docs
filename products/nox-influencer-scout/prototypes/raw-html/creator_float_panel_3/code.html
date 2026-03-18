@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html class="" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator Float Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#135bec",
+              "background-light": "#f6f6f8",
+              "background-dark": "#101622",
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        font-size: 20px;
+      }
+    </style>
+</head>
+<body class="bg-gray-200 dark:bg-gray-800 font-display">
+<div class="relative min-h-screen w-full p-8 flex items-start justify-end">
+<div class="fixed top-8 right-8 flex flex-col w-full max-w-sm bg-background-light dark:bg-background-dark shadow-2xl rounded-xl border border-gray-200 dark:border-gray-700/50 text-[#1f2937] dark:text-gray-200">
+<div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined cursor-grab text-gray-400 dark:text-gray-500">drag_indicator</span>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 h-10" data-alt="Creator's avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDzmOvFIIkdvYh7BoVCAZcQ4S-IcYzNCiyI5oflVZo2K0omS1befi4s3Llrkafoz1QXqadxsHeuyezu1CRfKrACQw5eWwNayWYa0o_3vxSt0sMzhgctw9sxXoXCBpdAEY0ukPHvmpkZc_owoRph6eeAAqA3ty9R4BgIW8HfEMCyoLNY8ATHuTWzhKICXRN3R25aq9f2IvhoXjWaaw_omEqx0lQjT3QLyzM_7R9c8PudBrNrjEsr0zHndC-54W6IGL2eAkiiRPb9V1b4");'></div>
+<div class="flex flex-col">
+<p class="text-base font-bold leading-tight">Creator Name</p>
+<p class="text-sm text-gray-500 dark:text-gray-400 leading-tight">@creatorhandle</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 text-red-500 dark:text-red-500">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<button class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50">
+<span class="material-symbols-outlined text-gray-600 dark:text-gray-300">unfold_less</span>
+</button>
+</div>
+</div>
+<div class="border-b border-gray-200 dark:border-gray-700/50">
+<nav aria-label="Tabs" class="flex -mb-px">
+<a aria-current="page" class="w-1/2 py-3 px-1 text-center border-b-2 font-bold text-sm text-primary border-primary" href="#">
+      Data
+    </a>
+<a class="w-1/2 py-3 px-1 text-center border-b-2 font-medium text-sm text-gray-500 dark:text-gray-400 border-transparent hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600" href="#">
+      CRM
+    </a>
+</nav>
+</div>
+<div class="flex flex-col gap-4 p-4 overflow-y-auto">
+<div>
+<div class="flex justify-between items-center px-2 pb-2">
+<h3 class="text-sm font-bold leading-tight tracking-[-0.015em] text-gray-800 dark:text-gray-200">Performance Metrics</h3>
+<div class="flex items-center gap-2">
+<span class="text-xs font-medium text-gray-500 dark:text-gray-400">在页面展示</span>
+<button aria-checked="false" class="bg-gray-200 dark:bg-gray-700 relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-background-dark" role="switch" type="button">
+<span class="sr-only">Display on Page</span>
+<span aria-hidden="true" class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white dark:bg-gray-400 shadow ring-0 transition duration-200 ease-in-out translate-x-0"></span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex flex-col gap-1 rounded-lg p-3 bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50">
+<p class="text-xs font-medium text-gray-500 dark:text-gray-400 leading-normal">Avg. Views (30d)</p>
+<p class="text-lg font-bold leading-tight text-gray-900 dark:text-white">1.2M</p>
+</div>
+<div class="flex flex-col gap-1 rounded-lg p-3 bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50">
+<p class="text-xs font-medium text-gray-500 dark:text-gray-400 leading-normal">Eng. Rate</p>
+<p class="text-lg font-bold leading-tight text-gray-900 dark:text-white">5.8%</p>
+</div>
+<div class="flex flex-col gap-1 rounded-lg p-3 bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50">
+<p class="text-xs font-medium text-gray-500 dark:text-gray-400 leading-normal">Avg. Views (90d)</p>
+<p class="text-lg font-bold leading-tight text-gray-900 dark:text-white">1.1M</p>
+</div>
+<div class="flex flex-col gap-1 rounded-lg p-3 bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50">
+<p class="text-xs font-medium text-gray-500 dark:text-gray-400 leading-normal">Frequency</p>
+<p class="text-lg font-bold leading-tight text-gray-900 dark:text-white">3/wk</p>
+</div>
+</div>
+</div>
+<div>
+<div class="flex gap-2 px-2 flex-wrap">
+<div class="flex h-7 shrink-0 items-center justify-center gap-x-1.5 rounded-full bg-green-100 dark:bg-green-900/40 px-3">
+<span class="material-symbols-outlined text-green-600 dark:text-green-400" style="font-size: 16px;">verified</span>
+<p class="text-xs font-medium text-green-800 dark:text-green-300">Brand Safe</p>
+</div>
+<div class="flex h-7 shrink-0 items-center justify-center gap-x-1.5 rounded-full bg-blue-100 dark:bg-blue-900/40 px-3">
+<span class="material-symbols-outlined text-blue-600 dark:text-blue-400" style="font-size: 16px;">high_quality</span>
+<p class="text-xs font-medium text-blue-800 dark:text-blue-300">High Production</p>
+</div>
+<div class="flex h-7 shrink-0 items-center justify-center gap-x-1.5 rounded-full bg-purple-100 dark:bg-purple-900/40 px-3">
+<span class="material-symbols-outlined text-purple-600 dark:text-purple-400" style="font-size: 16px;">trending_up</span>
+<p class="text-xs font-medium text-purple-800 dark:text-purple-300">Organic Growth</p>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between px-2">
+<h3 class="text-sm font-bold leading-tight tracking-[-0.015em] text-gray-800 dark:text-gray-200">Audience Details</h3>
+<button class="flex items-center justify-center w-7 h-7 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50">
+<span class="material-symbols-outlined text-gray-600 dark:text-gray-300" style="font-size: 20px;">expand_less</span>
+</button>
+</div>
+<div class="space-y-6 px-2">
+<div class="space-y-2">
+<h4 class="text-sm font-semibold text-gray-600 dark:text-gray-300">Gender</h4>
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400 w-12">Male</span>
+<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+<div class="bg-blue-500 h-2 rounded-full" style="width: 60%"></div>
+</div>
+<span class="text-sm font-semibold text-gray-800 dark:text-gray-200 w-10 text-right">60%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400 w-12">Female</span>
+<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+<div class="bg-pink-500 h-2 rounded-full" style="width: 40%"></div>
+</div>
+<span class="text-sm font-semibold text-gray-800 dark:text-gray-200 w-10 text-right">40%</span>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<h4 class="text-sm font-semibold text-gray-600 dark:text-gray-300">Age</h4>
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400 w-12">0-18</span>
+<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 15%"></div>
+</div>
+<span class="text-sm font-semibold text-gray-800 dark:text-gray-200 w-10 text-right">15%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400 w-12">18-25</span>
+<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 35%"></div>
+</div>
+<span class="text-sm font-semibold text-gray-800 dark:text-gray-200 w-10 text-right">35%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400 w-12">25-45</span>
+<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 40%"></div>
+</div>
+<span class="text-sm font-semibold text-gray-800 dark:text-gray-200 w-10 text-right">40%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400 w-12">45+</span>
+<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 10%"></div>
+</div>
+<span class="text-sm font-semibold text-gray-800 dark:text-gray-200 w-10 text-right">10%</span>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<h4 class="text-sm font-semibold text-gray-600 dark:text-gray-300">Top Countries</h4>
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400">United States</span>
+<span class="text-sm font-semibold text-gray-800 dark:text-gray-200">45.2%</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400">United Kingdom</span>
+<span class="text-sm font-semibold text-gray-800 dark:text-gray-200">15.8%</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400">Canada</span>
+<span class="text-sm font-semibold text-gray-800 dark:text-gray-200">8.1%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-sm font-bold leading-tight tracking-[-0.015em] px-2 pb-2 text-gray-800 dark:text-gray-200">Commercial Estimation</h3>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex flex-col gap-1 rounded-lg p-3 bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50">
+<p class="text-xs font-medium text-gray-500 dark:text-gray-400 leading-normal">Est. CPM</p>
+<p class="text-lg font-bold leading-tight text-gray-900 dark:text-white">$15.50</p>
+</div>
+<div class="flex flex-col gap-1 rounded-lg p-3 bg-gray-100 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50">
+<p class="text-xs font-medium text-gray-500 dark:text-gray-400 leading-normal">Rec. Quote</p>
+<p class="text-lg font-bold leading-tight text-gray-900 dark:text-white">$5k - $8k</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-2 pt-2">
+<div class="grid grid-cols-2 gap-2">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white text-sm font-bold leading-normal tracking-[0.015em] w-full">
+<span class="material-symbols-outlined mr-2" style="font-size: 18px;">search</span>
+<span class="truncate">Find Similar</span>
+</button>
+<button class="flex min-w-[84px] cursor-not-allowed items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 text-sm font-bold leading-normal tracking-[0.015em] w-full" disabled="">
+<span class="material-symbols-outlined mr-2" style="font-size: 18px;">mail</span>
+<span class="truncate">Quick Outreach</span>
+</button>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] w-full">
+<span class="material-symbols-outlined mr-2" style="font-size: 18px;">open_in_new</span>
+<span class="truncate">Expand CRM</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 border-t border-gray-200 dark:border-gray-700/50">
+<div class="flex items-center gap-2">
+<p class="text-xs font-semibold text-gray-700 dark:text-gray-200">Juxing</p>
+</div>
+<div class="flex items-center gap-3">
+<p class="text-xs text-gray-400 dark:text-gray-500">Last updated: 2m ago</p>
+<button class="flex items-center justify-center w-7 h-7 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 group">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400 group-hover:text-primary">refresh</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

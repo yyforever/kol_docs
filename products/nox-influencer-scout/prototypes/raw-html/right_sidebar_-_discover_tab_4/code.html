@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Discover Tab - Results (Find Similar Details Active)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#135bec",
+            "background-light": "#F7F8F9",
+            "background-dark": "#101622",
+          },
+          fontFamily: {
+            "display": ["Manrope", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          boxShadow: {
+            'card': '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+            'sidebar': '0px 0px 15px 0px rgba(0, 0, 0, 0.05)',
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-background-light font-display">
+<div class="relative flex w-full flex-col bg-background-light group/design-root shadow-sidebar" style="max-width: 384px; height: 100vh; margin: auto; border-left: 1px solid #E5E7EB;">
+<div class="layout-container flex h-full grow flex-col">
+<div class="flex flex-1 flex-col p-4">
+<div class="layout-content-container flex flex-1 flex-col gap-4">
+<div class="relative">
+<button class="flex w-full items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2 text-left shadow-sm hover:bg-slate-50 transition-colors">
+<div class="flex items-center gap-2">
+<span class="text-xs font-medium text-slate-500">Campaign:</span>
+<span class="text-sm font-semibold text-slate-900">My Campaign Summer 2024</span>
+</div>
+<span class="material-symbols-outlined text-slate-400">expand_more</span>
+</button>
+</div>
+<div class="flex rounded-lg bg-slate-100 p-1">
+<button class="flex h-8 flex-1 items-center justify-center rounded-md bg-white px-2 text-sm font-semibold text-slate-900 shadow-sm ring-1 ring-black/5">Similar</button>
+<button class="flex h-8 flex-1 items-center justify-center rounded-md px-2 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-200/50 transition-colors">AI Search</button>
+<button class="flex h-8 flex-1 items-center justify-center rounded-md px-2 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-200/50 transition-colors">Contact</button>
+</div>
+<div class="flex items-center justify-center border-b border-slate-200">
+<button class="relative flex h-10 flex-1 items-center justify-center gap-2 border-b-2 border-primary text-sm font-bold text-primary">
+    找相似详情
+</button>
+<button class="relative flex h-10 flex-1 items-center justify-center gap-2 border-b-2 border-transparent text-sm font-semibold text-slate-500 hover:text-slate-700 transition-colors">
+    找相似列表
+</button>
+</div>
+<div class="flex flex-col gap-4 pt-2">
+<div class="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-card">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="relative size-10">
+<img alt="Creator Avatar" class="size-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3DZneFjr8s2I6ECd0RAdxLDqz7rj_VUSMwZ-n6hMM4unPI4kgOlY6EbvSk2RTpod8KeZ4MVEBYK6aVVjQ6M4Kzt74TNCbIowOSGtvtt_9fQ6RwpH5b3EWwI-WFFE0dgbmFay_PmLYFd8bJvV-7dcIXyBdau-vlLZg60ReirK1gZ5VbGNY8iPO-zFzJBcovAP8DqnmNqv-CD9jKBWPXFjVh-3M_0TOjEM7UekHMp5pJVt9IJoFx7F8PakiA_5DuY3iGo-XLNT_770C"/>
+<div class="absolute -bottom-1 -right-1 flex size-5 items-center justify-center rounded-full bg-primary ring-2 ring-white">
+<span class="material-symbols-outlined text-white" style="font-size: 12px; font-weight: 700;">link</span>
+</div>
+</div>
+<div class="flex flex-col">
+<p class="text-sm font-bold text-slate-900">Similar From</p>
+<p class="text-xs font-medium text-slate-500">@creatorname</p>
+</div>
+</div>
+<button class="flex h-7 items-center justify-center gap-1.5 rounded-full bg-red-50 px-3 text-red-600 hover:bg-red-100 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 16px;">stop_circle</span>
+<span class="text-xs font-bold">Stop</span>
+</button>
+</div>
+<div class="grid grid-cols-3 divide-x divide-slate-100">
+<div class="flex flex-col items-center justify-center px-2">
+<p class="text-xs font-medium text-slate-500">Found</p>
+<p class="text-xl font-bold text-slate-900">120</p>
+</div>
+<div class="flex flex-col items-center justify-center px-2">
+<p class="text-xs font-medium text-slate-500">Liked</p>
+<p class="text-xl font-bold text-slate-900">1</p>
+</div>
+<div class="flex flex-col items-center justify-center px-2">
+<p class="text-xs font-medium text-slate-500">Sent Emails</p>
+<p class="text-xl font-bold text-slate-900">0</p>
+</div>
+</div>
+</div>
+<div class="flex flex-1 flex-col justify-center gap-4">
+<div class="relative rounded-xl border border-slate-200 bg-white p-4 shadow-card">
+<button class="absolute right-3 top-3 flex h-7 items-center justify-center rounded-lg border border-red-200 bg-red-50 px-3 text-red-600 hover:bg-red-100 hover:border-red-300 transition-colors">
+<span class="text-xs font-bold">不感兴趣</span>
+</button>
+<div class="flex flex-col items-center gap-4 text-center pt-2">
+<img alt="Current Creator Avatar" class="size-20 rounded-full object-cover ring-4 ring-slate-50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3DZneFjr8s2I6ECd0RAdxLDqz7rj_VUSMwZ-n6hMM4unPI4kgOlY6EbvSk2RTpod8KeZ4MVEBYK6aVVjQ6M4Kzt74TNCbIowOSGtvtt_9fQ6RwpH5b3EWwI-WFFE0dgbmFay_PmLYFd8bJvV-7dcIXyBdau-vlLZg60ReirK1gZ5VbGNY8iPO-zFzJBcovAP8DqnmNqv-CD9jKBWPXFjVh-3M_0TOjEM7UekHMp5pJVt9IJoFx7F8PakiA_5DuY3iGo-XLNT_770C"/>
+<div class="flex flex-col gap-1">
+<p class="text-lg font-bold text-slate-900">Creator Name</p>
+<div class="flex items-center justify-center gap-3 text-sm font-medium text-slate-500">
+<span>Avg Views: 120K</span>
+<span class="size-1 rounded-full bg-slate-300"></span>
+<span>ER: 2.5%</span>
+</div>
+</div>
+<div class="w-full pt-2">
+<div class="grid grid-cols-2 gap-3">
+<button class="flex h-11 items-center justify-center rounded-lg bg-green-500 text-white shadow-sm hover:bg-green-600 transition-colors">
+<span class="text-sm font-bold">感兴趣</span>
+</button>
+<button class="flex h-11 w-full items-center justify-center rounded-lg bg-primary text-white shadow-sm hover:bg-blue-600 transition-colors">
+<span class="text-sm font-bold">立即沟通</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex h-10 flex-1 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 shadow-sm hover:bg-slate-50 transition-colors">
+<span class="text-sm font-bold">下一个</span>
+</button>
+<button class="flex h-10 flex-1 items-center justify-center gap-2 rounded-lg bg-slate-800 text-white shadow-sm hover:bg-slate-900 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">person_search</span>
+<span class="text-sm font-bold">找相似</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between px-1">
+<p class="text-sm font-bold text-slate-900">Similar Creators</p>
+<a class="text-xs font-bold text-primary hover:text-blue-700" href="#">See all</a>
+</div>
+<div class="no-scrollbar flex gap-3 overflow-x-auto pb-2">
+<div class="flex w-28 flex-none flex-col items-center gap-2 rounded-xl border border-slate-200 bg-white p-3 text-center shadow-card">
+<img alt="Creator Avatar" class="size-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVUez0h0EVl3EOfkKLqAt7GdEosU_TdrCkdu3Ufw5SSON78z7JS_Mnaz-Xntf5CS-8dKzYXMvNpP0bDKRecQ8AgDlMy11pT3iZtH_u1oqXlitsfTvWgJKQ0Sx_9AkZMn2wcMaWxzBra2RVsCVWiFnzg_TAAhCcNzVnYmzbR3ibAk1ErUbxyMV0hlYEmj7EmLXnQMEeWox5SzF_dns6-3IPHIfxv0aVdmwt1AookTui_TC--SgTg9-RsDbH5qLcJsKv9nL33HyB3jbM"/>
+<div class="flex w-full flex-col gap-0.5">
+<p class="w-full truncate text-xs font-bold text-slate-900">Another</p>
+<div class="flex w-full justify-center gap-2 text-[10px] font-medium text-slate-500">
+<span>120K</span>
+<span>2.5%</span>
+</div>
+</div>
+</div>
+<div class="flex w-28 flex-none flex-col items-center gap-2 rounded-xl border border-slate-200 bg-white p-3 text-center shadow-card">
+<img alt="Creator Avatar" class="size-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3DZneFjr8s2I6ECd0RAdxLDqz7rj_VUSMwZ-n6hMM4unPI4kgOlY6EbvSk2RTpod8KeZ4MVEBYK6aVVjQ6M4Kzt74TNCbIowOSGtvtt_9fQ6RwpH5b3EWwI-WFFE0dgbmFay_PmLYFd8bJvV-7dcIXyBdau-vlLZg60ReirK1gZ5VbGNY8iPO-zFzJBcovAP8DqnmNqv-CD9jKBWPXFjVh-3M_0TOjEM7UekHMp5pJVt9IJoFx7F8PakiA_5DuY3iGo-XLNT_770C"/>
+<div class="flex w-full flex-col gap-0.5">
+<p class="w-full truncate text-xs font-bold text-slate-900">Long Name</p>
+<div class="flex w-full justify-center gap-2 text-[10px] font-medium text-slate-500">
+<span>88K</span>
+<span>3.1%</span>
+</div>
+</div>
+</div>
+<div class="flex w-28 flex-none flex-col items-center gap-2 rounded-xl border border-slate-200 bg-white p-3 text-center shadow-card">
+<img alt="Creator Avatar" class="size-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9676HXXIJcMu4rIZ06h0o-Q91sRHJ2-MY4BqkKv4ZmYM-hDWka-aGXtvtZ1SY1dUPAWtD-qjlpw5buyauyFHonErd3hg4CqJqsU1EURCUurC1r_83TC1a3CaG-VNL2ZBfl38kq14z0T5hDbrMx-06sueYNm3XPoIKAdlB-iQ2y_XB0U8RsWwiF7bCNBAxuv5ydWQoSlgJ3I7qd3svzmBxFFElJpndYJZ4k5yM3BLSizgev2SUA702mZPx8isqtxey0wS6RaTEEYvp"/>
+<div class="flex w-full flex-col gap-0.5">
+<p class="w-full truncate text-xs font-bold text-slate-900">Creative</p>
+<div class="flex w-full justify-center gap-2 text-[10px] font-medium text-slate-500">
+<span>1.2M</span>
+<span>1.8%</span>
+</div>
+</div>
+</div>
+<div class="flex w-28 flex-none flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-3 text-center text-slate-400">
+<span class="material-symbols-outlined text-2xl">more_horiz</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

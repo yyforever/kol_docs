@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html class="" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator CRM Expanded View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#135bec",
+            "background-light": "#f6f6f8",
+            "background-dark": "#101622",
+          },
+          fontFamily: {
+            "display": ["Manrope", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      font-size: 20px;
+    }
+    .material-symbols-outlined.is-filled {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+<body class="bg-gray-200 dark:bg-gray-800 font-display">
+<div class="relative min-h-screen w-full p-8 flex items-start justify-end">
+<div class="fixed top-8 right-8 flex flex-col w-full max-w-sm bg-background-light dark:bg-background-dark shadow-2xl rounded-xl border border-gray-200 dark:border-gray-700/50 text-[#1f2937] dark:text-gray-200">
+<div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined cursor-grab text-gray-400 dark:text-gray-500">drag_indicator</span>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 h-10" data-alt="Creator's avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDzmOvFIIkdvYh7BoVCAZcQ4S-IcYzNCiyI5oflVZo2K0omS1befi4s3Llrkafoz1QXqadxsHeuyezu1CRfKrACQw5eWwNayWYa0o_3vxSt0sMzhgctw9sxXoXCBpdAEY0ukPHvmpkZc_owoRph6eeAAqA3ty9R4BgIW8HfEMCyoLNY8ATHuTWzhKICXRN3R25aq9f2IvhoXjWaaw_omEqx0lQjT3QLyzM_7R9c8PudBrNrjEsr0zHndC-54W6IGL2eAkiiRPb9V1b4");'></div>
+<div class="flex flex-col">
+<p class="text-base font-bold leading-tight">Creator Name</p>
+<p class="text-sm text-gray-500 dark:text-gray-400 leading-tight">@creatorhandle</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 group">
+<span class="material-symbols-outlined is-filled text-red-500">favorite</span>
+</button>
+<button class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50">
+<span class="material-symbols-outlined text-gray-600 dark:text-gray-300">unfold_more</span>
+</button>
+</div>
+</div>
+<div class="border-b border-gray-200 dark:border-gray-700/50 px-4">
+<nav aria-label="Tabs" class="flex space-x-4 -mb-px">
+<a class="py-3 px-1 border-b-2 font-semibold text-sm text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary border-transparent" href="#">
+      Data
+    </a>
+<a aria-current="page" class="py-3 px-1 border-b-2 font-semibold text-sm text-primary dark:text-primary border-primary" href="#">
+      CRM
+    </a>
+</nav>
+</div>
+<div class="flex flex-col gap-2 p-4 overflow-y-auto max-h-[calc(100vh-204px)]">
+<div class="bg-white dark:bg-gray-900/50 rounded-lg">
+<button class="w-full flex items-center justify-between p-3">
+<h3 class="text-sm font-bold text-gray-800 dark:text-gray-200">CRM 状态</h3>
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400">expand_less</span>
+</button>
+<div class="px-3 pb-3 space-y-3">
+<div class="flex items-center justify-between text-sm">
+<span class="text-gray-500 dark:text-gray-400">对接人</span>
+<span class="text-gray-400 dark:text-gray-500">暂无数据</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<span class="text-gray-500 dark:text-gray-400">合作状态</span>
+<span class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-0.5 rounded-md font-medium text-xs flex items-center gap-1.5">未合作 <span class="material-symbols-outlined" style="font-size: 16px;">arrow_drop_down</span></span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
+<span>本人联系状态</span>
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-500" style="font-size: 16px;">help</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="w-2 h-2 rounded-full bg-orange-400"></div>
+<span class="text-gray-800 dark:text-gray-200">未建联</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
+<span>团队联系状态</span>
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-500" style="font-size: 16px;">help</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="w-2 h-2 rounded-full bg-orange-400"></div>
+<span class="text-gray-800 dark:text-gray-200">未建联</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
+<span>最近触达时间</span>
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-500" style="font-size: 16px;">help</span>
+</div>
+<span class="text-gray-400 dark:text-gray-500">暂无数据</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
+<span>最近触达成员</span>
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-500" style="font-size: 16px;">help</span>
+</div>
+<span class="text-gray-400 dark:text-gray-500">暂无数据</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
+<span>最近回复时间</span>
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-500" style="font-size: 16px;">help</span>
+</div>
+<span class="text-gray-400 dark:text-gray-500">暂无数据</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
+<span>最近回复成员</span>
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-500" style="font-size: 16px;">help</span>
+</div>
+<span class="text-gray-400 dark:text-gray-500">暂无数据</span>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-900/50 rounded-lg">
+<button class="w-full flex items-center justify-between p-3">
+<h3 class="text-sm font-bold text-gray-800 dark:text-gray-200">基本信息</h3>
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400">expand_less</span>
+</button>
+<div class="px-3 pb-4">
+<div class="flex justify-between items-start text-sm">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400 mt-0.5">label</span>
+<div class="flex flex-col">
+<span class="font-medium text-gray-800 dark:text-gray-200">自定义标签</span>
+<span class="text-gray-400 dark:text-gray-500">暂无数据</span>
+</div>
+</div>
+<button class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400">edit</span>
+</button>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-900/50 rounded-lg p-3 pb-4">
+<div class="flex justify-between items-start text-sm">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400 mt-0.5">mail</span>
+<div class="flex flex-col">
+<span class="font-medium text-gray-800 dark:text-gray-200">联系方式</span>
+<span class="text-gray-600 dark:text-gray-300">yangyang@noxgroup.com</span>
+</div>
+</div>
+<button class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400">edit</span>
+</button>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-900/50 rounded-lg p-3 pb-4">
+<div class="flex justify-between items-start text-sm">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400 mt-0.5">request_quote</span>
+<div class="flex flex-col">
+<span class="font-medium text-gray-800 dark:text-gray-200">合作报价</span>
+<span class="text-gray-400 dark:text-gray-500">暂无数据</span>
+</div>
+</div>
+<button class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400">edit</span>
+</button>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-900/50 rounded-lg p-3 pb-4">
+<div class="flex justify-between items-start text-sm">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400 mt-0.5">local_shipping</span>
+<div class="flex flex-col">
+<span class="font-medium text-gray-800 dark:text-gray-200">物流地址</span>
+<span class="text-gray-400 dark:text-gray-500">暂无数据</span>
+</div>
+</div>
+<button class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400">edit</span>
+</button>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-900/50 rounded-lg p-3 pb-4">
+<div class="flex justify-between items-start text-sm">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400 mt-0.5">credit_card</span>
+<div class="flex flex-col">
+<span class="font-medium text-gray-800 dark:text-gray-200">付款信息</span>
+<span class="text-gray-400 dark:text-gray-500">暂无数据</span>
+</div>
+</div>
+<button class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400">edit</span>
+</button>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-900/50 rounded-lg p-3 pb-4">
+<div class="flex justify-between items-start text-sm">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400 mt-0.5">description</span>
+<div class="flex flex-col">
+<span class="font-medium text-gray-800 dark:text-gray-200">备注</span>
+<span class="text-gray-400 dark:text-gray-500">暂无数据</span>
+</div>
+</div>
+<button class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400">edit</span>
+</button>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-900/50 rounded-lg">
+<button class="w-full flex items-center justify-between p-3">
+<h3 class="text-sm font-bold text-gray-800 dark:text-gray-200">智能营销计划</h3>
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400">expand_more</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 border-t border-gray-200 dark:border-gray-700/50">
+<div class="flex items-center gap-2">
+<p class="text-xs font-semibold text-gray-700 dark:text-gray-200">Juxing</p>
+</div>
+<div class="flex items-center gap-3">
+<p class="text-xs text-gray-400 dark:text-gray-500">Last updated: 2m ago</p>
+<button class="flex items-center justify-center w-7 h-7 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 group">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-400 group-hover:text-primary">refresh</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>
