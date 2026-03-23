@@ -555,7 +555,7 @@ Day 1 复用聚星主账号和主站套餐，不再有“独立产品注册 → 
 
 以下内容不再作为实施依据：
 
-- 独立 `credit` / `credits` 计费
+- 独立按次额度计费
 - 独立 `Starter / Pro / Growth` 套餐
 - 独立 Stripe Checkout / Customer Portal
 - 以 API Key 发放为核心的注册与售卖路径
@@ -725,6 +725,14 @@ Day 1 先记录，不先做重处罚。需要记录的信号：
 | CLI / Harness | 服务工程验证，不作为用户侧售卖入口 |
 
 ### 2.6 主站页面与文档改造
+
+除 `pricing` 外，既有 landing / signup / dashboard / docs 页面仍继续保留，但都要按新商业化口径改写，而不是继续沿用旧独立产品线心智。
+
+页面改写的统一原则：
+
+1. 所有页面中的旧独立额度表述统一替换为 `quota / 配额` 表达。
+2. 中文版落地页移除面向 `AI Startup / AI创业版` 的 pricing section，不承接低价月付入口。
+3. 英文版落地页可保留 `AI Startup` 入口，但不得破坏主 comparison table 的企业销售锚点。
 
 #### 2.6.1 主站 pricing 页
 
@@ -908,14 +916,17 @@ Day 1 交付：
 
 文档语言以品牌用户和实施人员都能理解为准，避免继续输出旧开发者 API 售卖话术。
 
-#### 2.6.5 历史页面处理
+#### 2.6.5 既有页面处理
 
-| 旧页面 / 模块 | 处理方式 | 替代 |
-|--------------|---------|------|
-| 独立 pricing | 下线 / 改跳主站 pricing | 聚星主站 pricing |
-| 独立 signup | 并入聚星主站注册登录 | 聚星主账号体系 |
-| 独立 dashboard / billing | 并入主账号用量与套餐管理 | 主站账号后台 |
-| credit 进度条 / credit FAQ | 删除 | Skill 技能额度 + 服务配额说明 |
+| 既有页面 / 模块 | 处理方式 | 当前口径 |
+|----------------|---------|---------|
+| 中文版 landing page | 保留页面形态，但移除面向 `AI Startup / AI创业版` 的 pricing section | 中文站不开放低价月付入口 |
+| 英文版 landing page | 保留页面形态，在 Hero 区保留 `AI Startup` 入口 | 点击后弹出英文 modal，承接轻量 Skill 套餐 |
+| pricing 对比区 | 保留页面形态，所有旧独立额度表述统一改为 `quota` | 按主站套餐承接，新增 Skill 配额行 |
+| signup / login | 保留页面形态，接入聚星主账号体系 | 不再承接独立售卖注册 |
+| dashboard / usage / billing | 保留后台页面形态，改写为主账号用量、套餐与失败原因管理 | 所有旧独立额度 UI 改为 `quota` UI |
+| docs / Quick Start | 保留文档页面形态，但改写内容 | 以主账号绑定、Skill 使用和升级说明为中心 |
+| 旧额度进度条 / 旧额度 FAQ | 删除或改写 | Skill 技能额度 + 服务配额说明 |
 | 以 API Key 为中心的 Quick Start | 改写 | 以主账号绑定和安装为中心 |
 
 ### 2.7 Day 1 交付清单

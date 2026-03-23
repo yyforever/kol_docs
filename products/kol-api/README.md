@@ -70,7 +70,7 @@
 
 ### Next.js 可交互 Demo（历史）
 
-基于历史 Pencil 原型实现的前端静态 UI。它仍可用于参考布局、导航和基础交互，但里面的套餐、配额、账号与升级逻辑都已过期。
+基于历史 Pencil 原型实现的前端静态 UI。它仍可用于参考布局、导航和基础交互，且既有页面形态仍可继续复用；但里面的套餐、配额、账号与升级逻辑都已过期，继续实现时必须按最新文档改写。
 
 **技术栈：** Next.js 15 (App Router) + React 19 + TypeScript + Tailwind CSS v4 + shadcn/ui
 
@@ -92,7 +92,7 @@ pnpm dev
 
 **导航结构可参考**：营销入口 → 注册 / 登录 → 后台 → 文档 / 帮助。
 
-> `prototypes/noxinfluencer-web/` 中的 pricing、套餐卡、账号中心和升级路径仍是旧独立售卖口径，当前只作为历史原型参考，**不代表现行方案**。文档以本目录 01-05 的最新口径为准。
+> `prototypes/noxinfluencer-web/` 中的既有页面仍可作为结构参考继续改写，但其中所有旧独立额度相关表达都应替换为 `quota` 口径；中文版 landing page 需移除面向 `AI Startup / AI创业版` 的 pricing section。文档以本目录 01-05 的最新口径为准。
 
 ---
 
