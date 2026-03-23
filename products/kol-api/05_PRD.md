@@ -839,22 +839,27 @@ Day 1 先记录，不先做重处罚。需要记录的信号：
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ AI Startup Modal (EN only)                                                                                   │
 │                                                                                                              │
-│ AI Startup                                                                                                   │
-│ Price / billing cycle: TODO                                                                                  │
-│ For lightweight teams using a small amount of Skill capacity                                                  │
+│ Start Small With AI Startup                                                                                  │
+│ A lightweight Skill plan for lean teams. Choose monthly, quarterly, or yearly billing based on usage depth. │
 │                                                                                                              │
-│ Available tools                                                                                              │
+│ [Monthly]                             [Quarterly]                           [Yearly]                         │
+│ Price: TODO / month                   Price: TODO / quarter                 Price: TODO / year              │
+│ Skill quota: TODO / month             Skill quota: TODO / quarter           Skill quota: TODO / year        │
+│ [Subscribe]                           [Subscribe]                           [Subscribe]                     │
+│                                                                                                              │
+│ Included tools                                                                                                │
 │ - discover_creators                                                                                          │
 │ - analyze_creator                                                                                             │
 │ - manage_campaigns                                                                                           │
-│ - track_performance: TODO whether included in starter scope                                                   │
+│ - track_performance: TODO whether included in AI Startup scope                                               │
 │                                                                                                              │
 │ Plan notes                                                                                                   │
 │ - Limited quota and partial functionality only                                                               │
 │ - Exact quota numbers: TODO                                                                                  │
-│ - Exact enabled features: TODO                                                                               │
+│ - Exact enabled features by billing cycle: TODO                                                              │
+│ - Service quota notes by billing cycle: TODO                                                                 │
 │                                                                                                              │
-│ [Subscribe]   [Close]                                                                                        │
+│ [Close]                                                                                                      │
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -862,7 +867,9 @@ Day 1 先记录，不先做重处罚。需要记录的信号：
 - `AI Startup` is an English-only Hero entry placed near `Choose a plan to suit your needs`
 - Clicking the `AI Startup` entry opens an English modal instead of inserting a fifth pricing column or redirecting to a new page
 - The modal is a direct subscription entry for a lightweight Skill plan; auth handling reuses the pricing page flow
-- The modal shows available tools first; exact quota numbers and exact enabled features remain `TODO`
+- The modal is structured as three cards: `Monthly / Quarterly / Yearly`, each showing price, quota, and subscribe CTA
+- Available tools are listed once below the cards to avoid repetition
+- Exact quota numbers and exact enabled features by billing cycle remain `TODO`
 - The English comparison table keeps the current official 4-column structure
 - Existing quota rows stay unchanged; only one new Skill row is inserted at the top of the benefits section
 - Skill copy must explain the dual-quota model inside the existing membership table, not as a separate standalone pricing block
