@@ -20,6 +20,25 @@
 
 ---
 
+## 公开内容源
+
+新增 [`site-docs/`](site-docs/README.md) 作为网站前端的唯一公开文档内容源。
+
+该目录与 `01-05` 的关系如下：
+
+- `01-05`：内部产品口径与实施依据
+- `site-docs/`：对外公开文档、GEO/SEO 场景内容与 changelog 源文件
+
+公开内容源采用 `Markdown + frontmatter`，按中英双语维护，目录固定拆分为：
+
+- `docs/`：帮助中心与 Tool Reference
+- `use-cases/`：面向 GEO / SEO 的场景页
+- `changelog/`：公开更新日志
+
+> 注意：前端后续应只消费 `site-docs/`，不直接消费 `01-05` 或 `prototypes/`。
+
+---
+
 ## 状态
 
 ### 已完成（能力层仍有效）
