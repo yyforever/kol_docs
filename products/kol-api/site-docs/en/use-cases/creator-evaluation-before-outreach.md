@@ -21,6 +21,12 @@ source_of_truth:
 
 Many teams are inefficient not because they cannot find creators, but because they start contact too early.
 
+## Common problems
+
+- The audience looks strong at first glance but does not actually match the target market
+- The metrics look attractive but are not stable enough
+- The team spends communication time on creators who were never a fit
+
 ## Better approach
 
 Evaluate first, then decide whether to:
@@ -28,3 +34,7 @@ Evaluate first, then decide whether to:
 - continue into outreach
 - move the creator into monitoring
 - exclude the creator early
+
+## Why this improves ROI
+
+It moves the "should we keep investing time here?" decision earlier, before business effort is already underway.

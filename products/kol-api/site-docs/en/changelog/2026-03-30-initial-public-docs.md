@@ -24,3 +24,9 @@ source_of_truth:
 - Added bilingual directory trees
 - Established `docs/`, `use-cases/`, and `changelog/` as separate public content branches
 - Added the first public Getting Started, Guides, Tool Reference, and Resources pages
+
+## Messaging changes
+
+- Public docs no longer reuse historical prototype copy directly
+- The navigation now uses `Tool Reference` consistently instead of keeping both `Tools` and `Tool Reference`
+- `Track Performance` is now included as the sixth public Tool page in the information architecture

@@ -1,6 +1,6 @@
 ---
 doc_id: resource_rate_limits
-title: Rate Limits
+title: 频率限制
 description: 了解请求频率限制与使用保护边界，避免把 rate limit 和 quota 混为一谈。
 locale: zh
 content_type: doc
@@ -17,7 +17,7 @@ source_of_truth:
   - ../../../../05_PRD.md
 ---
 
-# Rate Limits
+# 频率限制
 
 Rate Limit 和 quota 不是一回事。
 

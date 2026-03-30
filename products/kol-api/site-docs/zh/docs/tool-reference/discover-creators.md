@@ -1,6 +1,6 @@
 ---
 doc_id: tool_discover_creators
-title: Discover Creators
+title: 达人发现
 description: 公开达人发现能力说明，适用于生成候选名单和下一步分析对象。
 locale: zh
 content_type: doc
@@ -17,10 +17,10 @@ availability: available
 source_of_truth:
   - ../../../../03_API能力设计.md
   - ../../../../05_PRD.md
-  - ../../../../../../../kol_claw/docs/modules/discover-creators.md
+  - "repo:kol_claw path:docs/modules/discover-creators.md"
 ---
 
-# Discover Creators
+# 达人发现
 
 **当前状态：Available**
 

@@ -1,11 +1,11 @@
 ---
 doc_id: quick_start_chatgpt
-title: Quick Start for ChatGPT
+title: ChatGPT 快速开始
 description: 使用 ChatGPT 接入 NoxInfluencer 的建议步骤与首次成功标准。
 locale: zh
 content_type: doc
 nav_group: getting-started
-order: 3
+order: 21
 status: published
 updated_at: 2026-03-30
 keywords:
@@ -14,10 +14,9 @@ keywords:
   - noxinfluencer
 source_of_truth:
   - ../../../../../05_PRD.md
-  - ../../../../../../../../kol_claw/AGENTS.md
 ---
 
-# Quick Start for ChatGPT
+# ChatGPT 快速开始
 
 ## 推荐步骤
 

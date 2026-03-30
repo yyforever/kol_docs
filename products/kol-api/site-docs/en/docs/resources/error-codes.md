@@ -14,19 +14,27 @@ keywords:
   - quota errors
 source_of_truth:
   - ../../../../05_PRD.md
-  - ../../../../../../../kol_claw/docs/modules/quota.md
+  - "repo:kol_claw path:server/app/errors.py"
+  - "repo:kol_claw path:docs/modules/quota.md"
 ---
 
 # Error Codes
 
-Public error handling should prioritize the next action, not just the technical explanation.
+Public error handling must stay aligned with the `error_code` values returned by the current implementation, while still prioritizing the next action instead of only the technical explanation.
 
 ## Common public codes
 
 | Error code | Meaning | Recommended action |
 |------------|---------|--------------------|
-| `capability_not_included` | The plan does not include the capability | Check plan coverage and upgrade path |
-| `skill_quota_exhausted` | Skill quota is exhausted | Review quota status and upgrade options |
-| `service_quota_exhausted` | The underlying service quota is exhausted | Review the related capability and plan path |
-| `plan_sync_pending` | A recent plan change has not propagated yet | Retry later or contact support |
-| `internal_error` | Internal system failure | Preserve context and contact support |
+| `INVALID_API_KEY` | The API key is invalid or the current account cannot use it | Check account binding, key configuration, or regenerate credentials |
+| `INSUFFICIENT_CREDIT` | The request cannot continue because quota is insufficient | Review quota status and the upgrade path |
+| `INVALID_REQUEST` | The request parameters, input shape, or object identifier are invalid | Tighten the request and re-check filters, platform values, or the `creator_id` |
+| `DUPLICATE_DATA` | The same object already exists and should not be created twice | Look up the existing object, task, or monitor before trying again |
+| `UPSTREAM_40017` | The upstream service quota is exhausted or rate-limited upstream | Retry later or confirm whether the underlying service quota has been exhausted |
+| `INTERNAL_ERROR` | Internal system failure | Preserve context and the request ID, then contact support |
+
+## Usage principles
+
+- Explain recovery paths first instead of only repeating technical wording
+- Keep frontend, Agent, and website handling aligned with the exact current error codes
+- If the Agent can already suggest a next step, reuse that action instead of inventing a second flow

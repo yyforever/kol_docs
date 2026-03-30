@@ -1,6 +1,6 @@
 ---
 doc_id: tool_track_performance
-title: Track Performance
+title: 表现监控
 description: 持续观察达人或内容表现变化的公开能力方向，适合监控和复盘场景。
 locale: zh
 content_type: doc
@@ -17,10 +17,10 @@ availability: beta
 source_of_truth:
   - ../../../../03_API能力设计.md
   - ../../../../05_PRD.md
-  - ../../../../../../../kol_claw/docs/modules/video-monitor.md
+  - "repo:kol_claw path:docs/modules/video-monitor.md"
 ---
 
-# Track Performance
+# 表现监控
 
 **当前状态：Beta**
 

@@ -1,6 +1,6 @@
 ---
 doc_id: intro
-title: Introduction
+title: 产品简介
 description: 了解 NoxInfluencer 面向品牌广告主的公开能力、适用场景和当前边界。
 locale: zh
 content_type: doc
@@ -18,7 +18,7 @@ source_of_truth:
   - ../../../../05_PRD.md
 ---
 
-# Introduction
+# 产品简介
 
 NoxInfluencer 当前对外公开的是一套面向品牌广告主的 Skill 能力层，用来帮助团队在 AI Agent 环境中更快完成达人发现、深度评估和监控跟进。
 

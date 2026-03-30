@@ -15,7 +15,7 @@ keywords:
 source_of_truth:
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
-  - ../../../../../../../noxinfluencer_skills/skill/noxinfluencer/skills/discovering-creators/SKILL.md
+  - "repo:noxinfluencer_skills path:skill/noxinfluencer/skills/discovering-creators/SKILL.md"
 ---
 
 # Find Your First Creators
@@ -35,3 +35,20 @@ Your goal is not to run the broadest search possible. Your goal is to produce a 
 1. Start with a focused discovery request
 2. Narrow the results to 3-5 candidates
 3. Move into analysis instead of endlessly widening the search
+
+## How to judge whether the discovery run is good enough
+
+- The results match the intended market and category
+- You can naturally pick the next creators to analyze
+- The result set does not feel obviously too broad or too noisy
+
+## If the results are too broad
+
+- Add geography constraints
+- Tighten the creator size range
+- Tighten the content direction
+
+## Recommended next steps
+
+- [Analyze Creator](../tool-reference/analyze-creator.md)
+- [Evaluate Creators Before Outreach](evaluate-creators-before-outreach.md)

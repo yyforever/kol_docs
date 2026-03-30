@@ -30,3 +30,14 @@ Manage Campaigns is intended to preserve campaign context across discovery, eval
 - Reuse market and campaign context
 - Preserve shortlist and watchlist decisions
 - Improve workflow continuity across sessions
+
+## Current boundary
+
+- This direction is still being productized in the public surface
+- Do not read this page as a promise of a full campaign CRM
+- For immediately usable workflows, rely on discovery, analysis, and monitoring first
+
+## Recommended reading
+
+- [Manage Campaign Context](../guides/manage-campaign-context.md)
+- [Track Performance](track-performance.md)

@@ -1,6 +1,6 @@
 ---
 doc_id: changelog_home
-title: Changelog
+title: 更新日志
 description: NoxInfluencer 公共文档与公开能力说明的更新记录。
 locale: zh
 content_type: changelog
@@ -16,7 +16,7 @@ source_of_truth:
   - ../../../README.md
 ---
 
-# Changelog
+# 更新日志
 
 这里记录公共文档内容源和公开能力说明的重要更新。
 

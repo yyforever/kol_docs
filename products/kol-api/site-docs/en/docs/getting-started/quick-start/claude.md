@@ -5,7 +5,7 @@ description: Suggested onboarding path for using NoxInfluencer with Claude.
 locale: en
 content_type: doc
 nav_group: getting-started
-order: 4
+order: 22
 status: published
 updated_at: 2026-03-30
 keywords:
@@ -14,7 +14,7 @@ keywords:
   - skill
 source_of_truth:
   - ../../../../../05_PRD.md
-  - ../../../../../../../../noxinfluencer_skills/skill/noxinfluencer/README.md
+  - "repo:noxinfluencer_skills path:skill/noxinfluencer/README.md"
 ---
 
 # Quick Start for Claude

@@ -20,7 +20,7 @@ source_of_truth:
 
 # Quick Start
 
-Your first goal is simple:
+Your first goal is not to understand every detail. It is to complete three things quickly:
 
 1. Prepare the right account and permissions
 2. Connect your preferred agent environment
@@ -32,6 +32,12 @@ Your first goal is simple:
 - [Claude](claude.md)
 - [OpenClaw](openclaw.md)
 
+## Before you begin
+
+- Make sure you can sign in with the right main account
+- Confirm whether the current account can use the relevant Skill capability
+- Remember that usage may be constrained by both Skill quota and underlying service quota
+
 ## What counts as a successful first run
 
 Any of the following is enough:
@@ -39,3 +45,8 @@ Any of the following is enough:
 - A creator discovery flow returns a usable shortlist
 - A creator analysis flow returns decision-ready signals
 - A monitoring flow can be started or queried successfully
+
+## Common next steps
+
+- If you need the account and entitlement model first, read [Authentication](../authentication.md)
+- If the first run succeeds, continue to [Find Your First Creators](../../guides/find-your-first-creators.md)

@@ -17,7 +17,7 @@ availability: available
 source_of_truth:
   - ../../../../03_API能力设计.md
   - ../../../../05_PRD.md
-  - ../../../../../../../kol_claw/docs/modules/discover-creators.md
+  - "repo:kol_claw path:docs/modules/discover-creators.md"
 ---
 
 # Discover Creators
@@ -32,8 +32,27 @@ Discover Creators helps teams find candidate creators and build a shortlist wort
 - You want a shortlist before deep due diligence
 - You need a clean handoff into creator analysis
 
+## Recommended inputs
+
+- Platform
+- Market or country
+- Category, keywords, or content direction
+- Creator size range
+- Whether commercial fit or contactability should matter
+
+## Typical output
+
+- A list of candidate creators
+- Basic fit signals
+- Creator identifiers that can be used for deeper analysis
+
 ## What it is not for
 
 - It does not replace deep evaluation
 - It does not mean a creator is ready for outreach
 - It should not be treated as a final collaboration list
+
+## Recommended next steps
+
+- [Analyze Creator](analyze-creator.md)
+- [Find Your First Creators](../guides/find-your-first-creators.md)

@@ -1,6 +1,6 @@
 ---
 doc_id: guide_find_first_creators
-title: Find Your First Creators
+title: 完成第一次达人发现
 description: 用标准的任务拆解方式完成第一次达人发现，并产出可继续分析的短名单。
 locale: zh
 content_type: doc
@@ -15,10 +15,10 @@ keywords:
 source_of_truth:
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
-  - ../../../../../../../noxinfluencer_skills/skill/noxinfluencer/skills/discovering-creators/SKILL.md
+  - "repo:noxinfluencer_skills path:skill/noxinfluencer/skills/discovering-creators/SKILL.md"
 ---
 
-# Find Your First Creators
+# 完成第一次达人发现
 
 第一次使用时，目标不是“搜得越多越好”，而是尽快得到一个可以继续分析的短名单。
 

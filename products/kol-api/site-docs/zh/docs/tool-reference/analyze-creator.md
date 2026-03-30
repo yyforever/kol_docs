@@ -1,6 +1,6 @@
 ---
 doc_id: tool_analyze_creator
-title: Analyze Creator
+title: 达人分析
 description: 对单个达人做更深入的可信度、受众和合作判断。
 locale: zh
 content_type: doc
@@ -17,10 +17,10 @@ availability: available
 source_of_truth:
   - ../../../../03_API能力设计.md
   - ../../../../05_PRD.md
-  - ../../../../../../../kol_claw/docs/modules/analyze-creator.md
+  - "repo:kol_claw path:docs/modules/analyze-creator.md"
 ---
 
-# Analyze Creator
+# 达人分析
 
 **当前状态：Available**
 

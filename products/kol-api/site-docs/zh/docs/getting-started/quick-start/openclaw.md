@@ -1,11 +1,11 @@
 ---
 doc_id: quick_start_openclaw
-title: Quick Start for OpenClaw
+title: OpenClaw 快速开始
 description: 使用 OpenClaw 接入 NoxInfluencer 的建议路径与监控类场景起点。
 locale: zh
 content_type: doc
 nav_group: getting-started
-order: 5
+order: 23
 status: published
 updated_at: 2026-03-30
 keywords:
@@ -14,10 +14,10 @@ keywords:
   - monitoring
 source_of_truth:
   - ../../../../../05_PRD.md
-  - ../../../../../../../../noxinfluencer_skills/skill/noxinfluencer/skills/tracking-performance/SKILL.md
+  - "repo:noxinfluencer_skills path:skill/noxinfluencer/skills/tracking-performance/SKILL.md"
 ---
 
-# Quick Start for OpenClaw
+# OpenClaw 快速开始
 
 OpenClaw 更适合把发现、分析和监控串成连续工作流。
 

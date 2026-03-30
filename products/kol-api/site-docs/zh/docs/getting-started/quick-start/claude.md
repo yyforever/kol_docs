@@ -1,11 +1,11 @@
 ---
 doc_id: quick_start_claude
-title: Quick Start for Claude
+title: Claude 快速开始
 description: 使用 Claude 接入 NoxInfluencer 的建议步骤与首次验证方式。
 locale: zh
 content_type: doc
 nav_group: getting-started
-order: 4
+order: 22
 status: published
 updated_at: 2026-03-30
 keywords:
@@ -14,10 +14,10 @@ keywords:
   - skill
 source_of_truth:
   - ../../../../../05_PRD.md
-  - ../../../../../../../../noxinfluencer_skills/skill/noxinfluencer/README.md
+  - "repo:noxinfluencer_skills path:skill/noxinfluencer/README.md"
 ---
 
-# Quick Start for Claude
+# Claude 快速开始
 
 ## 推荐步骤
 

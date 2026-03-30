@@ -1,6 +1,6 @@
 ---
 doc_id: tool_negotiate
-title: Negotiate
+title: 合作协商
 description: 面向合作谈判与协商流程的规划中能力说明。
 locale: zh
 content_type: doc
@@ -19,7 +19,7 @@ source_of_truth:
   - ../../../../05_PRD.md
 ---
 
-# Negotiate
+# 合作协商
 
 **当前状态：Planned**
 

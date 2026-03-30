@@ -5,7 +5,7 @@ description: Understand the account, entitlement, and quota model behind public 
 locale: en
 content_type: doc
 nav_group: getting-started
-order: 6
+order: 3
 status: published
 updated_at: 2026-03-30
 keywords:
@@ -15,7 +15,7 @@ keywords:
 source_of_truth:
   - ../../../../04_定价与商业模式.md
   - ../../../../05_PRD.md
-  - ../../../../../../../kol_claw/docs/modules/quota.md
+  - "repo:kol_claw path:docs/modules/quota.md"
 ---
 
 # Authentication

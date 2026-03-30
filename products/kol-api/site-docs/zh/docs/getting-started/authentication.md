@@ -1,11 +1,11 @@
 ---
 doc_id: authentication
-title: Authentication
+title: 认证与账号
 description: 了解主账号、能力权限与基础认证心智，避免把旧独立 API 产品逻辑带入当前公开能力。
 locale: zh
 content_type: doc
 nav_group: getting-started
-order: 6
+order: 3
 status: published
 updated_at: 2026-03-30
 keywords:
@@ -15,10 +15,10 @@ keywords:
 source_of_truth:
   - ../../../../04_定价与商业模式.md
   - ../../../../05_PRD.md
-  - ../../../../../../../kol_claw/docs/modules/quota.md
+  - "repo:kol_claw path:docs/modules/quota.md"
 ---
 
-# Authentication
+# 认证与账号
 
 当前公开能力基于主账号体系运作，不再使用旧的“独立产品注册 + 独立额度 + 独立凭证”心智。
 

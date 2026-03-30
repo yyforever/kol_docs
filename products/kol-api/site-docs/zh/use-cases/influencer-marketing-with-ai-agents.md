@@ -1,6 +1,6 @@
 ---
 doc_id: use_case_influencer_marketing_with_ai_agents
-title: Influencer Marketing with AI Agents
+title: AI 代理驱动的达人营销
 description: 用 AI Agent 重组达人营销工作流，从发现、评估到监控形成更短链路。
 locale: zh
 content_type: use-case
@@ -18,7 +18,7 @@ source_of_truth:
   - ../../../05_PRD.md
 ---
 
-# Influencer Marketing with AI Agents
+# AI 代理驱动的达人营销
 
 AI Agent 对达人营销最直接的价值，不是替代全部人工，而是把关键环节串成更短的工作流。
 

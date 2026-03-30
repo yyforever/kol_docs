@@ -1,7 +1,7 @@
 ---
 doc_id: tool_outreach_creators
 title: Outreach Creators
-description: Planned public capability page for creator outreach workflows.
+description: Public capability reference for outreach preparation and creator contact retrieval.
 locale: en
 content_type: doc
 nav_group: tool-reference
@@ -13,26 +13,39 @@ keywords:
   - creator outreach
   - contact workflow
 tool_key: outreach_creators
-availability: planned
+availability: available
 source_of_truth:
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
-  - ../../../../../../../noxinfluencer_skills/skill/noxinfluencer/skills/retrieving-contacts/SKILL.md
+  - "repo:kol_claw path:server/app/routers/outreach.py"
+  - "repo:noxinfluencer_skills path:skill/noxinfluencer/skills/retrieving-contacts/SKILL.md"
 ---
 
 # Outreach Creators
 
-**Current status: Planned**
+**Current status: Available**
 
-This page reserves the public documentation slot for future outreach-focused capability.
+The currently public part of Outreach Creators is contact retrieval for a creator you have already chosen, so your team can prepare for outreach with real contact data instead of assumptions.
 
-## Intended role
+## Best-fit scenarios
 
-- Move from evaluation into contact workflows
-- Connect creator context with campaign needs
-- Support structured outreach decisions
+- You already have a shortlist or a reviewed creator
+- You are about to move from evaluation into contact preparation
+- You need to confirm whether a creator currently has usable contact information
 
-## What not to assume
+## Typical input and output
 
-- Do not assume this is a fully public outreach automation promise today
-- Do not skip creator evaluation just because this page exists
+- The typical input is a `creator_id` returned by discovery or analysis
+- The typical output is contact data such as email plus a contact-quality signal
+- Treat this capability as outreach preparation, not as a full outbound workflow
+
+## Current boundary
+
+- This is not a promise of fully public outbound automation
+- It does not write copy, send messages, or manage bulk outreach cadence for you
+- It should not replace creator evaluation before contact begins
+
+## Recommended next steps
+
+- [Evaluate Creators Before Outreach](../guides/evaluate-creators-before-outreach.md)
+- [Manage Campaign Context](../guides/manage-campaign-context.md)

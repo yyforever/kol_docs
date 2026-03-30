@@ -1,6 +1,6 @@
 ---
 doc_id: use_cases_home
-title: Use Cases
+title: 应用场景
 description: 面向 GEO / SEO 的场景内容入口，解释品牌团队如何用 AI Agent 完成达人营销关键任务。
 locale: zh
 content_type: use-case
@@ -17,7 +17,7 @@ source_of_truth:
   - ../../../05_PRD.md
 ---
 
-# Use Cases
+# 应用场景
 
 本分区用于承载场景化内容，而不是帮助中心说明。
 

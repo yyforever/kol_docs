@@ -17,7 +17,7 @@ availability: beta
 source_of_truth:
   - ../../../../03_API能力设计.md
   - ../../../../05_PRD.md
-  - ../../../../../../../kol_claw/docs/modules/video-monitor.md
+  - "repo:kol_claw path:docs/modules/video-monitor.md"
 ---
 
 # Track Performance
@@ -32,6 +32,18 @@ Track Performance is the public monitoring direction for watching creator or con
 - Collaboration follow-up
 - Trend and anomaly review
 
+## Current public note
+
+Monitoring is already one of the core public directions, but the final public surface is still being standardized. Read this page as public capability guidance, not as a frozen low-level interface contract.
+
+## What you should expect
+
+- Ongoing observation after a monitoring target is created
+- Periodic review of changes, anomalies, and trends
+- Support for shortlist, campaign, or review decisions
+
 ## Current boundary
 
-The monitoring direction is real and important, but the final public surface is still being standardized. This page documents the public capability intent, not a frozen interface contract.
+- It does not replace Discover or Analyze
+- It does not mean every monitoring detail is already publicly stable
+- The exact public surface should be read together with future product release notes

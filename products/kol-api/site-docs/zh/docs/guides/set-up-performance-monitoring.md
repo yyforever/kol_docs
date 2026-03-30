@@ -1,6 +1,6 @@
 ---
 doc_id: guide_set_up_performance_monitoring
-title: Set Up Performance Monitoring
+title: 建立表现监控
 description: 把发现和分析后的对象转入持续观察，适合活动前后监控与复盘。
 locale: zh
 content_type: doc
@@ -15,10 +15,10 @@ keywords:
 source_of_truth:
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
-  - ../../../../../../../noxinfluencer_skills/skill/noxinfluencer/skills/tracking-performance/SKILL.md
+  - "repo:noxinfluencer_skills path:skill/noxinfluencer/skills/tracking-performance/SKILL.md"
 ---
 
-# Set Up Performance Monitoring
+# 建立表现监控
 
 监控最适合放在“已经有候选达人或已合作对象”之后使用。
 

@@ -1,6 +1,6 @@
 ---
 doc_id: use_case_creator_evaluation_before_outreach
-title: Creator Evaluation Before Outreach
+title: 触达前达人评估
 description: 在触达前先做统一评估，减少在不匹配达人身上浪费时间和预算。
 locale: zh
 content_type: use-case
@@ -17,7 +17,7 @@ source_of_truth:
   - ../../../05_PRD.md
 ---
 
-# Creator Evaluation Before Outreach
+# 触达前达人评估
 
 许多团队的低效，不是找不到达人，而是过早进入联络。
 

@@ -1,6 +1,6 @@
 ---
 doc_id: guide_manage_campaign_context
-title: Manage Campaign Context
+title: 管理活动上下文
 description: 用统一上下文管理搜索、分析和监控结果，减少每次都从头开始的成本。
 locale: zh
 content_type: doc
@@ -14,10 +14,10 @@ keywords:
   - workflow
 source_of_truth:
   - ../../../../05_PRD.md
-  - ../../../../../../../noxinfluencer_skills/skill/noxinfluencer/README.md
+  - "repo:noxinfluencer_skills path:skill/noxinfluencer/README.md"
 ---
 
-# Manage Campaign Context
+# 管理活动上下文
 
 随着使用次数增加，团队最需要的不是“再搜一次”，而是“把上次的上下文接上”。
 
@@ -36,4 +36,4 @@ source_of_truth:
 
 ## 当前状态说明
 
-Manage Campaigns 是公开信息架构中的正式目录，但其最终公开形态仍在演进中。若你需要立即可用的能力，应优先依赖当前已公开的发现、分析和监控链路。
+活动管理是公开信息架构中的正式目录，但其最终公开形态仍在演进中。若你需要立即可用的能力，应优先依赖当前已公开的发现、分析和监控链路。

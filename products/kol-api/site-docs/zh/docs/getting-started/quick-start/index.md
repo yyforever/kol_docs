@@ -1,6 +1,6 @@
 ---
 doc_id: quick_start_home
-title: Quick Start
+title: 快速开始
 description: 在 5 分钟内完成账号准备、Agent 接入和首次搜索。
 locale: zh
 content_type: doc
@@ -18,7 +18,7 @@ source_of_truth:
   - ../../../../../05_PRD.md
 ---
 
-# Quick Start
+# 快速开始
 
 首要目标不是理解所有细节，而是先完成三件事：
 

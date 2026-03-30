@@ -1,6 +1,6 @@
 ---
 doc_id: resource_credit_guide
-title: Credit Guide
+title: 配额说明
 description: 解释当前公开能力下的 quota 心智、双配额关系与升级触发点。
 locale: zh
 content_type: doc
@@ -15,10 +15,10 @@ keywords:
 source_of_truth:
   - ../../../../04_定价与商业模式.md
   - ../../../../05_PRD.md
-  - ../../../../../../../kol_claw/docs/modules/quota.md
+  - "repo:kol_claw path:docs/modules/quota.md"
 ---
 
-# Credit Guide
+# 配额说明
 
 虽然导航仍沿用 Credit Guide 这一命名，但当前公开口径应统一理解为 **quota 模型**。
 

@@ -1,6 +1,6 @@
 ---
 doc_id: use_case_creator_performance_monitoring
-title: Creator Performance Monitoring
+title: 达人表现监控
 description: 在 shortlist、合作或复盘阶段，持续观察达人和内容变化的典型场景。
 locale: zh
 content_type: use-case
@@ -17,7 +17,7 @@ source_of_truth:
   - ../../../05_PRD.md
 ---
 
-# Creator Performance Monitoring
+# 达人表现监控
 
 监控类能力不是发现的替代品，而是 shortlist 和合作后的延续。
 

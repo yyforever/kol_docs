@@ -14,7 +14,7 @@ keywords:
   - workflow
 source_of_truth:
   - ../../../../05_PRD.md
-  - ../../../../../../../noxinfluencer_skills/skill/noxinfluencer/README.md
+  - "repo:noxinfluencer_skills path:skill/noxinfluencer/README.md"
 ---
 
 # Manage Campaign Context

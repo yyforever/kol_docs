@@ -5,7 +5,7 @@ description: Suggested onboarding path for using NoxInfluencer with OpenClaw.
 locale: en
 content_type: doc
 nav_group: getting-started
-order: 5
+order: 23
 status: published
 updated_at: 2026-03-30
 keywords:
@@ -14,7 +14,7 @@ keywords:
   - monitoring
 source_of_truth:
   - ../../../../../05_PRD.md
-  - ../../../../../../../../noxinfluencer_skills/skill/noxinfluencer/skills/tracking-performance/SKILL.md
+  - "repo:noxinfluencer_skills path:skill/noxinfluencer/skills/tracking-performance/SKILL.md"
 ---
 
 # Quick Start for OpenClaw
@@ -31,3 +31,14 @@ OpenClaw is especially useful when you want to chain discovery, analysis, and mo
 ## Why discovery comes first
 
 Monitoring is usually most useful after you already know who or what you want to track.
+
+## Recommended first validation
+
+- Ask for a candidate creator list first
+- Analyze one creator from that list
+- Then ask to keep tracking that creator's performance changes over time
+
+## Related pages
+
+- [Track Performance](../../tool-reference/track-performance.md)
+- [Set Up Performance Monitoring](../../guides/set-up-performance-monitoring.md)

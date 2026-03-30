@@ -1,6 +1,6 @@
 ---
 doc_id: use_case_ai_creator_discovery
-title: AI Creator Discovery
+title: AI 达人发现
 description: 为什么品牌团队会用 AI Agent 做达人发现，以及 NoxInfluencer 如何缩短 shortlist 形成时间。
 locale: zh
 content_type: use-case
@@ -17,7 +17,7 @@ source_of_truth:
   - ../../../02_用户场景.md
 ---
 
-# AI Creator Discovery
+# AI 达人发现
 
 品牌团队最先感受到价值的环节，通常不是谈判，而是“更快找到靠谱候选人”。
 

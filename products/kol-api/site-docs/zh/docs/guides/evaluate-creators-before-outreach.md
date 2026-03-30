@@ -1,6 +1,6 @@
 ---
 doc_id: guide_evaluate_before_outreach
-title: Evaluate Creators Before Outreach
+title: 触达前评估达人
 description: 在接触达人之前，先用统一框架评估可信度、受众质量和合作风险。
 locale: zh
 content_type: doc
@@ -15,10 +15,10 @@ keywords:
 source_of_truth:
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
-  - ../../../../../../../noxinfluencer_skills/skill/noxinfluencer/skills/analyzing-creator/SKILL.md
+  - "repo:noxinfluencer_skills path:skill/noxinfluencer/skills/analyzing-creator/SKILL.md"
 ---
 
-# Evaluate Creators Before Outreach
+# 触达前评估达人
 
 在进入联络和合作前，建议先完成一次标准化评估，避免把时间花在明显不合适的对象上。
 

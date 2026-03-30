@@ -45,7 +45,7 @@ keywords:
   - influencer marketing
 source_of_truth:
   - ../03_API能力设计.md
-  - ../05_PRD.md
+  - "repo:kol_claw path:docs/modules/discover-creators.md"
 ---
 ```
 
@@ -61,7 +61,7 @@ source_of_truth:
 - `status`：`draft` / `published`
 - `updated_at`：`YYYY-MM-DD`
 - `keywords`：关键词数组
-- `source_of_truth`：当前事实来源，优先指向产品口径和实现契约
+- `source_of_truth`：当前事实来源；仓库内引用继续使用相对路径，跨仓库引用统一使用带引号的语义格式，例如 `"repo:kol_claw path:docs/modules/quota.md"`
 
 Tool Reference 页面额外要求：
 
