@@ -18,7 +18,7 @@ source_of_truth:
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
   - "repo:kol_claw path:server/app/routers/outreach.py"
-  - "repo:noxinfluencer_skills path:skill/noxinfluencer/skills/retrieving-contacts/SKILL.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skill/noxinfluencer/skills/retrieving-contacts/SKILL.md"
 ---
 
 # 达人触达

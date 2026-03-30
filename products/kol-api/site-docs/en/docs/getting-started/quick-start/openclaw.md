@@ -14,7 +14,7 @@ keywords:
   - monitoring
 source_of_truth:
   - ../../../../../05_PRD.md
-  - "repo:noxinfluencer_skills path:skill/noxinfluencer/skills/tracking-performance/SKILL.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skill/noxinfluencer/skills/tracking-performance/SKILL.md"
 ---
 
 # Quick Start for OpenClaw

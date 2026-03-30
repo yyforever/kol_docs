@@ -14,7 +14,7 @@ keywords:
   - skill
 source_of_truth:
   - ../../../../../05_PRD.md
-  - "repo:noxinfluencer_skills path:skill/noxinfluencer/README.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skill/noxinfluencer/README.md"
 ---
 
 # Quick Start for Claude

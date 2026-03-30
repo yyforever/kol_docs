@@ -61,7 +61,7 @@ source_of_truth:
 - `status`：`draft` / `published`
 - `updated_at`：`YYYY-MM-DD`
 - `keywords`：关键词数组
-- `source_of_truth`：当前事实来源；仓库内引用继续使用相对路径，跨仓库引用统一使用带引号的语义格式，例如 `"repo:kol_claw path:docs/modules/quota.md"`
+- `source_of_truth`：当前事实来源；仓库内引用继续使用相对路径。跨仓库引用中，私有或内部仓库使用带引号的语义格式，例如 `"repo:kol_claw path:docs/modules/quota.md"`；公开仓库优先使用其 canonical GitHub URL
 
 Tool Reference 页面额外要求：
 
@@ -71,7 +71,7 @@ Tool Reference 页面额外要求：
 ## 编写原则
 
 - 只写对外公开内容，不复制内部 PRD 讨论过程
-- 当前有效口径以 `01-05` 产品文档为主，以 `kol_claw` / `noxinfluencer_skills` 的当前实现为校验
+- 当前有效口径以 `01-05` 产品文档为主，以 `kol_claw` / `https://github.com/NoxInfluencer/skills` 的当前实现为校验
 - 历史 `prototypes/` 仅作结构参考，不可直接复用其中旧 API 路径、旧错误码、旧价格和旧产品叙事
 - 所有 `published` 内容必须中英成对出现，不允许单语发布
 - 尚未公开可用的能力可以写入 Tool Reference，但必须通过 `availability: planned` 或 `availability: beta` 明示状态

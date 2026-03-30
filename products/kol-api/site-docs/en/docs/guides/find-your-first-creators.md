@@ -15,7 +15,7 @@ keywords:
 source_of_truth:
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
-  - "repo:noxinfluencer_skills path:skill/noxinfluencer/skills/discovering-creators/SKILL.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skill/noxinfluencer/skills/discovering-creators/SKILL.md"
 ---
 
 # Find Your First Creators
