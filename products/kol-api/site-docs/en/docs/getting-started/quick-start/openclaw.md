@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 23
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-03-31
 keywords:
   - openclaw
   - quick start
@@ -20,6 +20,11 @@ source_of_truth:
 # Quick Start for OpenClaw
 
 OpenClaw is especially useful when you want to chain discovery, analysis, and monitoring into one workflow.
+
+## OpenClaw access
+
+- Want the repository and public repo docs first: open [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
+- If you are using OpenClaw, the recommended install entry is [Clawhub](https://clawhub.ai/noxinfluencer/noxinfluencer)
 
 ## Recommended path
 

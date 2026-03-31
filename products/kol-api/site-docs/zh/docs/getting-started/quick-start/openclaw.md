@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 23
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-03-31
 keywords:
   - openclaw
   - quick start
@@ -20,6 +20,11 @@ source_of_truth:
 # OpenClaw 快速开始
 
 OpenClaw 更适合把发现、分析和监控串成连续工作流。
+
+## OpenClaw 入口
+
+- 想先看开源仓库和说明：查看 [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
+- 如果你通过 OpenClaw 使用，建议直接从 [Clawhub](https://clawhub.ai/noxinfluencer/noxinfluencer) 安装
 
 ## 推荐步骤
 

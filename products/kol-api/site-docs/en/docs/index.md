@@ -23,8 +23,8 @@ This is the public documentation hub for NoxInfluencer.
 
 ## Official access points
 
-- Want to install and use it directly: go to [Clawhub](https://clawhub.ai/noxinfluencer/noxinfluencer)
 - Want the source repository and repo-level docs: go to [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
+- If you are using OpenClaw, install it directly from [Clawhub](https://clawhub.ai/noxinfluencer/noxinfluencer)
 
 ## Start here
 

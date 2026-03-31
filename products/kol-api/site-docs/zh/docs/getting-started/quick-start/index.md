@@ -28,8 +28,8 @@ source_of_truth:
 
 ## 先拿到入口
 
-- 想直接安装：从 [Clawhub](https://clawhub.ai/noxinfluencer/noxinfluencer) 开始
 - 想先看仓库和说明：查看 [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
+- 如果你通过 OpenClaw 使用：直接从 [Clawhub](https://clawhub.ai/noxinfluencer/noxinfluencer) 安装
 
 ## 建议顺序
 

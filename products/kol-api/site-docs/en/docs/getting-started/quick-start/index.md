@@ -28,8 +28,8 @@ Your first goal is not to understand every detail. It is to complete three thing
 
 ## Get access first
 
-- Want the fastest install path: start on [Clawhub](https://clawhub.ai/noxinfluencer/noxinfluencer)
 - Want to inspect the repository and docs first: open [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
+- If you are using OpenClaw, install it directly from [Clawhub](https://clawhub.ai/noxinfluencer/noxinfluencer)
 
 ## Platform guides
 
