@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 2
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-03-31
 keywords:
   - quick start
   - chatgpt
@@ -25,6 +25,11 @@ Your first goal is not to understand every detail. It is to complete three thing
 1. Prepare the right account and permissions
 2. Connect your preferred agent environment
 3. Complete one real discovery or analysis task
+
+## Get access first
+
+- Want the fastest install path: start on [Clawhub](https://clawhub.ai/noxinfluencer/noxinfluencer)
+- Want to inspect the repository and docs first: open [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
 
 ## Platform guides
 

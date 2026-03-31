@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 2
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-03-31
 keywords:
   - quick start
   - chatgpt
@@ -25,6 +25,11 @@ source_of_truth:
 1. 准备可用的主账号和权限
 2. 在目标 Agent 平台完成接入
 3. 跑通一次真实的达人搜索或分析
+
+## 先拿到入口
+
+- 想直接安装：从 [Clawhub](https://clawhub.ai/noxinfluencer/noxinfluencer) 开始
+- 想先看仓库和说明：查看 [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
 
 ## 建议顺序
 

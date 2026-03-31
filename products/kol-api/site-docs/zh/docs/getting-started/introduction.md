@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 1
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-03-31
 keywords:
   - introduction
   - noxinfluencer
@@ -21,6 +21,11 @@ source_of_truth:
 # 产品简介
 
 NoxInfluencer 当前对外公开的是一套面向品牌广告主的 Skill 能力层，用来帮助团队在 AI Agent 环境中更快完成达人发现、深度评估和监控跟进。
+
+## 从哪里访问
+
+- 想立即开始使用：前往 [Clawhub](https://clawhub.ai/noxinfluencer/noxinfluencer)
+- 想查看开源仓库、目录结构和公开说明：前往 [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
 
 ## 适合谁
 

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-03-31
 keywords:
   - noxinfluencer 文档
   - influencer marketing
@@ -20,6 +20,11 @@ source_of_truth:
 # 文档中心
 
 这里汇总了 NoxInfluencer 面向品牌广告主和营销团队的公开文档。
+
+## 官方入口
+
+- 想直接安装和使用：访问 [Clawhub](https://clawhub.ai/noxinfluencer/noxinfluencer)
+- 想查看源码和仓库说明：访问 [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
 
 ## 你可以从哪里开始
 
