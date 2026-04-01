@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-03-31
+updated_at: 2026-04-01
 keywords:
   - noxinfluencer docs
   - influencer marketing
@@ -24,7 +24,7 @@ This is the public documentation hub for NoxInfluencer.
 ## Official access points
 
 - Want the source repository and repo-level docs: go to [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
-- If you are using OpenClaw, install it directly from [Clawhub](https://clawhub.ai/noxinfluencer/noxinfluencer)
+- If you are using OpenClaw, install it directly from [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer)
 
 ## Start here
 

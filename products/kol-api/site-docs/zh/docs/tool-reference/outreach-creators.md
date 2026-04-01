@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 4
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-04-01
 keywords:
   - outreach creators
   - contact
@@ -18,7 +18,7 @@ source_of_truth:
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
   - "repo:kol_claw path:server/app/routers/outreach.py"
-  - "https://github.com/NoxInfluencer/skills/blob/main/skill/noxinfluencer/skills/retrieving-contacts/SKILL.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
 ---
 
 # 达人触达

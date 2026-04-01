@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 1
 status: published
-updated_at: 2026-03-31
+updated_at: 2026-04-01
 keywords:
   - introduction
   - noxinfluencer
@@ -25,7 +25,7 @@ NoxInfluencer is currently presented as a public Skill capability layer for bran
 ## Where to access it
 
 - Want the open repository, file structure, and public repo docs: go to [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
-- If you are using OpenClaw, install it directly from [Clawhub](https://clawhub.ai/noxinfluencer/noxinfluencer)
+- If you are using OpenClaw, install it directly from [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer)
 
 ## Who this is for
 

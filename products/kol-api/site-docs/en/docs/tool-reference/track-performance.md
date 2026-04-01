@@ -1,49 +1,53 @@
 ---
 doc_id: tool_track_performance
 title: Track Performance
-description: Public capability reference for ongoing performance observation and monitoring workflows.
+description: Public capability reference for project-based video monitoring and ongoing performance review.
 locale: en
 content_type: doc
 nav_group: tool-reference
 order: 3
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-04-01
 keywords:
   - track performance
   - monitoring
   - creator performance
 tool_key: track_performance
-availability: beta
+availability: available
 source_of_truth:
   - ../../../../03_API能力设计.md
   - ../../../../05_PRD.md
   - "repo:kol_claw path:docs/modules/video-monitor.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
 ---
 
 # Track Performance
 
-**Current status: Beta**
+**Current status: Available**
 
-Track Performance is the public monitoring direction for watching creator or content changes over time.
+Track Performance is currently exposed as a public project-based video monitoring workflow for following campaign performance over time.
 
 ## Best-fit scenarios
 
-- Ongoing shortlist observation
+- Ongoing campaign video tracking
 - Collaboration follow-up
 - Trend and anomaly review
 
-## Current public note
+## Current public workflow
 
-Monitoring is already one of the core public directions, but the final public surface is still being standardized. Read this page as public capability guidance, not as a frozen low-level interface contract.
+- list monitoring projects
+- create a monitoring project
+- add one or more video URLs as tasks
+- inspect task lists and project summaries
 
 ## What you should expect
 
-- Ongoing observation after a monitoring target is created
-- Periodic review of changes, anomalies, and trends
-- Support for shortlist, campaign, or review decisions
+- Project-based monitoring objects
+- Video-level status and performance snapshots
+- Project-level totals and platform breakdowns
 
 ## Current boundary
 
 - It does not replace Discover or Analyze
-- It does not mean every monitoring detail is already publicly stable
-- The exact public surface should be read together with future product release notes
+- The current public surface is video-monitor projects, not a generic always-on creator watchlist
+- It does not yet cover the full campaign-ops layer such as exports, collaborators, or CRM-style coordination

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 3
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-04-01
 keywords:
   - authentication
   - account
@@ -16,13 +16,14 @@ source_of_truth:
   - ../../../../04_定价与商业模式.md
   - ../../../../05_PRD.md
   - "repo:kol_claw path:docs/modules/quota.md"
+  - "repo:kol_claw path:server/app/services/nox_api.py"
 ---
 
 # 认证与账号
 
 当前公开能力基于主账号体系运作，不再使用旧的“独立产品注册 + 独立额度 + 独立凭证”心智。
 
-## 你需要理解的三个层次
+## 你需要理解的四个层次
 
 ### 1. 主账号
 
@@ -32,7 +33,11 @@ source_of_truth:
 
 不是所有账号都自动拥有所有能力。某些能力可能未开放、正在 Beta，或仍处于规划中。
 
-### 3. 配额约束
+### 3. Scope 与权限要求
+
+部分请求除了账号和套餐之外，还依赖更细的能力权限。当前实现里，进阶搜索、受众分析、品牌分析、联系方式获取等能力缺权限时，会返回 `SCOPE_REQUIRED`。
+
+### 4. 配额约束
 
 对外体验统一按 quota 解释，实际可能同时受到两层约束：
 
@@ -50,3 +55,4 @@ source_of_truth:
 - 误以为所有文档页都代表该能力已公开上线
 - 误以为只要有账号，就一定能用所有 Tool
 - 误以为额度只看一层，不需要考虑底层服务能力边界
+- 误以为所有拦截都一定是额度不足

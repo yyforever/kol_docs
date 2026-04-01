@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-03-31
+updated_at: 2026-04-01
 keywords:
   - noxinfluencer 文档
   - influencer marketing
@@ -24,7 +24,7 @@ source_of_truth:
 ## 官方入口
 
 - 想查看源码和仓库说明：访问 [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
-- 如果你通过 OpenClaw 使用：直接从 [Clawhub](https://clawhub.ai/noxinfluencer/noxinfluencer) 安装
+- 如果你通过 OpenClaw 使用：直接从 [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer) 安装
 
 ## 你可以从哪里开始
 

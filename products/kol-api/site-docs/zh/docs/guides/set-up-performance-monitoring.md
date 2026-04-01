@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 3
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-04-01
 keywords:
   - performance monitoring
   - tracking
@@ -15,7 +15,8 @@ keywords:
 source_of_truth:
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
-  - "https://github.com/NoxInfluencer/skills/blob/main/skill/noxinfluencer/skills/tracking-performance/SKILL.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
+  - "repo:kol_claw path:docs/modules/video-monitor.md"
 ---
 
 # 建立表现监控
@@ -30,13 +31,15 @@ source_of_truth:
 
 ## 推荐流程
 
-1. 明确要监控的是达人、内容，还是某次合作表现
-2. 先建立监控对象，再按周期查看变化
-3. 把结果回流到 shortlist 或 campaign 决策中
+1. 先明确要跟踪的是哪批合作视频或投放内容
+2. 先建立监控项目
+3. 把一个或多个视频 URL 添加为监控任务
+4. 按周期查看任务列表和项目 summary
+5. 再把结果回流到 shortlist 或 campaign 决策中
 
-## 当前状态说明
+## 当前公开工作流
 
-Track Performance 是当前文档中的核心公开方向之一，但具体公开形态仍在收敛中。阅读本页时，请同时参考 Tool Reference 页里的状态标注。
+当前公开监控能力已经是项目化视频监控闭环，而不只是方向性说明。
 
 ## 监控能解决什么问题
 

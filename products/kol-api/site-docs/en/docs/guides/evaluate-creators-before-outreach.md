@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 2
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-04-01
 keywords:
   - evaluate creators
   - outreach
@@ -15,7 +15,7 @@ keywords:
 source_of_truth:
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
-  - "https://github.com/NoxInfluencer/skills/blob/main/skill/noxinfluencer/skills/analyzing-creator/SKILL.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
 ---
 
 # Evaluate Creators Before Outreach

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 2
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-04-01
 keywords:
   - error codes
   - troubleshooting
@@ -16,6 +16,8 @@ source_of_truth:
   - ../../../../05_PRD.md
   - "repo:kol_claw path:server/app/errors.py"
   - "repo:kol_claw path:docs/modules/quota.md"
+  - "repo:kol_claw path:server/app/services/nox_api.py"
+  - "repo:kol_claw path:server/app/services/redis_rate_limit.py"
 ---
 
 # 错误码
@@ -28,13 +30,14 @@ source_of_truth:
 |--------|------|----------|
 | `INVALID_API_KEY` | API key 无效或当前账号不可用 | 检查绑定账号、key 配置或重新生成凭证 |
 | `INSUFFICIENT_CREDIT` | 当前请求所需额度不足 | 检查 quota 状态并确认升级路径 |
+| `RATE_LIMITED` | 同一个 API key 在短时间内请求过于频繁 | 等待约 1 分钟、降低突发重试频率后再继续 |
+| `SCOPE_REQUIRED` | 账号本身有效，但当前操作缺少所需权限 | 检查当前套餐是否包含对应能力或权限 scope |
 | `INVALID_REQUEST` | 请求参数、输入格式或对象标识不合法 | 收紧输入并重新检查平台、筛选条件或 `creator_id` |
 | `DUPLICATE_DATA` | 同一对象已存在，无需重复创建 | 先查询已有对象、任务或监控记录，再决定是否继续 |
-| `UPSTREAM_40017` | 上游服务额度不足或被上游侧限流 | 稍后重试，或检查底层服务配额是否已经触顶 |
 | `INTERNAL_ERROR` | 系统内部错误 | 保留上下文和 request ID，并联系支持 |
 
 ## 使用原则
 
 - 面向终端用户时，应优先解释恢复路径，而不是只转抄技术术语
 - 前端、Agent 和站点文档应以当前实现的实际错误码为准，不要自行发明别名
-- 如果 Agent 已经能给出下一步动作，应优先复用该动作
+- 如果当前 CLI 已经返回 `action.url` 或 `action.hint`，应优先复用该动作

@@ -7,14 +7,14 @@ content_type: doc
 nav_group: guides
 order: 4
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-04-01
 keywords:
   - manage campaigns
   - context
   - workflow
 source_of_truth:
   - ../../../../05_PRD.md
-  - "https://github.com/NoxInfluencer/skills/blob/main/skill/noxinfluencer/README.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
 ---
 
 # Manage Campaign Context

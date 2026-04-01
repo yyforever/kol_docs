@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 2
 status: published
-updated_at: 2026-03-31
+updated_at: 2026-04-01
 keywords:
   - quick start
   - chatgpt
@@ -29,7 +29,7 @@ Your first goal is not to understand every detail. It is to complete three thing
 ## Get access first
 
 - Want to inspect the repository and docs first: open [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
-- If you are using OpenClaw, install it directly from [Clawhub](https://clawhub.ai/noxinfluencer/noxinfluencer)
+- If you are using OpenClaw, install it directly from [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer)
 
 ## Platform guides
 

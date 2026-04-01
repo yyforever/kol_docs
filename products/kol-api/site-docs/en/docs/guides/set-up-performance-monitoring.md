@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 3
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-04-01
 keywords:
   - performance monitoring
   - tracking
@@ -15,7 +15,8 @@ keywords:
 source_of_truth:
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
-  - "https://github.com/NoxInfluencer/skills/blob/main/skill/noxinfluencer/skills/tracking-performance/SKILL.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
+  - "repo:kol_claw path:docs/modules/video-monitor.md"
 ---
 
 # Set Up Performance Monitoring
@@ -30,13 +31,15 @@ Monitoring works best after you already have a candidate, collaborator, or watch
 
 ## Recommended flow
 
-1. Decide whether you are tracking a creator, a piece of content, or collaboration performance
-2. Create the monitoring target before you start comparing changes over time
-3. Feed the monitoring result back into shortlist or campaign decisions
+1. Decide which campaign videos or collaboration assets you want to track
+2. Create a monitoring project first
+3. Add one or more video URLs as monitoring tasks
+4. Review task lists and project summaries over time
+5. Feed the monitoring result back into shortlist or campaign decisions
 
-## Current note
+## Current public workflow
 
-Track Performance is a core public direction, but the final public surface is still being standardized. Treat this page as capability guidance, not as a low-level API spec.
+The current public surface is a project-based video monitoring workflow, not just a future direction.
 
 ## What monitoring helps answer
 
