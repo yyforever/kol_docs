@@ -1,46 +1,41 @@
 ---
 doc_id: quick_start_chatgpt
-title: ChatGPT 快速开始
-description: 使用 ChatGPT 接入 NoxInfluencer 的建议步骤与首次成功标准。
+title: ChatGPT 当前支持状态
+description: 当前通过 ChatGPT 使用 NoxInfluencer 的公开支持状态说明。
 locale: zh
 content_type: doc
 nav_group: getting-started
 order: 21
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-04-01
 keywords:
   - chatgpt
-  - quick start
+  - support status
   - noxinfluencer
 source_of_truth:
   - ../../../../../05_PRD.md
+  - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
 ---
 
-# ChatGPT 快速开始
+# ChatGPT 当前支持状态
 
-## 推荐步骤
+## 当前状态
 
-1. 登录你的主账号，确认当前套餐和权限状态
-2. 在 ChatGPT 侧完成对应连接或安装流程
-3. 使用一个明确的自然语言需求做第一次搜索
-4. 拿到结果后，再继续要求分析或监控
+ChatGPT **目前不是这个 skill 的公开可用安装路径**。
 
-## 建议的第一条任务
+当前公开的 `skills` 仓库没有发布 `noxinfluencer` 面向 ChatGPT 的公开安装方式。
 
-可以直接使用类似下面的真实任务目标：
+## 建议改用
 
-> 帮我找美国市场、适合护肤品牌合作的 YouTube 或 Instagram 创作者
+- 先从公开 GitHub 仓库开始：
+  [https://github.com/NoxInfluencer/skills/tree/main](https://github.com/NoxInfluencer/skills/tree/main)
+- 如果你通过 OpenClaw 使用，直接使用公开商店页：
+  [https://clawhub.ai/noxinfluencer/noxinfluencer](https://clawhub.ai/noxinfluencer/noxinfluencer)
 
-重点不是命令格式，而是给出平台、市场、品类和目标。
+## 为什么保留这个页面
 
-## 成功后应该看到什么
+保留这个路由，是为了让搜索 ChatGPT 接入的人直接看到当前公开状态，而不是继续看到过期的接入说明。
 
-- 能获得结构化的候选达人结果
-- 能基于候选结果继续做分析
-- 在额度不足或权限不足时，能得到可理解的下一步提示
+## 如果未来公开支持 ChatGPT
 
-## 如果没有成功
-
-- 先检查账号是否已正确绑定
-- 再检查当前套餐是否开放相关能力
-- 最后查看 [Error Codes](../../resources/error-codes.md) 里的恢复路径
+只有在公开仓库或正式发布说明里出现稳定的 ChatGPT 公开安装方式后，本页才应恢复为实际接入指南。

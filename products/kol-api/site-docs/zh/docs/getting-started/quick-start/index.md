@@ -10,7 +10,6 @@ status: published
 updated_at: 2026-04-01
 keywords:
   - quick start
-  - chatgpt
   - claude
   - openclaw
 source_of_truth:
@@ -31,11 +30,14 @@ source_of_truth:
 - 想先看仓库和说明：查看 [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
 - 如果你通过 OpenClaw 使用：直接从 [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer) 安装
 
-## 建议顺序
+## 当前支持的接入指南
 
-- [ChatGPT](chatgpt.md)
 - [Claude](claude.md)
 - [OpenClaw](openclaw.md)
+
+## 当前不支持的公开路径
+
+- [ChatGPT 当前支持状态](chatgpt.md)
 
 ## 上手前确认
 

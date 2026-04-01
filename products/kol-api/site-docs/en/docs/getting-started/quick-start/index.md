@@ -10,7 +10,6 @@ status: published
 updated_at: 2026-04-01
 keywords:
   - quick start
-  - chatgpt
   - claude
   - openclaw
 source_of_truth:
@@ -31,11 +30,14 @@ Your first goal is not to understand every detail. It is to complete three thing
 - Want to inspect the repository and docs first: open [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
 - If you are using OpenClaw, install it directly from [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer)
 
-## Platform guides
+## Supported setup guides
 
-- [ChatGPT](chatgpt.md)
 - [Claude](claude.md)
 - [OpenClaw](openclaw.md)
+
+## Unsupported public path
+
+- [ChatGPT support status](chatgpt.md)
 
 ## Before you begin
 

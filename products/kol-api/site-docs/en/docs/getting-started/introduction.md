@@ -29,7 +29,7 @@ NoxInfluencer is currently presented as a public Skill capability layer for bran
 
 ## Who this is for
 
-- Brand and marketing teams already using tools such as ChatGPT, Claude, or OpenClaw
+- Brand and marketing teams already using tools such as Claude Code, OpenClaw, or other compatible agent environments
 - Teams that want to shorten creator discovery, evaluation, and monitoring workflows
 - Teams that prefer a conversational workflow over manual tool switching
 
