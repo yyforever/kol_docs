@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 1
 status: published
-updated_at: 2026-04-01
+updated_at: 2026-04-02
 keywords:
   - introduction
   - noxinfluencer
@@ -20,28 +20,28 @@ source_of_truth:
 
 # 产品简介
 
-NoxInfluencer 当前对外公开的是一套面向品牌广告主的 Skill 能力层，用来帮助团队在 AI Agent 环境中更快完成达人发现、深度评估和监控跟进。
+NoxInfluencer 帮你在 AI Agent 环境里更快完成达人发现、深入评估和表现监控。
 
-## 从哪里访问
+## 选择你的开始方式
 
-- 想查看开源仓库、目录结构和公开说明：前往 [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
-- 如果你通过 OpenClaw 使用：直接从 [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer) 安装
+- 如果你使用 Claude Code、Codex、Cursor 或其他兼容 Agent 环境，请从 [GitHub](https://github.com/NoxInfluencer/skills/tree/main) 开始
+- 如果你使用 OpenClaw，请从 [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer) 开始
 
-## 适合谁
+## 这套能力适合谁
 
-- 已经在用 Claude Code、OpenClaw 或其他兼容 Agent 环境的品牌团队
-- 需要更快完成达人搜索、筛选、评估和持续观察的营销角色
-- 希望把达人工作流从“手动搜索 + 多工具切换”转为“对话式完成”的团队
+- 你已经在用 Claude Code、OpenClaw、Codex 或其他兼容 Agent 环境
+- 你希望更快完成达人搜索、筛选、评估和持续观察
+- 你想把达人工作流从“手动搜索 + 多工具切换”转成“对话式完成”
 
-## 当前公开能力
+## 你现在可以做什么
 
-- Discover Creators：按目标市场、平台和内容方向找到候选达人
-- Analyze Creator：对单个达人做更深入的可信度、受众和合作判断
-- Track Performance：持续观察达人或内容表现，适合监控和复盘场景
+- 达人发现：按目标市场、平台和内容方向找到候选达人
+- 达人分析：对单个达人做更深入的可信度、受众和合作判断
+- 表现监控：持续观察达人或内容表现，适合监控和复盘场景
 
-同时，公开文档中也保留了 Outreach Creators、Negotiate、Manage Campaigns 的目录位，用于承载未来公开能力或 Beta 状态说明。
+你也会看到达人触达、合作协商、活动管理相关页面。我们保留这些页面，是为了让你能提前理解完整工作流；每个页面都会明确标注当前是 `available`、`beta` 还是 `planned`。
 
-## 重要边界
+## 使用前需要知道
 
 - 当前产品心智是主账号体系 + quota 管理，不是旧的“独立 API 产品”
 - 不是所有文档页都代表能力已经公开可用，具体状态以每个 Tool 页的 `availability` 标记为准

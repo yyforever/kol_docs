@@ -30,24 +30,24 @@ source_of_truth:
 2. 在目标 Agent 平台完成接入
 3. 跑通一次真实的达人搜索或分析
 
-## 先看公开入口
+## 选择你的接入方式
 
-- 想先看仓库和说明：查看 [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
-- 如果你通过 OpenClaw 使用：直接从 [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer) 安装
+- 如果你使用 Claude Code、Codex、Cursor 或其他兼容 Agent 环境，请从 [GitHub](https://github.com/NoxInfluencer/skills/tree/main) 开始
+- 如果你使用 OpenClaw，请从 [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer) 开始
 
-## 当前公开支持情况
+## 我们当前支持这些接入方式
 
-- `Skills CLI / skills.sh`：支持从 GitHub 安装 `noxinfluencer`
 - `Claude Code`：支持通过 Skills CLI 或 Claude Code plugin marketplace 安装
-- `OpenClaw`：支持通过 Skills CLI 安装；如果你是 OpenClaw 用户，也可以直接使用 ClawHub 页面
-- 其他兼容 Skills CLI 的 Agent：当前公开 README 给出了 `Codex` 和 `Cursor` 示例，其中更推荐 OpenAI 用户优先使用 `Codex`
-- `ChatGPT`：当前不是公开支持的安装路径
+- `OpenClaw`：支持从 ClawHub 开始，或通过 Skills CLI 安装
+- `Codex`：如果你希望在 OpenAI 产品体系内使用，我们更推荐它
+- `Cursor` 和其他支持的 Agent 环境：支持通过 Skills CLI 安装
+- `ChatGPT`：当前不支持直接接入
 
-## 最常用的安装方式
+## 安装 NoxInfluencer
 
 ### 通用 Skills CLI / skills.sh
 
-适合先从 GitHub 接入，或使用兼容 Skills CLI 的 Agent：
+如果你的环境支持 Skills CLI，可以直接使用这条命令：
 
 ```bash
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer
@@ -81,9 +81,9 @@ npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --a
 
 ### Codex
 
-如果你原本想在 ChatGPT 里直接使用这个 skill，公开文档更推荐改用 `Codex`。
+如果你原本想在 ChatGPT 里直接使用 NoxInfluencer，我们更推荐你改用 `Codex`。
 
-原因是这个 skill 需要更明确的工具执行环境，例如安装 skill、读取仓库上下文、调用 CLI 和执行命令。公开版 ChatGPT 目前不提供这条接入路径，而 `Codex` 更适合承载这类工作流。
+原因是 NoxInfluencer 需要更明确的工具执行环境，例如安装能力、读取本地上下文、调用 CLI 和执行命令。ChatGPT 目前不提供这条直接接入路径，而 `Codex` 更适合承载这类工作流。
 
 截至 2026-04-02，`Codex` 属于 OpenAI 产品体系，并已包含在部分 ChatGPT 方案中。具体可用性和限额以 OpenAI 官方说明为准。
 
@@ -93,9 +93,9 @@ npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --a
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent codex
 ```
 
-### 其他兼容 Skills CLI 的 Agent
+### 其他支持的 Agent 环境
 
-当前公开 README 还给出了例如 `Cursor` 的安装示例：
+如果你的 Agent 支持 Skills CLI，也可以用同样方式安装 NoxInfluencer。以 `Cursor` 为例：
 
 ```bash
 # Cursor
@@ -104,11 +104,11 @@ npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --a
 
 ## ChatGPT 当前状态
 
-ChatGPT 目前不是这个 skill 的公开可用安装路径。
+ChatGPT 当前不是 NoxInfluencer 的直接接入方式。
 
-更准确地说，当前公开版 ChatGPT 仍以对话界面为主，不提供这套 skill 所需的公开安装与执行入口。当前公开的 `skills` 仓库也没有发布 `noxinfluencer` 面向 ChatGPT 的安装流程，因此不要按旧路径寻找 ChatGPT 接入。
+更准确地说，当前 ChatGPT 仍以对话界面为主，不提供安装和运行 NoxInfluencer 所需的公开执行入口。
 
-如果你本来就在 OpenAI 生态内使用产品，建议直接改用 `Codex`。它同属 OpenAI 产品体系，也更适合这类需要命令执行和仓库上下文的 skill 工作流。
+如果你已经在用 OpenAI 产品，建议直接改用 `Codex`。它同属 OpenAI 产品体系，也更适合这类需要命令执行和本地上下文的工作流。
 
 ## 上手前确认
 

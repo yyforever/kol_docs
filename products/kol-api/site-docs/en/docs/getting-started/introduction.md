@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 1
 status: published
-updated_at: 2026-04-01
+updated_at: 2026-04-02
 keywords:
   - introduction
   - noxinfluencer
@@ -20,29 +20,34 @@ source_of_truth:
 
 # Introduction
 
-NoxInfluencer is currently presented as a public Skill capability layer for brand teams working inside AI agent environments.
+NoxInfluencer helps brand and marketing teams discover creators, evaluate fit, and monitor performance inside AI agent environments.
 
-## Where to access it
+## Choose how you want to start
 
-- Want the open repository, file structure, and public repo docs: go to [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
-- If you are using OpenClaw, install it directly from [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer)
+- If you use Claude Code, Codex, Cursor, or another compatible agent environment, start from [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
+- If you use OpenClaw, start from [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer)
 
 ## Who this is for
 
-- Brand and marketing teams already using tools such as Claude Code, OpenClaw, or other compatible agent environments
-- Teams that want to shorten creator discovery, evaluation, and monitoring workflows
-- Teams that prefer a conversational workflow over manual tool switching
+- You already work in Claude Code, OpenClaw, Codex, or another compatible agent environment
+- You want to move faster across creator discovery, evaluation, and monitoring
+- You prefer conversational workflows over manual tool switching
 
-## Current public capability direction
+## What you can do today
 
-- Discover Creators
-- Analyze Creator
-- Track Performance
+- Discover Creators: find candidates by market, platform, and content direction
+- Analyze Creator: review audience, content, and cooperation signals before you decide to move forward
+- Track Performance: keep watching creator or content performance over time
 
-The documentation IA also keeps room for Outreach Creators, Negotiate, and Manage Campaigns so the public site can evolve without rewriting navigation later.
+You will also see pages for Outreach Creators, Negotiate, and Manage Campaigns. We keep them visible so you can understand the full workflow, and each page clearly shows whether the capability is available, beta, or planned.
 
 ## Important boundaries
 
-- This is no longer framed as an old standalone API product
-- Not every tool page implies that the capability is fully public today
-- Prototype copy and legacy pricing assumptions are not valid sources of truth
+- NoxInfluencer uses a main account and quota model rather than the old standalone API model
+- Some pages describe beta or planned capabilities, so always check the `availability` state on each tool page
+- Do not rely on legacy prototype paths, prices, or older product copy
+
+## Recommended next steps
+
+- Start with [Quick Start](quick-start/index.md) to complete your first connection
+- Continue to [Find Your First Creators](../guides/find-your-first-creators.md) to learn the standard workflow

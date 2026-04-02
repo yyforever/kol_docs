@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 4
 status: published
-updated_at: 2026-04-01
+updated_at: 2026-04-02
 keywords:
   - manage campaigns
   - context
@@ -36,4 +36,4 @@ source_of_truth:
 
 ## 当前状态说明
 
-活动管理是公开信息架构中的正式目录，但其最终公开形态仍在演进中。若你需要立即可用的能力，应优先依赖当前已公开的发现、分析和监控链路。
+我们还在继续补齐活动管理能力。如果你现在需要稳定可用的流程，建议先用发现、分析和监控完成主链路，并把 shortlist、排除原因和监控对象持续保持一致。

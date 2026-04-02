@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-04-01
+updated_at: 2026-04-02
 keywords:
   - noxinfluencer docs
   - influencer marketing
@@ -19,58 +19,22 @@ source_of_truth:
 
 # Documentation
 
-This is the public documentation hub for NoxInfluencer.
+Use this documentation to connect NoxInfluencer, complete your first workflow, and understand what each capability does.
 
-## Official access points
+## Choose your setup path
 
-- Want the source repository and repo-level docs: go to [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
-- If you are using OpenClaw, install it directly from [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer)
+- If you use Claude Code, Codex, Cursor, or another compatible agent environment, start from [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
+- If you use OpenClaw, start from [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer)
 
 ## Start here
 
-- [Introduction](getting-started/introduction.md)
-- [Quick Start](getting-started/quick-start/index.md)
-- [Authentication](getting-started/authentication.md)
+- [Introduction](getting-started/introduction.md): understand what NoxInfluencer helps you do and where the current boundaries are
+- [Quick Start](getting-started/quick-start/index.md): connect your environment and complete a first run
+- [Authentication](getting-started/authentication.md): understand accounts, entitlements, and API key setup
 
-## Common reading paths
+## Follow the path that matches your goal
 
 - Want to get connected quickly: start with [Quick Start](getting-started/quick-start/index.md)
 - Want to understand the workflow: go to [Guides](guides/find-your-first-creators.md)
 - Want page-by-page capability detail: use [Tool Reference](tool-reference/discover-creators.md)
 - Want troubleshooting and usage boundaries: open [Resources](resources/rate-limits.md)
-
-## Current IA
-
-### Getting Started
-
-- Introduction
-- Quick Start
-- Authentication
-
-### Guides
-
-- Find Your First Creators
-- Evaluate Creators Before Outreach
-- Set Up Performance Monitoring
-- Manage Campaign Context
-
-### Tool Reference
-
-- Discover Creators
-- Analyze Creator
-- Track Performance
-- Outreach Creators
-- Negotiate
-- Manage Campaigns
-
-### Resources
-
-- Rate Limits
-- Error Codes
-- Credit Guide
-
-## Notes
-
-- This directory is the source of truth for public site content, not the old prototype copy
-- Facts are aligned to the current product docs and the current implementation contracts
-- Planned and beta capabilities are explicitly marked on their tool pages

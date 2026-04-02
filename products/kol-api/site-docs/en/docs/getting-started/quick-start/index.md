@@ -30,24 +30,24 @@ Your first goal is not to understand every detail. It is to complete three thing
 2. Connect your preferred agent environment
 3. Complete one real discovery or analysis task
 
-## Public entry points
+## Choose your setup path
 
-- Want to inspect the repository and docs first: open [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
-- If you are using OpenClaw, install it directly from [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer)
+- If you use Claude Code, Codex, Cursor, or another compatible agent environment, start from [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
+- If you use OpenClaw, start from [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer)
 
-## Current public support
+## What we support today
 
-- `Skills CLI / skills.sh`: supports installing `noxinfluencer` from GitHub
-- `Claude Code`: supports installation through the Skills CLI or the Claude Code plugin marketplace
-- `OpenClaw`: supports installation through the Skills CLI; OpenClaw users can also use the public ClawHub page
-- Other compatible Skills CLI agents: the current public README includes examples for `Codex` and `Cursor`, and `Codex` is the better public option for OpenAI users
-- `ChatGPT`: not currently a supported public install path
+- `Claude Code`: install through the Skills CLI or the Claude Code plugin marketplace
+- `OpenClaw`: start from ClawHub or install through the Skills CLI
+- `Codex`: the recommended OpenAI-native path if you want to work in the OpenAI product family
+- `Cursor` and other supported agent environments: install through the Skills CLI
+- `ChatGPT`: not currently supported as a direct setup path
 
-## Most common install paths
+## Install NoxInfluencer
 
 ### General Skills CLI / skills.sh
 
-Best if you want to start from GitHub or use another compatible Skills CLI agent:
+Use this command if your environment supports Skills CLI:
 
 ```bash
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer
@@ -81,9 +81,9 @@ If you use OpenClaw, you can also use the public store page:
 
 ### Codex
 
-If you originally expected to use this skill directly inside ChatGPT, the better public path is `Codex`.
+If you originally expected to use NoxInfluencer directly inside ChatGPT, we recommend `Codex` instead.
 
-This skill needs a more explicit execution environment, including skill installation, repository context, CLI access, and command execution. Public ChatGPT does not currently expose that install-and-run path, while `Codex` is a better fit for this workflow.
+NoxInfluencer needs a more explicit execution environment, including installation, local context, CLI access, and command execution. ChatGPT does not currently expose that direct path, while `Codex` is a better fit for this workflow.
 
 As of 2026-04-02, `Codex` is part of the OpenAI product family and is included with eligible ChatGPT plans. Availability and limits should be checked against OpenAI's current official guidance.
 
@@ -93,9 +93,9 @@ Install through the Skills CLI:
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent codex
 ```
 
-### Other compatible Skills CLI agents
+### Other supported agent environments
 
-The current public README also includes an example for `Cursor`:
+If your agent supports Skills CLI, you can also install NoxInfluencer there. For example, `Cursor`:
 
 ```bash
 # Cursor
@@ -104,11 +104,11 @@ npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --a
 
 ## ChatGPT status
 
-ChatGPT is not currently a supported public install path for this skill.
+ChatGPT is not currently a supported direct setup path for NoxInfluencer.
 
-More precisely, the current public ChatGPT experience is still centered on the chat interface and does not expose the public installation and execution path required by this skill. The public `skills` repository also does not publish a ChatGPT install flow for `noxinfluencer`, so users should not rely on any older ChatGPT setup path.
+More precisely, the current ChatGPT experience is still centered on the chat interface and does not expose the installation and execution path required to run NoxInfluencer in this workflow.
 
-If you are already working inside the OpenAI product ecosystem, `Codex` is the recommended alternative. It belongs to the same OpenAI product family and is a better fit for skill workflows that need command execution and repository context.
+If you are already working inside the OpenAI product family, we recommend `Codex` instead. It is a better fit for workflows that need command execution and local context.
 
 ## Before you begin
 
