@@ -19,6 +19,7 @@ source_of_truth:
   - ../../../../../05_PRD.md
   - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
+  - "https://help.openai.com/en/articles/11369540-codex-in-chatgpt"
 ---
 
 # Quick Start
@@ -39,7 +40,7 @@ Your first goal is not to understand every detail. It is to complete three thing
 - `Skills CLI / skills.sh`: supports installing `noxinfluencer` from GitHub
 - `Claude Code`: supports installation through the Skills CLI or the Claude Code plugin marketplace
 - `OpenClaw`: supports installation through the Skills CLI; OpenClaw users can also use the public ClawHub page
-- Other compatible Skills CLI agents: the current public README includes examples for `Codex` and `Cursor`
+- Other compatible Skills CLI agents: the current public README includes examples for `Codex` and `Cursor`, and `Codex` is the better public option for OpenAI users
 - `ChatGPT`: not currently a supported public install path
 
 ## Most common install paths
@@ -78,21 +79,36 @@ npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --a
 If you use OpenClaw, you can also use the public store page:
 [https://clawhub.ai/noxinfluencer/noxinfluencer](https://clawhub.ai/noxinfluencer/noxinfluencer)
 
-### Other compatible Skills CLI agents
+### Codex
 
-The current public README includes these examples:
+If you originally expected to use this skill directly inside ChatGPT, the better public path is `Codex`.
+
+This skill needs a more explicit execution environment, including skill installation, repository context, CLI access, and command execution. Public ChatGPT does not currently expose that install-and-run path, while `Codex` is a better fit for this workflow.
+
+As of 2026-04-02, `Codex` is part of the OpenAI product family and is included with eligible ChatGPT plans. Availability and limits should be checked against OpenAI's current official guidance.
+
+Install through the Skills CLI:
 
 ```bash
-# Codex
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent codex
+```
 
+### Other compatible Skills CLI agents
+
+The current public README also includes an example for `Cursor`:
+
+```bash
 # Cursor
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent cursor
 ```
 
 ## ChatGPT status
 
-ChatGPT is not currently a supported public install path for this skill. The public `skills` repository does not publish a ChatGPT install flow for `noxinfluencer`, so users should not rely on any older ChatGPT setup path.
+ChatGPT is not currently a supported public install path for this skill.
+
+More precisely, the current public ChatGPT experience is still centered on the chat interface and does not expose the public installation and execution path required by this skill. The public `skills` repository also does not publish a ChatGPT install flow for `noxinfluencer`, so users should not rely on any older ChatGPT setup path.
+
+If you are already working inside the OpenAI product ecosystem, `Codex` is the recommended alternative. It belongs to the same OpenAI product family and is a better fit for skill workflows that need command execution and repository context.
 
 ## Before you begin
 

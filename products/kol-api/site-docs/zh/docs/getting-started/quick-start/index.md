@@ -19,6 +19,7 @@ source_of_truth:
   - ../../../../../05_PRD.md
   - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
+  - "https://help.openai.com/zh-hans-cn/articles/11369540-using-codex-with-your-chatgpt-plan"
 ---
 
 # 快速开始
@@ -39,7 +40,7 @@ source_of_truth:
 - `Skills CLI / skills.sh`：支持从 GitHub 安装 `noxinfluencer`
 - `Claude Code`：支持通过 Skills CLI 或 Claude Code plugin marketplace 安装
 - `OpenClaw`：支持通过 Skills CLI 安装；如果你是 OpenClaw 用户，也可以直接使用 ClawHub 页面
-- 其他兼容 Skills CLI 的 Agent：当前公开 README 给出了 `Codex` 和 `Cursor` 示例
+- 其他兼容 Skills CLI 的 Agent：当前公开 README 给出了 `Codex` 和 `Cursor` 示例，其中更推荐 OpenAI 用户优先使用 `Codex`
 - `ChatGPT`：当前不是公开支持的安装路径
 
 ## 最常用的安装方式
@@ -78,21 +79,36 @@ npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --a
 如果你通过 OpenClaw 使用，也可以直接使用公开商店页：
 [https://clawhub.ai/noxinfluencer/noxinfluencer](https://clawhub.ai/noxinfluencer/noxinfluencer)
 
-### 其他兼容 Skills CLI 的 Agent
+### Codex
 
-当前公开 README 给出的示例包括：
+如果你原本想在 ChatGPT 里直接使用这个 skill，公开文档更推荐改用 `Codex`。
+
+原因是这个 skill 需要更明确的工具执行环境，例如安装 skill、读取仓库上下文、调用 CLI 和执行命令。公开版 ChatGPT 目前不提供这条接入路径，而 `Codex` 更适合承载这类工作流。
+
+截至 2026-04-02，`Codex` 属于 OpenAI 产品体系，并已包含在部分 ChatGPT 方案中。具体可用性和限额以 OpenAI 官方说明为准。
+
+通过 Skills CLI 安装：
 
 ```bash
-# Codex
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent codex
+```
 
+### 其他兼容 Skills CLI 的 Agent
+
+当前公开 README 还给出了例如 `Cursor` 的安装示例：
+
+```bash
 # Cursor
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent cursor
 ```
 
 ## ChatGPT 当前状态
 
-ChatGPT 目前不是这个 skill 的公开可用安装路径。当前公开的 `skills` 仓库没有发布 `noxinfluencer` 面向 ChatGPT 的安装流程，因此不要按旧路径寻找 ChatGPT 接入。
+ChatGPT 目前不是这个 skill 的公开可用安装路径。
+
+更准确地说，当前公开版 ChatGPT 仍以对话界面为主，不提供这套 skill 所需的公开安装与执行入口。当前公开的 `skills` 仓库也没有发布 `noxinfluencer` 面向 ChatGPT 的安装流程，因此不要按旧路径寻找 ChatGPT 接入。
+
+如果你本来就在 OpenAI 生态内使用产品，建议直接改用 `Codex`。它同属 OpenAI 产品体系，也更适合这类需要命令执行和仓库上下文的 skill 工作流。
 
 ## 上手前确认
 
