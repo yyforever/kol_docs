@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-04-02
+updated_at: 2026-04-03
 keywords:
   - noxinfluencer 文档
   - influencer marketing
@@ -21,20 +21,21 @@ source_of_truth:
 
 你可以在这里完成 NoxInfluencer 接入、理解标准工作流，并查到每项能力的使用说明。
 
-## 选择你的接入方式
+## 从哪里开始
 
-- 如果你使用 Claude Code、Codex、Cursor 或其他兼容 Agent 环境，请从 [GitHub](https://github.com/NoxInfluencer/skills/tree/main) 开始
-- 如果你使用 OpenClaw，请从 [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer) 开始
+- 想先判断最适合你的安装路径：看 [快速开始](getting-started/quick-start/index.md)
+- 想先理解 NoxInfluencer 能帮你完成什么：看 [产品简介](getting-started/introduction.md)
+- 想先确认账号、权限和 API key：看 [认证与账号](getting-started/authentication.md)
 
-## 建议从这里开始
+## 安装入口概览
 
-- [产品简介](getting-started/introduction.md)：先理解 NoxInfluencer 能帮你完成什么，以及当前边界在哪里
-- [快速开始](getting-started/quick-start/index.md)：按你的 Agent 环境完成接入并跑通第一次使用
-- [认证与账号](getting-started/authentication.md)：了解主账号、权限和 API key 的配置方式
+- 如果你使用 OpenClaw，优先从 [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing) 开始
+- 如果你使用 Claude Code、Codex、Cursor 或其他支持 Skills CLI 的环境，优先在 [快速开始](getting-started/quick-start/index.md) 中获取适合你的安装命令
+- 如果你的 Agent 需要仓库地址，或前面的方式无法完成，再使用 [GitHub](https://github.com/NoxInfluencer/skills/tree/main) 作为补充来源
 
 ## 按你的目标阅读
 
-- 想尽快上手：从 [Quick Start](getting-started/quick-start/index.md) 开始
+- 想尽快上手：从 [快速开始](getting-started/quick-start/index.md) 开始
 - 想知道具体怎么做：阅读 [任务指南](guides/find-your-first-creators.md)
 - 想逐页理解每个能力：查看 [工具参考](tool-reference/discover-creators.md)
 - 想排查限制和报错：查看 [资源说明](resources/rate-limits.md)

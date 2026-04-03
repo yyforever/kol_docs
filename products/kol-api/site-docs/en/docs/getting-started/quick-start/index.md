@@ -1,13 +1,13 @@
 ---
 doc_id: quick_start_home
 title: Quick Start
-description: Get connected in minutes and complete your first public creator workflow.
+description: Choose the shortest install path for your experience and agent environment, then complete your first creator workflow.
 locale: en
 content_type: doc
 nav_group: getting-started
 order: 2
 status: published
-updated_at: 2026-04-02
+updated_at: 2026-04-03
 keywords:
   - quick start
   - claude
@@ -24,30 +24,40 @@ source_of_truth:
 
 # Quick Start
 
-Your first goal is not to understand every detail. It is to complete three things quickly:
+You do not need to read everything first. Complete these four steps:
 
-1. Prepare the right account and permissions
-2. Connect your preferred agent environment
-3. Complete one real discovery or analysis task
+1. Decide whether you have installed a Skill before
+2. Confirm which agent environment you use
+3. Let your agent complete the installation
+4. Finish a first real task
 
-## Choose your setup path
+## Step 1: Have you installed a Skill before?
 
-- If you use Claude Code, Codex, Cursor, or another compatible agent environment, start from [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
-- If you use OpenClaw, start from [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer)
+- If you have installed other Skills before, first search for `Nox Influencer` in the install entry or store you already use
+- If this is your first install, or you are not sure where to install from, continue to Step 2
 
-## What we support today
+## Step 2: Confirm your agent environment
 
-- `Claude Code`: install through the Skills CLI or the Claude Code plugin marketplace
-- `OpenClaw`: start from ClawHub or install through the Skills CLI
-- `Codex`: the recommended OpenAI-native path if you want to work in the OpenAI product family
-- `Cursor` and other supported agent environments: install through the Skills CLI
-- `ChatGPT`: not currently supported as a direct setup path
+### Official OpenClaw
 
-## Install NoxInfluencer
+- Start with [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing)
+- If ClawHub is not practical because of network or access limits, use Skills CLI instead:
+
+```bash
+npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent openclaw
+```
+
+### Claude Code, Codex, Cursor, or another environment that supports Skills CLI
+
+- Use Skills CLI first
+- If you already know your target environment, you can use an environment-specific command
+- If your agent needs the repository address, or the command cannot complete the install by itself, use GitHub as the supplemental source
+
+## Step 3: Use the shortest path for your environment
 
 ### General Skills CLI / skills.sh
 
-Use this command if your environment supports Skills CLI:
+Use this general command first if your environment supports Skills CLI:
 
 ```bash
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer
@@ -70,14 +80,14 @@ claude plugin install nox-influencer@noxinfluencer
 
 ### OpenClaw
 
-Install through the Skills CLI:
+If you use OpenClaw, try ClawHub first. Only switch to the command below if ClawHub is not convenient:
 
 ```bash
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent openclaw
 ```
 
-If you use OpenClaw, you can also use the public store page:
-[https://clawhub.ai/noxinfluencer/noxinfluencer](https://clawhub.ai/noxinfluencer/noxinfluencer)
+Public store page:
+[https://clawhub.ai/noxinfluencer/nox-influencer-marketing](https://clawhub.ai/noxinfluencer/nox-influencer-marketing)
 
 ### Codex
 
@@ -85,7 +95,7 @@ If you originally expected to use NoxInfluencer directly inside ChatGPT, we reco
 
 NoxInfluencer needs a more explicit execution environment, including installation, local context, CLI access, and command execution. ChatGPT does not currently expose that direct path, while `Codex` is a better fit for this workflow.
 
-As of 2026-04-02, `Codex` is part of the OpenAI product family and is included with eligible ChatGPT plans. Availability and limits should be checked against OpenAI's current official guidance.
+As of 2026-04-03, `Codex` is part of the OpenAI product family and is included with eligible ChatGPT plans. Availability and limits should be checked against OpenAI's current official guidance.
 
 Install through the Skills CLI:
 
@@ -102,15 +112,30 @@ If your agent supports Skills CLI, you can also install NoxInfluencer there. For
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent cursor
 ```
 
+## Step 4: Let your agent continue the installation
+
+- In most supported environments, you do not need to move files by hand, change directories, or configure complex paths
+- You can usually give the link or command above directly to your agent and let it continue the install
+- Only move into manual troubleshooting if the agent cannot process that information
+
 ## ChatGPT status
 
 ChatGPT is not currently a supported direct setup path for NoxInfluencer.
 
-More precisely, the current ChatGPT experience is still centered on the chat interface and does not expose the installation and execution path required to run NoxInfluencer in this workflow.
+More precisely, ChatGPT does not currently expose the public execution path required to run NoxInfluencer in this workflow.
 
 If you are already working inside the OpenAI product family, we recommend `Codex` instead. It is a better fit for workflows that need command execution and local context.
 
-## Before you begin
+## When to use GitHub
+
+- When your agent needs the repository address
+- When the earlier install path cannot complete
+- When you want your agent to read the repository for extra install context
+
+GitHub is the supplemental source and fallback, not the default first step:
+[https://github.com/NoxInfluencer/skills/tree/main](https://github.com/NoxInfluencer/skills/tree/main)
+
+## After installation, confirm these basics
 
 - Make sure you can sign in with the right main account
 - Confirm whether the current account can use the relevant Skill capability

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-04-02
+updated_at: 2026-04-03
 keywords:
   - noxinfluencer docs
   - influencer marketing
@@ -21,16 +21,17 @@ source_of_truth:
 
 Use this documentation to connect NoxInfluencer, complete your first workflow, and understand what each capability does.
 
-## Choose your setup path
+## Where to start
 
-- If you use Claude Code, Codex, Cursor, or another compatible agent environment, start from [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
-- If you use OpenClaw, start from [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer)
+- If you want the shortest install path for your environment, start with [Quick Start](getting-started/quick-start/index.md)
+- If you want to understand what NoxInfluencer helps you do, read [Introduction](getting-started/introduction.md)
+- If you want to confirm accounts, entitlements, and API key setup, read [Authentication](getting-started/authentication.md)
 
-## Start here
+## Install entry overview
 
-- [Introduction](getting-started/introduction.md): understand what NoxInfluencer helps you do and where the current boundaries are
-- [Quick Start](getting-started/quick-start/index.md): connect your environment and complete a first run
-- [Authentication](getting-started/authentication.md): understand accounts, entitlements, and API key setup
+- If you use OpenClaw, start with [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing)
+- If you use Claude Code, Codex, Cursor, or another environment that supports Skills CLI, use [Quick Start](getting-started/quick-start/index.md) to get the right install command
+- If your agent needs the repository address, or the earlier install path cannot complete, use [GitHub](https://github.com/NoxInfluencer/skills/tree/main) as the supplemental source
 
 ## Follow the path that matches your goal
 

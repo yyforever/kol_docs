@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 1
 status: published
-updated_at: 2026-04-02
+updated_at: 2026-04-03
 keywords:
   - introduction
   - noxinfluencer
@@ -22,10 +22,11 @@ source_of_truth:
 
 NoxInfluencer helps brand and marketing teams discover creators, evaluate fit, and monitor performance inside AI agent environments.
 
-## Choose how you want to start
+## When you are ready to get started
 
-- If you use Claude Code, Codex, Cursor, or another compatible agent environment, start from [GitHub](https://github.com/NoxInfluencer/skills/tree/main)
-- If you use OpenClaw, start from [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer)
+- Start with [Quick Start](quick-start/index.md) when you are ready to install NoxInfluencer and complete a first run
+- `Quick Start` will first help you decide whether you should search in your usual install entry or follow an environment-specific path
+- In that flow, OpenClaw starts with [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing), other supported environments start with Skills CLI, and GitHub is used only as a supplemental fallback
 
 ## Who this is for
 

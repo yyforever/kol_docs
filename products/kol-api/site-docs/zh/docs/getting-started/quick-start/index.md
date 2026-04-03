@@ -1,13 +1,13 @@
 ---
 doc_id: quick_start_home
 title: 快速开始
-description: 在几分钟内完成公开接入，并跑通第一次达人搜索、分析或监控。
+description: 按安装经验和 Agent 环境选择最短安装路径，并跑通第一次达人搜索、分析或监控。
 locale: zh
 content_type: doc
 nav_group: getting-started
 order: 2
 status: published
-updated_at: 2026-04-02
+updated_at: 2026-04-03
 keywords:
   - quick start
   - claude
@@ -24,30 +24,40 @@ source_of_truth:
 
 # 快速开始
 
-首要目标不是理解所有细节，而是先完成三件事：
+你不需要先看完所有文档。先完成这四件事：
 
-1. 准备可用的主账号和权限
-2. 在目标 Agent 平台完成接入
-3. 跑通一次真实的达人搜索或分析
+1. 判断自己是否已经装过 Skill
+2. 确认当前使用的 Agent 环境
+3. 让 Agent 帮你完成安装
+4. 跑通第一次真实任务
 
-## 选择你的接入方式
+## 第一步：你是否已经安装过 Skill
 
-- 如果你使用 Claude Code、Codex、Cursor 或其他兼容 Agent 环境，请从 [GitHub](https://github.com/NoxInfluencer/skills/tree/main) 开始
-- 如果你使用 OpenClaw，请从 [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer) 开始
+- 如果你已经装过其他 Skill，先去你平时常用的 Skill 商店或安装入口搜索 `Nox Influencer`
+- 如果这是你第一次安装，或者你不确定应该从哪里安装，继续看下一步
 
-## 我们当前支持这些接入方式
+## 第二步：确认你的 Agent 环境
 
-- `Claude Code`：支持通过 Skills CLI 或 Claude Code plugin marketplace 安装
-- `OpenClaw`：支持从 ClawHub 开始，或通过 Skills CLI 安装
-- `Codex`：如果你希望在 OpenAI 产品体系内使用，我们更推荐它
-- `Cursor` 和其他支持的 Agent 环境：支持通过 Skills CLI 安装
-- `ChatGPT`：当前不支持直接接入
+### 官方 OpenClaw
 
-## 安装 NoxInfluencer
+- 优先使用 [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing)
+- 如果 ClawHub 因网络或访问限制无法完成安装，再使用 Skills CLI：
+
+```bash
+npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent openclaw
+```
+
+### Claude Code、Codex、Cursor 或其他支持 Skills CLI 的环境
+
+- 优先使用 Skills CLI
+- 如果你已经知道自己的目标环境，也可以直接用对应命令
+- 如果你的 Agent 需要仓库地址，或者命令无法直接完成，再使用 GitHub 作为补充来源
+
+## 第三步：按环境使用最短路径
 
 ### 通用 Skills CLI / skills.sh
 
-如果你的环境支持 Skills CLI，可以直接使用这条命令：
+如果你的环境支持 Skills CLI，可以先用这条通用命令：
 
 ```bash
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer
@@ -70,14 +80,14 @@ claude plugin install nox-influencer@noxinfluencer
 
 ### OpenClaw
 
-通过 Skills CLI 安装：
+如果你使用 OpenClaw，先尝试 ClawHub；只有在 ClawHub 不方便使用时，再改用下面的命令：
 
 ```bash
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent openclaw
 ```
 
-如果你通过 OpenClaw 使用，也可以直接使用公开商店页：
-[https://clawhub.ai/noxinfluencer/noxinfluencer](https://clawhub.ai/noxinfluencer/noxinfluencer)
+公开商店页：
+[https://clawhub.ai/noxinfluencer/nox-influencer-marketing](https://clawhub.ai/noxinfluencer/nox-influencer-marketing)
 
 ### Codex
 
@@ -85,7 +95,7 @@ npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --a
 
 原因是 NoxInfluencer 需要更明确的工具执行环境，例如安装能力、读取本地上下文、调用 CLI 和执行命令。ChatGPT 目前不提供这条直接接入路径，而 `Codex` 更适合承载这类工作流。
 
-截至 2026-04-02，`Codex` 属于 OpenAI 产品体系，并已包含在部分 ChatGPT 方案中。具体可用性和限额以 OpenAI 官方说明为准。
+截至 2026-04-03，`Codex` 属于 OpenAI 产品体系，并已包含在部分 ChatGPT 方案中。具体可用性和限额以 OpenAI 官方说明为准。
 
 通过 Skills CLI 安装：
 
@@ -102,15 +112,30 @@ npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --a
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent cursor
 ```
 
+## 第四步：优先让你的 Agent 继续完成安装
+
+- 在大多数支持环境里，你不需要手动移动文件、修改目录或配置复杂路径
+- 你可以直接把上面的链接或命令发给自己的 Agent，让它继续完成安装
+- 只有在 Agent 无法处理这些信息时，再进入手动排查
+
 ## ChatGPT 当前状态
 
 ChatGPT 当前不是 NoxInfluencer 的直接接入方式。
 
-更准确地说，当前 ChatGPT 仍以对话界面为主，不提供安装和运行 NoxInfluencer 所需的公开执行入口。
+更准确地说，ChatGPT 当前不提供运行 NoxInfluencer 所需的公开执行入口。
 
 如果你已经在用 OpenAI 产品，建议直接改用 `Codex`。它同属 OpenAI 产品体系，也更适合这类需要命令执行和本地上下文的工作流。
 
-## 上手前确认
+## GitHub 什么时候用
+
+- 当你的 Agent 需要仓库地址
+- 当前面的安装方式无法完成
+- 当你希望让 Agent 读取仓库里的安装说明或补充上下文
+
+GitHub 是补充来源和兜底，不是默认第一步：
+[https://github.com/NoxInfluencer/skills/tree/main](https://github.com/NoxInfluencer/skills/tree/main)
+
+## 安装后先确认
 
 - 你已经有可登录的主账号
 - 你知道当前账号能否使用对应 Skill 能力
@@ -132,5 +157,5 @@ ChatGPT 当前不是 NoxInfluencer 的直接接入方式。
 
 ## 常见下一步
 
-- 如果你要先理解权限和账号心智，请看 [Authentication](../authentication.md)
-- 如果你已经接入成功，建议继续看 [Find Your First Creators](../../guides/find-your-first-creators.md)
+- 如果你要先理解权限和账号心智，请看 [认证与账号](../authentication.md)
+- 如果你已经接入成功，建议继续看 [完成第一次达人发现](../../guides/find-your-first-creators.md)
