@@ -1,8 +1,6 @@
 # NoxInfluencer Scout — User Guide
 
 > Updated: 2026-04-08
-> Version: `v7.7.1`
-
 ## Before You Start
 If this is your first time reading this guide, don't try to learn every feature at once.
 Just remember one thing: **NoxInfluencer Scout is not a "look at data and leave" extension. It helps you go from "check data → find similar creators → save good candidates → manage follow-ups" in one seamless flow while you browse YouTube, TikTok, and Instagram.**
