@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>聚星研发协作流程图 v0.6.1</title>
+    <style>
+      :root {
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --text: #0f172a;
+        --text-md: #475569;
+        --text-muted: #64748b;
+        --text-light: #94a3b8;
+        --border: #e2e8f0;
+        --border-light: #f1f5f9;
+        --accent: #3b82f6;
+        --harness: #8b5cf6;
+        --harness-light: #f3e8ff;
+        --radius: 14px;
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.04),
+          0 6px 20px rgba(0, 0, 0, 0.03);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "PingFang SC",
+          "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        padding: 40px 20px 60px;
+      }
+
+      main {
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+
+      /* ---- Header ---- */
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .header h1 {
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 8px;
+      }
+      .header .sub {
+        color: var(--text-muted);
+        font-size: 14px;
+      }
+      .ver {
+        display: inline-block;
+        background: var(--accent);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin-left: 6px;
+        vertical-align: middle;
+      }
+
+      /* ---- Card ---- */
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 28px;
+        margin-bottom: 24px;
+        box-shadow: var(--shadow);
+      }
+      .card.harness {
+        border-color: #e9d5ff;
+        background: linear-gradient(180deg, #fbf9ff 0%, #ffffff 80%);
+      }
+      .card-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 4px;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        background: var(--accent);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      .badge.v {
+        background: var(--harness);
+      }
+      .card h2 {
+        font-size: 17px;
+        font-weight: 600;
+      }
+      .tag {
+        display: inline-block;
+        margin-left: 8px;
+        padding: 2px 8px;
+        font-size: 11px;
+        font-weight: 600;
+        border-radius: 4px;
+        vertical-align: middle;
+      }
+      .tag.a {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+      .tag.b {
+        background: var(--harness-light);
+        color: #6b21a8;
+      }
+      .desc {
+        color: var(--text-muted);
+        font-size: 13px;
+        margin-bottom: 18px;
+        padding-left: 34px;
+      }
+
+      /* ---- Legend ---- */
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 16px;
+        padding-left: 34px;
+      }
+      .legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+
+      /* ---- Swimlanes (Card 1) ---- */
+      .swimlanes {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 0;
+        align-items: stretch;
+        margin-top: 16px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #eef1f6;
+        background: #fafbfd;
+      }
+      .lane {
+        padding: 18px 16px 24px;
+      }
+      .lane-a {
+        background: linear-gradient(180deg, #f0f7ff 0%, #fafbfd 60%);
+      }
+      .lane-b {
+        background: linear-gradient(180deg, #faf7ff 0%, #fafbfd 60%);
+      }
+      .lane-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+        padding-bottom: 10px;
+        border-bottom: 1px dashed #e2e8f0;
+      }
+      .lane-tag {
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 4px;
+        letter-spacing: 0.04em;
+      }
+      .lane-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .lane-cycle {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-left: auto;
+      }
+      .lane-body {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+      }
+      .lane-step {
+        padding: 9px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: #fff;
+        font-size: 12px;
+        font-weight: 500;
+        text-align: center;
+        color: var(--text);
+      }
+      .lane-step.s-input  { border-color: #3b82f6; background: #dbeafe; color: #1e3a5f; }
+      .lane-step.s-gate   { border-color: #6366f1; background: #e0e7ff; color: #312e81; }
+      .lane-step.s-proto  { border-color: #22c55e; background: #dcfce7; color: #14532d; }
+      .lane-step.s-design { border-color: #a855f7; background: #f3e8ff; color: #581c87; }
+      .lane-step.s-deliv  { border-color: #0ea5e9; background: #e0f2fe; color: #0c4a6e; }
+      .lane-step.s-sed    { border-color: #64748b; background: #f1f5f9; color: #1e293b; }
+      .lane-step.s-harn   { border-color: #8b5cf6; background: #f3e8ff; color: #581c87; }
+      .lane-arrow {
+        text-align: center;
+        font-size: 14px;
+        color: var(--text-light);
+        line-height: 1;
+        padding: 4px 0;
+      }
+      .lane-loop {
+        margin-top: 10px;
+        text-align: center;
+        font-size: 11px;
+        color: var(--text-muted);
+        font-style: italic;
+      }
+      .lane-bridge {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 28px;
+        padding: 0 14px;
+        background: #fdfcff;
+        border-left: 1px dashed #e9d5ff;
+        border-right: 1px dashed #e9d5ff;
+      }
+      .bridge-arrow {
+        text-align: center;
+      }
+      .bridge-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #6b21a8;
+        line-height: 1.3;
+      }
+      .bridge-sub {
+        font-size: 10.5px;
+        color: var(--text-muted);
+        margin-top: 2px;
+        line-height: 1.35;
+      }
+      .bridge-line {
+        font-size: 22px;
+        color: #8b5cf6;
+        letter-spacing: -2px;
+        line-height: 1;
+        margin: 4px 0;
+      }
+      .bridge-right .bridge-line { color: #8b5cf6; }
+      .bridge-left  .bridge-line { color: #3b82f6; }
+      @media (max-width: 840px) {
+        .swimlanes {
+          grid-template-columns: 1fr;
+        }
+        .lane-bridge {
+          flex-direction: row;
+          justify-content: space-around;
+          gap: 12px;
+          padding: 14px;
+          border-left: none;
+          border-right: none;
+          border-top: 1px dashed #e9d5ff;
+          border-bottom: 1px dashed #e9d5ff;
+        }
+      }
+
+      /* ---- Diagram ---- */
+      .diagram {
+        background: #fafbfd;
+        border: 1px solid #eef1f6;
+        border-radius: 10px;
+        padding: 24px 16px;
+        overflow-x: auto;
+      }
+      .diagram.harness-bg {
+        background: #faf7ff;
+        border-color: #ece3fa;
+      }
+      .mermaid {
+        display: flex;
+        justify-content: center;
+      }
+      .mermaid svg {
+        font-family: inherit !important;
+      }
+      .mermaid .edgeLabel {
+        font-size: 11px !important;
+      }
+      .mermaid .node rect,
+      .mermaid .node .label-container {
+        rx: 8 !important;
+        ry: 8 !important;
+      }
+
+      /* ---- Step reference ---- */
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+        gap: 10px;
+        margin-top: 20px;
+      }
+      .step {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border-left: 3px solid var(--border);
+        background: var(--border-light);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .step-name {
+        font-weight: 600;
+        font-size: 13px;
+        color: var(--text);
+        margin-bottom: 2px;
+      }
+      .step-desc {
+        color: var(--text-muted);
+      }
+
+      /* ---- Tier cards (Light / Standard / Heavy) ---- */
+      .tiers {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 18px;
+      }
+      .tier {
+        padding: 14px 16px;
+        border-radius: 10px;
+        background: #fafbfd;
+        border: 1px solid var(--border);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+      .tier-title {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .tier-pill {
+        display: inline-block;
+        padding: 1px 7px;
+        font-size: 10px;
+        font-weight: 700;
+        border-radius: 4px;
+        color: #fff;
+      }
+      .tier.light {
+        border-left: 3px solid #22c55e;
+      }
+      .tier.light .tier-pill {
+        background: #22c55e;
+      }
+      .tier.standard {
+        border-left: 3px solid #f59e0b;
+      }
+      .tier.standard .tier-pill {
+        background: #f59e0b;
+      }
+      .tier.heavy {
+        border-left: 3px solid #ef4444;
+      }
+      .tier.heavy .tier-pill {
+        background: #ef4444;
+      }
+      .tier-line {
+        color: var(--text-md);
+        margin-top: 2px;
+      }
+      .tier-line b {
+        color: var(--text);
+      }
+
+      /* ---- Loops ---- */
+      .loops {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .loop-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 8px;
+        background: #fafbfd;
+        border: 1px dashed var(--border);
+        font-size: 12px;
+      }
+      .loop-icon {
+        flex-shrink: 0;
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+      }
+      .loop-name {
+        font-weight: 600;
+        font-size: 13px;
+        margin-bottom: 1px;
+      }
+      .loop-desc {
+        color: var(--text-muted);
+      }
+
+      /* ---- Divider ---- */
+      .divider {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 22px 0;
+      }
+      .section-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text-md);
+        letter-spacing: 0.04em;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+      }
+
+      /* ---- Table ---- */
+      .table-wrap {
+        overflow-x: auto;
+        margin-top: 16px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+      }
+      .role-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .role-table th {
+        padding: 10px 12px;
+        font-weight: 600;
+        font-size: 12px;
+        text-align: left;
+        white-space: nowrap;
+        border-bottom: 2px solid var(--border);
+        background: var(--border-light);
+      }
+      .role-table .col-header {
+        color: #fff;
+        font-size: 11px;
+        letter-spacing: 0.02em;
+      }
+      .role-table td {
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--border-light);
+        vertical-align: top;
+      }
+      .role-table tr:last-child td {
+        border-bottom: none;
+      }
+      .role-table tr:hover td {
+        background: #f8fafc;
+      }
+      .role-table .phase {
+        font-weight: 600;
+        white-space: nowrap;
+        color: var(--text);
+        background: #fafbfd;
+      }
+      .role-table .phase.b {
+        background: #faf7ff;
+        color: #6b21a8;
+      }
+      .role-table td.e {
+        color: var(--text-light);
+      }
+
+      /* ---- Callout ---- */
+      .callout {
+        margin-top: 14px;
+        padding: 12px 14px;
+        border-radius: 8px;
+        font-size: 12px;
+        line-height: 1.55;
+      }
+      .callout b {
+        margin-right: 2px;
+      }
+
+      /* ---- Harness grids ---- */
+      .fn-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .fn-card {
+        padding: 14px 14px;
+        border-radius: 10px;
+        background: #fdfcff;
+        border: 1px solid #ece3fa;
+        font-size: 12px;
+      }
+      .fn-title {
+        font-weight: 700;
+        font-size: 13px;
+        color: #6b21a8;
+        margin-bottom: 4px;
+        letter-spacing: 0.01em;
+      }
+      .fn-sub {
+        color: var(--text-md);
+        font-size: 11px;
+        margin-bottom: 6px;
+      }
+      .fn-body {
+        color: var(--text-md);
+      }
+
+      .bucket-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .bucket {
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: #fafbfd;
+        border: 1px solid var(--border);
+        font-size: 12px;
+      }
+      .bucket-name {
+        font-weight: 700;
+        color: var(--harness);
+        font-size: 13px;
+      }
+      .bucket-q {
+        color: var(--text-muted);
+        margin-top: 2px;
+      }
+
+      .taste-pipe {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 16px;
+        flex-wrap: wrap;
+      }
+      .taste-step {
+        flex: 1;
+        min-width: 110px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: #fafbfd;
+        border: 1px solid var(--border);
+        font-size: 12px;
+        text-align: center;
+      }
+      .taste-step b {
+        display: block;
+        font-size: 13px;
+      }
+      .taste-arrow {
+        color: var(--harness);
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      /* ---- Harness ownership ---- */
+      .own-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .own-card {
+        padding: 14px 16px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: #fafbfd;
+        font-size: 12px;
+        line-height: 1.6;
+      }
+      .own-card.phase1 {
+        border-left: 3px solid #3b82f6;
+      }
+      .own-card.phase2 {
+        border-left: 3px solid #8b5cf6;
+      }
+      .own-head {
+        font-weight: 700;
+        font-size: 13px;
+        margin-bottom: 4px;
+      }
+      .own-head .phase-tag {
+        font-size: 10px;
+        font-weight: 700;
+        padding: 1px 6px;
+        border-radius: 4px;
+        color: #fff;
+        margin-right: 6px;
+      }
+      .own-card.phase1 .phase-tag {
+        background: #3b82f6;
+      }
+      .own-card.phase2 .phase-tag {
+        background: #8b5cf6;
+      }
+      .own-signal {
+        color: var(--text-md);
+        margin-top: 6px;
+      }
+      .own-signal ul {
+        padding-left: 18px;
+      }
+
+      /* ---- Antipattern chips ---- */
+      .anti-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .anti {
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #991b1b;
+        font-size: 11.5px;
+        line-height: 1.5;
+      }
+
+      /* ---- Footer ---- */
+      .foot {
+        text-align: center;
+        color: var(--text-light);
+        font-size: 12px;
+        margin-top: 16px;
+      }
+
+      /* ---- Responsive ---- */
+      @media (max-width: 840px) {
+        .tiers,
+        .fn-grid,
+        .bucket-grid,
+        .own-grid,
+        .anti-list {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 640px) {
+        body {
+          padding: 20px 12px;
+        }
+        .card {
+          padding: 20px 16px;
+        }
+        .steps {
+          grid-template-columns: 1fr;
+        }
+        .loops {
+          grid-template-columns: 1fr;
+        }
+        .desc,
+        .legend {
+          padding-left: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <div class="header">
+        <h1>聚星研发协作流程图 <span class="ver">v0.6.1</span></h1>
+        <p class="sub">
+          双流程架构 · 分层入口 · Harness 流程 · 角色责任矩阵
+        </p>
+      </div>
+
+      <!-- ============================================ -->
+      <!-- 1. DUAL-PROCESS OVERVIEW                      -->
+      <!-- ============================================ -->
+      <article class="card">
+        <div class="card-head">
+          <span class="badge">1</span>
+          <h2>双流程总览</h2>
+        </div>
+        <p class="desc">
+          Process A（产品流程，天→周）跑业务;Process B（Harness 流程，持续）
+          跑 agent 平台演化。两条流程节奏不同、所有者不同,但通过接口持续互喂:
+          A 每轮让 harness +1%,B 每次改动喂回 A 的入口与上下文。
+        </p>
+
+        <div class="swimlanes">
+          <div class="lane lane-a">
+            <div class="lane-head">
+              <span class="lane-tag" style="background:#3b82f6;">Process A</span>
+              <span class="lane-title">产品流程</span>
+              <span class="lane-cycle">天 → 周</span>
+            </div>
+            <div class="lane-body">
+              <div class="lane-step s-input">输入 / 反馈</div>
+              <div class="lane-arrow">↓</div>
+              <div class="lane-step s-gate">入口检查 · L / S / H</div>
+              <div class="lane-arrow">↓</div>
+              <div class="lane-step s-proto">原型池 · Read 并行</div>
+              <div class="lane-arrow">↓</div>
+              <div class="lane-step s-gate">三层判断 · L1 / L2 / L3</div>
+              <div class="lane-arrow">↓</div>
+              <div class="lane-step s-design">设计收口 · Write 串行</div>
+              <div class="lane-arrow">↓</div>
+              <div class="lane-step s-deliv">交付 / 试跑</div>
+              <div class="lane-arrow">↓</div>
+              <div class="lane-step s-sed">回收沉淀</div>
+              <div class="lane-loop">↺ 下一轮</div>
+            </div>
+          </div>
+
+          <div class="lane-bridge">
+            <div class="bridge-arrow bridge-right">
+              <div class="bridge-label">每轮 harness +1%</div>
+              <div class="bridge-sub">skill · eval · 工具 · context</div>
+              <div class="bridge-line">➔</div>
+            </div>
+            <div class="bridge-arrow bridge-left">
+              <div class="bridge-line">⇠</div>
+              <div class="bridge-label">约束 · 上下文 · 评测 · 纠错</div>
+              <div class="bridge-sub">喂回下一轮入口</div>
+            </div>
+          </div>
+
+          <div class="lane lane-b">
+            <div class="lane-head">
+              <span class="lane-tag" style="background:#8b5cf6;">Process B</span>
+              <span class="lane-title">Harness 流程</span>
+              <span class="lane-cycle">持续</span>
+            </div>
+            <div class="lane-body">
+              <div class="lane-step s-harn">Constrain · 工具 / 权限</div>
+              <div class="lane-arrow">↓</div>
+              <div class="lane-step s-harn">Inform · CLAUDE.md / Skill</div>
+              <div class="lane-arrow">↓</div>
+              <div class="lane-step s-harn">Verify · Eval / Evaluator</div>
+              <div class="lane-arrow">↓</div>
+              <div class="lane-step s-harn">Correct · Playbook / 回滚</div>
+              <div class="lane-loop">↺ 持续演化</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout" style="background:#faf7ff;border:1px solid #ece3fa;color:#581c87;">
+          <b>为什么分开两条流程?</b>
+          Process A 的节奏受业务压力控制,停不下来做基础设施;
+          Process B 靠复利累积,混进项目制会被永久压到最低。把它们分开,
+          agent 平台质量才不会靠"顺手维护"。
+        </div>
+      </article>
+
+      <!-- ============================================ -->
+      <!-- 2. PROCESS A DETAIL                           -->
+      <!-- ============================================ -->
+      <article class="card">
+        <div class="card-head">
+          <span class="badge">2</span>
+          <h2>Process A · 产品流程主循环 <span class="tag a">产品</span></h2>
+        </div>
+        <p class="desc">
+          分层入口(L/S/H) → 三层判断(L1/L2/L3) → 设计收口 → 交付 →
+          试跑 → 沉淀。虚线为三条显式回路。
+        </p>
+
+        <div class="legend">
+          <span class="legend-item"
+            ><span class="dot" style="background: #3b82f6"></span>输入</span
+          >
+          <span class="legend-item"
+            ><span class="dot" style="background: #6366f1"></span>入口</span
+          >
+          <span class="legend-item"
+            ><span class="dot" style="background: #22c55e"></span>原型</span
+          >
+          <span class="legend-item"
+            ><span class="dot" style="background: #eab308"></span>筛选</span
+          >
+          <span class="legend-item"
+            ><span class="dot" style="background: #a855f7"></span>设计</span
+          >
+          <span class="legend-item"
+            ><span class="dot" style="background: #0ea5e9"></span>交付</span
+          >
+          <span class="legend-item"
+            ><span class="dot" style="background: #64748b"></span>沉淀</span
+          >
+          <span class="legend-item"
+            ><span class="dot" style="background: #ef4444"></span>退出</span
+          >
+          <span class="legend-item"
+            ><span class="dot" style="background: #8b5cf6"></span>Harness 接口</span
+          >
+        </div>
+
+        <div class="diagram">
+          <div class="mermaid">
+flowchart TD
+    classDef input  fill:#dbeafe,stroke:#3b82f6,stroke-width:1.5px,color:#1e3a5f
+    classDef gate   fill:#e0e7ff,stroke:#6366f1,stroke-width:1.5px,color:#312e81
+    classDef light  fill:#dcfce7,stroke:#22c55e,stroke-width:1.5px,color:#14532d
+    classDef std    fill:#fef3c7,stroke:#f59e0b,stroke-width:1.5px,color:#78350f
+    classDef heavy  fill:#fee2e2,stroke:#ef4444,stroke-width:1.5px,color:#7f1d1d
+    classDef proto  fill:#dcfce7,stroke:#22c55e,stroke-width:1.5px,color:#14532d
+    classDef screen fill:#fef9c3,stroke:#eab308,stroke-width:1.5px,color:#713f12
+    classDef design fill:#f3e8ff,stroke:#a855f7,stroke-width:1.5px,color:#581c87
+    classDef dev    fill:#e0f2fe,stroke:#0ea5e9,stroke-width:1.5px,color:#0c4a6e
+    classDef sed    fill:#f1f5f9,stroke:#64748b,stroke-width:1.5px,color:#1e293b
+    classDef reject fill:#fee2e2,stroke:#ef4444,stroke-width:1.5px,color:#7f1d1d
+    classDef decide fill:#fff7ed,stroke:#f97316,stroke-width:1.5px,color:#7c2d12
+    classDef harn   fill:#f3e8ff,stroke:#8b5cf6,stroke-width:1.5px,color:#581c87
+
+    A[输入]:::input --> T{档位判断}:::gate
+    T -->|Light| BL[一句 Pitch]:::light
+    T -->|Standard| BS[Pitch + Spec]:::std
+    T -->|Heavy| BH[Pitch + Spec + Eval]:::heavy
+    BL --> C{L1 筛}:::screen
+    BS --> C
+    BH --> C
+    C -->|否| X1[退回]:::reject
+    C -->|是| D[原型池<br/>Read 并行]:::proto
+    D --> E{L2 角色筛}:::screen
+    E -->|否| X2[停止·重塑]:::reject
+    E -->|是| F{L3 拍板<br/>Write 串行}:::screen
+    F -->|停止| X2
+    F ==>|重塑| D
+    F -->|继续| G[设计收口<br/>单线程]:::design
+    G --> H[研发交付<br/>Gen/Eval 分离]:::dev
+    H --> I[试跑]:::dev
+    I --> J{结果}:::decide
+    J -->|达标| K[沉淀]:::sed
+    J ==>|再试| D
+    J ==>|重定义| A
+    K ==>|harness 改动| HP[[Process B]]:::harn
+    G -.->|设计回路| D
+    K -.->|能力回路| T
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="section-label">入口分层 · 按方向规模决定成本</div>
+        <div class="tiers">
+          <div class="tier light">
+            <div class="tier-title">
+              <span class="tier-pill">LIGHT</span>bug / 轻量优化 / spike
+            </div>
+            <div class="tier-line">一段 pitch 即可(一句话 + 时间盒)</div>
+            <div class="tier-line">不要求 spec 和 eval</div>
+            <div class="tier-line"><b>场景</b>:UI 小调整、已知 bug 修复、&lt;1 天 spike</div>
+          </div>
+          <div class="tier standard">
+            <div class="tier-title">
+              <span class="tier-pill">STD</span>常规功能 / 明确范围优化
+            </div>
+            <div class="tier-line">pitch + 简化 spec</div>
+            <div class="tier-line">eval 可选;碰 golden cases 必跑回归</div>
+            <div class="tier-line"><b>场景</b>:已有 graph 新能力、单 graph 重构</div>
+          </div>
+          <div class="tier heavy">
+            <div class="tier-title">
+              <span class="tier-pill">HEAVY</span>新方向 / 新 graph / 大变化
+            </div>
+            <div class="tier-line">pitch + spec + 3–5 条 golden eval</div>
+            <div class="tier-line">向 Harness owner 报备</div>
+            <div class="tier-line"><b>场景</b>:新 graph 立项、跨 graph 整合、主流程改写</div>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="section-label">显式回路</div>
+        <div class="loops">
+          <div class="loop-item">
+            <div class="loop-icon" style="background: #f3e8ff; color: #a855f7">↩</div>
+            <div>
+              <div class="loop-name">设计回路</div>
+              <div class="loop-desc">设计收口发现方向不成立 → 回原型池重选</div>
+            </div>
+          </div>
+          <div class="loop-item">
+            <div class="loop-icon" style="background: #e0f2fe; color: #0ea5e9">↩</div>
+            <div>
+              <div class="loop-name">验证回路</div>
+              <div class="loop-desc">试跑发现问题定义错了 → 回到输入层重定义</div>
+            </div>
+          </div>
+          <div class="loop-item">
+            <div class="loop-icon" style="background: #f1f5f9; color: #64748b">↩</div>
+            <div>
+              <div class="loop-name">能力回路</div>
+              <div class="loop-desc">沉淀 skill/eval/template → 升级下一轮入口与 agent 上下文</div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="section-label">步骤速查</div>
+        <div class="steps">
+          <div class="step" style="border-color: #3b82f6">
+            <div class="step-name">输入</div>
+            <div class="step-desc">用户反馈 · 业务反馈 · 技术问题 · 新方向 · 流程问题</div>
+          </div>
+          <div class="step" style="border-color: #6366f1">
+            <div class="step-name">档位 + Pitch</div>
+            <div class="step-desc">L/S/H 判档 · 问题 · 用户 · 成功信号 · 时间盒</div>
+          </div>
+          <div class="step" style="border-color: #eab308">
+            <div class="step-name">L1 自动筛</div>
+            <div class="step-desc">Heavy 跑 eval · 其他做形式/重复性检查</div>
+          </div>
+          <div class="step" style="border-color: #22c55e">
+            <div class="step-name">原型池(Read 并行)</div>
+            <div class="step-desc">2–5 版本并行 · 验证首屏 · 技术阻断风险</div>
+          </div>
+          <div class="step" style="border-color: #eab308">
+            <div class="step-name">L2 角色筛</div>
+            <div class="step-desc">产品 · 设计 · 研发各自判断本领域是否成立</div>
+          </div>
+          <div class="step" style="border-color: #eab308">
+            <div class="step-name">L3 拍板(Write 串行)</div>
+            <div class="step-desc">单人单线程下注:继续 / 重塑 / 停止</div>
+          </div>
+          <div class="step" style="border-color: #a855f7">
+            <div class="step-name">设计收口</div>
+            <div class="step-desc">信息层级 · 信任 · onboarding · 参数调节 · 决策记录</div>
+          </div>
+          <div class="step" style="border-color: #0ea5e9">
+            <div class="step-name">研发交付</div>
+            <div class="step-desc">Gen/Eval 分离 · Owner 确认 · 同步 onboarding / demo</div>
+          </div>
+          <div class="step" style="border-color: #0ea5e9">
+            <div class="step-name">试跑</div>
+            <div class="step-desc">真实项目验证:使用顺畅 · 结果稳定 · 愿意继续</div>
+          </div>
+          <div class="step" style="border-color: #64748b">
+            <div class="step-name">沉淀(双路)</div>
+            <div class="step-desc">产品结论 · 决策记录 + 向 Process B 提交 harness 改动</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ============================================ -->
+      <!-- 3. PROCESS B - HARNESS                        -->
+      <!-- ============================================ -->
+      <article class="card harness">
+        <div class="card-head">
+          <span class="badge v">3</span>
+          <h2>Process B · Harness 流程 <span class="tag b">Agent 平台</span></h2>
+        </div>
+        <p class="desc">
+          Harness 是包裹 agent 的运行环境,做四件事:约束、告知、验证、纠正。
+          Process B 持续演化 agent 平台,让 Process A 下一轮更便宜。
+        </p>
+
+        <div class="section-label">Harness 四大职能</div>
+        <div class="fn-grid">
+          <div class="fn-card">
+            <div class="fn-title">Constrain 约束</div>
+            <div class="fn-sub">agent 能做什么</div>
+            <div class="fn-body">工具集 · 权限 · 沙箱 · 速率限制;定期审计、砍掉冗余工具。</div>
+          </div>
+          <div class="fn-card">
+            <div class="fn-title">Inform 告知</div>
+            <div class="fn-sub">agent 应该做什么</div>
+            <div class="fn-body">CLAUDE.md · AGENTS.md · skill 库 · rule · 示例。保持精简。</div>
+          </div>
+          <div class="fn-card">
+            <div class="fn-title">Verify 验证</div>
+            <div class="fn-sub">做得对不对</div>
+            <div class="fn-body">Eval harness · hook · evaluator(与 generator 人格分离)。</div>
+          </div>
+          <div class="fn-card">
+            <div class="fn-title">Correct 纠正</div>
+            <div class="fn-sub">错了怎么回</div>
+            <div class="fn-body">Auto-fix · escalation · playbook 更新 · context 回滚。</div>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="section-label">Context 四桶 · 每个 graph / skill 必答</div>
+        <div class="bucket-grid">
+          <div class="bucket">
+            <div class="bucket-name">Write 写</div>
+            <div class="bucket-q">产生的信息写到窗外哪一层?scratchpad / session / project / org</div>
+          </div>
+          <div class="bucket">
+            <div class="bucket-name">Select 选</div>
+            <div class="bucket-q">开始时从哪里、按什么规则拉上下文?</div>
+          </div>
+          <div class="bucket">
+            <div class="bucket-name">Compress 压</div>
+            <div class="bucket-q">什么时候压?压到多少?保留什么、丢什么?</div>
+          </div>
+          <div class="bucket">
+            <div class="bucket-name">Isolate 隔</div>
+            <div class="bucket-q">哪些子任务用独立 agent?主线程保留什么?</div>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="section-label">Taste → Eval 编码管线</div>
+        <div class="taste-pipe">
+          <div class="taste-step"><b>品味判断</b>人的直觉决策</div>
+          <div class="taste-arrow">→</div>
+          <div class="taste-step"><b>说出 Why</b>一句话也行</div>
+          <div class="taste-arrow">→</div>
+          <div class="taste-step"><b>写成 Rubric</b>1–5 分 + 维度</div>
+          <div class="taste-arrow">→</div>
+          <div class="taste-step"><b>固化 Eval</b>自动评测 / evaluator prompt</div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="section-label">Harness ownership · 分阶段演进</div>
+        <div class="own-grid">
+          <div class="own-card phase1">
+            <div class="own-head"><span class="phase-tag">阶段一</span>兼任 Harness owner</div>
+            <div>试跑期默认采用。现有研发兼任,时间配额 ≥ 30%。</div>
+            <div class="own-signal">
+              <b>工作节奏</b>:每周/每 sprint 回答一次 — 这段时间 harness 有哪些改动、还有哪些缺口。
+            </div>
+          </div>
+          <div class="own-card phase2">
+            <div class="own-head"><span class="phase-tag">阶段二</span>专职 Harness Engineer</div>
+            <div>下列信号出现 ≥ 2 个,启动升级讨论:</div>
+            <div class="own-signal">
+              <ul>
+                <li>跨 graph 重复能力 / 冗余工具 ≥ 3 处</li>
+                <li>兼任者一个月内 ≥ 2 次被业务优先级挤走</li>
+                <li>新 graph onboarding 时间持续增加</li>
+                <li>graph 之间 harness 改动冲突 / 被回退</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="section-label">Harness 反模式 · 出现即处理</div>
+        <div class="anti-list">
+          <div class="anti">CLAUDE.md 持续膨胀,复述模型已知内容</div>
+          <div class="anti">工具清单膨胀,很少 agent 真正用全</div>
+          <div class="anti">skill 库在增长,但 30 天内无 agent 调用</div>
+          <div class="anti">eval 跑一次太慢,导致日常被跳过</div>
+          <div class="anti">多个 graph 独立实现同一类能力(检索 / 摘要 / 审核)</div>
+          <div class="anti">evaluator 与 generator 用同一 prompt(自我宽容)</div>
+        </div>
+      </article>
+
+      <!-- ============================================ -->
+      <!-- 4. ROLE MATRIX                                -->
+      <!-- ============================================ -->
+      <article class="card">
+        <div class="card-head">
+          <span class="badge">4</span>
+          <h2>角色 × 阶段 责任矩阵</h2>
+        </div>
+        <p class="desc">
+          Agent 做第一轮、Owner 判断放行。Process A 阶段由产品 / 设计 / 研发主导;
+          Process B 阶段由 Harness owner 主导。紫色行属于 Harness 流程。
+        </p>
+
+        <div class="table-wrap">
+          <table class="role-table">
+            <thead>
+              <tr>
+                <th style="min-width: 80px">阶段</th>
+                <th class="col-header" style="background: #3b82f6; min-width: 92px">产品 Owner</th>
+                <th class="col-header" style="background: #a855f7; min-width: 92px">设计 Owner</th>
+                <th class="col-header" style="background: #0ea5e9; min-width: 80px">研发</th>
+                <th class="col-header" style="background: #eab308; min-width: 100px">Agent</th>
+                <th class="col-header" style="background: #22c55e; min-width: 76px">测试</th>
+                <th class="col-header" style="background: #f43f5e; min-width: 76px">运营</th>
+                <th class="col-header" style="background: #8b5cf6; min-width: 104px">Harness owner</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="phase">输入</td>
+                <td>定义问题与目标</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td>归纳反馈<br />整理候选</td>
+                <td class="e">—</td>
+                <td>收集使用反馈</td>
+                <td>配置事件驱动入口</td>
+              </tr>
+              <tr>
+                <td class="phase">档位 + 入口</td>
+                <td>判档 · 写 Pitch</td>
+                <td>Heavy:参与 Spec</td>
+                <td>Heavy:技术可行性</td>
+                <td>起草草稿</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td>Heavy 报备<br />判是否触发 B</td>
+              </tr>
+              <tr>
+                <td class="phase">L1 自动筛</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td>规则脚本检查</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td>维护规则与 eval</td>
+              </tr>
+              <tr>
+                <td class="phase">原型池</td>
+                <td class="e">—</td>
+                <td>参与生成与筛选</td>
+                <td>做可运行原型</td>
+                <td>生成变体<br />并行验证</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td>供给工具 / context</td>
+              </tr>
+              <tr>
+                <td class="phase">L2 筛</td>
+                <td>本领域判断</td>
+                <td>本领域判断</td>
+                <td>本领域判断</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+              </tr>
+              <tr>
+                <td class="phase">L3 拍板</td>
+                <td>最终方向决策<br />继续 / 重塑 / 停止</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+              </tr>
+              <tr>
+                <td class="phase">设计收口</td>
+                <td class="e">—</td>
+                <td>体验收口<br />规则沉淀</td>
+                <td>辅助实现</td>
+                <td>调节工具<br />页面对比</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td>接收设计规则</td>
+              </tr>
+              <tr>
+                <td class="phase">研发交付</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td>正式实现<br />固化决策</td>
+                <td>第一版实现<br />Gen / Eval 分离</td>
+                <td>验证关键链路</td>
+                <td class="e">—</td>
+                <td>Heavy:evaluator 配置</td>
+              </tr>
+              <tr>
+                <td class="phase">试跑</td>
+                <td>定义验收标准</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td>确认交付达标</td>
+                <td>组织试跑<br />收集反馈</td>
+                <td>观察 harness 表现</td>
+              </tr>
+              <tr>
+                <td class="phase">沉淀(A 侧)</td>
+                <td>产品结论<br />决策记录</td>
+                <td>设计规则<br />Checklist / Skills</td>
+                <td>固化决策</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td>反馈回流</td>
+                <td>收取 harness 改动</td>
+              </tr>
+              <tr>
+                <td class="phase b">Eval 回归</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td>Heavy:提供 golden cases</td>
+                <td>运行回归</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td>维护回归集质量<br />处置基线跌破</td>
+              </tr>
+              <tr>
+                <td class="phase b">工具 / context 审计</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td>受影响时参与</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td>定期跨 graph 审计</td>
+              </tr>
+              <tr>
+                <td class="phase b">Skill / Playbook</td>
+                <td class="e">—</td>
+                <td>设计类 skill</td>
+                <td>实现类 skill</td>
+                <td>调用 skill</td>
+                <td class="e">—</td>
+                <td class="e">—</td>
+                <td>统一维护与审计</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout" style="background:#fef9c3;border:1px solid #fde68a;color:#92400e;">
+          <b>Agent 约束</b>:不能自行流转到下一环节;所有输出须对应 Owner 确认;
+          若连续两轮大幅返工,向 Harness owner 报告,评估是否是 harness 问题
+          而非默默接受返工。
+        </div>
+      </article>
+
+      <footer class="foot">
+        基于 v0.6.1 草稿 · 双流程 + 分层入口 + Harness ownership · 直接在浏览器中打开即可
+      </footer>
+    </main>
+
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: "base",
+        securityLevel: "loose",
+        flowchart: {
+          curve: "basis",
+          useMaxWidth: true,
+          htmlLabels: true,
+          padding: 20,
+          nodeSpacing: 50,
+          rankSpacing: 65
+        },
+        themeVariables: {
+          primaryColor: "#f1f5f9",
+          primaryTextColor: "#334155",
+          primaryBorderColor: "#cbd5e1",
+          lineColor: "#94a3b8",
+          secondaryColor: "#f8fafc",
+          tertiaryColor: "#ffffff",
+          fontSize: "14px",
+          fontFamily:
+            '-apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif',
+          edgeLabelBackground: "#ffffff",
+          clusterBkg: "#f8fafc",
+          clusterBorder: "#e2e8f0"
+        }
+      });
+    </script>
+  </body>
+</html>
