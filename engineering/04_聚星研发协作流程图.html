@@ -1941,7 +1941,7 @@ flowchart TD
             <div class="tt-title">Claude Code 内置互审</div>
             <div>
               self-review + verify tests + subagent delegation;
-              <b>不需要额外配置</b>。Light / Standard 档立即享用。
+              <b>不需要额外配置</b>。<b>Light / Standard / Heavy 三档全部立即享用</b>(Heavy 档在此之上 + golden eval 回归集)。
             </div>
             <div style="margin-top:6px;font-size:11px;font-style:italic;">
               merge 前零 human review 已经在跑。
@@ -1985,6 +1985,10 @@ flowchart TD
           (2) post-merge sampling(抽样识别 systemic issue,不是每个 PR 都看)。
           <br><br>
           作用域:<b>这一条只管代码审查</b>,不代替 §5.5"人聚焦最高杠杆位置"的 4 件事(目标定义 · 品味 · 对齐 · 信任建设),也不代替 §7.4 L3 方向拍板。
+        </div>
+
+        <div class="callout" style="background:#fffbeb;border:1px solid #fde68a;color:#78350f;font-size:12px;">
+          <b>非代码交付桥接规则</b>:用户文档 / 合规材料 / 开户提审 / 对外视频等没有"merge / PR review"字面语义。沿用同一原则,落地形式不同 —— Generator agent 出材料 → Reviewer agent 对 checklist 评分 → Verify agent 跑可读性 / 完整性 / 链接自检 → owner 抽样确认发出后产物。骨原理一致:<b>人定 checklist + agent 互审 + 抽样确认</b>。
         </div>
 
         <div class="callout" style="background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;font-size:12px;">
