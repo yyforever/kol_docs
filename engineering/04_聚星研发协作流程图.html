@@ -1322,7 +1322,7 @@
           <div class="layer-card default">
             <div class="layer-title">【当前默认】</div>
             <div>聚星研发组织当前即可按此执行的规则,无需额外配置或能力建设就成立</div>
-            <div class="layer-eg">如:Claude Code 内置 agent 互审;入门 3-5 并行;Light/Standard 档自动适用</div>
+            <div class="layer-eg">如:Claude Code 内置 agent 互审;入门 3-5 并行;Light / Standard / Heavy 三档全部立即生效</div>
           </div>
           <div class="layer-card pilot">
             <div class="layer-title">【试运行例外】</div>
@@ -2138,10 +2138,10 @@ flowchart TD
               </tr>
               <tr>
                 <td class="phase b">Eval 回归</td>
-                <td class="e">—</td>
+                <td>post-merge sampling(人做,品味 → rubric)</td>
                 <td class="e">—</td>
                 <td>Heavy:提供 golden cases</td>
-                <td>运行回归 · post-merge sampling(<b>Reviewer</b>)</td>
+                <td>运行回归(<b>Reviewer</b>)</td>
                 <td class="e">—</td>
                 <td class="e">—</td>
                 <td>维护回归集质量 · 处置基线跌破</td>
