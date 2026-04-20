@@ -1388,7 +1388,7 @@
           <div class="lane-bridge">
             <div class="bridge-arrow bridge-right">
               <div class="bridge-label">每轮 harness +1%</div>
-              <div class="bridge-sub">skill folder · eval · 工具 · context · 角色模板</div>
+              <div class="bridge-sub">skill folder · wiki · eval · 工具 · context · 角色模板</div>
               <div class="bridge-line">➔</div>
             </div>
             <div class="bridge-arrow bridge-left">
@@ -1704,8 +1704,14 @@ flowchart TD
           </tbody>
         </table>
         <div class="callout" style="background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;font-size:11.5px;">
-          <b>边界提醒</b>
+          <b>边界提醒 ①</b>
           File-over-app 适用于 harness 层(内部 skill / rule / playbook);<b>不适用于用户数据</b>(CRM 记录、合作历史等是聚星产品资产,走产品数据库)。
+        </div>
+        <div class="callout" style="background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;font-size:11.5px;margin-top:8px;">
+          <b>边界提醒 ② · skill 和 wiki 是两个独立系统,不合并</b>(§8.3)<br>
+          <b>wiki</b>(上表,Karpathy 层)管<b>事实 / 现状 / 历史</b>(API 是什么、账单系统结构、谁维护过)。
+          <b>skill folder</b>(Anthropic 层,独立于 wiki)管<b>操作协议</b>(什么时候做、去查哪个 wiki 页、不做什么、做完验什么)。
+          两者运行时两层接力:skill 按 task 路由 match(拿协议),skill 的 <code>pre-check</code> 字段列出要 load 的 wiki 页(拿事实)。
         </div>
 
         <hr class="divider" />
@@ -1720,7 +1726,7 @@ flowchart TD
           <div class="fn-card">
             <div class="fn-title">Inform 告知</div>
             <div class="fn-sub">agent 应该做什么</div>
-            <div class="fn-body">CLAUDE.md · AGENTS.md · skill folder · rule · 示例。按实测影响保持精简。</div>
+            <div class="fn-body">CLAUDE.md · AGENTS.md · skill folder(协议) · wiki(事实) · rule · 示例。按实测影响保持精简。</div>
           </div>
           <div class="fn-card">
             <div class="fn-title">Verify 验证</div>
@@ -1758,28 +1764,31 @@ flowchart TD
 
         <hr class="divider" />
 
-        <div class="section-label">Skill = folder · grown not built(§8.3)</div>
+        <div class="section-label">Skill folder · 独立文件夹系统 · grown not built(§8.3)</div>
         <p style="font-size:12.5px;color:var(--text-md);margin-top:6px;">
           Anthropic 官方:<b>"Skills are grown, not built — you don't write a perfect Skill on day one"</b>。
-          Skill 是文件夹,不是单个 markdown。Gotchas 是最高价值部分,在真实使用中累积。
+          Skill folder 是文件夹,不是单个 markdown。<b>skill 写"协议",不写"事实"</b>——事实归 wiki,skill 的 <code>pre-check</code> 字段告诉 agent 去哪 load 事实。Gotchas 是最高价值部分(meta-operational:怎么用这个 skill),在真实使用中累积。
         </p>
         <div class="skill-folder">
 <span class="sf-dir">skill-name/</span>
-├── <span class="sf-highlight">SKILL.md</span>             <span class="sf-comment"># 起步必备 · 主指令(trigger + 预期输出)</span>
-├── <span class="sf-highlight">gotchas.md</span>           <span class="sf-comment"># 起步必备 · 真实使用中踩过的坑(最高价值)</span>
+├── <span class="sf-highlight">SKILL.md</span>             <span class="sf-comment"># 起步必备 · 协议(trigger 触发 + pre-check 预检 wiki + 预期输出 + postcondition 完成验证)</span>
+├── <span class="sf-highlight">gotchas.md</span>           <span class="sf-comment"># 起步必备 · 使用 skill 时踩过的坑(meta-operational,非领域事实)</span>
 ├── <span class="sf-dir">scripts/</span>             <span class="sf-comment"># 重复给 agent 的指令 ≥ 3 次时抽成脚本</span>
-├── <span class="sf-dir">assets/</span>              <span class="sf-comment"># 模板 · 示例 · 参考文档</span>
+├── <span class="sf-dir">assets/</span>              <span class="sf-comment"># 模板 · 示例(事实不在这里,事实在 wiki)</span>
 └── <span class="sf-dir">reference/</span>           <span class="sf-comment"># progressive disclosure(skill 膨胀时按需加载)</span>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;">
           <div style="padding:12px 14px;border-radius:8px;background:var(--default-light);border:1px solid #6ee7b7;font-size:12px;color:#064e3b;">
             <b>起步门槛(4 件)</b><br>
-            SKILL.md(含 trigger + 预期输出) · 1 条 Gotcha · owner · last_verified
+            SKILL.md(含 trigger + <b>pre-check wiki 清单</b> + 预期输出) · 1 条 Gotcha · owner · last_verified
           </div>
           <div style="padding:12px 14px;border-radius:8px;background:var(--goal-light);border:1px solid #fcd34d;font-size:12px;color:#78350f;">
             <b>成熟形态(9 字段目标态)</b><br>
             +验证标准 · +last_used · +Constrain · +Context budget · +Postcondition · +Forbidden action · +Progressive disclosure index
           </div>
+        </div>
+        <div class="callout" style="background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;font-size:11.5px;margin-top:10px;">
+          <b>分界提醒</b>:skill folder 里凡涉及"某个东西是什么"的内容,一律 link 到 <code>wiki/path/to/page.md</code>,事实本体留在 wiki。分界不守,skill 会迅速膨胀成事实库的冗余复制品,双改就漂。
         </div>
         <p style="margin-top:10px;font-size:11px;color:var(--text-muted);">
           类型:执行(instruction) · 评测(reviewer) · 修正(playbook) · Anthropic 内部归纳 9 类,大多团队只用 2-3 类。
@@ -1872,13 +1881,13 @@ flowchart TD
             <div class="template-grid">
               <div class="template-card"><b>CEO 模板</b><span>方向 review · 是否值得做</span></div>
               <div class="template-card"><b>Eng Manager 模板</b><span>架构 · 数据流 · 边界 case</span></div>
-              <div class="template-card"><b>Staff Engineer 模板</b><span>"paranoid" code review · 找生产问题</span></div>
+              <div class="template-card"><b>Staff Engineer 模板</b><span>"paranoid(多疑型)" code review · 找生产问题</span></div>
               <div class="template-card"><b>Designer 模板</b><span>设计决策 · 参数判断 · UI 对比</span></div>
               <div class="template-card"><b>QA 模板</b><span>测试生成 · 覆盖率检查</span></div>
               <div class="template-card"><b>Release 模板</b><span>打包 · 灰度 · 上线 checklist</span></div>
               <div class="template-card"><b>Doc 模板</b><span>onboarding · 使用说明 · changelog</span></div>
-              <div class="template-card"><b>Reviewer 模板</b><span>对照 rubric 打分 · forbidden action</span></div>
-              <div class="template-card"><b>Verify 模板</b><span>端到端 happy path 自动跑</span></div>
+              <div class="template-card"><b>Reviewer 模板</b><span>对照 rubric(评分表)打分 · forbidden action(禁止动作)</span></div>
+              <div class="template-card"><b>Verify 模板</b><span>端到端 happy path(正常使用流程)自动跑</span></div>
             </div>
           </div>
         </div>
@@ -1975,7 +1984,7 @@ flowchart TD
         <div class="section-label">Review agent 默认规则(OpenAI Frontier 实测)</div>
         <ul style="padding-left:20px;font-size:12.5px;line-height:1.7;color:var(--text-md);">
           <li><b>bias 向 merge</b>(不卡住)</li>
-          <li><b>只 surface P0 / P1 / P2 级别的问题;抑制 P3 及以下 nice-to-fix 的 nitpick</b>(P0 = 最严重)</li>
+          <li><b>只 surface(报出)P0 / P1 / P2 级别的问题;抑制 P3 及以下 nice-to-fix(锦上添花型)的 nitpick(琐碎挑刺)</b>(P0 = 最严重)</li>
           <li>反馈以"可接受 / 延后 / 反驳"三选一方式给 authoring agent,迭代到所有 reviewer 满意为止</li>
         </ul>
 
@@ -2065,7 +2074,7 @@ flowchart TD
                 <td>生成变体 · 并行验证(<b>Eng Mgr</b> + <b>Designer</b>)</td>
                 <td class="e">—</td>
                 <td class="e">—</td>
-                <td>供给工具 / context / skill folder</td>
+                <td>供给工具 / context / skill folder / wiki</td>
               </tr>
               <tr>
                 <td class="phase">L2 筛</td>
