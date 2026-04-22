@@ -7,7 +7,7 @@ content_type: changelog
 nav_group: changelog
 order: 0
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-04-22
 keywords:
   - changelog
   - updates
@@ -22,4 +22,5 @@ source_of_truth:
 
 ## 已发布
 
+- [2026-04-22 — 公开能力刷新与 marketing ops 扩展](2026-04-22-capability-refresh-and-ops-expansion.md)
 - [2026-03-30 — 初始化公共文档内容源](2026-03-30-initial-public-docs.md)

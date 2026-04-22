@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 2
 status: published
-updated_at: 2026-04-03
+updated_at: 2026-04-22
 keywords:
   - quick start
   - claude
@@ -19,17 +19,26 @@ source_of_truth:
   - ../../../../../05_PRD.md
   - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
+  - "repo:kol_claw path:cli/README.md"
   - "https://help.openai.com/en/articles/11369540-codex-in-chatgpt"
 ---
 
 # Quick Start
 
-You do not need to read everything first. Complete these four steps:
+You do not need to read everything first. Complete these five steps:
 
 1. Decide whether you have installed a Skill before
 2. Confirm which agent environment you use
-3. Let your agent complete the installation
-4. Finish a first real task
+3. Prepare your brand account and API key
+4. Let your agent complete the installation
+5. Finish a first real task
+
+## Public entry points
+
+- Skills dashboard / API key: `https://www.noxinfluencer.com/skills/dashboard` / `https://cn.noxinfluencer.com/skills/dashboard`
+- skills.sh listing: `https://skills.sh/noxinfluencer/skills/noxinfluencer`
+- ClawHub: `https://clawhub.ai/noxinfluencer/nox-influencer-marketing`
+- GitHub fallback: `https://github.com/NoxInfluencer/skills/tree/main`
 
 ## Step 1: Have you installed a Skill before?
 
@@ -49,15 +58,25 @@ npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --a
 
 ### Claude Code, Codex, Cursor, or another environment that supports Skills CLI
 
-- Use Skills CLI first
+- Start with the [skills.sh listing](https://skills.sh/noxinfluencer/skills/noxinfluencer) or Skills CLI
 - If you already know your target environment, you can use an environment-specific command
 - If your agent needs the repository address, or the command cannot complete the install by itself, use GitHub as the supplemental source
 
-## Step 3: Use the shortest path for your environment
+## Step 3: Prepare your brand account and API key
+
+- If you do not have a brand account yet, sign up first:
+  - English: `https://www.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
+  - Chinese: `https://cn.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
+- Then open the Skills dashboard to get your API key:
+  - English dashboard: `https://www.noxinfluencer.com/skills/dashboard`
+  - Chinese dashboard: `https://cn.noxinfluencer.com/skills/dashboard`
+- In OpenClaw and other compatible environments, prefer a host-managed secret or `NOXINFLUENCER_API_KEY`
+
+## Step 4: Use the shortest path for your environment
 
 ### General Skills CLI / skills.sh
 
-Use this general command first if your environment supports Skills CLI:
+If your environment supports Skills CLI, you can start from the skills.sh listing or use this general command directly:
 
 ```bash
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer
@@ -112,7 +131,7 @@ If your agent supports Skills CLI, you can also install NoxInfluencer there. For
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent cursor
 ```
 
-## Step 4: Let your agent continue the installation
+## Step 5: Let your agent continue the installation
 
 - In most supported environments, you do not need to move files by hand, change directories, or configure complex paths
 - You can usually give the link or command above directly to your agent and let it continue the install
@@ -139,6 +158,7 @@ GitHub is the supplemental source and fallback, not the default first step:
 
 - Make sure you can sign in with the right main account
 - Confirm whether the current account can use the relevant Skill capability
+- Make sure a valid `NOXINFLUENCER_API_KEY` is available
 - Remember that usage may be constrained by both Skill quota and underlying service quota
 
 ## What counts as a successful first run

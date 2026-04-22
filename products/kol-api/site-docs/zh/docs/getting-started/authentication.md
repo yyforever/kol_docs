@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 3
 status: published
-updated_at: 2026-04-01
+updated_at: 2026-04-22
 keywords:
   - authentication
   - account
@@ -15,6 +15,8 @@ keywords:
 source_of_truth:
   - ../../../../04_定价与商业模式.md
   - ../../../../05_PRD.md
+  - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
+  - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:docs/modules/quota.md"
   - "repo:kol_claw path:server/app/services/nox_api.py"
 ---
@@ -22,6 +24,21 @@ source_of_truth:
 # 认证与账号
 
 当前公开能力基于主账号体系运作，不再使用旧的“独立产品注册 + 独立额度 + 独立凭证”心智。
+
+## 首次使用时先准备这几项
+
+- 英文注册入口：`https://www.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
+- 中文注册入口：`https://cn.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
+- 英文 Skills 控制台：`https://www.noxinfluencer.com/skills/dashboard`
+- 中文 Skills 控制台：`https://cn.noxinfluencer.com/skills/dashboard`
+
+如果你还没有品牌账号或 API key，先完成注册并打开 Skills 控制台。
+
+## API key 与环境配置
+
+- 当前公开接入依赖有效的 API key
+- 在 OpenClaw 和其他兼容环境中，优先使用宿主提供的安全密钥注入，或直接使用 `NOXINFLUENCER_API_KEY`
+- 如果你需要在本地 CLI 中手动配置，优先使用 `noxinfluencer auth --key-stdin`
 
 ## 你需要理解的四个层次
 

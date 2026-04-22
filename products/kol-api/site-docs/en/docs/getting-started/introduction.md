@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 1
 status: published
-updated_at: 2026-04-03
+updated_at: 2026-04-22
 keywords:
   - introduction
   - noxinfluencer
@@ -16,6 +16,8 @@ source_of_truth:
   - ../../../../01_定位与假设.md
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
+  - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
+  - "repo:kol_claw path:docs/marketing-ops-roadmap.md"
 ---
 
 # Introduction
@@ -26,7 +28,7 @@ NoxInfluencer helps brand and marketing teams discover creators, evaluate fit, a
 
 - Start with [Quick Start](quick-start/index.md) when you are ready to install NoxInfluencer and complete a first run
 - `Quick Start` will first help you decide whether you should search in your usual install entry or follow an environment-specific path
-- In that flow, OpenClaw starts with [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing), other supported environments start with Skills CLI, and GitHub is used only as a supplemental fallback
+- In that flow, OpenClaw starts with [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing), other supported environments start with the skills.sh listing or Skills CLI, and GitHub is used only as a supplemental fallback
 
 ## Who this is for
 
@@ -40,7 +42,11 @@ NoxInfluencer helps brand and marketing teams discover creators, evaluate fit, a
 - Analyze Creator: review audience, content, and cooperation signals before you decide to move forward
 - Track Performance: keep watching creator or content performance over time
 
-You will also see pages for Outreach Creators, Negotiate, and Manage Campaigns. We keep them visible so you can understand the full workflow, and each page clearly shows whether the capability is available, beta, or planned.
+## What else the public docs now cover
+
+- You will also see pages for Outreach Creators, Negotiate, and Manage Campaigns to show the full creator workflow from selection to later operations
+- You will also see Collections, Exports, Email Tasks, Message Threads, and CRM pages to explain the expanding marketing ops surface
+- Each page clearly shows whether the capability is `available`, `beta`, or `planned`
 
 ## Important boundaries
 

@@ -1,13 +1,13 @@
 ---
 doc_id: quick_start_home
 title: 快速开始
-description: 按安装经验和 Agent 环境选择最短安装路径，并跑通第一次达人搜索、分析或监控。
+description: 按安装经验和 Agent 环境选择最短安装路径，并完成第一次 creator workflow。
 locale: zh
 content_type: doc
 nav_group: getting-started
 order: 2
 status: published
-updated_at: 2026-04-03
+updated_at: 2026-04-22
 keywords:
   - quick start
   - claude
@@ -19,17 +19,26 @@ source_of_truth:
   - ../../../../../05_PRD.md
   - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
+  - "repo:kol_claw path:cli/README.md"
   - "https://help.openai.com/zh-hans-cn/articles/11369540-using-codex-with-your-chatgpt-plan"
 ---
 
 # 快速开始
 
-你不需要先看完所有文档。先完成这四件事：
+你不需要先看完所有文档。先完成这五件事：
 
 1. 判断自己是否已经装过 Skill
 2. 确认当前使用的 Agent 环境
-3. 让 Agent 帮你完成安装
-4. 跑通第一次真实任务
+3. 准备品牌账号和 API key
+4. 让 Agent 帮你完成安装
+5. 跑通第一次真实任务
+
+## 公开入口
+
+- Skills 控制台 / API key：`https://www.noxinfluencer.com/skills/dashboard` / `https://cn.noxinfluencer.com/skills/dashboard`
+- skills.sh listing：`https://skills.sh/noxinfluencer/skills/noxinfluencer`
+- ClawHub：`https://clawhub.ai/noxinfluencer/nox-influencer-marketing`
+- GitHub fallback：`https://github.com/NoxInfluencer/skills/tree/main`
 
 ## 第一步：你是否已经安装过 Skill
 
@@ -49,15 +58,25 @@ npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --a
 
 ### Claude Code、Codex、Cursor 或其他支持 Skills CLI 的环境
 
-- 优先使用 Skills CLI
+- 优先从 [skills.sh listing](https://skills.sh/noxinfluencer/skills/noxinfluencer) 或 Skills CLI 开始
 - 如果你已经知道自己的目标环境，也可以直接用对应命令
 - 如果你的 Agent 需要仓库地址，或者命令无法直接完成，再使用 GitHub 作为补充来源
 
-## 第三步：按环境使用最短路径
+## 第三步：准备品牌账号和 API key
+
+- 如果你还没有品牌账号，先注册：
+  - English: `https://www.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
+  - 中文: `https://cn.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
+- 注册后打开 Skills 控制台获取 API key：
+  - English dashboard: `https://www.noxinfluencer.com/skills/dashboard`
+  - 中文控制台: `https://cn.noxinfluencer.com/skills/dashboard`
+- 在 OpenClaw 和其他兼容环境中，优先使用宿主安全注入或 `NOXINFLUENCER_API_KEY`
+
+## 第四步：按环境使用最短路径
 
 ### 通用 Skills CLI / skills.sh
 
-如果你的环境支持 Skills CLI，可以先用这条通用命令：
+如果你的环境支持 Skills CLI，可以先浏览 skills.sh listing，或直接用这条通用命令：
 
 ```bash
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer
@@ -112,7 +131,7 @@ npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --a
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent cursor
 ```
 
-## 第四步：优先让你的 Agent 继续完成安装
+## 第五步：优先让你的 Agent 继续完成安装
 
 - 在大多数支持环境里，你不需要手动移动文件、修改目录或配置复杂路径
 - 你可以直接把上面的链接或命令发给自己的 Agent，让它继续完成安装
@@ -139,6 +158,7 @@ GitHub 是补充来源和兜底，不是默认第一步：
 
 - 你已经有可登录的主账号
 - 你知道当前账号能否使用对应 Skill 能力
+- 你已经准备好有效的 `NOXINFLUENCER_API_KEY`
 - 你理解使用过程中可能同时受到 Skill 配额和底层服务配额约束
 
 ## 首次成功的判断标准

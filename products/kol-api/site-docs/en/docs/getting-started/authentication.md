@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 3
 status: published
-updated_at: 2026-04-01
+updated_at: 2026-04-22
 keywords:
   - authentication
   - account
@@ -15,6 +15,8 @@ keywords:
 source_of_truth:
   - ../../../../04_定价与商业模式.md
   - ../../../../05_PRD.md
+  - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
+  - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:docs/modules/quota.md"
   - "repo:kol_claw path:server/app/services/nox_api.py"
 ---
@@ -22,6 +24,21 @@ source_of_truth:
 # Authentication
 
 The public capability model is built on a main account system, not on the legacy idea of a standalone API product.
+
+## First-time setup starts here
+
+- English sign-up: `https://www.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
+- Chinese sign-up: `https://cn.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
+- English Skills dashboard: `https://www.noxinfluencer.com/skills/dashboard`
+- Chinese Skills dashboard: `https://cn.noxinfluencer.com/skills/dashboard`
+
+If you do not have a brand account or API key yet, finish sign-up and open the Skills dashboard first.
+
+## API key and environment setup
+
+- Public access depends on a valid API key
+- In OpenClaw and other compatible environments, prefer a host-managed secret or `NOXINFLUENCER_API_KEY`
+- If you need to configure the local CLI yourself, prefer `noxinfluencer auth --key-stdin`
 
 ## Four layers to keep in mind
 

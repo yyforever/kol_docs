@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 2
 status: published
-updated_at: 2026-04-01
+updated_at: 2026-04-22
 keywords:
   - evaluate creators
   - outreach
@@ -22,6 +22,12 @@ source_of_truth:
 
 Many teams lose time not because they cannot find creators, but because they move into outreach too early.
 
+## Start from one stable creator identity
+
+- Prefer `creator_id` if you already have it from a prior creator read
+- If not, the first read can start from a creator URL or a `platform + channel-id` pair
+- Once the read returns `creator_id`, keep using that same identity across analysis, contact retrieval, and monitoring
+
 ## Key questions
 
 - Is this creator worth more time and budget?
@@ -32,7 +38,8 @@ Many teams lose time not because they cannot find creators, but because they mov
 
 1. Review overall credibility and abnormal signals first
 2. Confirm whether the audience matches the target market
-3. Decide whether the creator should move into contact or monitoring
+3. Confirm whether the creator is stable enough to move into contact retrieval or monitoring
+4. Move into contact preparation only after the evaluation path is coherent
 
 ## When not to move straight into outreach
 

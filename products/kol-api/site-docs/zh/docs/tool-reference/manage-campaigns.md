@@ -1,43 +1,57 @@
 ---
 doc_id: tool_manage_campaigns
 title: 活动管理
-description: 面向活动上下文与历史复用的规划中能力说明。
+description: 面向活动上下文、流程连续性和相邻运营能力的 beta 页面。
 locale: zh
 content_type: doc
 nav_group: tool-reference
 order: 6
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-04-22
 keywords:
   - manage campaigns
   - context
   - workflow memory
 tool_key: manage_campaigns
-availability: planned
+availability: beta
 source_of_truth:
-  - ../../../../03_API能力设计.md
   - ../../../../05_PRD.md
+  - "repo:kol_claw path:docs/marketing-ops-roadmap.md"
+  - "repo:kol_claw path:cli/README.md"
 ---
 
 # 活动管理
 
-**当前状态：Planned**
+**当前状态：Beta**
 
-活动管理用于把搜索、分析和监控形成可复用的活动上下文，而不是每次都从零开始。
+活动管理用于把 campaign 级上下文固定下来，让工作从 creator discovery 延伸到后续运营时不需要每次都从零开始。
 
-## 未来要解决的问题
+## 适合什么场景
 
-- 保存品牌目标、市场和约束条件
-- 复用 shortlist、分析结论和 watchlist
-- 让跨会话工作流更连续
+- 你希望用一个 campaign 锚点串起 shortlist、监控和后续运营动作
+- 你需要基础活动记录和概览，而不是完整 CRM
+- 你希望 discovery、触达准备、监控、collection 和 export 保持连贯
+
+## 当前 beta 范围
+
+- 保存 campaign 级记录和概览数据
+- 创建、更新和删除基础活动骨架
+- 在相邻 beta 运营能力之间复用活动上下文
+
+## Beta 代表什么
+
+- 这一域已经进入公开 CLI 和 server 命令层
+- 但当前表面仍在持续稳定中，不应被当成成熟完整的协作系统
 
 ## 当前边界
 
-- 当前公开能力中，这一方向仍在产品化过程中
-- 不应把本页解读为完整活动 CRM 已对外开放
-- 如需立即可用的路径，应优先依赖发现、分析和监控能力
+- 它不是完整 CRM
+- 它不代表邮件、消息或协商执行能力已经公开可用
+- 它不替代发现、分析、触达准备和监控
 
 ## 推荐阅读
 
 - [管理活动上下文](../guides/manage-campaign-context.md)
+- [资源池](collections.md)
+- [导出任务](exports.md)
 - [Track Performance](track-performance.md)

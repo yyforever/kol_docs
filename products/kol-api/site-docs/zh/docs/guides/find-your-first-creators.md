@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 1
 status: published
-updated_at: 2026-04-01
+updated_at: 2026-04-22
 keywords:
   - creator discovery
   - shortlist
@@ -36,7 +36,15 @@ source_of_truth:
 
 1. 先做一次范围适中的发现
 2. 从结果里挑出 3-5 个候选对象
-3. 再进入 Analyze 阶段，而不是继续无限放大搜索范围
+3. 尽快进入第一次 creator read，而不是继续无限放大搜索范围
+4. 如果你还没有稳定对象标识，可以先用 URL 或 `platform + channel-id` 发起第一次读取
+5. 当读取返回 `creator_id` 后，后续分析、触达和监控都优先复用它
+
+## shortlist 看起来不错之后该做什么
+
+- 不要假设 discovery 结果已经包含完整的 creator identity block
+- 先用下一次 creator read 确认稳定身份，再分流到深入分析
+- 把 discovery 当成分析前的 handoff，而不是最终判断
 
 ## 判断这次发现是否合格
 

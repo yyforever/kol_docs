@@ -1,43 +1,57 @@
 ---
 doc_id: tool_manage_campaigns
 title: Manage Campaigns
-description: Planned public capability page for campaign context and workflow continuity.
+description: Beta public capability page for campaign context, workflow continuity, and adjacent operations.
 locale: en
 content_type: doc
 nav_group: tool-reference
 order: 6
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-04-22
 keywords:
   - manage campaigns
   - campaign context
   - workflow continuity
 tool_key: manage_campaigns
-availability: planned
+availability: beta
 source_of_truth:
-  - ../../../../03_API能力设计.md
   - ../../../../05_PRD.md
+  - "repo:kol_claw path:docs/marketing-ops-roadmap.md"
+  - "repo:kol_claw path:cli/README.md"
 ---
 
 # Manage Campaigns
 
-**Current status: Planned**
+**Current status: Beta**
 
-Manage Campaigns is intended to preserve campaign context across discovery, evaluation, and monitoring.
+Manage Campaigns helps you preserve campaign-level context as work moves from creator discovery into later operations.
 
-## Intended outcomes
+## Best-fit scenarios
 
-- Reuse market and campaign context
-- Preserve shortlist and watchlist decisions
-- Improve workflow continuity across sessions
+- You want one campaign anchor around shortlist, monitoring, and later ops work
+- You need basic campaign records and overview data instead of a full CRM
+- You want discovery, outreach preparation, monitoring, collections, and exports to stay connected
+
+## Current beta scope
+
+- Keep campaign-level records and overview data
+- Create, update, and remove campaign skeletons
+- Reuse campaign context across adjacent beta operations
+
+## What beta means right now
+
+- Public CLI and server commands exist for this domain
+- The surface is still stabilizing and should not be treated as a fully mature collaboration suite
 
 ## Current boundary
 
-- This direction is still being productized in the public surface
-- Do not read this page as a promise of a full campaign CRM
-- For immediately usable workflows, rely on discovery, analysis, and monitoring first
+- It is not a full CRM
+- It is not a promise of public email, message, or negotiation execution
+- It does not replace discovery, analysis, outreach preparation, or monitoring
 
 ## Recommended reading
 
 - [Manage Campaign Context](../guides/manage-campaign-context.md)
+- [Collections](collections.md)
+- [Exports](exports.md)
 - [Track Performance](track-performance.md)

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 3
 status: published
-updated_at: 2026-04-01
+updated_at: 2026-04-22
 keywords:
   - track performance
   - monitoring
@@ -18,6 +18,7 @@ source_of_truth:
   - ../../../../03_API能力设计.md
   - ../../../../05_PRD.md
   - "repo:kol_claw path:docs/modules/video-monitor.md"
+  - "repo:kol_claw path:cli/README.md"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
 ---
 
@@ -39,12 +40,22 @@ Track Performance is currently exposed as a public project-based video monitorin
 - create a monitoring project
 - add one or more video URLs as tasks
 - inspect task lists and project summaries
+- identify the right `task_id` from the task list
+- use `monitor history` when you need task-level history over time
 
 ## What you should expect
 
 - Project-based monitoring objects
 - Video-level status and performance snapshots
 - Project-level totals and platform breakdowns
+- Task-level history points and latest metrics after you query `monitor history`
+- `daily` or `hourly` granularity when you need more detailed trend review
+
+## When to use task history
+
+- Start with the task list when you need to identify the right monitored video
+- Use the returned `task_id` to request the next layer of detail
+- Use history when you need ordered points over time instead of only the current snapshot
 
 ## Current boundary
 

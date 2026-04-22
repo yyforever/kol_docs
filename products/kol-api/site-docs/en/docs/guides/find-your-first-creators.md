@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 1
 status: published
-updated_at: 2026-04-01
+updated_at: 2026-04-22
 keywords:
   - creator discovery
   - shortlist
@@ -34,7 +34,15 @@ Your goal is not to run the broadest search possible. Your goal is to produce a 
 
 1. Start with a focused discovery request
 2. Narrow the results to 3-5 candidates
-3. Move into analysis instead of endlessly widening the search
+3. Move into a first creator read instead of endlessly widening the search
+4. If you do not have a stable creator reference yet, start that first read from a URL or a `platform + channel-id` pair
+5. After the read returns `creator_id`, reuse it for later analysis, outreach, and monitoring
+
+## What to do after the shortlist looks promising
+
+- Do not assume the discovery result already contains the full creator identity block
+- Use the next creator read to confirm a stable identity before you branch into deeper evaluation
+- Treat discovery as the handoff into analysis, not as the final judgment step
 
 ## How to judge whether the discovery run is good enough
 
