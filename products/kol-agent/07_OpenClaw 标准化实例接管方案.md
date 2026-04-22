@@ -16,6 +16,13 @@
 
 没做：动态创建实例，现在是一个客户一个独立主机，看看卖的状况，后面再补也没问题
 
+2026.04.21 会议记录：
+1. 调研UC的支持程度，需要让ai去扫uc的网站，收集api自行判断能否满足需求，https://www.ucloud.cn/site/active/openclaw
+2. openclaw的记忆迁移：1. brainpack 工具（官方推荐插件）、2. 纯手工迁移——拷贝 ~/.openclaw 目录，但不是简单复制，需要后续执行脚本
+3. openclaw的记忆存储：使用oss
+4. 需要同时支持openclaw和Hermes，Hermes本期先不做，需要先调研怎么迁移到Hermes，代码上要给以后迁移做准备，能支持即可
+5. 不再需要llm gateway
+6. 用户使用的对话窗口做到主站
 
 
 下面是ai写的，还行，也都是人话👇
