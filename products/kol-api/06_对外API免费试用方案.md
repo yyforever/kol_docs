@@ -1,8 +1,8 @@
 # 06 对外 API 试用与开发者承接方案
 
-> 状态：草案 v0.6
+> 状态：草案 v0.7
 > 更新：2026-04-29
-> 依赖：`01_定位与假设.md`、`04_定价与商业模式.md`、`kol_claw` 代码库、`noxinfluencer_skills` 代码库
+> 依赖：`01_定位与假设.md`、`04_定价与商业模式.md`、`kol_claw` 代码库、`KOLServer` 代码库、`kol-next` 代码库、`kol_brain/wiki/outputs/聚星 API 试用与开发者承接方案.md`
 > 本文回答：怎样让"想把达人数据接入自家系统的工程师"低摩擦评估并自然走向付费？
 
 ---
@@ -14,8 +14,8 @@
 三句话：
 
 1. **API key = Skill key**，同一份配额，同一套限流。从平台视角看，调 Skill 和调 API 是同一件事。
-2. **免费档面向"集成型开发者评估接入"重新调一次**（见 §四）。所有免费用户共享同一份额度，不区分来源是 Skill 还是 API。
-3. **主要新增工作**只有三件：landing page、Quick Start 文档、dashboard 显示 key 和用量。后端原则上只改一次免费档配额数字；API 路径别名按开发时的实际代码成本决定。
+2. **免费档面向"集成型开发者评估接入"按分服务 quota 重新表达**（见 §四）。所有免费用户共享同一份额度，不区分来源是 Skill 还是 API。
+3. **主要新增工作**集中在 `/developer-api` landing、Quick Start 文档和复用 Skill dashboard。后端不新增独立 API trial 体系；分服务 quota 上线前必须落在 Skill 既有或扩展后的 quota / action / pricing / package 模型里。
 
 ---
 
@@ -46,10 +46,10 @@
 
 ```text
 搜索引擎找到 NoxInfluencer API
-  -> 落地 landing page (`/api`)
+  -> 落地 developer landing (`/developer-api`)
   -> 点 "Get API Key" 跳标准注册流
-  -> 注册完进 dashboard，自动看到 API key + 剩余配额
-  -> 跟着 Quick Start 跑 curl 例子（search / profile / audience / contacts / monitor / brand-monitor）
+  -> 注册完进 Skill dashboard，看到 API key + 用量
+  -> 跟着 Quick Start 跑 curl 例子（quota / search / profile / contacts / brand-monitor）
   -> 评估完，按结果分流：
       A. 数据 OK + 体量大       -> 升级套餐 / 联系销售（中英分站不同）
       B. 数据 OK + 想继续测     -> 同上
@@ -75,7 +75,7 @@
 
 ### 4.1 调整后的免费档
 
-| 能力 | 04 §2.5 现状 | v0.6 当前方案 |
+| 能力 | 04 §2.5 现状 | v0.7 当前方案 |
 |---|---|---|
 | `discover_creators` 搜索 | 10 次 | **30 次** |
 | `analyze_creator` 聚合 / `creator profile` | 30 次 | 30 次（不变） |
@@ -95,6 +95,8 @@
 - 试用周期沿用 04 既有口径——免费档**一次性试用，不重置**。
 - 所有免费用户共享：Skill 用户日常用不到深度能力时是 0 调用，不消耗。即使消耗了，那是真实试用，正常 PLG 行为。
 - 数据搬运党继续靠 04 §5 的 L1-L4 防线挡（双配额 / 字段分级 / 限流 / KYB），不靠"全锁住"挡。
+- 分服务 quota 是 Skill 体系要表达的产品口径，不是 API 新增的独立逻辑。
+- 如果现有 Skill quota 体系尚不能表达 contacts、export、writes 等独立服务维度，上线前应作为 Skill + API 共享模型调整。
 
 ### 4.3 对 04 §2.5 的同步更新
 
@@ -126,9 +128,9 @@
 
 需要补的运维类 endpoint（如 Skill 没有等价 endpoint）：
 
-- `GET /v1/quota` —— 查当前剩余 Skill 技能额度 + 服务配额
+- `GET /api/v1/quota` —— 查当前剩余 Skill 技能额度；分服务 quota 明细以上线前 Skill quota 模型实际支持为准
 
-API key 本身在 SaaS dashboard 手动获取和复制，不需要提供 `/v1/key` 查询接口。
+API key 本身在 SaaS / Skill dashboard 手动获取和复制，不需要提供任何 key 查询接口。
 
 ### 5.3 响应契约（目标 vs 第一版策略）
 
@@ -140,7 +142,7 @@ API key 本身在 SaaS dashboard 手动获取和复制，不需要提供 `/v1/ke
 | 错误格式 | 标准 HTTP 状态码 + `{"error": {"code": "...", "message": "..."}}` |
 | 限流 header | 返回 `X-RateLimit-Limit / X-RateLimit-Remaining / Retry-After` |
 | 分页 | `has_more / next_cursor` 严格契约 |
-| 版本 | URL 前缀显式 `/v1/`，破坏性变更要新版本 |
+| 版本 | URL 前缀显式 `/api/v1/`，破坏性变更要新版本 |
 | 不带 LLM helper 字段 | 不返回 suggestion / hint / 自然语言摘要 |
 
 **第一版策略**：
@@ -158,13 +160,13 @@ API key 本身在 SaaS dashboard 手动获取和复制，不需要提供 `/v1/ke
 
 ### 5.5 API 路径与 host
 
-**对外 API 可以走独立路径与 host，但 handler、配额、限流完全复用 Skill 现状。路径是否新开由开发时的实际代码成本决定。**
+**第一版对外 API 使用现有 `/api/v1` base path，handler、配额、限流完全复用 Skill 现状。**
 
 | 维度 | 设计 |
 |---|---|
-| Host | `api.noxinfluencer.com`（subdomain，行业惯例：Modash / Phyllo / HypeAuditor 均是 `api.<brand>.com`）。如 DNS / TLS 工作量大，第一版退到 `<现有域名>/api/v1/` 路径前缀，工程实施时定 |
-| Path | 优先评估 `/v1/<endpoint>` 对外别名；如果当前代码直接复用内部路径成本最低，第一版允许沿用内部 endpoint，只在文档中明确当前路径与后续稳定化计划 |
-| 实现 | Server 加一组路由前缀 / host 别名，map 到现有 Skill handler；auth middleware 透传，认同一份 key |
+| Host | 第一版使用现有站点域名下的 `/api/v1`，不单独要求 `api.noxinfluencer.com` |
+| Path | 先复用 `kol_claw` 当前 `/api/v1/*` 路径；如现有路径明显不符合公开 API 最佳实践，再补 thin public alias |
+| 实现 | `kol_claw` 作为 public BFF；Java `KOLServer` 继续作为 key / quota backing service |
 | 底层 | handler、配额扣减、限流规则、错误处理全部沿用 Skill 现有代码 |
 
 不直接暴露 Skill Client 当前路径的理由：
@@ -175,7 +177,7 @@ API key 本身在 SaaS dashboard 手动获取和复制，不需要提供 `/v1/ke
 
 但本轮拍板：平台不区分 Skill / CLI / API 用量。用户拿同一个 key 调 Skill Client 使用的内部 API，或者调用我们开放的新 API，本质上都是同一套配额和限流。统计上先看统一用量，不为区分来源增加额外工程复杂度。
 
-**成本**：在现有 Server 加路由前缀 + auth middleware 透传，比"重写底层"小一个数量级。
+**成本**：复用现有 `/api/v1` + Skill key / quota backing，比"重写底层"小一个数量级。
 
 ---
 
@@ -185,10 +187,10 @@ API key 本身在 SaaS dashboard 手动获取和复制，不需要提供 `/v1/ke
 
 #### 6.1.1 对外 API 路由层
 
-- **Host**：`api.noxinfluencer.com`（subdomain）或 `<现有域名>/api/v1/`（path prefix），按 DNS / TLS 现状定。
-- **Path 前缀**：`/v1/...`
+- **Host**：现有站点域名。
+- **Path 前缀**：`/api/v1/...`
 - **Auth middleware**：读 `Authorization: Bearer <key>` header → 复用 Skill 现有 key 校验逻辑（同一份 key、同一份双配额、同一组限流规则）。
-- **所有 `/v1/*` 请求映射到现有 Skill handler**——handler 不动。
+- **所有 `/api/v1/*` 请求复用现有 Skill / CLI handler 或 BFF 调用链**——业务逻辑不重写。
 
 #### 6.1.2 对外暴露的能力组与路径
 
@@ -196,31 +198,31 @@ API key 本身在 SaaS dashboard 手动获取和复制，不需要提供 `/v1/ke
 
 | 对外能力组 | 建议路径前缀 | 对应 Skill handler |
 |---|---|---|
-| 达人搜索 | `/v1/creators/search` | `discover_creators` |
-| 达人详情聚合 | `/v1/creators/{id}` | `analyze_creator`（一次返回 profile + audience + content + cooperation） |
-| 达人受众 | `/v1/creators/{id}/audience` | audience |
-| 达人内容 | `/v1/creators/{id}/content` | content |
-| 达人合作 | `/v1/creators/{id}/cooperation` | cooperation |
-| 达人联系方式 | `/v1/creators/{id}/contacts` | contacts |
-| 视频监控 | `/v1/monitor/*` | video_monitor（项目 CRUD / 添加任务 / 历史查询） |
-| 品牌监控 | `/v1/brand-monitor/*` | brand_monitor（只读列表 / 详情） |
-| Campaign | `/v1/campaigns/*` | campaign |
-| Collection | `/v1/collections/*` | collection（CRUD + 批量工作流） |
-| Email | `/v1/email/*` | email（tasks / send / schedule / cancel） |
-| Message | `/v1/messages/*` | message（threads / 回复） |
-| CRM | `/v1/crm/*` | crm |
-| Export | `/v1/export/*` | export |
-| 配额查询 | `/v1/quota` | 见 6.1.4 |
+| 达人搜索 | `/api/v1/creators/search` | `discover_creators` |
+| 达人详情 | `/api/v1/creators/{creator_id}/profile` | creator profile |
+| 达人受众 | `/api/v1/creators/{creator_id}/audience` | audience |
+| 达人内容 | `/api/v1/creators/{creator_id}/content` | content |
+| 达人合作 | `/api/v1/creators/{creator_id}/cooperation` | cooperation |
+| 达人联系方式 | `/api/v1/creators/{creator_id}/contacts` | contacts |
+| 视频监控 | `/api/v1/video-monitor/*` | video_monitor |
+| 品牌监控 | `/api/v1/brand-monitors/*` | brand_monitor（只读列表 / 详情） |
+| Campaign | `/api/v1/campaigns/*` | campaign |
+| Collection | `/api/v1/collections/*` | collection（CRUD + 批量工作流） |
+| Email | `/api/v1/email-tasks/*` | email（tasks / send / schedule / cancel） |
+| Message | `/api/v1/messages/*` | message（threads / 回复） |
+| CRM | `/api/v1/crm/*` | crm |
+| Export | `/api/v1/exports/*` | export |
+| 配额查询 | `/api/v1/quota` | 见 6.1.4 |
 
 #### 6.1.3 免费档配额配置
 
-按 §4.1 重写既有免费档配额配置。**实现位置：现有配额 config 层，不改双配额引擎本身，只改配置数值。**
+按 §4.1 在 Skill 既有或扩展后的 quota / action / pricing / package 模型中表达分服务 quota。**不能为 API 新增独立 quota 体系**。
 
 #### 6.1.4 新增运维 endpoint
 
 如果 Skill 已有等价 quota endpoint，直接映射复用；没有则新增 thin handler。API key 不需要 endpoint，用户在 SaaS dashboard 手动获取。
 
-`GET /v1/quota` 返回结构（示例，字段命名按 Skill 现有约定调整）：
+`GET /api/v1/quota` 第一版可以保持当前 Skill credit snapshot 跑通原型。上线前如果要展示分服务额度，返回结构应由 Skill quota 模型统一提供，示例仅作为产品目标结构：
 
 ```json
 {
@@ -253,9 +255,9 @@ API key 本身在 SaaS dashboard 手动获取和复制，不需要提供 `/v1/ke
 
 ### 6.2 前端
 
-#### 6.2.1 Landing page `/api`
+#### 6.2.1 Landing page `/developer-api`
 
-复用 Skill landing 样式，从简处理。section 按顺序：
+新增 `/developer-api`。旧 `/api-service` 保留 custom API / sales 页，只新增跳转 `/developer-api` 的自助试用 CTA。新页设计需要参考旧 `/api-service` 的视觉和内容结构，但目标改为 developer self-serve + Quick Start + dashboard 承接。section 按顺序：
 
 1. **Hero**——一句话价值主张 + "Get API Key" CTA 按钮（跳标准注册流）
 2. **能力概述**——6 平台覆盖（YT / TikTok / IG / FB / X / NaverBlog）+ 主要能力 bullet（搜索 / 评估 / 监控 / 品牌洞察 / 营销运营）
@@ -266,10 +268,10 @@ API key 本身在 SaaS dashboard 手动获取和复制，不需要提供 `/v1/ke
 
 #### 6.2.2 Dashboard 改造
 
-在用户 dashboard 加 "API Keys" 区域（如已有则复用）：
+复用现有 Skill dashboard / usage billing，不新建 API 专属 dashboard：
 
 - 当前 API key（masked 显示如 `noxk_****xyz` + 完整复制按钮）
-- 实时用量（按 6.1.4 quota 结构展示，每个 service 一行：`Search: 25/30`、`Audience: 10/10`、`Contacts: 5/5` 等）
+- 实时用量（第一版可先展示 Skill credit snapshot；分服务 quota 展示以上线前 Skill quota 模型支持为准）
 - 触达限制时的"升级套餐"按钮（跳现有 pricing 页 / 中文站销售线索表）
 
 ### 6.3 文档
@@ -289,27 +291,27 @@ section 按顺序：
 #### 6.3.2 5 个 curl 示例
 
 ```bash
-# 1. 搜索：找美国美妆类 TikTok 达人，粉丝 5-20 万
+# 1. 查当前 quota
 curl -H "Authorization: Bearer <YOUR_KEY>" \
-  "https://api.noxinfluencer.com/v1/creators/search?platform=tiktok&country=US&category=beauty&followers=50000-200000"
+  "https://<现有域名>/api/v1/quota"
 
-# 2. 详情：分析单个达人（聚合返回 profile + audience + content + cooperation）
-curl -H "Authorization: Bearer <YOUR_KEY>" \
-  "https://api.noxinfluencer.com/v1/creators/{creator_id}"
-
-# 3. 拉取联系方式
-curl -H "Authorization: Bearer <YOUR_KEY>" \
-  "https://api.noxinfluencer.com/v1/creators/{creator_id}/contacts"
-
-# 4. 创建视频监控项目
-curl -X POST -H "Authorization: Bearer <YOUR_KEY>" \
+# 2. 搜索：找美国美妆类 TikTok 达人，粉丝 5-20 万
+curl -X POST "https://<现有域名>/api/v1/creators/search" \
+  -H "Authorization: Bearer <YOUR_KEY>" \
   -H "Content-Type: application/json" \
-  -d '{"name":"Q3 美妆", "tasks":[{"video_url":"https://www.tiktok.com/..."}]}' \
-  "https://api.noxinfluencer.com/v1/monitor/projects"
+  -d '{"platform":"tiktok","country":"US","category":"beauty","followers":"50000-200000"}'
 
-# 5. 查当前剩余配额
+# 3. 详情：分析单个达人
 curl -H "Authorization: Bearer <YOUR_KEY>" \
-  "https://api.noxinfluencer.com/v1/quota"
+  "https://<现有域名>/api/v1/creators/{creator_id}/profile"
+
+# 4. 拉取联系方式
+curl -H "Authorization: Bearer <YOUR_KEY>" \
+  "https://<现有域名>/api/v1/creators/{creator_id}/contacts"
+
+# 5. 查看品牌监控项目
+curl -H "Authorization: Bearer <YOUR_KEY>" \
+  "https://<现有域名>/api/v1/brand-monitors"
 ```
 
 具体参数和字段以 Skill Client 当前调用为准——开发时按实际签名调整。
@@ -320,7 +322,7 @@ curl -H "Authorization: Bearer <YOUR_KEY>" \
 
 - 字段命名当前可能不完全是 snake_case，下一版统一
 - 错误响应格式当前可能带 LLM-friendly 自然语言描述，下一版改为标准 `{"error": {"code", "message"}}`
-- 限流响应可能未返回 `X-RateLimit-*` header，临时通过 `GET /v1/quota` 查实时配额
+- 限流响应可能未返回 `X-RateLimit-*` header，临时通过 `GET /api/v1/quota` 查实时配额
 - 分页字段命名可能不规范，下一版统一为 `has_more` / `next_cursor`
 - 部分响应可能含 LLM helper 字段（suggestion / hint）——客户端可以忽略
 
@@ -330,8 +332,8 @@ curl -H "Authorization: Bearer <YOUR_KEY>" \
 
 | 站点 | landing page | 升级 CTA |
 |---|---|---|
-| 英文站 | `/api` | 跳现有 pricing → AI Startup（自助月付）/ 企业版 / 销售联系 |
-| 中文站 | `/api`（中文版） | 跳现有 pricing → 年付会员（自助直充）/ 销售线索表 |
+| 英文站 | `/developer-api` | 跳现有 pricing → AI Startup（自助月付）/ 企业版 / 销售联系 |
+| 中文站 | `/developer-api`（中文版） | 跳现有 pricing → 年付会员（自助直充）/ 销售线索表 |
 
 后端共用，前端文案分流。
 
@@ -339,6 +341,8 @@ curl -H "Authorization: Bearer <YOUR_KEY>" \
 
 - **不**做 `trial_type` 用户类型字段
 - **不**做独立 trial 配额档（合并进调整后的免费档）
+- **不**做 API-only quota 体系
+- **不**单独把 `Idempotency-Key` 设为 public API 上线 gate；如确认重复写风险，按 Skill + API 共享写契约处理
 - **不**做销售引导页（升级跳现有主站 pricing 页 / 销售线索表）
 - **不**做"使用方式"注册选项 / 销售前置问卷
 - **不**做异常自动降级 / 同域名去重（沿用 04 §5 既有四层防线）
@@ -352,7 +356,7 @@ curl -H "Authorization: Bearer <YOUR_KEY>" \
 
 ## 七、决策记录
 
-v0.6 当前拍板项：
+v0.7 当前拍板项：
 
 | 项 | 决议 |
 |---|---|
@@ -360,7 +364,8 @@ v0.6 当前拍板项：
 | `monitor` 1 项目 14 天到期处理 | 沿用既有 quota 到期回收逻辑，开发对齐时确认 |
 | `@noxinfluencer/cli` npm 包是否重发 | **不动 npm 包**；对外 API 路径是否新开留给开发按现有代码成本决定（见 §5.5） |
 | 中文站销售线索表字段 | 复用平台已有线索表，不新增字段 |
-| landing page 样式 | 复用现有 Skill landing 样式，从简处理 |
+| landing page route | 新 developer landing 使用 `/developer-api`；旧 `/api-service` 保留 custom API / sales 页 |
+| landing page 样式 | 参考旧 `/api-service` 和现有 Skill landing，服务 developer self-serve 目标 |
 | Quick Start 示例数量 | 3-5 个 curl 即可，不做 SDK / Postman collection |
 
 ---
