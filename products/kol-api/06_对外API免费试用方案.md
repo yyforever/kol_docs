@@ -2,7 +2,7 @@
 
 > 状态：草案 v0.7
 > 更新：2026-04-29
-> 依赖：`01_定位与假设.md`、`04_定价与商业模式.md`、`kol_claw` 代码库、`KOLServer` 代码库、`kol-next` 代码库、`kol_brain/wiki/outputs/聚星 API 试用与开发者承接方案.md`
+> 依赖：`01_定位与假设.md`、`04_定价与商业模式.md`、`kol_claw` 代码库、`KOLServer` 现有 key/quota backing、`kol-next` 代码库、`kol_brain/wiki/outputs/聚星 API 试用与开发者承接方案.md`
 > 本文回答：怎样让"想把达人数据接入自家系统的工程师"低摩擦评估并自然走向付费？
 
 ---
@@ -15,7 +15,7 @@
 
 1. **API key = Skill key**，同一份配额，同一套限流。从平台视角看，调 Skill 和调 API 是同一件事。
 2. **免费档面向"集成型开发者评估接入"按分服务 quota 重新表达**（见 §四）。所有免费用户共享同一份额度，不区分来源是 Skill 还是 API。
-3. **主要新增工作**集中在 `/developer-api` landing、Quick Start 文档和复用 Skill dashboard。后端不新增独立 API trial 体系；分服务 quota 上线前必须落在 Skill 既有或扩展后的 quota / action / pricing / package 模型里。
+3. **主要新增工作**集中在 `/developer-api` landing、Quick Start 文档和复用 Skill dashboard。后端不新增独立 API trial 体系；`KOLServer` 默认无独立开发任务，只复用现有 Skill key / quota backing。
 
 ---
 
@@ -97,6 +97,7 @@
 - 数据搬运党继续靠 04 §5 的 L1-L4 防线挡（双配额 / 字段分级 / 限流 / KYB），不靠"全锁住"挡。
 - 分服务 quota 是 Skill 体系要表达的产品口径，不是 API 新增的独立逻辑。
 - 如果现有 Skill quota 体系尚不能表达 contacts、export、writes 等独立服务维度，上线前应作为 Skill + API 共享模型调整。
+- 实现顺序是先复用 `kol_claw`、`noxinfluencer_skills`、`KOLServer` 中已经存在的 Skill key、quota、action、command 和 guardrail 代码；确认确有缺口后再补最小适配。`KOLServer` 不应承担新的 action cost、分服务 quota 或写操作业务逻辑。
 
 ### 4.3 对 04 §2.5 的同步更新
 
@@ -166,7 +167,7 @@ API key 本身在 SaaS / Skill dashboard 手动获取和复制，不需要提供
 |---|---|
 | Host | 第一版使用现有站点域名下的 `/api/v1`，不单独要求 `api.noxinfluencer.com` |
 | Path | 先复用 `kol_claw` 当前 `/api/v1/*` 路径；如现有路径明显不符合公开 API 最佳实践，再补 thin public alias |
-| 实现 | `kol_claw` 作为 public BFF；Java `KOLServer` 继续作为 key / quota backing service |
+| 实现 | `kol_claw` 作为 public BFF；Java `KOLServer` 只作为现有 Skill key / quota backing dependency，不承接新的 API 业务逻辑 |
 | 底层 | handler、配额扣减、限流规则、错误处理全部沿用 Skill 现有代码 |
 
 不直接暴露 Skill Client 当前路径的理由：
@@ -216,7 +217,7 @@ API key 本身在 SaaS / Skill dashboard 手动获取和复制，不需要提供
 
 #### 6.1.3 免费档配额配置
 
-按 §4.1 在 Skill 既有或扩展后的 quota / action / pricing / package 模型中表达分服务 quota。**不能为 API 新增独立 quota 体系**。
+按 §4.1 在 Skill 既有或扩展后的 quota / action / pricing / package 模型中表达分服务 quota。开工时先找并复用现有 Skill / CLI / BFF 代码；确认没有复用点时，才补最小共享适配。**不能为 API 新增独立 quota 体系，也不能给 `KOLServer` 派新的分服务 quota 业务实现任务**。
 
 #### 6.1.4 新增运维 endpoint
 

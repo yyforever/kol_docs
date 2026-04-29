@@ -2,7 +2,7 @@
 
 > 状态：v0.1 开工包
 > 更新：2026-04-29
-> 目的：给将要接手 `KOLServer`、`kol_claw`、`kol-next` 的 Agent 提供任务描述和资料入口。
+> 目的：给将要接手 `kol_claw`、`kol-next` 的 Agent 提供任务描述和资料入口，并说明 `KOLServer` 只是现有 backing dependency，不默认派独立开发任务。
 
 ---
 
@@ -20,6 +20,7 @@
 - 旧 `/api-service` 保留 custom API / sales 定位，只新增 self-serve CTA
 - Quick Start 首屏只放低副作用读路径
 - 写操作真实允许，但安全语义必须和 Skill 共享；不要单独把 `Idempotency-Key` 做成 public API gate
+- 开工第一步必须先找现有 Skill / CLI / BFF 代码，复用既有 command、action、quota、validate / preview / apply 和写操作语义；不得在 `KOLServer` 重造一套业务逻辑
 
 ---
 
@@ -41,25 +42,36 @@
 
 ### Related repos
 
-- Java server：`/Users/yangyang/Github/KOLServer`
+- Java server dependency：`/Users/yangyang/Github/KOLServer`
 - Python public BFF：`/Users/yangyang/Github/kol_claw`
 - SaaS frontend：`/Users/yangyang/Github/kol-next`
 
 ---
 
-## 三、KOLServer 任务
+## 三、KOLServer 结论：默认不派独立开发任务
 
-### 任务描述
+### 代码结论
 
-确认并补齐 Skill key / quota / usage backing 能力，使 `/api/v1` public BFF 可以复用现有 Skill key、扣量、usage 和 dashboard 数据链路。
+`KOLServer` 当前已有 API 原型需要的 Skill key / quota / usage backing。它不是 API 业务逻辑 owner，也不是分服务 quota 新模型 owner；它只承接已有 Skill 体系需要的 key、quota、usage、配置和持久化 backing。
 
-### 需要做
+已经存在的复用点：
 
-- 复核 `/ws/claw/key/list|create|delete` 是否满足 API key 展示、复制、删除。
-- 复核 `/ws/claw/quota/current|consume|dashboard|usageTrend|activity` 是否满足 API trial 原型。
-- 将分服务 quota 落到 Skill 既有或扩展后的 quota / action / pricing / package 模型里。
-- 确认 contacts、export、writes、monitor、brand-monitor 等 action 的计量、扣量、展示口径。
-- 确认 usage trend / activity 能支持 dashboard 展示 developer API 相关活动。
+- `ClawKeyService`
+- `ClawQuotaService`
+- `KolScope.Scope_SKILL_QUOTA`
+- `/ws/claw/key/list|create|delete`
+- `/ws/claw/quota/current|consume|dashboard|usageTrend|activity`
+
+因此本轮不应给 `KOLServer` 派“实现分服务 quota / action cost / 写操作安全 / public API”的开发任务。
+
+### 仅在需要时做的确认
+
+这些确认可由 `kol_claw` 或 `kol-next` Agent 在联调时顺手完成，不需要单独起 `KOLServer` 任务：
+
+- `/ws/claw/key/list|create|delete` 是否在当前环境可用。
+- `/ws/claw/quota/current|consume` 是否能支撑 `/api/v1/quota` 和扣量。
+- `/ws/claw/quota/dashboard|usageTrend|activity` 是否满足 Skill dashboard 当前展示。
+- 如果接口不可用或字段缺失，再开最小修复任务。
 
 ### 不要做
 
@@ -67,11 +79,14 @@
 - 不新增 API-only quota 体系。
 - 不新增 API trial 用户类型。
 - 不单独处理 API-only 写操作安全。
+- 不复制 `kol_claw` / CLI / Skill 中已经存在的 action cost、validate / preview / apply、Idempotency-Key、export、brand-monitor、CRM 等业务逻辑。
+- 不把分服务 quota 写成 `KOLServer` 独立配置；如果需要配置，也必须是 Skill 共享配置。
 
-### 开工资料
+### 参考资料
 
 - `/Users/yangyang/Github/kol_brain/wiki/outputs/聚星 API 试用与开发者承接方案.md`
 - `/Users/yangyang/Github/kol_brain/wiki/source-summaries/Source Summary - API trial latest code review.md`
+- `/Users/yangyang/Github/kol_brain/wiki/source-summaries/Source Summary - API trial KOLServer task review.md`
 - `/Users/yangyang/Github/kol_docs/products/kol-api/06_对外API免费试用方案.md`
 - `/Users/yangyang/Github/KOLServer`
 
@@ -81,7 +96,7 @@
 
 ### 任务描述
 
-把现有 `/api/v1` 作为 developer API 原型入口跑通，确保 Quick Start 的低副作用 curl 可执行，并且所有鉴权、限流、扣量继续复用 Skill 体系。
+把现有 `/api/v1` 作为 developer API 原型入口跑通，确保 Quick Start 的低副作用 curl 可执行，并且所有鉴权、限流、扣量继续复用现有 Skill / CLI / BFF 体系。
 
 ### 需要做
 
@@ -96,12 +111,14 @@
 - 复核公开 API 契约：命名、错误格式、分页、response envelope、限流错误。
 - 如现有路径明显不符合公开 API 最佳实践，只补 thin wrapper / alias，不重写业务逻辑。
 - 保证扣量仍走 Java quota backing。
+- 复用 `noxinfluencer_skills` 和 CLI 已有 command/action 语义，尤其是 quota、brand-monitor、export、CRM、collection、validate / preview / apply 和写操作 guardrail。
 
 ### 不要做
 
 - 不在 Quick Start 首屏放 send / schedule / apply。
 - 不在 Python 里自造独立 quota。
 - 不把当前 raw response 伪装成完全稳定的公开契约。
+- 不绕过 CLI / Skill 已经沉淀的写操作、导出、品牌监控和 CRM 语义。
 
 ### 开工资料
 
@@ -155,10 +172,12 @@
 - Quick Start 首版范围：quota、search、profile、contacts、brand-monitor
 - quota 原则：分服务 quota 必须 Skill 对齐
 - 写操作原则：真实允许，但安全契约和 Skill 共享
+- 代码复用原则：先复用 `kol_claw`、`noxinfluencer_skills`、`KOLServer` 现有 Skill 代码；缺口再补最小适配
+- `KOLServer` 结论：默认无独立开发任务，只作为现有 Skill key / quota / usage backing dependency
 
 仍需实现时补齐：
 
 - `/developer-api` 最终文案与视觉细节
-- 分服务 quota 在 Skill quota / action / pricing / package 体系的具体代码落点
+- 分服务 quota 在现有 Skill / CLI / BFF action 体系里的复用点和最小缺口
 - 可跑 Quick Start 的测试账号、creator id、brand monitor id、campaign id、collection id
 - 写操作重复执行风险是否真实需要本轮解决
