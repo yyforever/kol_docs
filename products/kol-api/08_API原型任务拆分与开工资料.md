@@ -96,22 +96,32 @@
 
 ### 任务描述
 
-把现有 `/api/v1` 作为 developer API 原型入口跑通，确保 Quick Start 的低副作用 curl 可执行，并且所有鉴权、限流、扣量继续复用现有 Skill / CLI / BFF 体系。
+把现有 `/api/v1` 作为 developer API 原型入口跑成“可交付 Quick Start”。核心不是重写 API，而是复用当前 FastAPI router、service、Skill / CLI command 语义和 Java quota backing，产出一组真实可跑、低副作用、可验收的 curl 示例与已知限制。
 
 ### 需要做
 
-- 保持 base path 为 `/api/v1`。
-- 复用 `Authorization: Bearer <Skill API Key>`。
-- 跑通 Quick Start 5 组 curl：
+- 保持 base path 为 `/api/v1`，不要新增 Java public API。
+- 复用 `Authorization: Bearer <Skill API Key>`、`kol_ai_user_key` 鉴权、API key 级限流、`DEFAULT_CREDIT_COST` / `CreditPrice` action cost、`deduct_credit -> /ws/claw/quota/consume` 扣量链路。
+- 基于现有 router 和 schema 生成 Quick Start curl pack，优先跑通 5 组低副作用调用：
   - `GET /api/v1/quota`
   - `POST /api/v1/creators/search`
   - `GET /api/v1/creators/{creator_id}/profile`
   - `GET /api/v1/creators/{creator_id}/contacts`
   - `GET /api/v1/brand-monitors` 和 `GET /api/v1/brand-monitors/{brand_id}`
-- 复核公开 API 契约：命名、错误格式、分页、response envelope、限流错误。
-- 如现有路径明显不符合公开 API 最佳实践，只补 thin wrapper / alias，不重写业务逻辑。
-- 保证扣量仍走 Java quota backing。
+- Quick Start curl 使用 `BASE_URL`、`NOX_API_KEY`、`CREATOR_ID`、`BRAND_ID` 变量；如果本地没有可用 key 或对象 id，只输出最小 fixture 缺口，不编造示例数据。
+- 复核公开 API 契约：路径命名、必填参数、错误格式、分页、response envelope、限流错误、quota exhausted 行为和 `credits/meta` 字段。
+- 对不符合公开 API 最佳实践但又要进入 Quick Start 的路径，只补 thin wrapper / alias；wrapper 必须调用现有 service / handler，不复制业务逻辑。
+- 复核 `GET /api/v1/quota` 当前仍是 Skill credit snapshot；不得把它包装成已经支持完整分服务 quota。
 - 复用 `noxinfluencer_skills` 和 CLI 已有 command/action 语义，尤其是 quota、brand-monitor、export、CRM、collection、validate / preview / apply 和写操作 guardrail。
+- 把真实写操作保留在完整 API docs 或后续说明中；如要示例，必须沿用现有 validate / preview / apply / force / confirm 语义，不为 public API 单独定义新安全协议。
+- 如果联调发现 Java `/ws/claw/quota/current|consume` 或 key backing 不可用，只记录最小 KOLServer 修复点，不把它扩成 KOLServer 业务开发任务。
+
+### 验收标准
+
+- 5 组 Quick Start curl 至少在一个可用环境下跑通，或明确列出唯一阻塞的 fixture / 环境缺口。
+- 每个 Quick Start 示例都对应现有 `/api/v1` router 或 thin alias，并能说明复用的 action cost 与扣量链路。
+- 输出 Known Limitations：当前 raw response、分页、限流 header、分服务 quota、错误格式中尚未稳定的部分。
+- 回归验证不得破坏 Skill / CLI 已有 command tree 和写操作 guardrail。
 
 ### 不要做
 
@@ -119,13 +129,17 @@
 - 不在 Python 里自造独立 quota。
 - 不把当前 raw response 伪装成完全稳定的公开契约。
 - 不绕过 CLI / Skill 已经沉淀的写操作、导出、品牌监控和 CRM 语义。
+- 不把 `Idempotency-Key` 升级为 API-only 上线 gate；如确认需要强制，必须按 Skill + API 共享契约处理。
+- 不直接修改 `KOLServer`，除非 backing endpoint 联调失败且已收敛为最小修复点。
 
 ### 开工资料
 
 - `/Users/yangyang/Github/kol_brain/wiki/outputs/聚星 API 试用与开发者承接方案.md`
 - `/Users/yangyang/Github/kol_brain/wiki/source-summaries/Source Summary - API trial latest code review.md`
+- `/Users/yangyang/Github/kol_brain/wiki/source-summaries/Source Summary - API trial KOLServer task review.md`
 - `/Users/yangyang/Github/kol_docs/products/kol-api/06_对外API免费试用方案.md`
 - `/Users/yangyang/Github/kol_claw`
+- `/Users/yangyang/Github/noxinfluencer_skills/skills/noxinfluencer/SKILL.md`
 
 ---
 
@@ -133,16 +147,26 @@
 
 ### 任务描述
 
-新增 developer self-serve landing，并复用 Skill dashboard 承接 API key、quota 和 usage；旧 `/api-service` 保留为 custom API / sales 页。
+`kol-next` 当前已经有 `/developer-api` 页面和 `/api-service -> /developer-api` CTA。因此任务不是从零新增页面，而是复核并打磨现有 developer self-serve landing，确保它与当前 `kol_claw` Quick Start、Skill dashboard 和 custom API / sales 页分工一致。
 
 ### 需要做
 
-- 新增 `/developer-api` 页面。
-- 参考当前 `/api-service` 的设计结构，但把目标改为 developer self-serve + Quick Start + dashboard。
-- 在旧 `/api-service` 增加 CTA，跳转 `/developer-api`。
-- 复用 `/skills/dashboard` 和 `/skills/usage-billing`。
+- 复核现有 `pages/developer-api/index.vue`、`pages/developer-api/developer-api.scss` 和多语言文案，修正明显页面错误；当前已发现 trial card 区域存在重复 `<h3 class="developer-api-trial-card__title">`。
+- 对齐 `kol_claw` 最终 Quick Start curl：路径、method、request body、placeholder、域名和低副作用范围必须一致。
+- 复核页面能力声明，不要承诺后端或 Skill 当前未支持的 platform、分服务 quota、稳定 response schema 或写操作安全语义。
+- 保持旧 `/api-service` 为 custom API / sales 页，只保留或优化跳转 `/developer-api` 的 self-serve CTA。
+- 复用 `/skills/dashboard` 和 `/skills/usage-billing` 承接 API key、quota snapshot、usage trend 和 activity；只做必要入口和文案优化。
 - 主 CTA 默认指向注册后进入 Skill dashboard：`/signup?userType=brand&service=%2Fskills%2Fdashboard`。
 - 页面文案不要承诺后端尚未支持的分服务 quota 展示。
+- 检查英文、中文、繁中、日文、韩文 i18n key 是否齐全；其他语言继续按现有逻辑 redirect 到 `www.noxinfluencer.com/developer-api`。
+- 检查 SEO canonical、登录/注册 CTA、docs CTA、pricing / upgrade CTA 是否符合当前站点规则。
+
+### 验收标准
+
+- `/developer-api` 页面本地构建和页面渲染无明显 template 错误。
+- Quick Start 文案与 `kol_claw` 实际可跑 curl 一致。
+- `/api-service` 仍是 custom API / sales 页面，且存在到 `/developer-api` 的自助试用入口。
+- Dashboard CTA 仍指向 `/skills/dashboard` 和 `/skills/usage-billing`，没有新增 API-only dashboard。
 
 ### 不要做
 
@@ -150,6 +174,8 @@
 - 不新增 API 专属 dashboard。
 - 不把 landing 放在 `/api` 路由。
 - 不写死与 Skill 后端不一致的额度数字。
+- 不把当前 `/api/v1/quota` 的 credit snapshot 文案包装成已上线的分服务 quota。
+- 不在 landing 首屏放真实 send / schedule / apply 的执行示例。
 
 ### 开工资料
 
@@ -174,10 +200,11 @@
 - 写操作原则：真实允许，但安全契约和 Skill 共享
 - 代码复用原则：先复用 `kol_claw`、`noxinfluencer_skills`、`KOLServer` 现有 Skill 代码；缺口再补最小适配
 - `KOLServer` 结论：默认无独立开发任务，只作为现有 Skill key / quota / usage backing dependency
+- `kol-next` 现状：`/developer-api` 页面已存在，不再作为从零新增任务；当前任务是复核、修正和对齐
 
 仍需实现时补齐：
 
-- `/developer-api` 最终文案与视觉细节
+- `/developer-api` 现有页面的 QA、视觉细节、i18n 和 Quick Start 文案对齐
 - 分服务 quota 在现有 Skill / CLI / BFF action 体系里的复用点和最小缺口
 - 可跑 Quick Start 的测试账号、creator id、brand monitor id、campaign id、collection id
 - 写操作重复执行风险是否真实需要本轮解决
