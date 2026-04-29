@@ -39,6 +39,7 @@ source_of_truth:
 - 当前公开接入依赖有效的 API key
 - 在 OpenClaw 和其他兼容环境中，优先使用宿主提供的安全密钥注入，或直接使用 `NOXINFLUENCER_API_KEY`
 - 如果你需要在本地 CLI 中手动配置，优先使用 `noxinfluencer auth --key-stdin`
+- 如果你直接调用 HTTP `/api/v1` API，请把同一个 key 作为 Bearer token 使用，并参考 [Developer API 快速开始](developer-api-quick-start/index.md)
 
 ## 你需要理解的四个层次
 

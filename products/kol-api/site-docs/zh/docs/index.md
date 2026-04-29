@@ -26,6 +26,7 @@ source_of_truth:
 ## 从哪里开始
 
 - 想先判断最适合你的安装路径：看 [快速开始](getting-started/quick-start/index.md)
+- 想用 `curl` 或自己的后端服务直接调用 HTTP API：看 [Developer API 快速开始](getting-started/developer-api-quick-start/index.md)
 - 想先理解 NoxInfluencer 能帮你完成什么：看 [产品简介](getting-started/introduction.md)
 - 想先确认账号、权限和 API key：看 [认证与账号](getting-started/authentication.md)
 
@@ -58,6 +59,7 @@ source_of_truth:
 ## 按你的目标阅读
 
 - 想尽快上手：从 [快速开始](getting-started/quick-start/index.md) 开始
+- 想直接跑 `/api/v1` 调用：打开 [Developer API 快速开始](getting-started/developer-api-quick-start/index.md)
 - 想知道具体怎么做：阅读 [任务指南](guides/find-your-first-creators.md)
 - 想逐页理解每个能力：查看 [工具参考](tool-reference/discover-creators.md)
 - 想理解营销运营扩展能力的当前状态：从 [活动管理](tool-reference/manage-campaigns.md) 或 [资源池](tool-reference/collections.md) 开始

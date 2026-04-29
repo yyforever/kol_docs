@@ -26,6 +26,7 @@ Use this documentation to connect NoxInfluencer, understand the core creator wor
 ## Where to start
 
 - If you want the shortest install path for your environment, start with [Quick Start](getting-started/quick-start/index.md)
+- If you want direct HTTP API calls with `curl` or your own backend client, start with [Developer API Quick Start](getting-started/developer-api-quick-start/index.md)
 - If you want to understand what NoxInfluencer helps you do, read [Introduction](getting-started/introduction.md)
 - If you want to confirm accounts, entitlements, and API key setup, read [Authentication](getting-started/authentication.md)
 
@@ -58,6 +59,7 @@ Use this documentation to connect NoxInfluencer, understand the core creator wor
 ## Follow the path that matches your goal
 
 - Want to get connected quickly: start with [Quick Start](getting-started/quick-start/index.md)
+- Want to run direct `/api/v1` calls: open [Developer API Quick Start](getting-started/developer-api-quick-start/index.md)
 - Want to understand the workflow: go to [Guides](guides/find-your-first-creators.md)
 - Want page-by-page capability detail: use [Tool Reference](tool-reference/discover-creators.md)
 - Want to understand the current marketing ops expansion: start with [Manage Campaigns](tool-reference/manage-campaigns.md) or [Collections](tool-reference/collections.md)

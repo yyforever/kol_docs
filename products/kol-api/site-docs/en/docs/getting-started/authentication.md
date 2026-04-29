@@ -39,6 +39,7 @@ If you do not have a brand account or API key yet, finish sign-up and open the S
 - Public access depends on a valid API key
 - In OpenClaw and other compatible environments, prefer a host-managed secret or `NOXINFLUENCER_API_KEY`
 - If you need to configure the local CLI yourself, prefer `noxinfluencer auth --key-stdin`
+- If you are calling the HTTP `/api/v1` API directly, use the same key as a Bearer token and follow [Developer API Quick Start](developer-api-quick-start/index.md)
 
 ## Four layers to keep in mind
 
