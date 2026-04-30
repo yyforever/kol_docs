@@ -34,11 +34,13 @@ If you want to install the NoxInfluencer Skill for an agent environment first, s
 Set these variables in your shell:
 
 ```bash
-export BASE_URL="https://www.noxinfluencer.com"
+export BASE_URL="https://skill.noxinfluencer.com"
 export NOX_API_KEY="<YOUR_SKILL_API_KEY>"
 export CREATOR_ID="<CREATOR_ID_FROM_SEARCH_RESPONSE>"
 export BRAND_ID="<BRAND_MONITOR_ID_FROM_LIST_RESPONSE>"
 ```
+
+`BASE_URL` is the Python API origin used by the Skill CLI and backend HTTP clients. Use `https://www.noxinfluencer.com` for the SaaS website, sign-up, and dashboard pages.
 
 All requests use the same auth header:
 

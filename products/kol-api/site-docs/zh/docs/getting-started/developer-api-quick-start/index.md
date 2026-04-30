@@ -34,11 +34,13 @@ source_of_truth:
 先在 shell 里设置变量：
 
 ```bash
-export BASE_URL="https://www.noxinfluencer.com"
+export BASE_URL="https://skill.noxinfluencer.com"
 export NOX_API_KEY="<YOUR_SKILL_API_KEY>"
 export CREATOR_ID="<CREATOR_ID_FROM_SEARCH_RESPONSE>"
 export BRAND_ID="<BRAND_MONITOR_ID_FROM_LIST_RESPONSE>"
 ```
+
+`BASE_URL` 是 Skill CLI 和后端 HTTP client 使用的 Python API 入口。SaaS 主站、注册和控制台页面继续使用 `https://www.noxinfluencer.com`。
 
 所有请求都使用同一个认证头：
 
