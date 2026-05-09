@@ -1,6 +1,6 @@
 # 09 Rest API 免费试用与自助增购 PRD
 
-> 状态：草案 v1.2
+> 状态：草案 v1.3
 > 更新：2026-05-09
 > 依赖：[06_对外API免费试用方案](06_对外API免费试用方案.md)、[08_API原型任务拆分与开工资料](08_API原型任务拆分与开工资料.md)
 > 本文回答：用户如何从当前 `/api-service` 进入 Rest API 免费试用、自助购买 Credit 或大额 / 定制接口？
@@ -62,7 +62,7 @@ Rest API 免费试用
 
 - 不重新设计 Skill、CLI 或 MCP 的用户路径。
 - 不把搜索、视频搜索、邮件发送、Hashtag 监控、Brand monitor、Export、Campaign / CRM / Collection / Message 写操作纳入免费试用或自助增购包。
-- 不把 `/developer-api` landing 草稿作为默认公开入口；`/developer-api/dashboard` 只作为登录后 Rest API Dashboard。
+- 不把 `/developer-api` 作为默认公开 landing；`/developer-api/dashboard` 是新增的登录后 Rest API Dashboard。
 - 不要求用户订阅付费会员后才能试用或购买 Rest API Credit。
 - 不在本文定义具体 HTTP endpoint、请求参数、返回字段或鉴权实现。
 - 不定义订单、发票、后台账本、扣减明细的技术实现。
@@ -86,12 +86,16 @@ Rest API 免费试用
 
 当前状态：
 
-- `/api-service` 已在线，定位偏 custom / sales。
+- `/api-service` 已在线，定位偏 custom / sales；当前主 CTA 是咨询 API 和查看 API 文档。
 - 页面当前没有 Rest API 免费试用入口。
 - 页面当前没有 Rest API Credit 自助购买入口。
 - 页面当前没有 API key、Credit 余额、usage、Quick Start 的登录后承接。
+- `/contact` 已能承接 API 数据服务咨询，可继续作为大额 / 定制接口销售表单。
+- `/product/pricing` 当前是 SaaS 付费会员定价页，会员权益表里已有 `API支持 / 按量计费` 语义；该语义容易和 Rest API Credit 混淆，不能直接当作自助 Rest API Credit 包。
+- `/product/payment/member` 裸路由当前不可直接访问，必须通过有效商品上下文进入；不能把 Rest API Credit 购买设计成直接裸跳该路径。
 - `/skills/dashboard` 与 `/skills/usage-billing` 已存在，但属于 Skill 控制台，不适合作为 Rest API 承接页。
-- `/developer-api` 当前有历史自助 API 草稿内容，口径仍偏 Skill key / Skill quota，需要改造成 Rest API 登录后 Dashboard 体系，而不是继续作为公开 landing 主入口。
+- `/developer-api` 与 `/developer-api/dashboard` 当前线上不可用，需要新增路由、页面和 route allowlist / block rule。
+- 登录态 Header 和左侧导航当前能看到 Pricing、Skills 等入口，但没有 Rest API / Developer API 入口。
 - Theneo docs 当前仍展示 broad/custom interface set，未把 Self-service 和 Custom only 清晰分区。
 
 ### 3.2 待实现产品路径
@@ -213,18 +217,18 @@ Rest API 免费试用
 
 | 页面 / 模块 | 当前状态 | 待实现动作 | 登录要求 |
 |---|---|---|---|
-| `/api-service` landing | 已在线，偏咨询和文档入口 | 改造为 Rest API 三路分流入口：免费试用、自助购买、大额 / 定制接口 | 不需要登录 |
+| `/api-service` landing | 已在线，偏咨询和文档入口；当前没有免费试用和自助购买入口 | 改造为 Rest API 三路分流入口：免费试用、自助购买、大额 / 定制接口 | 不需要登录 |
 | 登录 / 注册 | 已有 | 复用为试用和购买前置门槛 | 访客开通试用或购买前必须完成 |
-| `/developer-api/dashboard` | 当前没有符合新口径的 Rest API Dashboard | 新增登录后承接页，展示 API key、Credit、usage、Quick Start、购买入口、销售入口 | 必须登录 |
+| `/developer-api/dashboard` | 当前线上不可用 | 新增登录后承接页，展示 API key、Credit、usage、Quick Start、购买入口、销售入口；同步放开 route allowlist / block rule | 必须登录 |
 | 免费试用开通模块 | 当前没有 | 放在 `/developer-api/dashboard` Overview 区；负责开通试用、发放免费 Credit，并进入 Quick Start | 必须登录，不要求付费会员 |
 | Usage 明细模块 | 当前没有 Rest API Usage | 放在 `/developer-api/dashboard` 的 Usage tab 或后续 `/developer-api/usage`；只展示 Rest API 调用和 Credit 消耗 | 必须登录 |
-| Rest API Credit 购买入口 | 当前没有 | 在 `/developer-api/dashboard` 作为主购买入口，同时在 `/product/pricing` 增加可发现的 Rest API Credit section | 必须登录，不要求付费会员 |
-| Rest API Credit 支付页 | 现有 `/product/payment/member` 只服务会员购买语义 | 尽量复用支付 UI 与支付能力，但必须用 `productType=rest_api_credit` 或等价商品类型区分，不显示会员/订阅文案 | 必须登录，不要求付费会员 |
+| Rest API Credit 购买入口 | 当前没有；`/product/pricing` 是付费会员定价页且已有 `API支持 / 按量计费` 易混淆语义 | 在 `/developer-api/dashboard` 作为主购买入口，同时在 `/product/pricing` 增加独立 Rest API Credit section；不能合并进付费会员套餐卡或权益表 | 入口可公开展示；下单 / 支付必须登录，不要求付费会员 |
+| Rest API Credit 支付页 | `/product/payment/member` 裸路由当前不可直接访问，且现有语义偏付费会员购买 | 尽量复用支付 UI 与支付能力，但必须通过有效商品上下文进入，例如 `productType=rest_api_credit&packageId=...`；页面不显示会员/订阅文案 | 必须登录，不要求付费会员 |
 | Quick Start | 当前缺少自助试用承接 | 新增或改造为基础接口首调指南 | 可公开浏览；带 key 操作必须登录 |
 | Theneo docs | 已有，但未清晰区分 Self-service 与 Custom only | 改造内容结构和接口标识 | 不需要登录 |
 | Theneo API Explorer | 已有，但默认 section、disabled 和套餐不可用提示不够清晰 | 改造默认引导和拦截提示 | 打开不需要登录；成功调用需要 API key |
-| 大额 / 定制销售表单 | 已有咨询承接 | 改造或复用，承接搜索、监控、高级接口、大额采购和特殊需求 | 不强制登录；登录后可预填 |
-| 登录态 Header / 侧边栏 | 当前有 Pricing、Skills 等入口，没有 Rest API 入口 | 新增 Rest API / Developer API 入口，指向 `/developer-api/dashboard`；不能指向 `/skills/dashboard` | 必须登录后展示 |
+| 大额 / 定制销售表单 | `/contact` 已有 API 数据服务选项 | 复用为搜索、监控、高级接口、大额采购和特殊需求承接；从 `/api-service` 三路分流进入 | 不强制登录；登录后可预填 |
+| 登录态 Header / 侧边栏 | 当前有 Pricing、Skills 等入口，没有 Rest API 入口 | 侧边栏新增主入口，位置靠近 `Skills技能` 或 `设置`；Header 新增轻量入口，位置靠近 `价格` / `Skills NEW`；均指向 `/developer-api/dashboard`，不能指向 `/skills/dashboard` | 必须登录后展示 |
 
 待实现页面关系：
 
@@ -250,9 +254,22 @@ Rest API 免费试用
   -> 大额 / 定制销售表单
 
 /product/pricing
-  -> Rest API Credit section
+  -> 独立 Rest API Credit section
+  -> 有效商品上下文
   -> /product/payment/member?productType=rest_api_credit&packageId=...
 ```
+
+支付页只能通过有效商品上下文进入，不能把裸 `/product/payment/member` 当作用户可访问入口。
+
+页面入口设计：
+
+| 入口 | 设计要求 |
+|---|---|
+| `/api-service` Hero | 保留 API 服务定位，新增 `免费试用 Rest API`、`购买 Credit`、`咨询大额 / 定制接口` 三路 CTA |
+| `/contact` | 继续作为大额 / 定制接口销售承接，不承担自助试用或自助购买 |
+| `/product/pricing` | 新增独立 Rest API Credit section，让公开定价页可发现；不得塞进付费会员套餐卡或权益表 |
+| 登录态侧边栏 | 新增 Rest API / Developer API 主入口，指向 `/developer-api/dashboard`，用于已开通用户回访 |
+| 登录态 Header | 新增轻量入口，降低用户从公开站进入后找不到 Console 的风险 |
 
 ---
 
@@ -332,7 +349,7 @@ Rest API 免费试用
 - 把搜索、高级接口写成免费试用能力。
 - 把 Rest API Credit 写成付费会员权益。
 - 把 Skill 次数写成 Rest API 额度。
-- 把现有 `/developer-api` landing 草稿写成新的公开主入口。
+- 把 `/developer-api` 写成公开主入口。
 
 ### 7.3 页面模块
 
@@ -424,9 +441,9 @@ Rest API 免费试用
 购买页设计：
 
 - 主购买路径从 `/developer-api/dashboard` 发起，因为 Rest API 用户最关心余额、usage 和继续调用。
-- `/product/pricing` 需要新增 Rest API Credit section，作为公开定价页的可发现入口，但不要把 Rest API Credit 合并进付费会员套餐表。
+- `/product/pricing` 需要新增独立 Rest API Credit section，作为公开定价页的可发现入口；现有会员权益表里的 `API支持 / 按量计费` 应解释为既有付费会员 / custom support 语义，不能代表 Rest API 自助 Credit 包。
 - 支付页面尽量复用现有 `/product/payment/member` 的支付 UI、优惠券、支付方式和成功页能力。
-- 复用支付页时必须用商品类型区分，例如 `productType=rest_api_credit&packageId=rest_api_1000`；页面标题、订单概览、周期、商品名、确认文案必须显示为 Rest API Credit 包，不得显示购买会员、订阅周期或付费会员权益。
+- 复用支付页时必须通过有效商品上下文进入，例如 `productType=rest_api_credit&packageId=rest_api_1000`；不能依赖裸 `/product/payment/member` 直接访问；页面标题、订单概览、周期、商品名、确认文案必须显示为 Rest API Credit 包，不得显示购买会员、订阅周期或付费会员权益。
 - 支付成功后返回 `/developer-api/dashboard`，并提示 Credit 已更新。
 
 ---
