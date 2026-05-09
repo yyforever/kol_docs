@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-08
 keywords:
   - noxinfluencer 文档
   - influencer marketing
@@ -26,7 +26,7 @@ source_of_truth:
 ## 从哪里开始
 
 - 想先判断最适合你的安装路径：看 [快速开始](getting-started/quick-start/index.md)
-- 想用 `curl` 或自己的后端服务直接调用 HTTP API：看 [Developer API 快速开始](getting-started/developer-api-quick-start/index.md)
+- 想了解当前 Rest API 免费试用或自助购买：从现有 `/api-service` 页面进入，并以 Theneo API 文档和 API Runner 为准
 - 想先理解 NoxInfluencer 能帮你完成什么：看 [产品简介](getting-started/introduction.md)
 - 想先确认账号、权限和 API key：看 [认证与账号](getting-started/authentication.md)
 
@@ -34,7 +34,8 @@ source_of_truth:
 
 - 如果你使用 OpenClaw，优先从 [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing) 开始
 - 如果你使用 Claude Code、Codex、Cursor 或其他支持 Skills CLI 的环境，优先从 [skills.sh listing](https://skills.sh/noxinfluencer/skills/noxinfluencer) 或 [快速开始](getting-started/quick-start/index.md) 中的安装命令开始
-- 如果你还没有品牌账号或 API key，先打开 [Skills 控制台](https://cn.noxinfluencer.com/skills/dashboard)
+- 如果你还没有品牌账号或 Skill API key，先打开 [Skills 控制台](https://cn.noxinfluencer.com/skills/dashboard)
+- 如果你要接 Rest API，当前线上入口是 [API Service](https://cn.noxinfluencer.com/api-service)，文档承载是 [Theneo API 文档](https://app.theneo.io/noxdeveloper/cn-api/nox-api)
 - 如果你的 Agent 需要仓库地址，或前面的方式无法完成，再使用 [GitHub](https://github.com/NoxInfluencer/skills/tree/main) 作为补充来源
 
 ## Tool Reference 当前覆盖两类能力
@@ -59,7 +60,7 @@ source_of_truth:
 ## 按你的目标阅读
 
 - 想尽快上手：从 [快速开始](getting-started/quick-start/index.md) 开始
-- 想直接跑 `/api/v1` 调用：打开 [Developer API 快速开始](getting-started/developer-api-quick-start/index.md)
+- 想直接测试 Rest API：打开 [Theneo API 文档](https://app.theneo.io/noxdeveloper/cn-api/nox-api)，并使用 [API Runner](https://app.theneo.io/api-runner/noxdeveloper/cn-api)
 - 想知道具体怎么做：阅读 [任务指南](guides/find-your-first-creators.md)
 - 想逐页理解每个能力：查看 [工具参考](tool-reference/discover-creators.md)
 - 想理解营销运营扩展能力的当前状态：从 [活动管理](tool-reference/manage-campaigns.md) 或 [资源池](tool-reference/collections.md) 开始

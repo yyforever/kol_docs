@@ -1,13 +1,13 @@
 ---
 doc_id: authentication
 title: 认证与账号
-description: 了解主账号、能力权限与基础认证心智，避免把旧独立 API 产品逻辑带入当前公开能力。
+description: 了解主账号、能力权限与基础认证心智，避免把 Skill key、Skill quota 和当前 Rest API Credit 混淆。
 locale: zh
 content_type: doc
 nav_group: getting-started
 order: 3
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-08
 keywords:
   - authentication
   - account
@@ -32,14 +32,15 @@ source_of_truth:
 - 英文 Skills 控制台：`https://www.noxinfluencer.com/skills/dashboard`
 - 中文 Skills 控制台：`https://cn.noxinfluencer.com/skills/dashboard`
 
-如果你还没有品牌账号或 API key，先完成注册并打开 Skills 控制台。
+如果你使用 Skill / CLI，先完成注册并打开 Skills 控制台。当前 Rest API 免费试用与自助购买线以 `/api-service` + Theneo 文档为准，具体 Rest API key 获取路径需要按新 PRD / 研发实现确认。
 
 ## API key 与环境配置
 
-- 当前公开接入依赖有效的 API key
-- 在 OpenClaw 和其他兼容环境中，优先使用宿主提供的安全密钥注入，或直接使用 `NOXINFLUENCER_API_KEY`
-- 如果你需要在本地 CLI 中手动配置，优先使用 `noxinfluencer auth --key-stdin`
-- 如果你直接调用 HTTP `/api/v1` API，请把同一个 key 作为 Bearer token 使用，并参考 [Developer API 快速开始](developer-api-quick-start/index.md)
+- Skill / CLI 当前公开接入依赖有效的 API key。
+- 在 OpenClaw 和其他兼容环境中，优先使用宿主提供的安全密钥注入，或直接使用 `NOXINFLUENCER_API_KEY`。
+- 如果你需要在本地 CLI 中手动配置，优先使用 `noxinfluencer auth --key-stdin`。
+- 不要默认把 Skill API key 当成当前 Rest API key；Rest API key 是否复用底层 key backing 需要研发确认，但用户侧文案应表达为 Rest API key / Rest API Credit。
+- 当前 Rest API 文档入口是 Theneo，不是本目录下的历史 Developer API Quick Start。
 
 ## 你需要理解的四个层次
 
@@ -57,16 +58,18 @@ source_of_truth:
 
 ### 4. 配额约束
 
-对外体验统一按 quota 解释，实际可能同时受到两层约束：
+Skill / CLI 体验可按 quota 解释，实际可能同时受到两层约束：
 
 - Skill 技能额度
 - 底层服务配额
+
+Rest API 使用独立 `Credit`，不要和 Skill quota / Skill credit 混用。
 
 ## 遇到问题时先看什么
 
 - 是否登录了正确账号
 - 当前套餐是否包含目标能力
-- 是 Skill 额度不足，还是底层服务配额不足
+- 是 Skill 额度不足、底层服务配额不足，还是 Rest API Credit 不足
 
 ## 常见误区
 
@@ -74,3 +77,4 @@ source_of_truth:
 - 误以为只要有账号，就一定能用所有 Tool
 - 误以为额度只看一层，不需要考虑底层服务能力边界
 - 误以为所有拦截都一定是额度不足
+- 误以为 Skill API key / Skill quota 就是当前 Rest API key / Rest API Credit

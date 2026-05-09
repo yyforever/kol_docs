@@ -1,13 +1,13 @@
 ---
 doc_id: authentication
 title: Authentication
-description: Understand the account, entitlement, and quota model behind public NoxInfluencer capabilities.
+description: Understand account, entitlement, Skill quota, and the separate Rest API Credit model.
 locale: en
 content_type: doc
 nav_group: getting-started
 order: 3
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-08
 keywords:
   - authentication
   - account
@@ -32,14 +32,15 @@ The public capability model is built on a main account system, not on the legacy
 - English Skills dashboard: `https://www.noxinfluencer.com/skills/dashboard`
 - Chinese Skills dashboard: `https://cn.noxinfluencer.com/skills/dashboard`
 
-If you do not have a brand account or API key yet, finish sign-up and open the Skills dashboard first.
+For Skill / CLI usage, finish sign-up and open the Skills dashboard first. For the current Rest API free-trial and self-service purchase line, use `/api-service` plus the Theneo docs; the final Rest API key path must follow the new PRD / engineering implementation.
 
 ## API key and environment setup
 
-- Public access depends on a valid API key
-- In OpenClaw and other compatible environments, prefer a host-managed secret or `NOXINFLUENCER_API_KEY`
-- If you need to configure the local CLI yourself, prefer `noxinfluencer auth --key-stdin`
-- If you are calling the HTTP `/api/v1` API directly, use the same key as a Bearer token and follow [Developer API Quick Start](developer-api-quick-start/index.md)
+- Skill / CLI public access depends on a valid API key.
+- In OpenClaw and other compatible environments, prefer a host-managed secret or `NOXINFLUENCER_API_KEY`.
+- If you need to configure the local CLI yourself, prefer `noxinfluencer auth --key-stdin`.
+- Do not assume the Skill API key is the current Rest API key. Engineering may reuse key backing internally, but user-facing copy should say Rest API key / Rest API Credit.
+- The current Rest API documentation entry is Theneo, not the legacy Developer API Quick Start in this directory.
 
 ## Four layers to keep in mind
 
@@ -57,10 +58,12 @@ Some requests also depend on specific capability permissions. In the current imp
 
 ### 4. Quota constraints
 
-Public usage is explained through a quota model that may include:
+Skill / CLI usage is explained through a quota model that may include:
 
 - Skill quota
 - Underlying service quota
+
+Rest API uses independent `Credit`. Do not mix it with Skill quota / Skill credit.
 
 ## Common mistakes
 
@@ -68,3 +71,4 @@ Public usage is explained through a quota model that may include:
 - Assuming account access automatically means all capabilities are included
 - Assuming only one quota layer matters
 - Assuming quota is the only reason a request can be blocked
+- Assuming Skill API key / Skill quota is the same as the current Rest API key / Rest API Credit

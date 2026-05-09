@@ -464,7 +464,13 @@ Authorization: Bearer <NoxInfluencer API Key>
 
 ### 9.3 内部用量统计
 
-用户侧 quota 不区分 Skill / CLI / API / MCP，避免和 `06` 冲突。
+MCP 可以和 CLI / Skill / Rest API 复用 capability contract、权限、风险等级和审计字段，但用户侧商业额度必须按产品线区分，避免把 Rest API Credit 和 Skill 次数混成一套账。
+
+当前口径：
+
+- Rest API 使用独立 `Credit`。
+- Skill 使用现有 Skill 次数 / Skill credit。
+- MCP 若作为 Skill/Agent 入口承载，应按对应入口的用户侧商品和额度解释，不默认侵入 Rest API Credit。
 
 但内部日志可以记录：
 

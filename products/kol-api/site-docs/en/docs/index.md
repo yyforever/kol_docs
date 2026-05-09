@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-08
 keywords:
   - noxinfluencer docs
   - influencer marketing
@@ -26,7 +26,7 @@ Use this documentation to connect NoxInfluencer, understand the core creator wor
 ## Where to start
 
 - If you want the shortest install path for your environment, start with [Quick Start](getting-started/quick-start/index.md)
-- If you want direct HTTP API calls with `curl` or your own backend client, start with [Developer API Quick Start](getting-started/developer-api-quick-start/index.md)
+- If you want the current Rest API free trial or self-service purchase path, start from the existing `/api-service` page and use the Theneo API docs / API Runner as the source of truth
 - If you want to understand what NoxInfluencer helps you do, read [Introduction](getting-started/introduction.md)
 - If you want to confirm accounts, entitlements, and API key setup, read [Authentication](getting-started/authentication.md)
 
@@ -34,7 +34,8 @@ Use this documentation to connect NoxInfluencer, understand the core creator wor
 
 - If you use OpenClaw, start with [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing)
 - If you use Claude Code, Codex, Cursor, or another environment that supports Skills CLI, start with the [skills.sh listing](https://skills.sh/noxinfluencer/skills/noxinfluencer) or the install commands in [Quick Start](getting-started/quick-start/index.md)
-- If you do not have a brand account or API key yet, open the [Skills dashboard](https://www.noxinfluencer.com/skills/dashboard)
+- If you do not have a brand account or Skill API key yet, open the [Skills dashboard](https://www.noxinfluencer.com/skills/dashboard)
+- If you want Rest API access, the current online entry is [API Service](https://www.noxinfluencer.com/api-service), and the docs are hosted in [Theneo](https://app.theneo.io/noxdeveloper/kr-api/noxinfluencer-api-guide)
 - If your agent needs the repository address, or the earlier install path cannot complete, use [GitHub](https://github.com/NoxInfluencer/skills/tree/main) as the supplemental source
 
 ## Tool Reference currently covers two clusters
@@ -59,7 +60,7 @@ Use this documentation to connect NoxInfluencer, understand the core creator wor
 ## Follow the path that matches your goal
 
 - Want to get connected quickly: start with [Quick Start](getting-started/quick-start/index.md)
-- Want to run direct `/api/v1` calls: open [Developer API Quick Start](getting-started/developer-api-quick-start/index.md)
+- Want to test Rest API calls directly: open the [Theneo API docs](https://app.theneo.io/noxdeveloper/kr-api/noxinfluencer-api-guide) and use the API Runner
 - Want to understand the workflow: go to [Guides](guides/find-your-first-creators.md)
 - Want page-by-page capability detail: use [Tool Reference](tool-reference/discover-creators.md)
 - Want to understand the current marketing ops expansion: start with [Manage Campaigns](tool-reference/manage-campaigns.md) or [Collections](tool-reference/collections.md)
