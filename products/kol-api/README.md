@@ -1,14 +1,14 @@
-# NoxInfluencer — Skill 技能能力专题
+# NoxInfluencer — Skill 与 Rest API 能力专题
 
-> 原「kol-api」独立产品线口径已停止使用
-> 当前定位：聚星主产品下的 Skill 技能能力层
+> 当前定位：本目录同时保留聚星 Skill 能力层文档，并承接新的 Rest API 免费试用 / 自助增购产品设计
+> `01-05` 是 Skill 能力层口径；`06`、`08`、`09` 是当前 Rest API 口径
 > 调研基础：[10.1 达人数据智能层 (3.625)](../../research/market/20_机会方向/10_AI_Agent生态/10.1_达人数据智能层_调研报告.md)
 
 ---
 
 ## 文档结构
 
-每个阶段产出一个核心文档，后一个依赖前一个。2026-03-20 起，文档口径从“独立售卖的 API 产品”切换为“聚星套餐内的 Skill 技能能力专题”。
+每个阶段产出一个核心文档，后一个依赖前一个。2026-03-20 起，`01-05` 口径从“独立售卖的 API 产品”切换为“聚星套餐内的 Skill 技能能力专题”。2026-05 起，Rest API 作为新的独立商业线重新启动，当前以 `09_Rest_API免费试用与自助增购PRD` 为主 PRD。
 
 | 文档 | 核心问题 | 状态 |
 |------|---------|:----:|
@@ -17,13 +17,15 @@
 | [03_API能力设计](03_API能力设计.md) | Day 1 4 个 Tool 如何在新配额模型下工作？ | 🟢 2026-03-20 已同步 |
 | [04_定价与商业模式](04_定价与商业模式.md) | Skill 技能如何接入聚星现有套餐和配额？ | 🟢 2026-03-20 已同步 |
 | [05_PRD](05_PRD.md) | 工程团队如何按新模型落地账号、配额、拦截和承接？ | 🟢 2026-03-20 已同步 |
-| [06_对外API免费试用方案](06_对外API免费试用方案.md) | Rest API 免费试用如何承接到自助增购包和大额 / 定制接口？ | 🟡 2026-05-07 草案 |
+| [06_对外API免费试用方案](06_对外API免费试用方案.md) | Rest API 免费试用如何承接到自助增购包和大额 / 定制接口？ | 🟡 2026-05-11 v1.3 |
 | [07_MCP独立服务方案](07_MCP独立服务方案.md) | 如何给封闭 Agent 提供 remote MCP 连接，并和 CLI / Skill 复用同一套能力契约？ | 🟡 2026-04-29 草案 |
-| [08_API原型任务拆分与开工资料](08_API原型任务拆分与开工资料.md) | 当前 Rest API 原型如何拆给产品、后端、前端和 Java backing？ | 🟡 2026-05-07 开工包 |
+| [08_API原型任务拆分与开工资料](08_API原型任务拆分与开工资料.md) | 当前 Rest API 原型如何拆给产品、后端、前端和 Java backing？ | 🟡 2026-05-11 v1.3 开工包 |
+| [09_Rest_API免费试用与自助增购PRD](09_Rest_API免费试用与自助增购PRD.md) | 用户如何从当前 `/api-service` 进入 Rest API 免费试用、自助购买 Credit 或大额 / 定制接口？ | 🟡 2026-05-11 v1.4 主 PRD |
 
-> 注意：`01-05` 中关于 `10 次搜索 + 30 次查看` 的免费试用额度属于旧 Skill 试用口径，已不再作为新的 Rest API Trial 方案依据。新的 Rest API 免费试用、Credit、自助增购包和大额 / 定制接口路径以 `06_对外API免费试用方案` 和 `08_API原型任务拆分与开工资料` 为准。
+> 注意：`01-05` 中关于 `10 次搜索 + 30 次查看` 的免费试用额度属于旧 Skill 试用口径，已不再作为新的 Rest API Trial 方案依据。新的 Rest API 免费试用、Credit、自助增购包和大额 / 定制接口路径以 `09_Rest_API免费试用与自助增购PRD` 为准，`06` 和 `08` 作为方案与开工资料同步维护。
 > `07_MCP独立服务方案` 是独立 Agent connector 线，不要求改现有 Skill+CLI 安装链路；但后续应与 CLI / Skill 复用同一套 capability contract、权限、配额、风险等级和审计规则。
-> 线上 Rest API 入口当前是现有 `/api-service` 页面 + Theneo API 文档 + Theneo API Runner。后续优先改造现有入口，不默认新增 `/developer-api`。
+> 线上 Rest API 入口当前是现有 `/api-service` 页面 + Theneo API 文档 + Theneo API Runner。待实现路径是继续改造 `/api-service`，登录后新增 `/developer-api/dashboard` 作为 Rest API key、Credit、usage、Quick Start 和按资格购买的承接页。
+> 最新购买资格规则：免费试用只要求注册登录，不要求付费会员；国内站 `cn.noxinfluencer.com` 购买 Rest API Credit 要求登录且为付费会员；海外站 `www.noxinfluencer.com` 登录即可购买。Rest API Credit 不是付费会员权益，也不和 Skill 次数混用。
 > `site-docs/developer-api-quick-start` 是 2026-04 的历史 Developer API 草稿，仍可保留作内部参考，但不再代表当前 Rest API 免费试用 / 自助购买口径；当前线上主文档承载是 Theneo。
 
 ---

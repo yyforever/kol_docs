@@ -1,8 +1,8 @@
 # 06 Rest API 免费试用与自助增购包方案
 
-> 状态：草案 v1.2
-> 更新：2026-05-09
-> 依赖：现有 `/api-service` 线上页面、Theneo API 文档、Theneo API Runner、`kol_claw`、`noxinfluencer_skills`、`kol-next`、`KOLServer` 现有账号/权限/扣量能力、Global-Brain 当前 Rest API 方案
+> 状态：草案 v1.3
+> 更新：2026-05-11
+> 依赖：现有 `/api-service` 线上页面、Theneo API 文档、Theneo API Runner、`kol_claw`、`noxinfluencer_skills`、`kol-next`、`KOLServer` 现有账号/权限/扣量能力、Global-Brain 当前 Rest API 方案、[09_Rest_API免费试用与自助增购PRD](09_Rest_API免费试用与自助增购PRD.md)
 > 本文回答：如何用 Rest API 免费试用承接开发者评估，并引流到 Rest API 自助增购包与大额 / 定制接口？
 
 ---
@@ -75,16 +75,19 @@ Rest API 免费试用
 改造原则：
 
 - `/api-service` 继续作为公开 landing，不把现有 `/developer-api` landing 草稿升级为公开主入口。
-- 登录后新增 `/developer-api/dashboard`，用于承接 Rest API key、Credit、usage、Quick Start、购买和销售入口。
+- 登录后新增 `/developer-api/dashboard`，用于承接 Rest API key、Credit、usage、Quick Start、按资格展示的购买入口和销售入口。
 - 登录态 Header / 侧边栏新增 Rest API / Developer API 入口，指向 `/developer-api/dashboard`，不能指向 `/skills/dashboard`。
 - `/api-service` 当前是 Custom API / API Data Service 类型的公开落地页，已有 `API Inquiry / 咨询` 和 `API Doc` 入口；本轮在这个页面上改造，不另起默认入口。
 - `/api-service` 从纯 Custom API / 销售线索页面，改造成同时承接：
   - Rest API 免费试用
-  - Rest API 自助增购包
+  - Rest API 自助增购包说明 / 资格化购买
   - 大额 / 定制接口联系销售
-- 免费试用和自助购买只要求注册登录，不要求 SaaS 付费会员。
-- Rest API Credit 购买主入口在 `/developer-api/dashboard`；`/product/pricing` 增加可发现的 Rest API Credit section。
-- 支付能力尽量复用 `/product/payment/member`，但必须用 `productType=rest_api_credit` 或等价商品类型区分，页面不得显示购买会员、订阅周期或付费会员权益。
+- 免费试用只要求注册登录，不要求 SaaS 付费会员。
+- Rest API Credit 自助购买按域名分流：国内站 `cn.noxinfluencer.com` 要求登录且为付费会员；海外站 `www.noxinfluencer.com` 登录即可购买。
+- Rest API Credit 包说明可以在 `/api-service` 和 `/product/pricing` 展示；直达购买 CTA、支付入口和下单路径必须按域名、登录态和付费会员状态展示。
+- 国内站非付费会员不能看到直达购买入口，只能看到升级付费会员后购买或联系销售。
+- Rest API Credit 购买主入口在 `/developer-api/dashboard`；`/product/pricing` 增加独立 Rest API Credit section，但不能混进付费会员套餐卡或权益表。
+- 支付能力尽量复用 `/product/payment/member`，但必须用 `productType=rest_api_credit` 或等价商品类型区分，页面不得显示购买会员、订阅周期或付费会员权益；支付页和下单 API 必须做域名与资格的服务端校验。
 - Theneo 继续作为统一 REST API 文档承载。
 - Theneo 文档中需要区分：
   - 自助购买基础接口
@@ -135,7 +138,7 @@ Rest API 自助增购包只开放同一组基础接口：
 
 - 起售：`1000 Credit`
 - 价格：`1.5 元 / Credit`
-- 购买资格：注册登录即可购买，不要求 SaaS 付费会员
+- 购买资格：国内站要求登录且为付费会员；海外站登录即可购买
 - 支付路径：优先复用 `/product/payment/member` 的支付能力，但用 Rest API Credit 商品类型隔离
 
 ### 4.3 不开放能力
@@ -219,7 +222,8 @@ Rest API 自助增购包只开放同一组基础接口：
   -> 在 Theneo API Runner 或 Quick Start 里测试
   -> 消耗免费 Credit 池
   -> Credit 不足或需要继续使用
-  -> 购买 Rest API 自助增购包
+  -> 国内站非付费会员：升级付费会员后购买 / 联系销售
+  -> 国内站付费会员或海外站登录用户：购买 Rest API 自助增购包
   -> 超出自助范围
   -> 大额 / 定制接口
 ```
@@ -228,14 +232,17 @@ Rest API 自助增购包只开放同一组基础接口：
 
 | 用户状态 | Rest API 免费试用 | Rest API Credit 自助购买 | 说明 |
 |---|---|---|
-| 访客 | 需要先注册 / 登录 | 需要先注册 / 登录 | 可浏览 `/api-service` 和 Theneo 文档 |
-| 免费用户 | 可开通 | 可购买 | 免费用户指已登录但未订阅 SaaS 付费会员的用户 |
-| 付费会员 | 可开通 | 可购买 | 付费会员身份不自动赠送 Rest API Credit，也不是购买前置条件 |
+| 访客 | 需要先注册 / 登录 | 需要先注册 / 登录 | 可浏览 `/api-service`、Rest API Credit 包说明和 Theneo 文档 |
+| 国内站免费用户 | 可开通 | 不显示直达购买入口；引导升级付费会员后购买或联系销售 | 免费用户指已登录但未订阅 SaaS 付费会员的用户 |
+| 国内站付费会员 | 可开通 | 可购买 | 付费会员身份不自动赠送 Rest API Credit，只是国内站购买入口和下单 gate |
+| 海外站登录用户 | 可开通 | 可购买 | 海外站不要求 SaaS 付费会员即可购买 Rest API Credit |
 
 原则：
 
-- 不再按国内 / 海外定义“是否必须是付费会员”的差异。
-- 页面不得提示“升级付费会员后才能试用 / 购买 Rest API”。
+- 页面不得提示“升级付费会员后才能试用 Rest API”。
+- 页面不得把国内站购买 gate 写成“Rest API Credit 是付费会员权益”。
+- 国内站非付费会员在 `/api-service`、`/developer-api/dashboard`、`/product/pricing`、Credit 不足提示和 API Explorer 拦截中，都不能看到直达购买入口或直接进入支付。
+- 海外站登录用户在这些位置可以看到购买入口并下单。
 - 如果用户同时有 Skill 权益，必须把 Skill 次数和 Rest API Credit 分开展示。
 
 ### 7.3 页面与文档
@@ -245,7 +252,7 @@ Rest API 自助增购包只开放同一组基础接口：
 - `/api-service` 页面改造。
 - `/developer-api/dashboard` 登录后承接页。
 - 登录态 Header / 侧边栏 Rest API 入口。
-- `/product/pricing` Rest API Credit section。
+- `/product/pricing` Rest API Credit section，按域名和账号状态展示购买、升级或销售入口。
 - `/product/payment/member` 复用 Rest API Credit 商品类型的支付页。
 - Theneo API 文档分区。
 - 用户路径说明。
@@ -375,7 +382,7 @@ curl "https://<api-host>/api/v1/credits" \
 | 研发 | 设计辅助 ID API 输入、输出、错误码和是否支持批量 |
 | 研发 | 设计或确认独立 Rest API key 与 Skill key 的隔离方式 |
 | 研发 | 设计 Credit 查询、扣减、余额展示和使用明细 |
-| 研发 / 前端 | 确认 `/product/payment/member` 复用 Rest API Credit 商品类型的参数、订单字段和回跳 |
+| 研发 / 前端 | 确认 `/product/payment/member` 复用 Rest API Credit 商品类型的参数、订单字段、服务端资格校验和回跳 |
 | 产品 / 前端 | 改造 `/api-service`，新增 `/developer-api/dashboard`，增加 Header / 侧边栏入口 |
 | 产品 / 文档 | 在 Theneo 中区分自助基础接口和大额 / 定制接口 |
 | 产品 / 李江 | 对齐 API 文档、用户路径、页面修改、权限控制、Demo 或 PRD |

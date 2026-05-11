@@ -562,7 +562,7 @@ Rest API Dashboard 是登录后承接页，正式路由为 `/developer-api/dashb
 ### 11.3 不进入 Skills 的原因
 
 - Skill 用户通常在 NoxInfluencer SaaS 内完成工作，需要配合搜索、CRM、项目、邮件、分析等页面。
-- Rest API 用户通常在构建自己的系统，只需要 API key、Credit、usage、文档和购买，不应被引导理解或购买 SaaS 付费会员。
+- Rest API 用户通常在构建自己的系统，只需要 API key、Credit、usage、文档和购买；免费试用和海外站购买不应被引导购买付费会员，国内站购买 gate 只代表购买资格，不代表 Rest API Credit 属于付费会员权益。
 - `/skills/dashboard` 当前已经承担 Skill key、Skill quota 和 Skills Usage & Billing；把 Rest API 放进去会让用户误以为两套额度共享。
 - Rest API Dashboard 可以复用后台布局和部分表格/分页组件，但路由、文案、store、接口和计费口径必须独立。
 
