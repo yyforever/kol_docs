@@ -1,7 +1,7 @@
 # 09 Rest API 免费试用与自助增购 PRD
 
-> 状态：草案 v1.4
-> 更新：2026-05-11
+> 状态：草案 v1.5
+> 更新：2026-05-12
 > 依赖：[06_对外API免费试用方案](06_对外API免费试用方案.md)、[08_API原型任务拆分与开工资料](08_API原型任务拆分与开工资料.md)
 > 本文回答：用户如何从当前 `/api-service` 进入 Rest API 免费试用、自助购买 Credit 或大额 / 定制接口？
 
@@ -42,7 +42,8 @@ Rest API 免费试用
 - 免费试用必须注册登录。
 - 免费试用不需要购买付费会员。
 - 自助购买 Rest API Credit 的入口可见性和下单资格按域名分流：国内站要求付费会员；海外站登录即可。
-- Rest API Credit 包说明可以在公开页展示；真正的购买入口、支付入口和下单路径必须按资格展示。
+- Rest API Credit 包说明可以在 `/api-service` 两个域名展示；`/product/pricing` 只在海外英文站展示 Rest API Credit 价格 section，国内中文站不新增该 section。
+- 真正的购买入口、支付入口和下单路径必须按资格展示。
 - 国内站非付费会员不能看到直达购买入口，只能看到升级付费会员后购买或联系销售。
 - 国内站的付费会员门槛只控制购买入口和下单，不影响免费试用开通。
 - 付费会员身份不自动赠送 Rest API Credit，也不改变 Rest API 免费试用规则。
@@ -96,7 +97,7 @@ Rest API 免费试用
 - 页面当前没有 Rest API Credit 自助购买入口。
 - 页面当前没有 API key、Credit 余额、usage、Quick Start 的登录后承接。
 - `/contact` 已能承接 API 数据服务咨询，可继续作为大额 / 定制接口销售表单。
-- `/product/pricing` 当前是 SaaS 付费会员定价页，会员权益表里已有 `API支持 / 按量计费` 语义；该语义容易和 Rest API Credit 混淆，不能直接当作自助 Rest API Credit 包。
+- `/product/pricing` 当前是 SaaS 付费会员定价页，会员权益表里已有 `API支持 / 按量计费` 语义；该语义容易和 Rest API Credit 混淆，不能直接当作自助 Rest API Credit 包。国内中文站不新增 Rest API Credit 价格 section，避免影响销售人员的定制报价沟通。
 - `/product/payment/member` 裸路由当前不可直接访问，必须通过有效商品上下文进入；不能把 Rest API Credit 购买设计成直接裸跳该路径。
 - `/skills/dashboard` 与 `/skills/usage-billing` 已存在，但属于 Skill 控制台，不适合作为 Rest API 承接页。
 - `/developer-api` 与 `/developer-api/dashboard` 当前线上不可用，需要新增路由、页面和 route allowlist / block rule。
@@ -241,7 +242,7 @@ Rest API 免费试用
 | `/developer-api/dashboard` | 当前线上不可用 | 新增登录后承接页，展示 API key、Credit、usage、Quick Start、按资格展示的购买入口、销售入口；同步放开 route allowlist / block rule | 必须登录 |
 | 免费试用开通模块 | 当前没有 | 放在 `/developer-api/dashboard` Overview 区；负责开通试用、发放免费 Credit，并进入 Quick Start | 必须登录，不要求付费会员 |
 | Usage 明细模块 | 当前没有 Rest API Usage | 放在 `/developer-api/dashboard` 的 Usage tab 或后续 `/developer-api/usage`；只展示 Rest API 调用和 Credit 消耗 | 必须登录 |
-| Rest API Credit 购买入口 | 当前没有；`/product/pricing` 是付费会员定价页且已有 `API支持 / 按量计费` 易混淆语义 | 在 `/developer-api/dashboard` 作为主购买入口，同时在 `/api-service` 和 `/product/pricing` 展示独立 Rest API Credit 包说明；不能合并进付费会员套餐卡或权益表；国内站只对付费会员显示直达购买入口，海外站登录用户可见 | 国内站要求登录且为付费会员；海外站要求登录 |
+| Rest API Credit 购买入口 | 当前没有；`/product/pricing` 是付费会员定价页且已有 `API支持 / 按量计费` 易混淆语义 | 在 `/developer-api/dashboard` 作为主购买入口；在国内 / 海外 `/api-service` 展示自助包说明；仅在海外英文站 `/product/pricing` 展示独立 Rest API Credit 价格 section；国内中文站 `/product/pricing` 不新增该 section；不能合并进付费会员套餐卡或权益表 | 国内站要求登录且为付费会员；海外站要求登录 |
 | Rest API Credit 支付页 | `/product/payment/member` 裸路由当前不可直接访问，且现有语义偏付费会员购买 | 尽量复用支付 UI 与支付能力，但必须通过有效商品上下文进入，例如 `productType=rest_api_credit&packageId=...`；页面不显示会员/订阅文案；支付入口必须服务端校验域名与资格 | 国内站要求付费会员；海外站要求登录 |
 | Quick Start | 当前缺少自助试用承接 | 新增或改造为基础接口首调指南 | 可公开浏览；带 key 操作必须登录 |
 | Theneo docs | 已有，但未清晰区分 Self-service 与 Custom only | 改造内容结构和接口标识 | 不需要登录 |
@@ -272,11 +273,15 @@ Rest API 免费试用
 /api-service
   -> 大额 / 定制销售表单
 
-/product/pricing
+www /product/pricing
   -> 独立 Rest API Credit 包说明
-  -> 国内站非付费会员：升级付费会员后购买 / 联系销售
-  -> 国内站付费会员或海外站登录用户：有效商品上下文
+  -> 海外站登录用户：有效商品上下文
   -> /product/payment/member?productType=rest_api_credit&packageId=...
+
+cn /product/pricing
+  -> 不新增 Rest API Credit 价格 section
+  -> 不展示 1000 Credit / 1.5 元 的自助包价格说明
+  -> 不展示购买 Credit CTA
 ```
 
 支付页只能通过有效商品上下文进入，不能把裸 `/product/payment/member` 当作用户可访问入口。
@@ -287,7 +292,7 @@ Rest API 免费试用
 |---|---|
 | `/api-service` Hero | 保留 API 服务定位，新增 `免费试用 Rest API`、`咨询大额 / 定制接口` 和条件化购买引导；国内站非付费会员不展示直达 `购买 Credit` CTA |
 | `/contact` | 继续作为大额 / 定制接口销售承接，不承担自助试用或自助购买 |
-| `/product/pricing` | 新增独立 Rest API Credit section，让用户理解 Credit 包和购买资格；不得塞进付费会员套餐卡或权益表；国内站非付费会员展示升级付费会员后购买 / 联系销售，不展示直达购买入口；海外站登录用户展示购买 |
+| `/product/pricing` | 仅海外英文站新增独立 Rest API Credit 价格 section，让海外用户理解 Credit 包和购买资格；国内中文站不新增该 section，不展示自助包价格说明或购买 Credit CTA；不得塞进付费会员套餐卡或权益表 |
 | 登录态侧边栏 | 新增 Rest API / Developer API 主入口，指向 `/developer-api/dashboard`，用于已开通用户回访 |
 | 登录态 Header | 新增轻量入口，降低用户从公开站进入后找不到 Console 的风险 |
 
@@ -461,14 +466,16 @@ Rest API 免费试用
 - Credit 将耗尽提示：按资格展示购买、升级或联系销售。
 - Credit 已耗尽拦截页：按资格展示购买、升级或联系销售。
 - API Explorer 拦截提示：按资格展示购买、升级或联系销售。
-- `/product/pricing` 的 Rest API Credit section：可展示包说明；直达购买 CTA 按资格展示。
+- 海外英文站 `/product/pricing` 的 Rest API Credit section：可展示包说明和价格；直达购买 CTA 按资格展示。
+- 国内中文站 `/product/pricing`：不新增 Rest API Credit section，不展示自助包价格说明，不展示购买 Credit CTA。
 
 购买页设计：
 
 - 主购买路径从 `/developer-api/dashboard` 发起，因为 Rest API 用户最关心余额、usage 和继续调用。
-- `/product/pricing` 需要新增独立 Rest API Credit section，作为公开定价页中的说明和资格化转化入口；现有会员权益表里的 `API支持 / 按量计费` 应解释为既有付费会员 / custom support 语义，不能代表 Rest API 自助 Credit 包。
-- 国内站非付费会员在 `/developer-api/dashboard`、`/product/pricing`、Credit 不足提示和 API Explorer 拦截中，都不能看到直达购买入口或直接进入支付；主 CTA 应为升级付费会员后购买，次 CTA 为联系销售。
-- 海外站登录用户在上述位置可直接进入购买。
+- 海外英文站 `/product/pricing` 需要新增独立 Rest API Credit section，作为公开定价页中的说明和资格化转化入口；现有会员权益表里的 `API支持 / 按量计费` 应解释为既有付费会员 / custom support 语义，不能代表 Rest API 自助 Credit 包。
+- 国内中文站 `/product/pricing` 不新增 Rest API Credit section，不展示 `1000 Credit / 1.5 元` 自助包价格说明，也不展示购买 Credit CTA，避免影响国内销售人员的报价和沟通。
+- 国内站非付费会员在 `/developer-api/dashboard`、Credit 不足提示和 API Explorer 拦截中，都不能看到直达购买入口或直接进入支付；主 CTA 应为升级付费会员后购买，次 CTA 为联系销售。
+- 国内站付费会员在 `/developer-api/dashboard` 可看到价格和购买入口；海外站登录用户在 `/api-service`、`/developer-api/dashboard`、海外 `/product/pricing` 等位置可直接进入购买。
 - 支付页面尽量复用现有 `/product/payment/member` 的支付 UI、优惠券、支付方式和成功页能力。
 - 复用支付页时必须通过有效商品上下文进入，例如 `productType=rest_api_credit&packageId=rest_api_1000`；不能依赖裸 `/product/payment/member` 直接访问；页面标题、订单概览、周期、商品名、确认文案必须显示为 Rest API Credit 包，不得显示购买会员、订阅周期或付费会员权益。
 - 支付页和下单 API 必须做服务端资格校验，不能只靠前端隐藏入口。
@@ -718,12 +725,13 @@ Rest API Dashboard 是登录后承接页，正式路由为 `/developer-api/dashb
 - Theneo 文档对 Self-service 和 Custom only 接口有清晰分区或标识。
 - Quick Start 不包含搜索、视频搜索、邮件发送、Hashtag 监控、Brand monitor 或写操作。
 - 自助增购包只承接基础接口。
-- 国内站和海外站的购买入口可见性文案一致：国内站要求付费会员，海外站登录即可。
+- 国内站和海外站的购买资格文案一致：国内站要求付费会员，海外站登录即可；但 `/product/pricing` 的价格 section 只在海外英文站展示。
 
 ### 15.3 页面范围验收
 
 - `/api-service` 已改造成试用、自助包说明 / 资格化购买、销售三类意图分流页。
 - `/developer-api/dashboard` 已能展示独立 Rest API key、Credit、usage、Quick Start、按资格展示的购买入口和销售入口。
+- 海外英文站 `/product/pricing` 已新增独立 Rest API Credit 价格 section；国内中文站 `/product/pricing` 未新增该 section，未展示自助包价格或购买 Credit CTA。
 - 购买 Credit 流程按域名校验资格：国内站要求付费会员，海外站要求登录。
 - 支付页和下单 API 有服务端资格校验，不只依赖前端隐藏按钮。
 - 登录态 Header / 侧边栏有 Rest API 入口，指向 `/developer-api/dashboard`。
@@ -740,6 +748,6 @@ Rest API Dashboard 是登录后承接页，正式路由为 `/developer-api/dashb
 2. 免费试用到期或用尽后的标准升级文案。
 3. 大额 / 定制接口的转人工门槛。
 4. Rest API Credit 支付页复用 `/product/payment/member` 时的最终商品参数名、订单字段和成功页回跳。
-5. `/product/pricing` 中 Rest API Credit section 的最终位置和展示文案。
+5. 海外英文站 `/product/pricing` 中 Rest API Credit section 的最终位置和展示文案。
 6. Theneo 文档中 Self-service / Custom only 的最终分区文案。
 7. 国内站非付费会员升级付费会员后回到购买 Credit 的回跳路径。
