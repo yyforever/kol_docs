@@ -1,267 +1,351 @@
 # TikTok Shop Affiliate 真实痛点深挖
 
-> 创建时间：2026-05-11  
-> 状态：调研中  
-> 上游文档：[03_调研推进计划与净收益公式.md](03_调研推进计划与净收益公式.md)  
-> 目的：围绕净收益公式，确认 TikTok Shop Affiliate 达人的关键痛点变量。
+> 创建时间：2026-05-11
+> 重构时间：2026-05-13
+> 状态：主因判别中
+> 上游文档：[03_调研推进计划与净收益公式.md](03_调研推进计划与净收益公式.md)
+> 目的：围绕长期收入公式，判断 TikTok Shop Affiliate 达人的关键断点和可介入点。
 
 ---
 
-## 1. Research question
+## 1. 当前判断
 
-TikTok Shop Affiliate 达人的真实痛点到底集中在哪些变量上？
+当前证据不支持把 TikTok Shop Affiliate 的核心问题简化成“缺商品”或“缺高佣金商品”。
+
+更准确的当前判断是：
 
 ```text
-净收益 = 商品/样品/佣金机会数量
-      × 商品与账号/受众/内容能力匹配度
-      × 内容转化概率
-      × 单件佣金/固定补贴/样品价值
-      × 佣金到账概率
-      - 选品与样品申请成本
-      - 内容制作成本
-      - 规则理解与申诉沟通成本
-      - 违规/冻结/退款/账号健康风险成本
+TikTok Shop Affiliate 的机会入口很多，
+但达人难以判断一个商品机会是否值得投入。
+机会可能在邀请/样品、内容、listing、转化、归因、退款、违规和佣金结算阶段失效。
+```
+
+因此本方向的核心研究对象不是“商品列表”，而是：
+
+```text
+商品机会 × creator × 内容方式 × listing/履约 × 平台 eligibility/归因
+```
+
+2026-05-13 进一步取证后，当前可把主要断点暂时归为五类：
+
+- `转化不成立`：有 views / clicks / product views，但商品页、价格、评价、物流、购买意图或内容承诺承接不住。
+- `invite / 样品互筛失败`：seller 和 creator 都在筛对方，低信任 seller、低销量 listing、样品名额和 post obligation 会造成摩擦。
+- `机会动态失效`：product / seller / creator eligibility、VoC、退款、listing 变更或 non-commission 变体会让机会中途失效。
+- `到账不稳定`：退款、partial refund、结算周期、policy review、violation、佣金冻结和归因口径都会影响收入兑现。
+- `平台治理和报表口径`：sales / earnings 展示、Shop Ads attribution、Affiliate attribution 和数据延迟会影响 creator 对结果的判断。
+
+---
+
+## 2. 赚钱链路
+
+```text
+看到商品 / seller invite / affiliate opportunity
+-> 判断是否值得做
+-> 申请样品、自购样品或直接挂链
+-> 制作内容 / live / shoppable video
+-> 获得曝光、点击、product views
+-> 商品页承接并成交
+-> 订单确认、非退款、非违规、正确归因
+-> 佣金、补贴或样品款到账
+```
+
+链路中任一环节断掉，都会让“机会”失效。
+
+---
+
+## 3. 变量公式
+
+```text
+长期收入 =
+    可申请机会数量(PPS/样品资格/历史表现/product eligibility)
+  × 商品-受众-内容-listing 匹配度
+  × 内容转化概率(曝光 -> 点击 -> 购买)
+  × 显示佣金/补贴/样品价值
+  × 到账概率(订单确认 × 非退款 × 非违规 × 正确归因 × 数据正常)
+  - 样品申请/垫付与选品成本
+  - 内容试错/直播/真实使用成本
+  - 规则理解/申诉/客服沟通成本
+  - 平台规则/类目退款/seller行为/内容真实性/样品现金流风险
 ```
 
 ---
 
-## 2. Working hypotheses
+## 4. 主因判别表
 
-以下是假设，不是结论：
-
-- H1: 新手冷启动痛点可能集中在样品资格和无 GMV。
-- H2: 中小达人痛点可能集中在商品/内容是否能转化。
-- H3: 高收益达人痛点可能集中在佣金冻结、违规追溯和申诉。
-- H4: 所有人群都可能存在 seller / agency invite 信任问题。
-- H5: 外部产品未必能直接解决平台规则问题，但可能能降低选择、合规和沟通成本。
-
----
-
-## 3. Evidence matrix
-
-| ID | Evidence | Source type | Strength | Formula variable | Notes |
-|---|---|---:|---:|---|---|
-| TTA-001 | TikTok Shop Academy 说明 creator 可通过 Creator Center、Product Marketplace、Collab Invites 请求 samples；部分无 120 天销售历史的 creator 样品能力受限，产生 GMV 后可恢复公共样品请求能力。 | official | strong for mechanism | 机会数量 / 样品申请成本 | 说明样品机制与冷启动强相关，但不能证明真实痛点强度。 |
-| TTA-002 | TikTok Shop Creator Enforcement Policy 说明违规可导致 commission withheld up to 90 days、冻结、申诉失败后 forfeited。 | official | strong for mechanism | 到账概率 / 风险成本 | 说明佣金冻结/没收是平台机制允许的风险。 |
-| TTA-003 | Reddit 多个 first-person 案例描述 $15K、$20K+ 或数千美元佣金被冻结，伴随旧视频违规追溯、申诉无效、客服自动化等问题。 | user-generated | strong | 到账概率 / 沟通成本 / 风险成本 | 高金额、强情绪、细节多；代表性仍需谨慎。 |
-| TTA-004 | Reddit / TikTokShopAffiliate 用户讨论 sample eligibility、post rate、seller review rating、GMV 对样品资格的影响。 | user-generated | strong | 机会数量 / 选品与样品申请成本 | 指向新手和中小达人对样品资格机制不透明的困惑。 |
-| TTA-005 | Reddit / TikTokShopAffiliate 与 TikTokshop 讨论出现 views but no sales、what am I doing wrong、which products sell 等问题。 | user-generated | medium-strong | 匹配度 / 内容转化概率 | 指向商品选择和内容转化，而不是单纯机会数量。 |
-| TTA-006 | Reddit 有 agency / seller 发布 US TikTok Shop creators free samples + affiliate opportunities，创作者按 niche/location 留言申请。 | user-generated | medium | 机会数量 / 信任成本 | 说明外部社区也存在 Offer 分发与申请行为，但可信度参差。 |
-| TTA-007 | TikTok Shop Academy 的 Promotion Performance Score 文档说明 PPS 0-5 分每日更新，受订单生成和推广活动影响；3.5+ 可解锁更多 Campaign / Affiliate Creator Products，4.0+ 可获得 LIVE Giveaway 资格。 | official | strong for mechanism | 机会数量 / 匹配度 / 到账概率 | PPS 把历史表现转化为后续机会权限，是机会数量和质量的前置变量。 |
-| TTA-008 | Reddit 用户反馈 PPS 从 4.6 掉到 3.9、PPS 显示异常，且认为 seller rating 单向影响样品资格不公平。 | user-generated | medium-strong | 机会数量 / 风险成本 / 沟通成本 | 指向平台评分机制的不透明和不可控感。 |
-| TTA-009 | Reddit “Product views but no sales”案例中，新手 affiliate 一周 1500 product views、0 sales；评论判断可能是产品过度饱和、内容不够说服、listing 价格/评价/承诺问题。 | user-generated | strong | 匹配度 / 内容转化概率 | 说明 product views 不能等同销售，转化受商品、listing、内容和竞争共同影响。 |
-| TTA-010 | Reddit 另一个 affiliate no sales 案例中，用户每天发 3-5 条甚至 5-10 条内容仍无首单；评论建议先复制已验证内容风格、不要过早投放广告、关注真实受众和 average watch time。 | user-generated | strong | 内容转化概率 / 创作成本 | 指向新手不是缺努力，而是缺有效内容方法和反馈回路。 |
-| TTA-011 | Reddit seller 视角案例显示，高佣金 20%-30% 也不能自动驱动 affiliate 动量；无 listing sales 时 affiliates hesitate to be first。 | user-generated | medium | 匹配度 / 转化概率 / 信任成本 | 对达人侧也有启发：高佣金不足以证明 Offer 值得做，已有销量/社会证明影响申请意愿。 |
-| TTA-012 | Reddit partial refund 讨论指出，部分退款会让 affiliate commission 变为 ineligible，fashion 类目风险更高，因为尺码、颜色、材质、not as described 都可能触发。 | user-generated | medium-strong | 到账概率 / 风险成本 | 说明退款/部分退款会侵蚀到账概率，且类目风险不同。 |
+| 现象 | 当前更可能的主因 | 支持证据 | 不能排除的替代解释 | 聚星可能介入点 | 下一步验证 |
+|---|---|---|---|---|---|
+| 有 views / product views / clicks，但 0 sales | 购买链路断在商品、listing、价格、评价、物流、受众购买意图、内容承诺或报表/归因口径 | 多个 Reddit 案例出现 product views 0 sales、viral no sales；TikTok Ads attribution 文档说明不同报表口径 | 内容质量差、样本周期短、平台数据延迟、第三方销量估算不准 | 机会解释不能只展示商品，要解释商品页、受众、价格、物流、内容承诺和报表口径 | 找高播放高销量 vs 高播放低销量对照样本 |
+| 高佣金或大量 invite 仍无法驱动 creator | 高佣金不足以抵消 seller 冷启动、无销量/评价、类目不匹配、invite 噪音和样品履约风险 | seller 侧反馈 20%-30% 佣金仍难启动；creator 侧反馈每天收到大量低质 invite；seller 侧筛 creator 时看 GMV、post rate、sample score | creator 没时间、佣金不够、样品价值低、账号标签不匹配 | 过滤群发低质 invite，增加 seller/listing 可信度、历史销量、样品批准率和社会证明 | 收集 creator 拒绝 invite/sample 的具体理由 |
+| 新手拿不到样品或拿到样品仍无首单 | 无 sales 限制样品机会；没有样品又难做真实内容；refundable sample 会转嫁现金风险 | 官方样品规则、Reddit free sample eligibility、refundable sample 争议 | 新手内容质量不足、类目选择错误、平台设置错误 | 提供更清楚的样品资格解释、低风险样品/固定补贴机制 | 记录新手首单前样品路径和失败点 |
+| 商品机会在申请、拍摄或发布后失效 | product/seller/creator eligibility、listing 更新、库存/重上架、VoC、退款、non-commission listing 变化 | 官方 Affiliate Marketing Policy、Reddit product not eligible、seller relist non-commission variant | creator 误解规则、平台短期 bug、seller 主动规避佣金 | 机会状态监控、风险提示、seller 可信度分层、证据记录 | 收集失效发生阶段和提前可见信号 |
+| 已产生销售但收益不稳 | 佣金冻结、partial refund、regular commission / Shop Ads commission 口径不同、deferred settlement、样品款返还争议 | 官方 enforcement / refundable sample / creative commission 文档；Reddit 冻佣、partial refund、earnings/sales 归零案例 | 少数极端案例、平台短期 bug、用户误解不同 commission 类型 | 规则解释、结算追踪、争议材料整理、类目退款风险提示 | 区分冻结、退款、归因、样品退款和数据 bug |
+| 用 AI、模板或高频发布降低内容成本 | 成本下降可能与真实性、品牌接受度、FTC/TikTok 合规和受众疲劳冲突 | 品牌禁止 AI shoppable videos 的社区讨论，FTC / TikTok branded content rules，oversaturation 讨论 | 只是部分品牌规则；某些类目仍可用 AI 或模板 | 不把“更快生成内容”当作默认解，先提示真实性和品牌规则风险 | 找品牌允许/禁止 AI 内容的更多案例 |
 
 ---
 
-## 4. Pain point map by formula variable
+## 5. 当前变量判断
 
-### 机会数量
+### 5.1 机会数量
 
-当前证据：
+证据显示机会入口并不少：
 
-- 官方机制提供 Product Marketplace、Collab Invites、样品请求。
-- 社区中存在 agency / seller 发布 affiliate opportunities 的行为。
-- Promotion Performance Score 会影响 campaign 和 Affiliate Creator Products 权限。
+- TikTok Shop Product Marketplace。
+- Collab Invites。
+- 样品请求。
+- Target Collaboration。
+- seller / agency invite。
+- 外部社区机会帖。
 
-初步判断：
+但这些机会不是等价的。需要拆成：
 
-- TikTok Shop Affiliate 不是完全没有机会。
-- 但“有机会”不等于“有可申请、可信、适合自己的机会”。
-- 对 TikTok Shop Affiliate，机会数量不是静态变量，会被 PPS、样品资格、历史订单、post rate、seller review rating 等动态机制影响。
+- 可见机会。
+- 可申请机会。
+- 可履约机会。
+- 可转化机会。
+- 可结算机会。
 
-### 匹配度
+当前判断：TikTok Shop Affiliate 不是单纯缺入口，而是缺少可解释、可筛选、可结算的高质量机会。
 
-当前证据：
+### 5.1.1 invite 和样品不是单向分发
 
-- 用户讨论中反复出现有浏览无销量、选品困惑。
-- 1500 product views 0 sales、2.1M views 0 sales、3-5 条/天无首单等案例说明“曝光/点击”与“销售”之间存在巨大断层。
+本轮搜索显示，seller 和 creator 都在互相筛选：
 
-初步判断：
+- Seller 侧会看 creator 的 30d GMV、category GMV、sample score、post rate、post quality、是否露脸、内容是否真实、是否有带货历史。
+- Creator 侧会看 shop name、sold count、review、commission、sample approval rate、product price、是否 trending、是否要求跳出 TikTok 沟通、任务是否超出标准 obligation。
+- 新 seller/listing 的冷启动尤其困难：没有销量和评论，creator 不愿意占用内容产能；没有 creator 内容和 early sales，seller 又更难建立社会证明。
 
-- 匹配度可能是关键变量：商品是否适合账号内容、受众、创作能力。
-- 这一变量比单纯佣金率更接近“能不能赚到钱”。
-- 匹配度至少包含：商品与受众匹配、商品与内容形式匹配、listing 价格/评价/物流与视频承诺匹配、竞争饱和度。
+当前判断：invite 不接不是单纯“佣金低”，而是双方都在防止把有限样品、内容产能和账号风险浪费在低概率对象上。
 
-### 转化概率
+### 5.2 匹配和转化
 
-当前证据：
+这是当前最强变量之一。
 
-- 有浏览无销量、样品内容不出单等讨论。
-- 新手高频发内容仍无首单的案例说明，内容转化概率高度依赖内容形式、hook、受众、商品和历史反馈。
+“views no sales”不能直接归因为内容差。至少可能由以下原因造成：
 
-初步判断：
+- 商品过度饱和。
+- listing 评价/价格/物流不可信。
+- 受众不是购买人群。
+- 视频承诺和商品页不一致。
+- CTA 弱或内容过于娱乐化。
+- 样本周期太短。
+- 平台数据/归因延迟，或 Seller Center / Ads Manager / affiliate reporting 口径不同。
 
-- 转化概率受商品、内容形式、信任、价格、平台分发共同影响。
-- 这部分需要继续补真实案例。
-- 纯粹提高发布频率或投广告不一定解决转化问题；需要先知道什么内容/商品组合能转化。
+下一步重点不是继续搜更多 no sales，而是找对照样本：同样高播放，为什么有些出单、有些不出单。
 
-### 收益单价
+### 5.3 到账和风险
 
-当前证据：
+已确认的风险包括：
 
-- TikTok Shop Affiliate 场景中，收益单价通常体现为佣金率、单件佣金、样品价值，或外部 Offer 的 fixed fee / hybrid 补贴。
-- Seller 视角案例中 20%-30% 佣金仍无法自动启动 affiliates，说明高佣金不能单独解释申请或转化。
+- commission withheld / frozen。
+- partial refund 导致 commission ineligible。
+- Shop Ads / regular affiliate commission 口径差异。
+- product eligibility 变化。
+- seller/listing 变更。
+- refundable sample 返款争议。
+- deferred settlement、policy/security review、violation 后佣金扣留。
+- AI / 非真实试用内容被品牌拒绝。
+- FTC / TikTok 商业披露规则。
 
-初步判断：
+当前判断：对已出单 creator，到账概率和规则风险可能比“找商品”更影响长期投入。但发生率和对中小 creator 的影响仍需继续验证。
 
-- 高佣金不是充分条件。
-- 需要和转化概率、到账概率一起评估。
-- `预期收益单价` 更接近 `佣金 × 转化概率 × 到账概率`，而不是页面上显示的佣金率。
+### 5.4 内容执行
 
-### 到账概率
+内容执行重要，但不能被简化为“给脚本模板”。
 
-当前证据：
+内容是否有效受以下变量共同影响：
 
-- 官方明确存在佣金冻结、延迟、没收机制。
-- 用户强烈讨论高额佣金冻结和申诉无力。
-- 部分退款会导致 affiliate commission ineligible 的用户讨论，说明退款/return/partial refund 会直接影响到账概率。
+- 商品是否适合账号和受众。
+- listing 是否能承接购买。
+- 内容是否吸引购买意图，而不是只吸引泛流量。
+- 商品是否需要真实试用。
+- 品牌是否允许 AI / template-style 内容。
+- 平台是否认可内容与商品展示。
 
-初步判断：
-
-- 对已能出单的达人，到账概率和风险成本可能是强痛点。
-- 对新手，这可能是未来风险而非当前第一痛点。
-- 到账概率不仅受违规影响，还受退款、部分退款、平台数据延迟、order status 展示和类目风险影响。
-
-### 创作成本
-
-当前证据：
-
-- 当前证据不足。需要补视频制作成本、样品内容要求、发帖义务、修改/重拍等资料。
-- 新手每天发 3-10 条内容仍无首单的案例说明，内容制作成本可以快速堆高，且未必转化。
-
-初步判断：
-
-- TikTok Shop Affiliate 的创作成本不仅是“拍一条视频”，还包括持续试错、复制爆款结构、样品等待、直播、内容复盘。
-- 如果没有转化反馈，创作成本会变成心理和时间双重负担。
-
-### 沟通成本
-
-当前证据：
-
-- 佣金冻结申诉、seller invite 判断、样品申请状态等都引入沟通成本。
-- PPS / 样品资格 / seller rating 异常时，达人需要理解规则、查指标、找支持或社区求助。
-
-初步判断：
-
-- TikTok Shop Affiliate 的沟通成本不仅是品牌沟通，还包括平台规则理解和申诉。
-
-### 风险成本
-
-当前证据：
-
-- 违规、佣金冻结、退款、账号健康、样品履约率等。
-- seller 可能威胁给 affiliate 差评，且 creator 认为 seller rating 单向不公平。
-- 部分退款、not as described、fashion fit/颜色/材质等问题可能导致佣金归零。
-
-初步判断：
-
-- 风险成本是 TikTok Shop Affiliate 与泛小网红差异最大的变量之一。
-- 风险成本还应拆成 `平台规则风险`、`seller 行为风险`、`商品类目风险`、`内容承诺风险` 和 `结算数据风险`。
+当前判断：H6 成立概率上升，但必须和 H2/H4 共同看。
 
 ---
 
-## 5. What can external products likely improve?
+## 6. 外部产品可能改善什么
 
-待验证，不是结论：
+待验证，不是方案：
 
-- 机会筛选：减少低质量 seller / agency invite。
-- 匹配判断：帮助达人判断商品是否适合自己、是否过度饱和、listing 是否容易转化。
-- 规则解释：降低样品、账号健康、内容违规、佣金冻结的理解成本。
-- 合规预防：发布前提示 claim / disclosure / platform rule 风险。
-- 申请材料：让达人更容易向 seller / brand 证明自己适合这个 offer。
-- 风险提示：提示类目退款风险、partial refund 风险、seller rating / post obligation 风险。
+- Invite 降噪：过滤群发、不匹配、低可信 seller invite。
+- 匹配解释：说明这个商品为什么适合某类 creator。
+- 转化风险提示：提示 listing 评价、价格、物流、饱和度、内容承诺风险。
+- 样品风险提示：解释 free sample、refundable sample、post obligation、样品返款和现金流。
+- 结算追踪：记录订单、退款、佣金、样品款、异常状态。
+- 合规提醒：提示 claim、AI 内容、披露、品牌规则和 TikTok policy 风险。
+- 证据整理：帮助 creator 在争议、申诉、seller 沟通中保留材料。
 
 可能难以直接解决：
 
 - TikTok 官方样品资格判定。
 - 平台佣金冻结决定。
-- 平台申诉结果。
+- 平台最终申诉结果。
 - 平台流量分发。
+- 非公开 product/seller eligibility 指标。
+- Shop Ads / paid placement 最终归因判定。
 
 ---
 
-## 6. Next evidence gaps
+## 7. 下一步调研
 
-- 搜集更多“有浏览无销量”的 first-person 案例。
-- 搜集 TikTok Shop Affiliate 新手拿不到样品 / 无 GMV 的案例。
-- 搜集 seller invite / agency invite 可信度判断案例。
-- 搜集达人如何选择商品、如何判断佣金与转化的真实方法。
-- 搜集佣金冻结之外的退款 / return / partial refund 对收益的影响。
-- 搜集 PPS、Creator Score、sample eligibility 变化对达人机会权限的影响。
+### 7.1 高播放不出单对照
+
+采样要求：
+
+- 视频表现：views、clicks、product views。
+- 商品信息：价格、评价、销量、物流、类目。
+- 内容信息：hook、CTA、是否真实试用、是否明确购买场景。
+- 结果：是否出单、多久出单、是否退款。
+
+目标：区分内容问题、商品问题、listing 问题和受众问题。
+
+### 7.2 creator 拒绝 invite 的原因
+
+采样要求：
+
+- creator 视角优先。
+- 记录拒绝原因：不匹配、佣金低、无销量、样品差、seller 不可信、任务不清、太多群发。
+
+目标：判断机会数量和机会质量哪个更关键。
+
+### 7.3 机会动态失效案例
+
+采样要求：
+
+- 机会在哪个阶段失效：申请前、样品后、拍摄后、发布后、出单后。
+- 失效原因：product not eligible、listing 变更、seller 行为、退款、归因、违规。
+
+目标：判断是否需要机会状态追踪和风险提示。
+
+### 7.4 到账风险频率
+
+采样要求：
+
+- 不只收高金额极端案例。
+- 尽量找中小 creator 案例。
+- 区分冻结、退款、样品返款、广告归因和数据 bug。
+
+目标：判断 H4 是核心价值还是风险提示。
+
+### 7.5 seller 和 creator 的互筛字段
+
+采样要求：
+
+- Seller 侧：GMV、post rate、sample score、category fit、平均播放、是否露脸、sample cost、historical sales。
+- Creator 侧：店铺销量、review、commission、sample approval rate、商品价格、是否 trending、任务要求、是否跳出平台沟通。
+- 记录是主动拒绝、系统资格不满足，还是 seller / creator 互相忽略。
+
+目标：判断“机会质量”到底由哪些可见字段构成，避免把 invite 数量误读成真实机会数量。
 
 ---
 
-## 7. Formula revision
+## 8. 代表性来源
 
-基于本轮补充证据，TikTok Shop Affiliate 的公式需要细化：
+### 官方机制
 
-```text
-净收益 = 可申请机会数量(PPS/样品资格/历史表现)
-      × 商品-受众-内容匹配度
-      × 内容转化概率(曝光→点击→购买)
-      × 显示佣金/补贴/样品价值
-      × 到账概率(订单确认 × 非退款 × 非违规 × 数据正常)
-      - 样品申请与选品成本
-      - 内容试错与直播成本
-      - 规则理解/申诉/客服沟通成本
-      - 平台规则风险/类目退款风险/seller行为风险
-```
-
-相比第一版，关键变化：
-
-- `机会数量` 必须纳入 PPS、样品资格、seller review rating、post rate 等动态约束。
-- `匹配度` 必须拆成商品、受众、内容形式、listing 可信度、竞争饱和度。
-- `到账概率` 必须包含退款/partial refund、违规、平台数据异常。
-- `风险成本` 不只是封号/冻结，还包括 seller rating、样品履约、类目退款、内容承诺失真。
-
----
-
-## 8. Source catalog
-
-- TikTok Shop Academy — How Creators Can Request Samples  
+- TikTok Shop Academy — How Creators Can Request Samples
   https://seller-us.tiktok.com/university/essay?default_language=en&identity=1&knowledge_id=5764641632306946
 
-- TikTok Shop Creator Enforcement Policy  
+- TikTok Shop Academy — Refundable Samples
+  https://seller-us.tiktok.com/university/essay?course_type=1&from=search&knowledge_id=1906343783008042&role=1
+
+- TikTok Shop Creator Enforcement Policy
   https://seller-us.tiktok.com/university/essay?knowledge_id=6837869503317761
 
-- Reddit — TikTok Shop commissions frozen  
-  https://www.reddit.com/r/TikTokshop/comments/1r0ovh2/my_tiktok_shop_commissions_have_been_fully_frozen/
+- TikTok Shop Affiliate Marketing Policy
+  https://seller-us.tiktok.com/university/essay?knowledge_id=2244964886103809&lang=en
 
-- Reddit — TikTok Shop commissions frozen, $15K+  
-  https://www.reddit.com/r/TikTokshop/comments/1r0oha3/15k_in_earned_commissions_frozen_since_january/
+- TikTok Shop for Creators
+  https://business.tiktokshop.com/us/creator
 
-- Reddit — TikTok Shop commissions frozen, $20K+  
-  https://www.reddit.com/r/TikTokshop/comments/1oxv3z5/20k_in_earned_commissions_frozen_since_july_9th/
+- TikTok Shop Academy — Target Collaboration
+  https://seller-us.tiktok.com/university/essay?knowledge_id=5706434576176898
 
-- Reddit — Free sample eligibility restrictions  
-  https://www.reddit.com/r/TikTokShopAffiliate/comments/1sky5jh/tiktok_shop_affiliate_free_sample_eligibility/
+- TikTok Shop Academy — Open and Target Collaboration
+  https://seller-us.tiktok.com/university/essay?knowledge_id=6837873164896001
 
-- Reddit — US TikTok Shop creators free samples + affiliate opportunities  
-  https://www.reddit.com/r/influencermarketing/comments/1qn8vtk/us_tiktok_shop_creators_free_samples_affiliate/
+- TikTok For Business — Affiliate Creatives Authorization FAQ
+  https://ads.us.tiktok.com/help/article/faqs-affiliate-creatives-authorization?lang=en
 
-- TikTok Shop Academy — Guide to Promotion Performance Score  
-  https://seller-us.tiktok.com/university/essay?knowledge_id=3636905400911658&lang=en
+- TikTok Ads Help — TikTok Shop Ads attribution
+  https://ads.us.tiktok.com/help/article/about-tiktok-shop-ads-attribution?lang=en
 
-- TikTok Support — About the TikTok One creator score  
-  https://ads.us.tiktok.com/help/article/about-the-tiktok-one-creator-score?lang=en
+- TikTok Shop — Return Policy
+  https://shop.tiktok.com/us/return-policy
 
-- Reddit — Product views but no sales  
+- TikTok Shop — Money-back Guarantee
+  https://shop.tiktok.com/us/money-back-guarantee
+
+- FTC — Disclosures 101 for Social Media Influencers
+  https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers
+
+### 用户证据
+
+- Reddit — Product views but no sales
   https://www.reddit.com/r/tiktokshopsaffiliates/comments/1qtti7b/product_views_but_no_sales/
 
-- Reddit — TikTok shop affiliate no sales  
-  https://www.reddit.com/r/TikTokshop/comments/1k1i23t
+- Reddit — Thousands of product views but zero sales
+  https://www.reddit.com/r/TikTokshop/comments/1lcrkfz/thousands_of_product_views_but_0_sales_help/
 
-- Reddit — Thousands of views, no sales as an affiliate  
-  https://www.reddit.com/r/Tiktokhelp/comments/1girett
+- Reddit — Viral affiliate video but only one order
+  https://www.reddit.com/r/TikTokshop/comments/1lgdfzj/our_tiktok_affiliate_video_went_viral_14m_views/
 
-- Reddit — Seller asks how to get affiliates early with no sales yet  
+- Reddit — TikTok Shop commissions frozen
+  https://www.reddit.com/r/TikTokshop/comments/1r0ovh2/my_tiktok_shop_commissions_have_been_fully_frozen/
+
+- Reddit — TikTok Shop commissions frozen, $15K+
+  https://www.reddit.com/r/TikTokshop/comments/1r0oha3/15k_in_earned_commissions_frozen_since_january/
+
+- Reddit — TikTok Shop commissions frozen, $20K+
+  https://www.reddit.com/r/TikTokshop/comments/1oxv3z5/20k_in_earned_commissions_frozen_since_july_9th/
+
+- Reddit — Free sample eligibility restrictions
+  https://www.reddit.com/r/TikTokShopAffiliate/comments/1sky5jh/tiktok_shop_affiliate_free_sample_eligibility/
+
+- Reddit — Partial refunds and affiliate commission ineligibility
+  https://www.reddit.com/r/TikTokShopAffiliate/comments/1s5dxzt/partial_refunds_just_dropped_what_it_means_for/
+
+- Reddit — Product not eligible for commission / VoC discussion
+  https://www.reddit.com/r/TikTokShopAffiliate/comments/1taj25o/this_product_isnt_eligible_for_commission/
+
+- Reddit — Best criteria to choose creators for free samples
+  https://www.reddit.com/r/TikTokshop/comments/1nuhk0c/best_criteria_to_choose_creators_for_free_samples/
+
+- Reddit — Seller asks how to get affiliates early on TikTok Shop
   https://www.reddit.com/r/TikTokshop/comments/1qvs4ze/seller_how_did_you_get_affiliates_early_on_tiktok/
 
-- Reddit — Exposing sellers who rate TikTok Shop affiliates poorly  
-  https://www.reddit.com/r/TikTokShopAffiliate/comments/1lsstp4/exposing_sellers_who_rate_tiktok_shop_affiliates/
+- Reddit — Refundable sample payout issue
+  https://www.reddit.com/r/tiktokshopsaffiliates/comments/1sqmnsh/wasnt_paid_out_for_600_refundable_sample/
 
-- Reddit — Partial refunds and affiliate commission ineligibility  
-  https://www.reddit.com/r/TikTokShopAffiliate/comments/1s5dxzt/partial_refunds_just_dropped_what_it_means_for/
+- Reddit — AI shoppable videos and brand restrictions
+  https://www.reddit.com/r/TikTokShopAffiliate/comments/1t0905x/big_tiktok_shop_brands_do_not_want_affiliate_ai/
+
+### 替代方案和工具
+
+- PostScout
+  https://postscout.ai/
+
+- Kalodata
+  https://www.kalodata.com/
+
+- Shoplus
+  https://www.shoplus.net/
+
+- TikMetrics
+  https://www.tikmetrics.io/
+
+- Collabshop
+  https://collabshop.com/
+
+- Vantage
+  https://vantage.im/
+
+- Cruva
+  https://cruva.ai/
+
+### 样本发现
+
+- NoxInfluencer CLI sample search — TikTok Shop Affiliate US small/mid creators
+  本地 CLI 查询，2026-05-12。仅用于样本发现和画像辅助，不作为痛点证据。
