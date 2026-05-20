@@ -29,10 +29,12 @@ source_of_truth:
 - Expanded Tool Reference with beta pages for Manage Campaigns, Collections, and Exports
 - Added planned pages for Email Tasks, Message Threads, and CRM
 
-## Availability policy now shown in the docs
+## Availability policy introduced in this release
 
-- `manage_campaigns`, `collections`, and `exports` are shown as `beta`
-- `email_tasks`, `message_threads`, `crm`, and `negotiate` remain `planned`
+- `manage_campaigns`, `collections`, and `exports` were shown as `beta`
+- `email_tasks`, `message_threads`, `crm`, and `negotiate` were shown as `planned` at the time of this release
+
+For the current state, use the latest Tool Reference pages and changelog entries.
 
 ## Current facts now reflected
 

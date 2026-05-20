@@ -6,8 +6,8 @@ locale: en
 content_type: doc
 nav_group: getting-started
 order: 4
-status: deprecated
-updated_at: 2026-05-08
+status: draft
+updated_at: 2026-05-20
 keywords:
   - developer api
   - quick start
@@ -17,9 +17,9 @@ source_of_truth:
   - ../../../../../06_对外API免费试用方案.md
 ---
 
-# Developer API Quick Start (legacy draft)
+# Developer API Quick Start (historical draft)
 
-> This page is a 2026-04 Developer API draft. It no longer represents the current online Rest API free-trial or self-service purchase plan.
+> This page is kept as a draft archive for internal migration context. It should not appear in public navigation or search. The current online Rest API free-trial and self-service purchase path lives on `/api-service` and in Theneo.
 
 Use the current online structure instead:
 
@@ -50,4 +50,4 @@ Use the current online structure instead:
 
 ## Follow-up
 
-If the site docs need to become public again, rewrite this page from `06_对外API免费试用方案.md` and keep it aligned with Theneo.
+If we need an on-site Rest API page again, rewrite it from `06_对外API免费试用方案.md`, keep it aligned with Theneo, and publish it as a separate Rest API entry instead of mixing it into the Skill / CLI Quick Start.

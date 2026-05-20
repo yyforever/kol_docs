@@ -1,13 +1,13 @@
 ---
 doc_id: authentication
 title: 认证与账号
-description: 了解主账号、能力权限与基础认证心智，避免把 Skill key、Skill quota 和当前 Rest API Credit 混淆。
+description: 了解主账号、API key、能力权限、Skill quota、CLI 配置和当前 Rest API Credit 的区别。
 locale: zh
 content_type: doc
 nav_group: getting-started
 order: 3
 status: published
-updated_at: 2026-05-08
+updated_at: 2026-05-20
 keywords:
   - authentication
   - account
@@ -17,8 +17,9 @@ source_of_truth:
   - ../../../../05_PRD.md
   - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
   - "repo:kol_claw path:cli/README.md"
-  - "repo:kol_claw path:docs/modules/quota.md"
-  - "repo:kol_claw path:server/app/services/nox_api.py"
+  - "repo:kol_claw path:cli/src/main.ts"
+  - "repo:kol_claw path:server/app/dependencies.py"
+  - "repo:kol_claw path:server/app/services/saas_skill_quota.py"
 ---
 
 # 认证与账号
@@ -32,15 +33,23 @@ source_of_truth:
 - 英文 Skills 控制台：`https://www.noxinfluencer.com/skills/dashboard`
 - 中文 Skills 控制台：`https://cn.noxinfluencer.com/skills/dashboard`
 
-如果你使用 Skill / CLI，先完成注册并打开 Skills 控制台。当前 Rest API 免费试用与自助购买线以 `/api-service` + Theneo 文档为准，具体 Rest API key 获取路径需要按新 PRD / 研发实现确认。
+如果你使用 Skill / CLI，先完成注册并打开 Skills 控制台。当前 Rest API 免费试用与自助购买线以 `/api-service` + Theneo 文档为准，不要把历史 Developer API Quick Start 当成当前 Rest API 事实来源。
 
 ## API key 与环境配置
 
 - Skill / CLI 当前公开接入依赖有效的 API key。
 - 在 OpenClaw 和其他兼容环境中，优先使用宿主提供的安全密钥注入，或直接使用 `NOXINFLUENCER_API_KEY`。
 - 如果你需要在本地 CLI 中手动配置，优先使用 `noxinfluencer auth --key-stdin`。
+- 如果你希望 CLI 返回中文引导链接和提示，可以在命令中添加 `--lang zh`，例如 `noxinfluencer --lang zh doctor`。
 - 不要默认把 Skill API key 当成当前 Rest API key；Rest API key 是否复用底层 key backing 需要研发确认，但用户侧文案应表达为 Rest API key / Rest API Credit。
 - 当前 Rest API 文档入口是 Theneo，不是本目录下的历史 Developer API Quick Start。
+
+## CLI 与 Agent 设置检查
+
+- 需要确认账号和 key 配置时，先运行 `noxinfluencer doctor`。
+- 需要查看当前 Skill 额度时，运行 `noxinfluencer quota`。
+- 安装或更新 CLI 后，运行 `noxinfluencer schema --all`。当前 Skill 需要 `campaign`、`collection`、`email`、`message`、`crm`、`brand-monitor`、`export` 和 `agent` 这些命令组。
+- 自动化或 Agent 需要稳定错误处理时，使用 `noxinfluencer agent exit-codes` 查看 CLI exit code。
 
 ## 你需要理解的四个层次
 

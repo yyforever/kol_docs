@@ -29,10 +29,12 @@ source_of_truth:
 - Tool Reference 新增 `Manage Campaigns`、`Collections`、`Exports` 三个 beta 页面
 - 新增 `Email Tasks`、`Message Threads`、`CRM` 三个 planned 页面
 
-## 文档里明确展示的 availability 策略
+## 当时引入的 availability 策略
 
-- `manage_campaigns`、`collections`、`exports` 当前标记为 `beta`
-- `email_tasks`、`message_threads`、`crm` 和 `negotiate` 继续保持 `planned`
+- `manage_campaigns`、`collections`、`exports` 当时标记为 `beta`
+- `email_tasks`、`message_threads`、`crm` 和 `negotiate` 在该版本中标记为 `planned`
+
+当前状态请以最新 Tool Reference 页面和后续 changelog 为准。
 
 ## 这次同步到公开文档的当前事实
 

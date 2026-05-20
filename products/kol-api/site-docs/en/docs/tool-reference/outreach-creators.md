@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 4
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - outreach creators
   - creator outreach
@@ -48,11 +48,13 @@ The currently public part of Outreach Creators is contact retrieval for a creato
 
 ## Current boundary
 
-- This is not a promise of fully public outbound automation
-- It does not write copy, send emails, send messages, or manage bulk outreach cadence for you
+- Contact retrieval itself does not send emails or messages
+- Outbound email-task and existing-thread actions live under [Email Tasks](email-tasks.md) and [Message Threads](message-threads.md), with approval guardrails
+- It does not write outreach copy or negotiation copy for you
 - It should not replace creator evaluation before contact begins
 
 ## Recommended next steps
 
 - [Evaluate Creators Before Outreach](../guides/evaluate-creators-before-outreach.md)
+- [Email Tasks](email-tasks.md)
 - [Manage Campaign Context](../guides/manage-campaign-context.md)

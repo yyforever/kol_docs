@@ -1,51 +1,67 @@
 ---
 doc_id: tool_email_tasks
 title: Email Tasks
-description: Planned public capability page for structured email-task workflows around creator outreach.
+description: Beta public capability page for managing NoxInfluencer email-task workflows with approval guardrails.
 locale: en
 content_type: doc
 nav_group: tool-reference
 order: 9
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - email tasks
   - outreach operations
-  - planned capability
+  - marketing ops
 tool_key: email_tasks
-availability: planned
+availability: beta
 source_of_truth:
-  - "repo:kol_claw path:docs/marketing-ops-roadmap.md"
   - "repo:kol_claw path:cli/README.md"
+  - "repo:kol_claw path:cli/src/commands/email.ts"
+  - "repo:kol_claw path:cli/src/lib/email-guidance.ts"
+  - "repo:kol_claw path:server/app/routers/email.py"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/references/marketing-ops.md"
 ---
 
 # Email Tasks
 
-**Current status: Planned**
+**Current status: Beta**
 
-Email Tasks represents the future public direction for structured email-task workflows around creator outreach.
+Email Tasks lets you manage NoxInfluencer email-task records after you have selected creators and confirmed reliable email addresses.
 
-## When this page matters
+## Best-fit scenarios
 
-- You need to understand where richer email operations could fit after contact retrieval
-- You expect task-level recipient, sender, or content setup instead of a simple contact lookup
-- You want to see the planned shape of the broader marketing ops surface
+- You want to create or inspect email-task records
+- You need to manage recipients, sender settings, and approved content for an email task
+- You want to send or schedule a task after confirming the exact recipients, sender, timing, and content
 
-## Intended role
+## Current beta scope
 
-- Organize email-task records around outreach work
-- Preserve recipients, sender settings, and content state
-- Keep later communication work attached to the rest of your campaign context
+- List email tasks and drafts
+- Read one task by `task_id`
+- Create, update, copy, or delete email tasks
+- Add, replace, and list task recipients
+- Save task content and update sender settings
+- Send, schedule, or cancel an email task
+- List, save, and apply email content templates
+- Read email task reports
+
+## Safe execution rules
+
+- Many email commands are JSON-first and use `--body-file`
+- Mutations default to dry-run; use `--force` only after you approve the exact action
+- Before `email send` or `email schedule`, read back the task and recipients
+- Confirm recipients, sender, scheduled time when relevant, and content approval before execution
 
 ## Current boundary
 
-- This is not a public promise that NoxInfluencer will send outreach emails for you today
-- Email Tasks is not yet a main public NoxInfluencer skill capability
-- If you need a usable workflow now, start with contact retrieval, campaign context, and collection or export support
+- This workflow operates NoxInfluencer email tasks, not external email platforms
+- It does not write outreach copy or negotiation copy for you
+- It does not replace contact retrieval; use [Outreach Creators](outreach-creators.md) first when you still need a reliable email address
+- Some sender, template, and entitlement behavior may depend on your account configuration
 
-## Recommended reading
+## Recommended next steps
 
 - [Outreach Creators](outreach-creators.md)
-- [Manage Campaigns](manage-campaigns.md)
-- [Collections](collections.md)
+- [CRM](crm.md)
+- [Organize Campaign Workflows](../guides/organize-campaign-workflows.md)

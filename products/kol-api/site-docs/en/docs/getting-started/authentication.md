@@ -1,13 +1,13 @@
 ---
 doc_id: authentication
 title: Authentication
-description: Understand account, entitlement, Skill quota, and the separate Rest API Credit model.
+description: Understand account, API key, entitlement, Skill quota, CLI configuration, and the separate Rest API Credit model.
 locale: en
 content_type: doc
 nav_group: getting-started
 order: 3
 status: published
-updated_at: 2026-05-08
+updated_at: 2026-05-20
 keywords:
   - authentication
   - account
@@ -17,8 +17,9 @@ source_of_truth:
   - ../../../../05_PRD.md
   - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
   - "repo:kol_claw path:cli/README.md"
-  - "repo:kol_claw path:docs/modules/quota.md"
-  - "repo:kol_claw path:server/app/services/nox_api.py"
+  - "repo:kol_claw path:cli/src/main.ts"
+  - "repo:kol_claw path:server/app/dependencies.py"
+  - "repo:kol_claw path:server/app/services/saas_skill_quota.py"
 ---
 
 # Authentication
@@ -32,15 +33,23 @@ The public capability model is built on a main account system, not on the legacy
 - English Skills dashboard: `https://www.noxinfluencer.com/skills/dashboard`
 - Chinese Skills dashboard: `https://cn.noxinfluencer.com/skills/dashboard`
 
-For Skill / CLI usage, finish sign-up and open the Skills dashboard first. For the current Rest API free-trial and self-service purchase line, use `/api-service` plus the Theneo docs; the final Rest API key path must follow the new PRD / engineering implementation.
+For Skill / CLI usage, finish sign-up and open the Skills dashboard first. For the current Rest API free-trial and self-service purchase line, use `/api-service` plus the Theneo docs. Do not treat the historical Developer API Quick Start as the current Rest API source of truth.
 
 ## API key and environment setup
 
 - Skill / CLI public access depends on a valid API key.
 - In OpenClaw and other compatible environments, prefer a host-managed secret or `NOXINFLUENCER_API_KEY`.
 - If you need to configure the local CLI yourself, prefer `noxinfluencer auth --key-stdin`.
+- For Chinese onboarding URLs and CLI hints, add `--lang zh` to CLI commands such as `noxinfluencer --lang zh doctor`.
 - Do not assume the Skill API key is the current Rest API key. Engineering may reuse key backing internally, but user-facing copy should say Rest API key / Rest API Credit.
 - The current Rest API documentation entry is Theneo, not the legacy Developer API Quick Start in this directory.
+
+## CLI and agent setup checks
+
+- Run `noxinfluencer doctor` when you need to confirm account and key configuration.
+- Run `noxinfluencer quota` to see the current Skill quota snapshot.
+- Run `noxinfluencer schema --all` after installing or updating the CLI. The current Skill expects the `campaign`, `collection`, `email`, `message`, `crm`, `brand-monitor`, `export`, and `agent` command groups.
+- For automation, use `noxinfluencer agent exit-codes` to map stable CLI exit codes to retry or recovery behavior.
 
 ## Four layers to keep in mind
 

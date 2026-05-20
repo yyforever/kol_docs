@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 1
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - creator discovery
   - shortlist
@@ -37,6 +37,12 @@ Your goal is not to run the broadest search possible. Your goal is to produce a 
 3. Move into a first creator read instead of endlessly widening the search
 4. If you do not have a stable creator reference yet, start that first read from a URL or a `platform + channel-id` pair
 5. After the read returns `creator_id`, reuse it for later analysis, outreach, and monitoring
+
+## Pagination note
+
+- Creator search defaults to `page_size=10` and supports up to `--page_size 20`
+- For next-page follow-ups, reuse the prior response's `data.search_after`
+- If your request uses cursor arrays or complex filters, let your agent pass a JSON body instead of hand-editing shell-quoted arrays
 
 ## What to do after the shortlist looks promising
 

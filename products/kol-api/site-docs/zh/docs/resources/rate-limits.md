@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 1
 status: published
-updated_at: 2026-04-01
+updated_at: 2026-05-20
 keywords:
   - rate limits
   - quota
@@ -18,6 +18,7 @@ source_of_truth:
   - "repo:kol_claw path:server/app/dependencies.py"
   - "repo:kol_claw path:server/app/errors.py"
   - "repo:kol_claw path:cli/README.md"
+  - "repo:kol_claw path:server/app/mcp/auth.py"
 ---
 
 # 频率限制
@@ -30,7 +31,9 @@ Rate Limit 和 quota 不是一回事。
 
 限制单位时间内的请求频率，主要用于保护系统稳定性和异常使用检测。
 
-截至 2026-04-01，当前实现里的默认保护值是 **每个 API key 每分钟 30 次请求**。触发后，对外错误码为 `RATE_LIMITED`。
+截至 2026-05-20，当前实现里的默认保护值是 **每个 API key 每分钟 30 次请求**。触发后，对外错误码为 `RATE_LIMITED`。
+
+Remote MCP 请求也复用同一套 API key 认证和 rate limit，因此 `/mcp` 也受这一层保护。
 
 ### Quota
 
@@ -49,6 +52,7 @@ Rate Limit 和 quota 不是一回事。
 - 同一个 API key 先等待约 1 分钟再重试
 - 降低 Agent 或工作流里的突发重试频率
 - 如果遇到 Cloudflare 或代理链路问题，应按网络问题处理，而不是误判成 rate limit
+- 自动化场景应使用 CLI exit codes，避免立即密集重试
 
 ## 当前公开口径
 

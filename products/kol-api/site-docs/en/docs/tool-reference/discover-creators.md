@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 1
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - discover creators
   - creator discovery
@@ -17,8 +17,9 @@ availability: available
 source_of_truth:
   - ../../../../03_API能力设计.md
   - ../../../../05_PRD.md
-  - "repo:kol_claw path:docs/modules/discover-creators.md"
-  - "repo:kol_claw path:cli/README.md"
+  - "repo:kol_claw path:cli/src/commands/creator.ts"
+  - "repo:kol_claw path:server/app/routers/discover.py"
+  - "repo:kol_claw path:server/contracts/capabilities/creator_search.json"
 ---
 
 # Discover Creators
@@ -40,6 +41,13 @@ Discover Creators helps you find candidate creators and build a shortlist worth 
 - Category, keywords, or content direction
 - Creator size range
 - Whether commercial fit or contactability should matter
+
+## Pagination and result shape
+
+- The CLI defaults to `page_size=10` and supports up to `--page_size 20`
+- For deeper pagination, reuse the prior response's `data.search_after`
+- Prefer a JSON body through `--body-file -` when passing cursor arrays or complex filters
+- Search rows expose search-result identifiers for follow-up, but full identity comes from a later creator read
 
 ## Typical output
 

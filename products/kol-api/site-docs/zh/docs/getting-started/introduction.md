@@ -1,60 +1,78 @@
 ---
 doc_id: intro
 title: 产品简介
-description: 了解 NoxInfluencer 面向品牌广告主的公开能力、适用场景和当前边界。
+description: 了解 NoxInfluencer 能帮你完成什么、哪些能力当前可用，以及使用边界在哪里。
 locale: zh
 content_type: doc
 nav_group: getting-started
 order: 1
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - introduction
   - noxinfluencer
   - influencer marketing
+  - marketing ops
 source_of_truth:
   - ../../../../01_定位与假设.md
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
   - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
+  - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:docs/marketing-ops-roadmap.md"
 ---
 
 # 产品简介
 
-NoxInfluencer 帮你在 AI Agent 环境里更快完成达人发现、深入评估和表现监控。
+NoxInfluencer 帮你在 AI Agent 环境里完成达人和营销运营工作流。你可以用它发现达人、评估匹配度、获取联系方式、监控合作视频、管理活动和资源池、处理 CRM / 邮件 / 消息任务、执行导出，并查看品牌监控数据。
 
-## 当你准备开始时
+## 适合谁
 
-- 如果你想先完成安装和首次运行，先看 [快速开始](quick-start/index.md)
-- `快速开始` 会先帮你判断自己是否已经装过 Skill，再按 OpenClaw 或其他支持环境给出最短路径
-- 在这套流程里，OpenClaw 优先使用 [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing)，其他支持环境优先使用 skills.sh listing 或 Skills CLI，GitHub 只作为补充来源和兜底
+- 你正在使用 OpenClaw、Claude Code、OpenAI Codex、Cursor、Hermes 或其他兼容 Agent 环境
+- 你希望让 Agent 通过 CLI 或 Remote MCP 操作 NoxInfluencer，而不是自己在多个工具之间切换
+- 你需要围绕 YouTube、TikTok 和 Instagram 做达人发现、尽调、监控或活动运营
 
-## 这套能力适合谁
+## 当前能力分组
 
-- 你已经在用 Claude Code、OpenClaw、Codex 或其他兼容 Agent 环境
-- 你希望更快完成达人搜索、筛选、评估和持续观察
-- 你想把达人工作流从“手动搜索 + 多工具切换”转成“对话式完成”
+### 已开放的达人工作流
 
-## 你现在可以做什么
+- 达人发现：按市场、平台和内容方向找到候选达人
+- 达人分析：查看主页信息、受众、内容和合作信号
+- 表现监控：管理视频监控项目、任务、汇总和任务历史
+- 达人触达：为已选达人获取联系方式
 
-- 达人发现：按目标市场、平台和内容方向找到候选达人
-- 达人分析：对单个达人做更深入的可信度、受众和合作判断
-- 表现监控：持续观察达人或内容表现，适合监控和复盘场景
+### Beta 营销运营与情报能力
 
-## 当前公开文档还覆盖什么
+- 活动管理：保留活动级上下文和基础活动数据
+- 资源池：把达人组织成可复用工作组
+- 导出任务：查看并下载异步导出任务
+- 邮件任务：管理 NoxInfluencer 邮件任务，发送或定时前必须得到明确确认
+- 消息线程：管理已有对话线程状态和已确认的回复
+- CRM：查询和更新 NoxInfluencer CRM channels 与 groups
+- 品牌监控：查看已监控品牌、策略信号、产品信号、资产列表和品牌监控导出
 
-- 你会看到达人触达、合作协商、活动管理相关页面，用来说明 creator workflow 从选人到后续运营的完整路径
-- 你也会看到资源池、导出任务、邮件任务、消息线程、CRM 等 marketing ops 页面，用来说明当前正在扩展中的运营域
-- 不同页面都会明确标注当前是 `available`、`beta` 还是 `planned`
+### 规划中能力
 
-## 使用前需要知道
+- 合作协商仍处于规划中。它现在不是自动执行谈判的公开能力。
 
-- 当前产品心智是主账号体系 + quota 管理，不是旧的“独立 API 产品”
-- 不是所有文档页都代表能力已经公开可用，具体状态以每个 Tool 页的 `availability` 标记为准
-- 历史原型中的旧路径、旧价格和旧产品叙事已经失效
+## 访问方式
+
+- Skill 安装和 Agent 工作流见 [快速开始](quick-start/index.md)
+- 账号和 API key 设置见 [认证与账号](authentication.md)
+- Remote MCP 是面向 MCP 客户端的只读工具面，见 [Remote MCP](remote-mcp.md)
+- Rest API 免费试用和自助购买使用现有 `/api-service` 页面与 Theneo 文档，不和这些页面里的 Skill 配额模型混用
+
+## 使用边界
+
+- 营销运营写操作默认走 dry-run 或 preview 类行为，真正执行前需要你明确确认
+- 邮件和消息工作流不会代你撰写触达文案；发送或定时前必须使用已确认内容
+- 品牌监控从 `brand_id` 开始，不是从 `creator_id` 开始
+- 品牌监控的 product signal 命令当前只支持 YouTube
+- NoxInfluencer 使用主账号和配额模型，不要沿用旧独立 API 产品心智
 
 ## 推荐下一步
 
-- 先看 [快速开始](quick-start/index.md)，完成首次连接
-- 再看 [完成第一次达人发现](../guides/find-your-first-creators.md)，理解标准工作流
+- 先看 [快速开始](quick-start/index.md)，完成接入
+- 再看 [完成第一次达人发现](../guides/find-your-first-creators.md)，理解标准达人工作流
+- 如果安装或自动化失败，查看 [CLI 诊断](../resources/cli-diagnostics.md)

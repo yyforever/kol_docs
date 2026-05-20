@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 3
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - performance monitoring
   - tracking
@@ -16,7 +16,8 @@ source_of_truth:
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
-  - "repo:kol_claw path:docs/modules/video-monitor.md"
+  - "repo:kol_claw path:cli/src/commands/monitor.ts"
+  - "repo:kol_claw path:server/app/routers/video_monitor.py"
 ---
 
 # 建立表现监控
@@ -34,10 +35,12 @@ source_of_truth:
 1. 先明确要跟踪的是哪批合作视频或投放内容
 2. 先建立监控项目
 3. 把一个或多个视频 URL 添加为监控任务
-4. 按周期查看任务列表和项目 summary
+4. 按周期查看任务列表和项目汇总
 5. 当你需要某一个视频任务的历史走势时，先从任务列表拿到 `task_id`
 6. 再用 `monitor history` 配合 `daily` 或 `hourly` granularity 查看时间序列
-7. 再把结果回流到 shortlist 或 campaign 决策中
+7. 再把结果回流到候选名单或活动决策中
+
+`monitor add-task` 默认监控 60 天，除非你指定其他 `monitor_days`。
 
 ## 当前公开工作流
 
@@ -49,7 +52,8 @@ source_of_truth:
 - 哪些对象短期表现发生了异常变化
 - 哪些对象更适合进入下一轮合作评估
 
-## 什么情况下应该看 history
+## 什么情况下应该看历史走势
 
 - 当你需要趋势点，而不是只看当前任务快照时
 - 当你已经确定目标视频，并且想复用同一个 `task_id` 深看走势时
+- 当 monitor task rows 返回 `creator_id`、`creator_name`、`channel_handle` 或 `channel_url` 时，保留这些身份字段用于后续 creator read

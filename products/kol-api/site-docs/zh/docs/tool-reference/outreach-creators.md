@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 4
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - outreach creators
   - contact
@@ -48,11 +48,13 @@ source_of_truth:
 
 ## 当前边界
 
-- 这不是完整的外呼自动化承诺
-- 当前不负责代写话术、自动发信、自动发消息或管理批量触达节奏
+- 联系方式获取本身不会发送邮件或消息
+- 出站 email-task 和已有 thread 回复动作在 [邮件任务](email-tasks.md) 与 [消息线程](message-threads.md) 中处理，并受审批保护约束
+- 它不会代你撰写触达或谈判文案
 - 在没有完成评估前，不应直接把搜索结果视为可联系名单
 
 ## 推荐下一步
 
 - [触达前评估达人](../guides/evaluate-creators-before-outreach.md)
+- [邮件任务](email-tasks.md)
 - [管理活动上下文](../guides/manage-campaign-context.md)

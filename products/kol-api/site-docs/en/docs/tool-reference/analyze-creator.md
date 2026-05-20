@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 2
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - analyze creator
   - due diligence
@@ -17,8 +17,9 @@ availability: available
 source_of_truth:
   - ../../../../03_API能力设计.md
   - ../../../../05_PRD.md
-  - "repo:kol_claw path:docs/modules/analyze-creator.md"
-  - "repo:kol_claw path:cli/README.md"
+  - "repo:kol_claw path:cli/src/commands/creator.ts"
+  - "repo:kol_claw path:server/app/routers/analyze.py"
+  - "repo:kol_claw path:server/contracts/capabilities/creator_profile.json"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
 ---
 

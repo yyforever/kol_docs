@@ -1,51 +1,67 @@
 ---
 doc_id: tool_email_tasks
 title: 邮件任务
-description: 面向达人触达后续邮件任务流的规划中能力页面。
+description: 用于管理 NoxInfluencer 邮件任务流的 Beta 能力页面，发送或定时前需要明确确认。
 locale: zh
 content_type: doc
 nav_group: tool-reference
 order: 9
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - email tasks
   - outreach operations
-  - planned capability
+  - marketing ops
 tool_key: email_tasks
-availability: planned
+availability: beta
 source_of_truth:
-  - "repo:kol_claw path:docs/marketing-ops-roadmap.md"
   - "repo:kol_claw path:cli/README.md"
+  - "repo:kol_claw path:cli/src/commands/email.ts"
+  - "repo:kol_claw path:cli/src/lib/email-guidance.ts"
+  - "repo:kol_claw path:server/app/routers/email.py"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/references/marketing-ops.md"
 ---
 
 # 邮件任务
 
-**当前状态：Planned**
+**当前状态：Beta**
 
-邮件任务代表未来面向达人触达后续邮件工作流的公开能力方向。
+邮件任务用于在你已经选定达人并确认可靠邮箱后，管理 NoxInfluencer 内的 email-task 记录。
 
-## 什么情况下这页对你有意义
+## 适合什么场景
 
-- 你想知道联系方式获取之后，更丰富的邮件运营能力会落在什么位置
-- 你期待的是 task 级的 recipients、sender 或 content 管理，而不是单次 contact lookup
-- 你想理解更完整的 marketing ops surface 将如何衔接
+- 你要创建或查看邮件任务
+- 你要管理某个任务的收件人、发件人设置和已确认内容
+- 你要在确认收件人、发件人、发送时间和内容后发送或定时邮件任务
 
-## 未来适用范围
+## 当前 beta 范围
 
-- 围绕触达工作组织邮件任务记录
-- 保存 recipients、sender 设置和内容状态
-- 让后续沟通工作与整个 campaign 上下文保持连接
+- 查看 email tasks 和 drafts
+- 通过 `task_id` 查看单个任务
+- 创建、更新、复制或删除邮件任务
+- 添加、替换和查看任务收件人
+- 保存任务内容、更新发件人设置
+- 发送、定时或取消邮件任务
+- 查看、保存和应用邮件内容模板
+- 查看邮件任务报告
+
+## 安全执行规则
+
+- 很多 email 命令是 JSON-first，需要使用 `--body-file`
+- 写操作默认 dry-run；只有在你确认具体对象和动作后才使用 `--force`
+- 执行 `email send` 或 `email schedule` 前，需要先读回任务和收件人
+- 发送或定时前必须确认收件人、发件人、必要时的发送时间，以及内容已经获批
 
 ## 当前边界
 
-- 本页不是“现在就能自动发触达邮件”的公开承诺
-- 邮件任务还不是当前公开 NoxInfluencer skill 的主能力
-- 如果你现在就要可用路径，优先使用 contact retrieval、campaign context，以及 collection 或 export 辅助能力
+- 该工作流只操作 NoxInfluencer 邮件任务，不操作外部邮箱平台
+- 它不会代你撰写触达或谈判文案
+- 它不替代联系方式获取；如果你还没有可靠邮箱，先使用 [达人触达](outreach-creators.md)
+- 发件人、模板和权限行为可能依赖你的账号配置
 
-## 推荐阅读
+## 推荐下一步
 
 - [达人触达](outreach-creators.md)
-- [活动管理](manage-campaigns.md)
-- [资源池](collections.md)
+- [CRM](crm.md)
+- [组织活动工作流](../guides/organize-campaign-workflows.md)

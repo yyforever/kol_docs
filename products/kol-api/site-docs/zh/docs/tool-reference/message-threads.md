@@ -1,44 +1,69 @@
 ---
 doc_id: tool_message_threads
 title: 消息线程
-description: 面向 thread-based 沟通工作流与状态管理的规划中能力页面。
+description: 用于查看、组织、保存草稿、发送和定时已有 NoxInfluencer 消息线程的 Beta 能力页面。
 locale: zh
 content_type: doc
 nav_group: tool-reference
 order: 10
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - message threads
   - communication workflows
-  - planned capability
+  - marketing ops
 tool_key: message_threads
-availability: planned
+availability: beta
 source_of_truth:
-  - "repo:kol_claw path:docs/marketing-ops-roadmap.md"
   - "repo:kol_claw path:cli/README.md"
+  - "repo:kol_claw path:cli/src/commands/message.ts"
+  - "repo:kol_claw path:cli/src/lib/message-guidance.ts"
+  - "repo:kol_claw path:server/app/routers/message.py"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/references/marketing-ops.md"
 ---
 
 # 消息线程
 
-**当前状态：Planned**
+**当前状态：Beta**
 
-消息线程代表未来面向 thread-based 沟通工作流的公开能力方向，适合在达人筛选完成后承接更持续的沟通状态。
+消息线程用于在已有达人关系或邮件任务上下文存在时，处理 NoxInfluencer 内的沟通线程。
 
-## 未来适用范围
+## 适合什么场景
 
-- 把消息历史绑定到一个稳定的协作线程
-- 保存标签、合作状态和后续工作流状态
-- 减少跨会话、跨协作者时的上下文丢失
+- 你需要查看已有消息线程
+- 你要管理某个已知线程的标签、合作状态或草稿状态
+- 你要对已有 `thread_id` 发送、定时或取消一条已确认回复
 
-## 这不代表现在已经可以做什么
+## 当前 beta 范围
 
-- 这不是“现在就能代你运行外部消息渠道”的公开承诺
-- 消息线程还不是当前公开 NoxInfluencer skill 的主能力
-- 不应把本页当成已经 ready-to-run 的触达执行面
+- 查看消息线程列表和详情
+- 解析某个达人 / channel 的相关项目或相关线程
+- 查看、保存和应用消息模板
+- 查看和设置标签
+- 查看和更新合作状态
+- 保存草稿正文
+- 对一个已有线程发送、定时或取消回复
 
-## 你现在更适合用什么
+## 重要路由规则
 
-- 需要联系方式时，先用 [达人触达](outreach-creators.md)
-- 需要流程连续性时，先用 [活动管理](manage-campaigns.md) 和 [资源池](collections.md)
+`message send` 和 `message schedule` 只适用于已有 `thread_id` 的回复。如果你只有邮件任务 ID，先用 `message list --business_kind email_task --business_id <task_id>` 找到线程。如果没有线程，但你已经有可靠邮箱收件人，应改走 [邮件任务](email-tasks.md) 路径。
+
+## 安全执行规则
+
+- 写操作默认 dry-run，真正执行前需要确认并使用 `--force`
+- 发送和定时需要先确认内容、发件人配置和准确目标线程
+- `message schedule` 需要带 timezone offset 的 ISO 8601 时间
+
+## 当前边界
+
+- 消息线程不会从零创建外部消息渠道
+- 它不会代你撰写消息文案
+- 它不操作 NoxInfluencer 之外的外部消息平台
+- 部分项目标签页概念在上游已废弃，当前筛选条件以 CLI schema 为准
+
+## 推荐下一步
+
+- [邮件任务](email-tasks.md)
+- [CRM](crm.md)
+- [组织活动工作流](../guides/organize-campaign-workflows.md)

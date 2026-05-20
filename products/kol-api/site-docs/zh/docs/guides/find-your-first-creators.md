@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 1
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - creator discovery
   - shortlist
@@ -40,9 +40,15 @@ source_of_truth:
 4. 如果你还没有稳定对象标识，可以先用 URL 或 `platform + channel-id` 发起第一次读取
 5. 当读取返回 `creator_id` 后，后续分析、触达和监控都优先复用它
 
-## shortlist 看起来不错之后该做什么
+## 分页提醒
 
-- 不要假设 discovery 结果已经包含完整的 creator identity block
+- Creator search 默认 `page_size=10`，最大支持 `--page_size 20`
+- 后续翻页需要复用上一页响应里的 `data.search_after`
+- 如果请求包含游标数组或复杂筛选条件，优先让 Agent 用 JSON body 传参，不要手动拼复杂 shell quoting
+
+## 候选名单看起来不错之后该做什么
+
+- 不要假设发现结果已经包含完整的达人身份字段
 - 先用下一次 creator read 确认稳定身份，再分流到深入分析
 - 把 discovery 当成分析前的 handoff，而不是最终判断
 
@@ -60,5 +66,5 @@ source_of_truth:
 
 ## 推荐下一步
 
-- [Analyze Creator](../tool-reference/analyze-creator.md)
-- [Evaluate Creators Before Outreach](evaluate-creators-before-outreach.md)
+- [达人分析](../tool-reference/analyze-creator.md)
+- [触达前评估达人](evaluate-creators-before-outreach.md)

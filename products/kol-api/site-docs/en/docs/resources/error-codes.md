@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 2
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - error codes
   - troubleshooting
@@ -15,7 +15,7 @@ keywords:
 source_of_truth:
   - ../../../../05_PRD.md
   - "repo:kol_claw path:server/app/errors.py"
-  - "repo:kol_claw path:docs/modules/quota.md"
+  - "repo:kol_claw path:server/app/dependencies.py"
   - "repo:kol_claw path:cli/README.md"
 ---
 
@@ -42,3 +42,10 @@ If you hit an error, start with the recovery action rather than only the technic
 - Keep frontend, Agent, and website handling aligned with the exact current error codes
 - Use `ASYNC_NOT_READY` for async export or background-task reads that are still processing, instead of inventing a separate public label
 - If the current CLI already includes `action.url` or `action.hint`, reuse that next step instead of inventing a second flow
+- For CLI automation, use `noxinfluencer agent exit-codes` to map these server errors to stable process exit codes
+- Local commands such as `doctor`, `schema`, and `agent exit-codes` may not return the same API error envelope
+
+## Related diagnostics
+
+- [CLI Diagnostics](cli-diagnostics.md)
+- [Rate Limits](rate-limits.md)

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 3
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-05-20
 keywords:
   - credit guide
   - quota
@@ -15,7 +15,9 @@ keywords:
 source_of_truth:
   - ../../../../04_定价与商业模式.md
   - ../../../../05_PRD.md
-  - "repo:kol_claw path:docs/modules/quota.md"
+  - "repo:kol_claw path:server/app/dependencies.py"
+  - "repo:kol_claw path:server/app/services/saas_skill_quota.py"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/references/cli-response-format.md"
 ---
 
 # Credit Guide
@@ -38,6 +40,8 @@ Some actions count as both a Skill usage and an underlying service consumption. 
 - A user may be blocked even if one quota layer still has room
 - Upgrade messaging should explain which layer failed
 - Legacy standalone credit assumptions should not be reused
+- Some current API-backed CLI responses may still include a legacy `credits` compatibility field
+- Treat `noxinfluencer quota` and the quota response data as the canonical Skill quota snapshot
 
 ## Old assumptions to stop reusing
 

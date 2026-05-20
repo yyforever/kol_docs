@@ -1,18 +1,19 @@
 ---
 doc_id: quick_start_home
 title: Quick Start
-description: Choose the shortest install path for your experience and agent environment, then complete your first creator workflow.
+description: Install NoxInfluencer for your agent environment, configure access, and verify the current CLI command tree.
 locale: en
 content_type: doc
 nav_group: getting-started
 order: 2
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - quick start
-  - claude
+  - skills.sh
   - openclaw
-  - chatgpt
+  - hermes
+  - openai codex
   - noxinfluencer
 source_of_truth:
   - ../../../../../02_用户场景.md
@@ -20,160 +21,155 @@ source_of_truth:
   - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
   - "repo:kol_claw path:cli/README.md"
-  - "https://help.openai.com/en/articles/11369540-codex-in-chatgpt"
+  - "repo:kol_claw path:cli/package.json"
+  - "repo:kol_claw path:cli/src/main.ts"
 ---
 
 # Quick Start
 
-You do not need to read everything first. Complete these five steps:
+Use this page when you want the shortest supported setup path. Keep two things separate:
 
-1. Decide whether you have installed a Skill before
-2. Confirm which agent environment you use
-3. Prepare your brand account and API key
-4. Let your agent complete the installation
-5. Finish a first real task
+- Install decision: where should the Skill be installed for your agent environment?
+- Access preparation: which NoxInfluencer account and API key should the Skill use?
 
 ## Public entry points
 
 - Skills dashboard / API key: `https://www.noxinfluencer.com/skills/dashboard` / `https://cn.noxinfluencer.com/skills/dashboard`
 - skills.sh listing: `https://skills.sh/noxinfluencer/skills/noxinfluencer`
-- ClawHub: `https://clawhub.ai/noxinfluencer/nox-influencer-marketing`
+- ClawHub for OpenClaw: `https://clawhub.ai/noxinfluencer/nox-influencer-marketing`
 - GitHub fallback: `https://github.com/NoxInfluencer/skills/tree/main`
 
-## Step 1: Have you installed a Skill before?
+## Before you run commands: prepare account access
 
-- If you have installed other Skills before, first search for `Nox Influencer` in the install entry or store you already use
-- If this is your first install, or you are not sure where to install from, continue to Step 2
+If you do not have a brand account yet, sign up first:
 
-## Step 2: Confirm your agent environment
+- English sign-up: `https://www.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
+- Chinese sign-up: `https://cn.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
+
+Then open the Skills dashboard and get your API key:
+
+- English dashboard: `https://www.noxinfluencer.com/skills/dashboard`
+- Chinese dashboard: `https://cn.noxinfluencer.com/skills/dashboard`
+
+For OpenClaw and other compatible environments, prefer host-managed secret injection or `NOXINFLUENCER_API_KEY`. If you configure the local CLI yourself, use `noxinfluencer auth --key-stdin` instead of placing the key in command arguments or logs.
+
+## Step 1: Have you installed Skills before?
+
+- If you have installed other Skills before, first search for `Nox Influencer` in the Skill store or install entry you already use
+- If this is your first install, or you are not sure which store or installer your agent uses, continue to Step 2
+
+## Step 2: Choose the install entry for your environment
 
 ### Official OpenClaw
 
-- Start with [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing)
-- If ClawHub is not practical because of network or access limits, use Skills CLI instead:
+Start with ClawHub:
+
+[https://clawhub.ai/noxinfluencer/nox-influencer-marketing](https://clawhub.ai/noxinfluencer/nox-influencer-marketing)
+
+If ClawHub is not practical because of network or access limits, use Skills CLI:
 
 ```bash
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent openclaw
 ```
 
-### Claude Code, Codex, Cursor, or another environment that supports Skills CLI
+OpenClaw metadata expects `NOXINFLUENCER_API_KEY` and the `noxinfluencer` binary to be available.
 
-- Start with the [skills.sh listing](https://skills.sh/noxinfluencer/skills/noxinfluencer) or Skills CLI
-- If you already know your target environment, you can use an environment-specific command
-- If your agent needs the repository address, or the command cannot complete the install by itself, use GitHub as the supplemental source
+### Claude Code, OpenAI Codex, Cursor, or another Skills CLI environment
 
-## Step 3: Prepare your brand account and API key
+Start with the skills.sh listing or use Skills CLI directly. The listing is useful for browsing; the command is better when your agent can execute installation for you:
 
-- If you do not have a brand account yet, sign up first:
-  - English: `https://www.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
-  - Chinese: `https://cn.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
-- Then open the Skills dashboard to get your API key:
-  - English dashboard: `https://www.noxinfluencer.com/skills/dashboard`
-  - Chinese dashboard: `https://cn.noxinfluencer.com/skills/dashboard`
-- In OpenClaw and other compatible environments, prefer a host-managed secret or `NOXINFLUENCER_API_KEY`
-
-## Step 4: Use the shortest path for your environment
-
-### General Skills CLI / skills.sh
-
-If your environment supports Skills CLI, you can start from the skills.sh listing or use this general command directly:
+[https://skills.sh/noxinfluencer/skills/noxinfluencer](https://skills.sh/noxinfluencer/skills/noxinfluencer)
 
 ```bash
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer
 ```
 
-### Claude Code
-
-Install through the Skills CLI:
+Environment-specific examples:
 
 ```bash
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent claude-code
+npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent codex
+npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent cursor
 ```
 
-Or use the Claude Code plugin marketplace:
+For Claude Code, the plugin marketplace path is also supported:
 
 ```bash
 claude plugin marketplace add https://github.com/NoxInfluencer/skills
 claude plugin install nox-influencer@noxinfluencer
 ```
 
-### OpenClaw
+### Hermes Skills Hub
 
-If you use OpenClaw, try ClawHub first. Only switch to the command below if ClawHub is not convenient:
-
-```bash
-npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent openclaw
-```
-
-Public store page:
-[https://clawhub.ai/noxinfluencer/nox-influencer-marketing](https://clawhub.ai/noxinfluencer/nox-influencer-marketing)
-
-### Codex
-
-If you originally expected to use NoxInfluencer directly inside ChatGPT, we recommend `Codex` instead.
-
-NoxInfluencer needs a more explicit execution environment, including installation, local context, CLI access, and command execution. ChatGPT does not currently expose that direct path, while `Codex` is a better fit for this workflow.
-
-As of 2026-04-03, `Codex` is part of the OpenAI product family and is included with eligible ChatGPT plans. Availability and limits should be checked against OpenAI's current official guidance.
-
-Install through the Skills CLI:
+Hermes can install through the skills.sh identifier:
 
 ```bash
-npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent codex
+hermes skills install skills-sh/noxinfluencer/skills/noxinfluencer
 ```
 
-### Other supported agent environments
-
-If your agent supports Skills CLI, you can also install NoxInfluencer there. For example, `Cursor`:
+You can inspect the listing before installing:
 
 ```bash
-# Cursor
-npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent cursor
+hermes skills inspect skills-sh/noxinfluencer/skills/noxinfluencer
 ```
 
-## Step 5: Let your agent continue the installation
+### ChatGPT status
 
-- In most supported environments, you do not need to move files by hand, change directories, or configure complex paths
-- You can usually give the link or command above directly to your agent and let it continue the install
-- Only move into manual troubleshooting if the agent cannot process that information
+NoxInfluencer Skill does not support ChatGPT as a runtime.
 
-## ChatGPT status
+The supported OpenAI path is OpenAI Codex. NoxInfluencer needs an execution environment that can install Skills, access local context, run the NoxInfluencer CLI, and pass API key configuration securely. ChatGPT does not expose that public execution path for this workflow. If you are already using OpenAI products and want this kind of agent workflow, use OpenAI Codex and follow the Skills CLI path above. Codex availability and limits are controlled by OpenAI and may change, so check OpenAI's current product guidance when access matters.
 
-ChatGPT is not currently a supported direct setup path for NoxInfluencer.
+## Step 3: Install or refresh the CLI
 
-More precisely, ChatGPT does not currently expose the public execution path required to run NoxInfluencer in this workflow.
+The current Skill expects `@noxinfluencer/cli` `0.4.6` or newer. Install the latest CLI package:
 
-If you are already working inside the OpenAI product family, we recommend `Codex` instead. It is a better fit for workflows that need command execution and local context.
+```bash
+npm install -g @noxinfluencer/cli@latest
+```
 
-## When to use GitHub
+Then verify the command tree:
 
-- When your agent needs the repository address
-- When the earlier install path cannot complete
-- When you want your agent to read the repository for extra install context
+```bash
+noxinfluencer schema --all
+```
 
-GitHub is the supplemental source and fallback, not the default first step:
+The command tree must include:
+
+- `campaign`
+- `collection`
+- `email`
+- `message`
+- `crm`
+- `brand-monitor`
+- `export`
+- `agent`
+
+Version output alone is not enough if your machine has stale local or global compiled files. If `schema --all` does not show the expected command groups after reinstalling the latest package, stop the affected workflow and treat it as a CLI package or command-tree mismatch.
+
+## Step 4: Let your agent continue
+
+In most supported environments, you do not need to move files by hand, edit directories, or configure complex paths. Give your agent the store link or install command, then let it finish the setup and run the CLI checks.
+
+Use GitHub only when your agent needs the repository address, or when the earlier install paths cannot complete:
+
 [https://github.com/NoxInfluencer/skills/tree/main](https://github.com/NoxInfluencer/skills/tree/main)
 
-## After installation, confirm these basics
+## Step 5: Confirm a first successful run
 
-- Make sure you can sign in with the right main account
-- Confirm whether the current account can use the relevant Skill capability
-- Make sure a valid `NOXINFLUENCER_API_KEY` is available
-- Remember that usage may be constrained by both Skill quota and underlying service quota
+A first run is successful when one of these works:
 
-## What counts as a successful first run
-
-Any of the following is enough:
-
-- A creator discovery flow returns a usable shortlist
-- A creator analysis flow returns decision-ready signals
-- A monitoring flow can be started or queried successfully
+- Creator discovery returns a usable shortlist
+- Creator analysis returns decision-ready signals
+- Video monitoring can be created, listed, or queried
+- A marketing ops read command such as campaign, collection, CRM, email, message, export, or brand-monitor returns the expected account-scoped data
 
 ## If setup fails
 
 - Run `noxinfluencer doctor` first
-- If the current network path is blocked, set `HTTPS_PROXY` and retry; add `HTTP_PROXY` when the server URL is non-TLS
-- Review [Error Codes](../../resources/error-codes.md) for the current public recovery paths
+- Run `noxinfluencer schema --all` to confirm the installed command tree
+- Run `noxinfluencer agent exit-codes` when your agent or automation needs stable failure handling
+- If the network path is blocked, set `HTTPS_PROXY` and retry; add `HTTP_PROXY` only when the server URL is non-TLS
+- Review [Error Codes](../../resources/error-codes.md) and [CLI Diagnostics](../../resources/cli-diagnostics.md) for recovery paths
 
 ## Common next steps
 

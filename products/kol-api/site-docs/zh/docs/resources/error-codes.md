@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 2
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - error codes
   - troubleshooting
@@ -15,7 +15,7 @@ keywords:
 source_of_truth:
   - ../../../../05_PRD.md
   - "repo:kol_claw path:server/app/errors.py"
-  - "repo:kol_claw path:docs/modules/quota.md"
+  - "repo:kol_claw path:server/app/dependencies.py"
   - "repo:kol_claw path:cli/README.md"
 ---
 
@@ -42,3 +42,10 @@ source_of_truth:
 - 前端、Agent 和站点文档应以当前实现的实际错误码为准，不要自行发明别名
 - 对异步导出或后台任务读取场景，应使用 `ASYNC_NOT_READY` 解释“结果尚未就绪”，不要另起一套公开错误名称
 - 如果当前 CLI 已经返回 `action.url` 或 `action.hint`，应优先复用该动作
+- CLI 自动化场景可用 `noxinfluencer agent exit-codes` 把这些 server errors 映射成稳定 process exit codes
+- `doctor`、`schema`、`agent exit-codes` 等本地命令不一定返回同一套 API error envelope
+
+## 相关诊断
+
+- [CLI 诊断](cli-diagnostics.md)
+- [频率限制](rate-limits.md)

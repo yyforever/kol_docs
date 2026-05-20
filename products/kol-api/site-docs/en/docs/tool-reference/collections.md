@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 7
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - collections
   - creator organization
@@ -37,6 +37,7 @@ Collections helps you organize creators into reusable working groups so you can 
 - List, create, update, and delete collections
 - Inspect collection items and related resource views
 - Use grouped operations such as move, copy, label, refresh, and export
+- Add a whole collection and platform slice to NoxInfluencer CRM through validate, preview, and apply stages
 
 ## What beta means right now
 
@@ -47,10 +48,12 @@ Collections helps you organize creators into reusable working groups so you can 
 
 - This is not a full campaign CRM
 - Do not assume every grouped operation is available under every entitlement or workflow
+- `collection add-to-crm` currently works at whole collection + platform slice level; filtered or explicit channel subsets are not supported in v1
 - It does not replace creator discovery or creator evaluation
 
 ## Recommended next steps
 
 - [Manage Campaigns](manage-campaigns.md)
+- [CRM](crm.md)
 - [Exports](exports.md)
 - [Organize Campaign Workflows](../guides/organize-campaign-workflows.md)

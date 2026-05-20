@@ -1,13 +1,13 @@
 ---
 doc_id: guide_manage_campaign_context
 title: 管理活动上下文
-description: 用统一上下文把 campaign、collection 和 export 串起来，减少每次都从头开始的成本。
+description: 用统一上下文把活动、资源池、CRM、邮件 / 消息、导出和品牌监控串起来。
 locale: zh
 content_type: doc
 nav_group: guides
 order: 4
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - manage campaigns
   - context
@@ -20,32 +20,36 @@ source_of_truth:
 
 # 管理活动上下文
 
-当你的流程不再只是一次性的发现或分析时，上下文就是把 creator workflow 和 beta marketing ops 连接起来的桥。
+当你的流程不再只是一次性的发现或分析时，上下文就是把达人工作流、营销运营和品牌监控情报连接起来的桥。
 
 ## 为什么上下文管理重要
 
 - 避免每次都重新解释品牌目标
-- 让 shortlist、分析结论和监控对象能复用
-- 让 campaign、collection 和 export 围绕同一批对象保持一致
+- 让候选名单、分析结论和监控对象能复用
+- 让活动、资源池、CRM、邮件 / 消息任务、导出和品牌监控输出围绕同一批对象保持一致
 - 减少 Agent 会话切换导致的信息丢失
 
 ## 适合保持一致的内容
 
 - 品牌目标市场和品类
-- 已经筛过的 shortlist
+- 已经筛过的候选名单
 - 值得继续观察的对象
 - 已经明确排除的对象和原因
-- 围绕同一条工作流建立的 campaign、collection 和 export 对象
+- 围绕同一条工作流建立的活动、资源池、CRM、邮件 / 消息、导出和品牌监控对象
 
 ## 你现在可以这样用
 
-1. 先固定一个清晰的 campaign 目标、市场和品牌约束
-2. 在分析、触达准备和监控里复用同一个 creator identity
-3. 当你要按组管理对象时，转到 collection
-4. 当你需要分享结果或交接时，使用 export 输出当前工作集
+1. 先固定一个清晰的活动目标、市场和品牌约束
+2. 在分析、触达准备和监控里复用同一个达人身份
+3. 用活动把工作流固定在活动层
+4. 当你要按组管理对象时，转到资源池
+5. 当你要维护关系状态、分组或加入邮件任务时，使用 CRM
+6. 只有收件人、对话线程、发件人、时间和内容确认后，才进入邮件任务或消息线程执行
+7. 当你需要分享结果或交接时，使用导出输出当前工作集
+8. 当问题从单个达人转向已监控品牌时，使用品牌监控
 
 ## 当前边界
 
-- 现在的 campaign、collection 和 export 仍属于 beta surface
-- 这是一条 workflow bridge，不是完整的 CRM 或协作系统
+- 现在的活动、资源池、CRM、邮件 / 消息、导出和品牌监控仍属于 Beta 能力
+- 这是一条工作流桥接，不是外部 CRM、邮箱、消息或电子表格集成
 - 如果你现在最看重稳定性，发现、分析、触达准备和监控仍然是核心公开主链路

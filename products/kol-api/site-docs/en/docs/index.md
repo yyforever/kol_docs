@@ -1,67 +1,71 @@
 ---
 doc_id: docs_home
 title: Documentation
-description: Public documentation hub for NoxInfluencer, including quick start, guides, tool reference, and resources.
+description: Public documentation hub for NoxInfluencer Skills, CLI workflows, Remote MCP, tool reference, and resources.
 locale: en
 content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-05-08
+updated_at: 2026-05-20
 keywords:
   - noxinfluencer docs
   - influencer marketing
   - ai agents
+  - remote mcp
 source_of_truth:
   - ../../../03_API能力设计.md
   - ../../../05_PRD.md
   - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
   - "repo:kol_claw path:cli/README.md"
+  - "repo:kol_claw path:server/app/main.py"
+  - "repo:kol_claw path:server/app/mcp/server.py"
 ---
 
 # Documentation
 
-Use this documentation to connect NoxInfluencer, understand the core creator workflow, and see the current boundaries of the expanding marketing ops surface.
+Use these docs to install NoxInfluencer in your agent environment, configure account access, understand the current creator workflow, and review the beta marketing ops surface.
 
-## Where to start
+## Start here
 
-- If you want the shortest install path for your environment, start with [Quick Start](getting-started/quick-start/index.md)
-- If you want the current Rest API free trial or self-service purchase path, start from the existing `/api-service` page and use the Theneo API docs / API Runner as the source of truth
-- If you want to understand what NoxInfluencer helps you do, read [Introduction](getting-started/introduction.md)
-- If you want to confirm accounts, entitlements, and API key setup, read [Authentication](getting-started/authentication.md)
+- New setup: start with [Quick Start](getting-started/quick-start/index.md)
+- Account, API key, and entitlement model: read [Authentication](getting-started/authentication.md)
+- Remote MCP read tools: read [Remote MCP](getting-started/remote-mcp.md)
+- Product scope and boundaries: read [Introduction](getting-started/introduction.md)
+- Current Rest API free trial or self-service purchase: use the existing `/api-service` page and the Theneo API docs / API Runner as the source of truth
 
 ## Install entry overview
 
-- If you use OpenClaw, start with [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing)
-- If you use Claude Code, Codex, Cursor, or another environment that supports Skills CLI, start with the [skills.sh listing](https://skills.sh/noxinfluencer/skills/noxinfluencer) or the install commands in [Quick Start](getting-started/quick-start/index.md)
-- If you do not have a brand account or Skill API key yet, open the [Skills dashboard](https://www.noxinfluencer.com/skills/dashboard)
-- If you want Rest API access, the current online entry is [API Service](https://www.noxinfluencer.com/api-service), and the docs are hosted in [Theneo](https://app.theneo.io/noxdeveloper/kr-api/noxinfluencer-api-guide)
-- If your agent needs the repository address, or the earlier install path cannot complete, use [GitHub](https://github.com/NoxInfluencer/skills/tree/main) as the supplemental source
+- OpenClaw: start from [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing)
+- Claude Code, OpenAI Codex, Cursor, Hermes, or another compatible environment: start from [skills.sh](https://skills.sh/noxinfluencer/skills/noxinfluencer) and the commands in [Quick Start](getting-started/quick-start/index.md)
+- API key: open the [Skills dashboard](https://www.noxinfluencer.com/skills/dashboard)
+- GitHub: use [NoxInfluencer/skills](https://github.com/NoxInfluencer/skills/tree/main) only when your agent needs the repository address or the store-based path cannot complete
 
-## Tool Reference currently covers two clusters
+## Tool Reference
 
 ### Creator workflow
 
 - [Discover Creators](tool-reference/discover-creators.md)
 - [Analyze Creator](tool-reference/analyze-creator.md)
-- [Outreach Creators](tool-reference/outreach-creators.md)
 - [Track Performance](tool-reference/track-performance.md)
+- [Outreach Creators](tool-reference/outreach-creators.md)
 - [Negotiate](tool-reference/negotiate.md)
 - [Manage Campaigns](tool-reference/manage-campaigns.md)
 
-### Marketing ops coverage
+### Marketing ops and intelligence
 
 - [Collections](tool-reference/collections.md)
 - [Exports](tool-reference/exports.md)
 - [Email Tasks](tool-reference/email-tasks.md)
 - [Message Threads](tool-reference/message-threads.md)
 - [CRM](tool-reference/crm.md)
+- [Brand Monitor](tool-reference/brand-monitor.md)
 
-## Follow the path that matches your goal
+## Common paths
 
-- Want to get connected quickly: start with [Quick Start](getting-started/quick-start/index.md)
-- Want to test Rest API calls directly: open the [Theneo API docs](https://app.theneo.io/noxdeveloper/kr-api/noxinfluencer-api-guide) and use the API Runner
-- Want to understand the workflow: go to [Guides](guides/find-your-first-creators.md)
-- Want page-by-page capability detail: use [Tool Reference](tool-reference/discover-creators.md)
-- Want to understand the current marketing ops expansion: start with [Manage Campaigns](tool-reference/manage-campaigns.md) or [Collections](tool-reference/collections.md)
-- Want troubleshooting and usage boundaries: open [Resources](resources/rate-limits.md)
+- First creator shortlist: [Find Your First Creators](guides/find-your-first-creators.md)
+- Creator review before outreach: [Evaluate Creators Before Outreach](guides/evaluate-creators-before-outreach.md)
+- Monitoring workflow: [Set Up Performance Monitoring](guides/set-up-performance-monitoring.md)
+- Campaign and ops continuity: [Organize Campaign Workflows](guides/organize-campaign-workflows.md)
+- Troubleshooting: [CLI Diagnostics](resources/cli-diagnostics.md), [Error Codes](resources/error-codes.md), and [Rate Limits](resources/rate-limits.md)

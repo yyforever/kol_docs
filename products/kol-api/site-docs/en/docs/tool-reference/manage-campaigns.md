@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 6
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - manage campaigns
   - campaign context
@@ -30,12 +30,12 @@ Manage Campaigns helps you preserve campaign-level context as work moves from cr
 
 - You want one campaign anchor around shortlist, monitoring, and later ops work
 - You need basic campaign records and overview data instead of a full CRM
-- You want discovery, outreach preparation, monitoring, collections, and exports to stay connected
+- You want discovery, outreach preparation, monitoring, collections, email/message tasks, CRM, and exports to stay connected
 
 ## Current beta scope
 
 - Keep campaign-level records and overview data
-- Create, update, and remove campaign skeletons
+- List, inspect, initialize, create, update, delete, open dropdown data, and read campaign dashboard data
 - Reuse campaign context across adjacent beta operations
 
 ## What beta means right now
@@ -46,12 +46,15 @@ Manage Campaigns helps you preserve campaign-level context as work moves from cr
 ## Current boundary
 
 - It is not a full CRM
-- It is not a promise of public email, message, or negotiation execution
+- Email, message, and CRM now have their own beta pages and approval guardrails
+- It is not a negotiation execution surface
 - It does not replace discovery, analysis, outreach preparation, or monitoring
 
 ## Recommended reading
 
 - [Manage Campaign Context](../guides/manage-campaign-context.md)
 - [Collections](collections.md)
+- [Email Tasks](email-tasks.md)
+- [CRM](crm.md)
 - [Exports](exports.md)
 - [Track Performance](track-performance.md)

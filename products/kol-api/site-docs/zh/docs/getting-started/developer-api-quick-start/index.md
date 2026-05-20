@@ -6,8 +6,8 @@ locale: zh
 content_type: doc
 nav_group: getting-started
 order: 4
-status: deprecated
-updated_at: 2026-05-08
+status: draft
+updated_at: 2026-05-20
 keywords:
   - developer api
   - 快速开始
@@ -19,7 +19,7 @@ source_of_truth:
 
 # Developer API 快速开始（历史草稿）
 
-> 这页是 2026-04 的历史 Developer API 草稿，不再代表当前线上 Rest API 免费试用 / 自助购买方案。
+> 这页仅作为内部迁移上下文保留为 draft，不应进入公开导航或搜索。当前线上 Rest API 免费试用 / 自助购买路径在 `/api-service` 和 Theneo 中维护。
 
 当前 Rest API 线上入口以以下结构为准：
 
@@ -50,4 +50,4 @@ source_of_truth:
 
 ## 后续处理
 
-如果需要重新启用站内公开文档，应按 `06_对外API免费试用方案.md` 重写，并与 Theneo 文档保持一致。
+如果后续需要重新启用站内 Rest API 页面，应按 `06_对外API免费试用方案.md` 重写，与 Theneo 文档保持一致，并作为独立 Rest API 入口发布，不要混入 Skill / CLI 快速开始。

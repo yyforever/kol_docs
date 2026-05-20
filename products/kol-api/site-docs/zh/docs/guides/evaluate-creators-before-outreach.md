@@ -22,7 +22,7 @@ source_of_truth:
 
 在进入联络和合作前，建议先完成一次标准化评估，避免把时间花在明显不合适的对象上。
 
-## 先固定一个稳定的 creator identity
+## 先固定一个稳定的达人身份
 
 - 如果你已经有 `creator_id`，优先直接复用
 - 如果还没有，第一次读取也可以从 creator URL 或 `platform + channel-id` 开始

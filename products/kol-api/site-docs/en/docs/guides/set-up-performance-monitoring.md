@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 3
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - performance monitoring
   - tracking
@@ -16,7 +16,8 @@ source_of_truth:
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
-  - "repo:kol_claw path:docs/modules/video-monitor.md"
+  - "repo:kol_claw path:cli/src/commands/monitor.ts"
+  - "repo:kol_claw path:server/app/routers/video_monitor.py"
 ---
 
 # Set Up Performance Monitoring
@@ -39,6 +40,8 @@ Monitoring works best after you already have a candidate, collaborator, or watch
 6. Use `monitor history` with `daily` or `hourly` granularity when you need ordered performance points
 7. Feed the monitoring result back into shortlist or campaign decisions
 
+By default, `monitor add-task` monitors for 60 days unless you set a different `monitor_days` value.
+
 ## Current public workflow
 
 The current public surface is a project-based video monitoring workflow, not just a future direction.
@@ -53,3 +56,4 @@ The current public surface is a project-based video monitoring workflow, not jus
 
 - Use task history when you need trend points rather than only the current task state
 - Reuse the returned `task_id` instead of re-identifying the same video each time
+- Preserve creator identity fields from monitor task rows when they are present, especially `creator_id`, `creator_name`, `channel_handle`, and `channel_url`

@@ -1,60 +1,78 @@
 ---
 doc_id: intro
 title: Introduction
-description: Understand what NoxInfluencer is for, who it serves, and where the current public capability boundaries are.
+description: Understand what NoxInfluencer helps you do, which surfaces are available today, and where the current boundaries are.
 locale: en
 content_type: doc
 nav_group: getting-started
 order: 1
 status: published
-updated_at: 2026-04-22
+updated_at: 2026-05-20
 keywords:
   - introduction
   - noxinfluencer
   - influencer marketing
+  - marketing ops
 source_of_truth:
   - ../../../../01_定位与假设.md
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
   - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
+  - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:docs/marketing-ops-roadmap.md"
 ---
 
 # Introduction
 
-NoxInfluencer helps brand and marketing teams discover creators, evaluate fit, and monitor performance inside AI agent environments.
-
-## When you are ready to get started
-
-- Start with [Quick Start](quick-start/index.md) when you are ready to install NoxInfluencer and complete a first run
-- `Quick Start` will first help you decide whether you should search in your usual install entry or follow an environment-specific path
-- In that flow, OpenClaw starts with [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing), other supported environments start with the skills.sh listing or Skills CLI, and GitHub is used only as a supplemental fallback
+NoxInfluencer helps you run creator and marketing operations from an AI agent environment. You can use it to discover creators, evaluate fit, retrieve contact information, monitor campaign videos, manage campaign/collection work, coordinate CRM/email/message tasks, run exports, and inspect brand-monitor data.
 
 ## Who this is for
 
-- You already work in Claude Code, OpenClaw, Codex, or another compatible agent environment
-- You want to move faster across creator discovery, evaluation, and monitoring
-- You prefer conversational workflows over manual tool switching
+- You work in OpenClaw, Claude Code, OpenAI Codex, Cursor, Hermes, or another compatible agent environment
+- You want your agent to operate NoxInfluencer workflows through the CLI or Remote MCP instead of switching manually across tools
+- You need creator discovery, due diligence, monitoring, or campaign operations across YouTube, TikTok, and Instagram
 
-## What you can do today
+## Current capability groups
+
+### Available creator workflow
 
 - Discover Creators: find candidates by market, platform, and content direction
-- Analyze Creator: review audience, content, and cooperation signals before you decide to move forward
-- Track Performance: keep watching creator or content performance over time
+- Analyze Creator: review profile, audience, content, and cooperation signals
+- Track Performance: manage video-monitor projects, tasks, summaries, and task history
+- Outreach Creators: retrieve contact information for selected creators
 
-## What else the public docs now cover
+### Beta marketing ops and intelligence
 
-- You will also see pages for Outreach Creators, Negotiate, and Manage Campaigns to show the full creator workflow from selection to later operations
-- You will also see Collections, Exports, Email Tasks, Message Threads, and CRM pages to explain the expanding marketing ops surface
-- Each page clearly shows whether the capability is `available`, `beta`, or `planned`
+- Manage Campaigns: keep campaign-level context and skeleton data
+- Collections: organize creators into reusable working groups
+- Exports: inspect and download async export tasks
+- Email Tasks: manage NoxInfluencer email tasks with explicit approval before send or schedule
+- Message Threads: manage existing thread state and approved replies
+- CRM: query and update NoxInfluencer CRM channels and groups
+- Brand Monitor: inspect monitored brands, strategy signals, product signals, assets, and brand-monitor exports
 
-## Important boundaries
+### Planned capability
 
-- NoxInfluencer uses a main account and quota model rather than the old standalone API model
-- Some pages describe beta or planned capabilities, so always check the `availability` state on each tool page
-- Do not rely on legacy prototype paths, prices, or older product copy
+- Negotiate remains planned. It is not an automated negotiation execution surface today.
+
+## Access surfaces
+
+- Skill install and agent workflows are covered in [Quick Start](quick-start/index.md)
+- Account and API key setup are covered in [Authentication](authentication.md)
+- Remote MCP is a read-only tool surface for MCP-capable clients and is covered in [Remote MCP](remote-mcp.md)
+- Rest API free trial and self-service purchase use the existing `/api-service` page and Theneo docs, not the Skill quota model in these pages
+
+## Boundaries to keep in mind
+
+- Marketing ops write actions default to dry-run or preview-style behavior and require explicit approval before execution
+- Email and message workflows do not write outreach copy for you; use approved content before send or schedule
+- Brand Monitor starts from `brand_id`, not `creator_id`
+- Product signal commands in Brand Monitor currently support YouTube only
+- NoxInfluencer uses a main account and quota model; do not reuse legacy standalone API product assumptions
 
 ## Recommended next steps
 
-- Start with [Quick Start](quick-start/index.md) to complete your first connection
-- Continue to [Find Your First Creators](../guides/find-your-first-creators.md) to learn the standard workflow
+- Start with [Quick Start](quick-start/index.md) to complete setup
+- Continue to [Find Your First Creators](../guides/find-your-first-creators.md) to learn the standard creator workflow
+- Use [CLI Diagnostics](../resources/cli-diagnostics.md) if setup or automation fails

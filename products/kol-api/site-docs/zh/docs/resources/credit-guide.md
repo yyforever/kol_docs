@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 3
 status: published
-updated_at: 2026-03-30
+updated_at: 2026-05-20
 keywords:
   - credit guide
   - quota
@@ -15,7 +15,9 @@ keywords:
 source_of_truth:
   - ../../../../04_定价与商业模式.md
   - ../../../../05_PRD.md
-  - "repo:kol_claw path:docs/modules/quota.md"
+  - "repo:kol_claw path:server/app/dependencies.py"
+  - "repo:kol_claw path:server/app/services/saas_skill_quota.py"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/references/cli-response-format.md"
 ---
 
 # 配额说明
@@ -38,6 +40,8 @@ source_of_truth:
 - 想知道还能不能继续用：先看 quota
 - 想知道为什么被拦：区分是 Skill 不足、服务不足，还是能力未开放
 - 想知道如何继续：回到 pricing 和套餐说明
+- 当前部分 API-backed CLI 响应可能仍带兼容旧字段 `credits`
+- 对外解释时，应以 `noxinfluencer quota` 和配额响应数据作为 Skill 配额快照的主来源
 
 ## 不应该再沿用的旧心智
 
