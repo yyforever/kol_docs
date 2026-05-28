@@ -125,9 +125,9 @@ Credit cost：
 
 | 接口 | Cost | 特殊规则 |
 |---|---:|---|
-| 网红详情 | `1.5 Credit / 个` | 每次拉取扣费 |
-| 视频内容 | `0.5 Credit / 个` | 同账号同视频免重复扣费 |
-| 邮箱联系方式查询 | `2.5 Credit / 次` | 建议值，待最终确认 |
+| 网红详情 / 频道 | `1.5 Credit / 个` | 频道不重复计费 |
+| 视频内容 | `0.5 Credit / 个` | 视频内容不重复计费 |
+| 邮箱联系方式查询 | `2.5 Credit / 次` | 按频道不重复计费；建议值，待最终确认 |
 | 辅助 ID API | `0 Credit` | 免费 |
 
 需要做：
@@ -136,7 +136,7 @@ Credit cost：
 - 设计辅助 ID API 的输入、输出和错误码。
 - 评估是否支持批量辅助 ID 转换。
 - 设计 Rest API Credit 扣减点和 action cost 映射。
-- 设计视频内容同账号同视频免重复扣费的唯一键，建议至少包含 `account_id + platform + canonical_video_id`。
+- 确认 Rest API 计费判定沿用星耀既有逻辑的接入点；不要另行设计计费判定规则。
 - 设计或对接独立 Rest API key 与 Rest API Credit backing。
 - 输出可跑 curl 或 playground mock 数据。
 - 在未收录对象返回中表达 `processing / retry_after` 或等价状态。
@@ -258,7 +258,7 @@ curl "https://<api-host>/api/v1/credits" \
 
 - 只实现或 mock 当前允许范围内的基础接口。
 - 每个计费接口都有明确 Credit cost。
-- 视频内容支持同账号同视频免重复扣费。
+- 视频内容、频道、邮箱按频道都支持不重复计费，判定沿用星耀既有逻辑。
 - 辅助 ID API 免费。
 - 不出现 Skill quota / Skill key 作为用户侧主口径。
 
@@ -292,7 +292,7 @@ curl "https://<api-host>/api/v1/credits" \
 | 产品 / 商务 | 确认超出 `800 Credit / month` 后是升级、叠加订阅、拦截还是联系销售 |
 | 研发 | 设计辅助 ID API 契约 |
 | 研发 | 设计或确认独立 Rest API key 与 Credit backing |
-| 研发 | 设计视频内容免重复扣费唯一键 |
+| 研发 | 确认 Rest API 计费判定沿用星耀既有逻辑的接入点 |
 | 研发 / 前端 | 确认支付页复用 Rest API 月度订阅商品类型的参数、订单字段、服务端校验和回跳 |
 | 前端 | 改造 `/api-service`、新增 `/developer-api/dashboard`、增加 Header / 侧边栏入口，并对接 Theneo 文档 / API Runner |
 | 文档 | 在 Theneo 中区分自助基础接口和大额 / 定制接口 |
