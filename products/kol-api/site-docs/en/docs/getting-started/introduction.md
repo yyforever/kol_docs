@@ -25,7 +25,7 @@ source_of_truth:
 
 # Introduction
 
-NoxInfluencer helps you run creator and marketing operations from an AI agent environment. You can use it to discover creators, evaluate fit, retrieve contact information, monitor campaign videos, manage campaign/collection work, coordinate CRM/email/message tasks, run exports, and inspect brand-monitor data.
+NoxInfluencer helps you run creator and marketing operations from an AI agent environment. You can use it to discover creators, evaluate fit, retrieve contact information, monitor campaign videos, manage campaign/collection work, coordinate CRM/email/message tasks, manage product center items for email product cards, run exports, and inspect brand-monitor data.
 
 ## Who this is for
 
@@ -50,6 +50,7 @@ NoxInfluencer helps you run creator and marketing operations from an AI agent en
 - Email Tasks: manage NoxInfluencer email tasks with explicit approval before send or schedule
 - Message Threads: manage existing thread state and approved replies
 - CRM: query and update NoxInfluencer CRM channels and groups
+- Product Center: manage collected product items and custom tags used by email product cards
 - Brand Monitor: inspect monitored brands, strategy signals, product signals, assets, and brand-monitor exports
 
 ### Planned capability
@@ -68,6 +69,7 @@ NoxInfluencer helps you run creator and marketing operations from an AI agent en
 - Marketing ops write actions default to dry-run or preview-style behavior and require explicit approval before execution
 - Email and message workflows do not write outreach copy for you; use approved content before send or schedule
 - Brand Monitor starts from `brand_id`, not `creator_id`
+- Product Center uses `product_collect_id`; email product cards use Product Center collect IDs, not external marketplace product IDs
 - Product signal commands in Brand Monitor currently support YouTube only
 - ChatGPT is not a supported NoxInfluencer Skill runtime; use OpenAI Codex for OpenAI Skill workflows
 - NoxInfluencer uses a main account and quota model; do not reuse legacy standalone API product assumptions

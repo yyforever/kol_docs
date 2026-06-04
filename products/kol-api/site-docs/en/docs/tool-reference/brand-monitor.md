@@ -5,7 +5,7 @@ description: Beta public capability page for monitored brand intelligence, produ
 locale: en
 content_type: doc
 nav_group: tool-reference
-order: 12
+order: 13
 status: published
 updated_at: 2026-06-04
 keywords:
@@ -60,6 +60,44 @@ If you do not know the target brand, list available brand monitors first, then i
 - For TikTok or Instagram brand questions, use non-product brand monitor reads or asset lists when schema permits
 - Product asset list and product export workflows currently keep the same YouTube-only product boundary
 
+## Key commands
+
+Start by listing and inspecting monitored brands:
+
+```bash
+noxinfluencer brand-monitor list --page_num 1 --page_size 20
+noxinfluencer brand-monitor get <brand_id>
+```
+
+Read competition and strategy signals:
+
+```bash
+noxinfluencer brand-monitor competition-matrix <brand_id> --platform youtube --country US
+noxinfluencer brand-monitor cooperate-matrix <brand_id> --platform youtube --interval-month 6
+noxinfluencer brand-monitor influencer-portrait <brand_id> --platform youtube --interval-month 6
+noxinfluencer brand-monitor defense-gap <brand_id> --platform youtube --interval-month 6
+```
+
+Read YouTube-only product signals:
+
+```bash
+noxinfluencer brand-monitor product-pub-trend <brand_id> --platform youtube --interval-month 6
+noxinfluencer brand-monitor product-category <brand_id> --platform youtube --interval-month 6
+noxinfluencer brand-monitor product-sov-analysis <brand_id> --platform youtube --interval-month 6
+noxinfluencer brand-monitor product-promotion-matrix <brand_id> --platform youtube --interval-month 6
+```
+
+Use JSON-first asset lists and exports when you need rows or files:
+
+```bash
+noxinfluencer schema "brand-monitor influencer-list"
+noxinfluencer brand-monitor influencer-list <brand_id> --body-file brand-influencer-list.json
+noxinfluencer brand-monitor content-list <brand_id> --body-file brand-content-list.json
+noxinfluencer brand-monitor tag-list <brand_id> --body-file brand-tag-list.json
+noxinfluencer brand-monitor product-list <brand_id> --body-file brand-product-list.json
+noxinfluencer brand-monitor product-export <brand_id> --body-file brand-product-export.json --force
+```
+
 ## Safe execution rules
 
 - Asset list commands are JSON-first and use `--body-file`
@@ -75,10 +113,12 @@ If you do not know the target brand, list available brand monitors first, then i
 - It does not start from search results or creator IDs
 - It does not provide full AI report generation or external spreadsheet operations
 - It does not expose batch collect or product video list workflows in the current public CLI surface
+- Brand Monitor product signals and product assets are separate from [Product Center](product-center.md) records used by email product cards
 - Quota and entitlement may block unlock or export operations
 
 ## Recommended next steps
 
 - [Exports](exports.md)
+- [Product Center](product-center.md)
 - [Organize Campaign Workflows](../guides/organize-campaign-workflows.md)
 - [CLI Diagnostics](../resources/cli-diagnostics.md)

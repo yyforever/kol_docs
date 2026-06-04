@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 5
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - campaign workflows
   - collections
@@ -16,6 +16,7 @@ source_of_truth:
   - ../../../../05_PRD.md
   - "repo:kol_claw path:docs/marketing-ops-roadmap.md"
   - "repo:kol_claw path:cli/README.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/references/marketing-ops.md"
 ---
 
 # 组织活动工作流
@@ -26,12 +27,33 @@ source_of_truth:
 
 1. 先建立一个明确的活动锚点，固定市场、目标和工作范围
 2. 把已经评估过的达人放进资源池，而不是散落在不同会话里
-3. 高影响分组操作前，先走资源池的 validate / preview / apply 流程
-4. 当你需要关系状态或加入邮件任务时，把正确的资源池和平台切片转入 CRM
-5. 对已确认邮箱收件人发起首次邮件触达时，使用邮件任务
-6. 只有已有 `thread_id` 回复时，才使用消息线程
-7. 当你需要交接或下载结果时，发起资源池、CRM 或品牌监控导出
-8. 再把新的结果回流到同一个活动上下文中
+3. 对已经评估过的 creator IDs 使用 `collection add-creators`；如果你导入的是自有达人 URL 表格，使用 `collection import-file`
+4. 高影响分组操作前，先走资源池的 validate / preview / apply 流程
+5. 当你需要关系状态、标签或加入邮件任务时，把正确的资源池和平台切片转入 CRM
+6. 需要稳定后续分层时，使用 CRM labels
+7. 邮件任务需要商品卡时，先使用商品中心准备商品记录
+8. 对已确认邮箱收件人发起首次邮件触达时，使用邮件任务
+9. 只有已有 `thread_id` 回复时，才使用消息线程
+10. 发送后需要回复指标时，使用 email report、team-summary 和 team-breakdown
+11. 当你需要交接或下载结果时，发起资源池、CRM 或品牌监控导出
+12. 再把新的结果回流到同一个活动上下文中
+
+## 常用命令顺序
+
+下面是可复用的起点；准备 JSON body 前先看 schema：
+
+```bash
+noxinfluencer campaign get <campaign_id>
+noxinfluencer collection add-creators --body-file add-creators.json --force
+noxinfluencer collection refresh-email validate --body-file refresh-email.json
+noxinfluencer collection refresh-email preview --body-file refresh-email.json
+noxinfluencer collection refresh-email apply --body-file refresh-email.json --force
+noxinfluencer crm labels list --page_size 20
+noxinfluencer crm batch-update preview --body-file crm-batch-update.json
+noxinfluencer crm batch-update apply --body-file crm-batch-update.json --force
+noxinfluencer email report <task_id>
+noxinfluencer export get <export_id>
+```
 
 ## 需要保持稳定的内容
 
@@ -39,6 +61,7 @@ source_of_truth:
 - 你决定保留的达人身份
 - 你纳入或排除对象的逻辑
 - 收件人、发件人、内容和发送时间的确认状态
+- 后续操作里使用的 `label_id`、`product_collect_id`、`task_id`、`thread_id` 和 `export_id`
 - 这次导出的用途和原因
 
 ## 当前边界
@@ -54,4 +77,5 @@ source_of_truth:
 - [邮件任务](../tool-reference/email-tasks.md)
 - [消息线程](../tool-reference/message-threads.md)
 - [导出任务](../tool-reference/exports.md)
+- [商品中心](../tool-reference/product-center.md)
 - [品牌监控](../tool-reference/brand-monitor.md)

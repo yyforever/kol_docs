@@ -49,6 +49,50 @@ Message Threads helps you work with existing NoxInfluencer communication threads
 
 Use `message send` or `message schedule` only for existing `thread_id` replies. If you only have an email task ID, resolve the thread first with `message list --business_kind email_task --business_id <task_id>`. If no thread exists, use the [Email Tasks](email-tasks.md) path when you already have reliable email recipients.
 
+## Key commands
+
+Inspect schema before building draft, send, schedule, label, or cooperation-status bodies:
+
+```bash
+noxinfluencer schema "message list"
+noxinfluencer schema "message send"
+noxinfluencer schema "message labels set"
+```
+
+Read thread state first:
+
+```bash
+noxinfluencer message list --business_kind email_task --business_id <task_id>
+noxinfluencer message get <thread_id>
+noxinfluencer message projects <thread_id>
+```
+
+Manage metadata on a known thread:
+
+```bash
+noxinfluencer message labels --page_size 20
+noxinfluencer message labels set <thread_id> --body-file labels.json --force
+noxinfluencer message coop-statuses
+noxinfluencer message coop set <thread_id> --body-file coop.json --force
+```
+
+Use templates and drafts only on existing threads:
+
+```bash
+noxinfluencer message templates list --language en
+noxinfluencer message templates save --body-file template-save.json --force
+noxinfluencer message templates use <template_id> --body-file template-use.json --force
+noxinfluencer message draft save <thread_id> --body-file draft.json --force
+```
+
+Send or schedule only after content and sender are approved:
+
+```bash
+noxinfluencer message send <thread_id> --body-file send.json --force
+noxinfluencer message schedule <thread_id> --body-file schedule.json --force
+noxinfluencer message cancel <thread_id> --force
+```
+
 ## Safe execution rules
 
 - Mutation commands default to dry-run and require approval before `--force`
@@ -58,6 +102,7 @@ Use `message send` or `message schedule` only for existing `thread_id` replies. 
 ## Current boundary
 
 - Message Threads does not start a new external messaging channel from scratch
+- It does not create a new message thread when no `thread_id` exists
 - It does not write message copy for you
 - It does not operate external messaging platforms outside NoxInfluencer
 - Some project-tab concepts are deprecated upstream; use the CLI schema for current filters

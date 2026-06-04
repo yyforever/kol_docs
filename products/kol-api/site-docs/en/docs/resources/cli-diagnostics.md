@@ -45,13 +45,14 @@ noxinfluencer --lang zh doctor
 noxinfluencer schema --all
 ```
 
-The current Skill expects the installed CLI to expose:
+The current CLI baseline expects the installed command tree to expose:
 
 - `campaign`
 - `collection`
 - `email`
 - `message`
 - `crm`
+- `product`
 - `brand-monitor`
 - `export`
 - `agent`
@@ -64,7 +65,7 @@ npm install -g @noxinfluencer/cli@latest
 
 Version output alone is not enough when local or global compiled files are stale.
 
-The current documented baseline is `@noxinfluencer/cli` `0.4.7` or newer. Prefer `schema --all` over version checks when diagnosing a stale install.
+The current documented baseline is `@noxinfluencer/cli` `0.4.7` or newer. Prefer `schema --all` over version checks when diagnosing a stale install. If `product` is missing, Product Center and email product-card workflows are not available from that installed command tree.
 
 ## Inspect exact command parameters
 
@@ -73,6 +74,8 @@ Use schema before building JSON-first requests:
 ```bash
 noxinfluencer schema "creator search"
 noxinfluencer schema "email create"
+noxinfluencer schema "email products replace"
+noxinfluencer schema "product list"
 noxinfluencer schema "brand-monitor influencer-list"
 ```
 

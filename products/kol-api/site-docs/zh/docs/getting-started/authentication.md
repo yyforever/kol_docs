@@ -49,7 +49,7 @@ source_of_truth:
 
 - 需要确认账号和 key 配置时，先运行 `noxinfluencer doctor`。
 - 需要查看当前 Skill 额度时，运行 `noxinfluencer quota`。
-- 安装或更新 CLI 后，运行 `noxinfluencer schema --all`。当前 Skill 需要 `campaign`、`collection`、`email`、`message`、`crm`、`brand-monitor`、`export` 和 `agent` 这些命令组。
+- 安装或更新 CLI 后，运行 `noxinfluencer schema --all`。当前 CLI 基线需要 `campaign`、`collection`、`email`、`message`、`crm`、`product`、`brand-monitor`、`export` 和 `agent` 这些命令组。
 - 自动化或 Agent 需要稳定错误处理时，使用 `noxinfluencer agent exit-codes` 查看 CLI exit code。
 
 ## 你需要理解的四个层次

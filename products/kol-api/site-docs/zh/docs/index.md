@@ -1,7 +1,7 @@
 ---
 doc_id: docs_home
 title: 文档中心
-description: NoxInfluencer Skill、CLI 工作流、Remote MCP、工具参考和资源说明的公共文档首页。
+description: NoxInfluencer Skill、CLI 工作流、Remote MCP、工具参考、商品中心和资源说明的公共文档首页。
 locale: zh
 content_type: doc
 nav_group: getting-started
@@ -25,7 +25,7 @@ source_of_truth:
 
 # 文档中心
 
-你可以在这里安装 NoxInfluencer、配置账号访问、理解当前达人工作流，并查看 Beta 营销运营能力边界。
+你可以在这里安装 NoxInfluencer、配置账号访问、理解当前达人工作流，并查看 Beta 营销运营、商品中心和品牌情报能力边界。
 
 ## 从这里开始
 
@@ -61,6 +61,7 @@ source_of_truth:
 - [邮件任务](tool-reference/email-tasks.md)
 - [消息线程](tool-reference/message-threads.md)
 - [CRM](tool-reference/crm.md)
+- [商品中心](tool-reference/product-center.md)
 - [品牌监控](tool-reference/brand-monitor.md)
 
 ## 常见路径

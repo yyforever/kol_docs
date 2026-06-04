@@ -44,7 +44,8 @@ source_of_truth:
 - 保存任务内容、更新发件人设置
 - 发送、定时或取消邮件任务
 - 查看、保存和应用邮件内容模板
-- 查看邮件任务报告
+- 查看、替换和删除邮件商品卡
+- 查看邮件任务报告、团队汇总和团队明细指标
 
 ## 安全执行规则
 
@@ -54,6 +55,61 @@ source_of_truth:
 - 发送或定时前必须确认收件人、发件人、必要时的发送时间，以及内容已经获批
 - `email schedule` 的 `plan_send_at` 必须是带整点 timezone offset 的 ISO 8601 时间，例如 `Z`、`+08:00` 或 `-05:00`
 - 邮件报告会区分 email tracking replies、creator-level replied counts 和 inbound message counts
+- 团队报告筛选使用 SaaS 团队成员 `uid`，不是 Gmail 或企业邮箱账号
+- 商品卡使用商品中心的 `product_collect_id`
+
+## 关键命令
+
+构建任务、收件人、内容、发件人、模板或商品卡 body 前，先查看 schema：
+
+```bash
+noxinfluencer schema "email create"
+noxinfluencer schema "email recipients add"
+noxinfluencer schema "email content save"
+noxinfluencer schema "email products replace"
+```
+
+发送前先读取任务状态：
+
+```bash
+noxinfluencer email list --keyword shoes --page_size 10
+noxinfluencer email drafts --page_size 10
+noxinfluencer email get <task_id>
+noxinfluencer email recipients list <task_id>
+```
+
+在已经有确认过的收件人和内容后，再组装邮件任务：
+
+```bash
+noxinfluencer email create --body-file email-task.json --force
+noxinfluencer email recipients add <task_id> --body-file recipients.json --force
+noxinfluencer email content save <task_id> --body-file content.json --force
+noxinfluencer email sender update <task_id> --body-file sender.json --force
+```
+
+只有读回任务并确认无误后，才发送或定时：
+
+```bash
+noxinfluencer email send <task_id> --force
+noxinfluencer email schedule <task_id> --body-file schedule.json --force
+noxinfluencer email cancel <task_id> --force
+```
+
+发送后分析使用邮件报告：
+
+```bash
+noxinfluencer email report <task_id>
+noxinfluencer email team-summary --task-ids <task_id>,<task_id>
+noxinfluencer email team-breakdown --task-ids <task_id>,<task_id> --page_size 20
+```
+
+商品记录已存在于 [商品中心](product-center.md) 后，再添加商品卡：
+
+```bash
+noxinfluencer email products list <task_id>
+noxinfluencer email products replace <task_id> --body-file email-products.json --force
+noxinfluencer email products delete <task_id> <email_product_id> --force
+```
 
 ## 当前边界
 
@@ -61,10 +117,12 @@ source_of_truth:
 - 它不会代你撰写触达或谈判文案
 - 它不替代联系方式获取；如果你还没有可靠邮箱，先使用 [达人触达](outreach-creators.md)
 - 立即发送没有单独 preview endpoint；确认执行前应先读回任务状态和收件人
+- 商品卡 replace 会替换任务 primary project 上的当前所有商品卡，最多支持 5 个商品 collect IDs
 - 发件人、模板和权限行为可能依赖你的账号配置
 
 ## 推荐下一步
 
 - [达人触达](outreach-creators.md)
 - [CRM](crm.md)
+- [商品中心](product-center.md)
 - [组织活动工作流](../guides/organize-campaign-workflows.md)

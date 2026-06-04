@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 6
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - manage campaigns
   - campaign context
@@ -18,6 +18,8 @@ source_of_truth:
   - ../../../../05_PRD.md
   - "repo:kol_claw path:docs/marketing-ops-roadmap.md"
   - "repo:kol_claw path:cli/README.md"
+  - "repo:kol_claw path:cli/src/commands/campaign.ts"
+  - "repo:kol_claw path:cli/src/lib/campaign-guidance.ts"
 ---
 
 # Manage Campaigns
@@ -42,6 +44,33 @@ Manage Campaigns helps you preserve campaign-level context as work moves from cr
 
 - Public CLI and server commands exist for this domain
 - The surface is still stabilizing and should not be treated as a fully mature collaboration suite
+
+## Key commands
+
+Use schema before preparing write bodies:
+
+```bash
+noxinfluencer schema "campaign create"
+noxinfluencer schema "campaign update"
+```
+
+Common campaign commands:
+
+```bash
+noxinfluencer campaign list --keyword shoes --page_size 5
+noxinfluencer campaign init
+noxinfluencer campaign get <campaign_id>
+noxinfluencer campaign dashboard <campaign_id>
+noxinfluencer campaign dropdown --page_size 20
+```
+
+Write commands default to dry-run:
+
+```bash
+noxinfluencer campaign create --body-file campaign.json --force
+noxinfluencer campaign update <campaign_id> --body-file campaign.json --force
+noxinfluencer campaign delete <campaign_id> --force
+```
 
 ## Current boundary
 

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 8
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - exports
   - async tasks
@@ -18,6 +18,7 @@ source_of_truth:
   - ../../../../05_PRD.md
   - "repo:kol_claw path:docs/marketing-ops-roadmap.md"
   - "repo:kol_claw path:cli/README.md"
+  - "repo:kol_claw path:cli/src/commands/export.ts"
   - "repo:kol_claw path:cli/src/lib/export-guidance.ts"
   - "repo:kol_claw path:server/app/errors.py"
 ---
@@ -46,6 +47,31 @@ source_of_truth:
 - 你可能需要先检查状态，稍后再回来下载
 - 如果结果还没准备好，当前公开错误码会返回 `ASYNC_NOT_READY`
 - `export download` 会把二进制文件写入你指定的 `--output` 路径，不会把文件内容输出到 stdout
+
+## 关键命令
+
+先从来源工具创建导出任务：
+
+```bash
+noxinfluencer collection export --body-file collection-export.json --force
+noxinfluencer crm export --body-file crm-export.json --force
+noxinfluencer brand-monitor influencer-export <brand_id> --body-file brand-influencer-export.json --force
+noxinfluencer brand-monitor product-export <brand_id> --body-file brand-product-export.json --force
+```
+
+然后使用共享 export 命令查看状态和下载：
+
+```bash
+noxinfluencer export list --page_size 20
+noxinfluencer export get <export_id>
+noxinfluencer export download <export_id> --output ./export.xlsx
+```
+
+如果目标文件已经存在，并且你确认要覆盖：
+
+```bash
+noxinfluencer export download <export_id> --output ./export.xlsx --overwrite
+```
 
 ## 当前边界
 

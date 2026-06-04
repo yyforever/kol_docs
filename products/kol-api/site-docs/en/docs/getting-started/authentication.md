@@ -49,7 +49,7 @@ For Skill / CLI usage, finish sign-up and open the Skills dashboard first. For t
 
 - Run `noxinfluencer doctor` when you need to confirm account and key configuration.
 - Run `noxinfluencer quota` to see the current Skill quota snapshot.
-- Run `noxinfluencer schema --all` after installing or updating the CLI. The current Skill expects the `campaign`, `collection`, `email`, `message`, `crm`, `brand-monitor`, `export`, and `agent` command groups.
+- Run `noxinfluencer schema --all` after installing or updating the CLI. The current CLI baseline expects the `campaign`, `collection`, `email`, `message`, `crm`, `product`, `brand-monitor`, `export`, and `agent` command groups.
 - For automation, use `noxinfluencer agent exit-codes` to map stable CLI exit codes to retry or recovery behavior.
 
 ## Four layers to keep in mind

@@ -121,7 +121,7 @@ The supported OpenAI path is OpenAI Codex. NoxInfluencer needs an execution envi
 
 ## Step 3: Install or refresh the CLI
 
-The current Skill expects `@noxinfluencer/cli` `0.4.7` or newer. Install the latest CLI package:
+The current public documentation baseline is `@noxinfluencer/cli` `0.4.7` or newer. Install the latest CLI package:
 
 ```bash
 npm install -g @noxinfluencer/cli@latest
@@ -140,6 +140,7 @@ The command tree must include:
 - `email`
 - `message`
 - `crm`
+- `product`
 - `brand-monitor`
 - `export`
 - `agent`
@@ -161,7 +162,7 @@ A first run is successful when one of these works:
 - Creator discovery returns a usable shortlist
 - Creator analysis returns decision-ready signals
 - Video monitoring can be created, listed, or queried
-- A marketing ops read command such as campaign, collection, CRM, email, message, export, or brand-monitor returns the expected account-scoped data
+- A marketing ops read command such as campaign, collection, CRM, email, message, product, export, or brand-monitor returns the expected account-scoped data
 
 ## If setup fails
 

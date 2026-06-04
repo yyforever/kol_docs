@@ -45,13 +45,14 @@ noxinfluencer --lang zh doctor
 noxinfluencer schema --all
 ```
 
-当前 Skill 需要已安装 CLI 暴露这些命令组：
+当前 CLI 基线需要已安装命令树暴露这些命令组：
 
 - `campaign`
 - `collection`
 - `email`
 - `message`
 - `crm`
+- `product`
 - `brand-monitor`
 - `export`
 - `agent`
@@ -64,7 +65,7 @@ npm install -g @noxinfluencer/cli@latest
 
 本地或全局编译文件过旧时，只看版本号不够。
 
-当前文档基线是 `@noxinfluencer/cli` `0.4.7` 或更新版本。排查旧安装时，优先看 `schema --all`，不要只看版本号。
+当前文档基线是 `@noxinfluencer/cli` `0.4.7` 或更新版本。排查旧安装时，优先看 `schema --all`，不要只看版本号。如果缺少 `product`，当前安装的命令树就不能执行商品中心和邮件商品卡相关工作流。
 
 ## 查看具体命令参数
 
@@ -73,6 +74,8 @@ npm install -g @noxinfluencer/cli@latest
 ```bash
 noxinfluencer schema "creator search"
 noxinfluencer schema "email create"
+noxinfluencer schema "email products replace"
+noxinfluencer schema "product list"
 noxinfluencer schema "brand-monitor influencer-list"
 ```
 

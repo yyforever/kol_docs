@@ -49,6 +49,50 @@ source_of_truth:
 
 `message send` 和 `message schedule` 只适用于已有 `thread_id` 的回复。如果你只有邮件任务 ID，先用 `message list --business_kind email_task --business_id <task_id>` 找到线程。如果没有线程，但你已经有可靠邮箱收件人，应改走 [邮件任务](email-tasks.md) 路径。
 
+## 关键命令
+
+构建草稿、发送、定时、标签或合作状态 body 前，先查看 schema：
+
+```bash
+noxinfluencer schema "message list"
+noxinfluencer schema "message send"
+noxinfluencer schema "message labels set"
+```
+
+先读取线程状态：
+
+```bash
+noxinfluencer message list --business_kind email_task --business_id <task_id>
+noxinfluencer message get <thread_id>
+noxinfluencer message projects <thread_id>
+```
+
+管理已知线程的元数据：
+
+```bash
+noxinfluencer message labels --page_size 20
+noxinfluencer message labels set <thread_id> --body-file labels.json --force
+noxinfluencer message coop-statuses
+noxinfluencer message coop set <thread_id> --body-file coop.json --force
+```
+
+模板和草稿只用于已有线程：
+
+```bash
+noxinfluencer message templates list --language en
+noxinfluencer message templates save --body-file template-save.json --force
+noxinfluencer message templates use <template_id> --body-file template-use.json --force
+noxinfluencer message draft save <thread_id> --body-file draft.json --force
+```
+
+内容和发件人确认后，才发送或定时：
+
+```bash
+noxinfluencer message send <thread_id> --body-file send.json --force
+noxinfluencer message schedule <thread_id> --body-file schedule.json --force
+noxinfluencer message cancel <thread_id> --force
+```
+
 ## 安全执行规则
 
 - 写操作默认 dry-run，真正执行前需要确认并使用 `--force`
@@ -58,6 +102,7 @@ source_of_truth:
 ## 当前边界
 
 - 消息线程不会从零创建外部消息渠道
+- 当没有 `thread_id` 时，它不会创建新的消息线程
 - 它不会代你撰写消息文案
 - 它不操作 NoxInfluencer 之外的外部消息平台
 - 部分项目标签页概念在上游已废弃，当前筛选条件以 CLI schema 为准

@@ -1,7 +1,7 @@
 ---
 doc_id: docs_home
 title: Documentation
-description: Public documentation hub for NoxInfluencer Skills, CLI workflows, Remote MCP, tool reference, and resources.
+description: Public documentation hub for NoxInfluencer Skills, CLI workflows, Remote MCP, tool reference, product center, and resources.
 locale: en
 content_type: doc
 nav_group: getting-started
@@ -25,7 +25,7 @@ source_of_truth:
 
 # Documentation
 
-Use these docs to install NoxInfluencer in your agent environment, configure account access, understand the current creator workflow, and review the beta marketing ops surface.
+Use these docs to install NoxInfluencer in your agent environment, configure account access, understand the current creator workflow, and review the beta marketing ops, product center, and brand intelligence surface.
 
 ## Start here
 
@@ -61,6 +61,7 @@ Use these docs to install NoxInfluencer in your agent environment, configure acc
 - [Email Tasks](tool-reference/email-tasks.md)
 - [Message Threads](tool-reference/message-threads.md)
 - [CRM](tool-reference/crm.md)
+- [Product Center](tool-reference/product-center.md)
 - [Brand Monitor](tool-reference/brand-monitor.md)
 
 ## Common paths

@@ -5,7 +5,7 @@ description: 面向已监控品牌情报、产品信号、资产列表和品牌�
 locale: zh
 content_type: doc
 nav_group: tool-reference
-order: 12
+order: 13
 status: published
 updated_at: 2026-06-04
 keywords:
@@ -60,6 +60,44 @@ source_of_truth:
 - 如果你问 TikTok 或 Instagram 品牌问题，应使用 schema 允许的非产品 brand monitor reads 或 asset lists
 - Product asset list 和 product export 当前也沿用 YouTube-only 的产品边界
 
+## 关键命令
+
+先查看并读取已监控品牌：
+
+```bash
+noxinfluencer brand-monitor list --page_num 1 --page_size 20
+noxinfluencer brand-monitor get <brand_id>
+```
+
+读取竞争和策略信号：
+
+```bash
+noxinfluencer brand-monitor competition-matrix <brand_id> --platform youtube --country US
+noxinfluencer brand-monitor cooperate-matrix <brand_id> --platform youtube --interval-month 6
+noxinfluencer brand-monitor influencer-portrait <brand_id> --platform youtube --interval-month 6
+noxinfluencer brand-monitor defense-gap <brand_id> --platform youtube --interval-month 6
+```
+
+读取 YouTube-only 产品信号：
+
+```bash
+noxinfluencer brand-monitor product-pub-trend <brand_id> --platform youtube --interval-month 6
+noxinfluencer brand-monitor product-category <brand_id> --platform youtube --interval-month 6
+noxinfluencer brand-monitor product-sov-analysis <brand_id> --platform youtube --interval-month 6
+noxinfluencer brand-monitor product-promotion-matrix <brand_id> --platform youtube --interval-month 6
+```
+
+需要明细行或文件时，使用 JSON-first 资产列表和导出：
+
+```bash
+noxinfluencer schema "brand-monitor influencer-list"
+noxinfluencer brand-monitor influencer-list <brand_id> --body-file brand-influencer-list.json
+noxinfluencer brand-monitor content-list <brand_id> --body-file brand-content-list.json
+noxinfluencer brand-monitor tag-list <brand_id> --body-file brand-tag-list.json
+noxinfluencer brand-monitor product-list <brand_id> --body-file brand-product-list.json
+noxinfluencer brand-monitor product-export <brand_id> --body-file brand-product-export.json --force
+```
+
 ## 安全执行规则
 
 - Asset list 命令是 JSON-first，需要使用 `--body-file`
@@ -75,10 +113,12 @@ source_of_truth:
 - 它不从搜索结果或 creator IDs 开始
 - 它不提供完整 AI report 生成，也不操作外部 spreadsheet 平台
 - 当前公开 CLI surface 不暴露 batch collect 或 product video list 工作流
+- 品牌监控里的产品信号和产品资产，和 [商品中心](product-center.md) 里用于邮件商品卡的商品记录不是同一类能力
 - 解锁或导出可能受配额与账号权限限制
 
 ## 推荐下一步
 
 - [导出任务](exports.md)
+- [商品中心](product-center.md)
 - [组织活动工作流](../guides/organize-campaign-workflows.md)
 - [CLI 诊断](../resources/cli-diagnostics.md)

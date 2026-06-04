@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 8
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - exports
   - async tasks
@@ -18,6 +18,7 @@ source_of_truth:
   - ../../../../05_PRD.md
   - "repo:kol_claw path:docs/marketing-ops-roadmap.md"
   - "repo:kol_claw path:cli/README.md"
+  - "repo:kol_claw path:cli/src/commands/export.ts"
   - "repo:kol_claw path:cli/src/lib/export-guidance.ts"
   - "repo:kol_claw path:server/app/errors.py"
 ---
@@ -46,6 +47,31 @@ Exports helps you inspect async export tasks and download ready files without le
 - You may need to check status first and return later for the final download
 - If the result is not ready yet, the current public error code is `ASYNC_NOT_READY`
 - `export download` writes binary data to the requested `--output` path, not to stdout
+
+## Key commands
+
+Create export tasks from the source tool first:
+
+```bash
+noxinfluencer collection export --body-file collection-export.json --force
+noxinfluencer crm export --body-file crm-export.json --force
+noxinfluencer brand-monitor influencer-export <brand_id> --body-file brand-influencer-export.json --force
+noxinfluencer brand-monitor product-export <brand_id> --body-file brand-product-export.json --force
+```
+
+Then use shared export commands for status and download:
+
+```bash
+noxinfluencer export list --page_size 20
+noxinfluencer export get <export_id>
+noxinfluencer export download <export_id> --output ./export.xlsx
+```
+
+If the output file already exists and you intentionally want to replace it:
+
+```bash
+noxinfluencer export download <export_id> --output ./export.xlsx --overwrite
+```
 
 ## Current boundary
 

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 6
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - manage campaigns
   - context
@@ -18,6 +18,8 @@ source_of_truth:
   - ../../../../05_PRD.md
   - "repo:kol_claw path:docs/marketing-ops-roadmap.md"
   - "repo:kol_claw path:cli/README.md"
+  - "repo:kol_claw path:cli/src/commands/campaign.ts"
+  - "repo:kol_claw path:cli/src/lib/campaign-guidance.ts"
 ---
 
 # 活动管理
@@ -42,6 +44,33 @@ source_of_truth:
 
 - 这一域已经进入公开 CLI 和服务命令层
 - 但当前表面仍在持续稳定中，不应被当成成熟完整的协作系统
+
+## 关键命令
+
+准备写入 body 前，先查看 schema：
+
+```bash
+noxinfluencer schema "campaign create"
+noxinfluencer schema "campaign update"
+```
+
+常用活动命令：
+
+```bash
+noxinfluencer campaign list --keyword shoes --page_size 5
+noxinfluencer campaign init
+noxinfluencer campaign get <campaign_id>
+noxinfluencer campaign dashboard <campaign_id>
+noxinfluencer campaign dropdown --page_size 20
+```
+
+写操作默认 dry-run：
+
+```bash
+noxinfluencer campaign create --body-file campaign.json --force
+noxinfluencer campaign update <campaign_id> --body-file campaign.json --force
+noxinfluencer campaign delete <campaign_id> --force
+```
 
 ## 当前边界
 

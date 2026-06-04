@@ -66,5 +66,5 @@ source_of_truth:
 
 Tool Reference 页面额外要求：
 
-- `tool_key`：`discover_creators` / `analyze_creator` / `track_performance` / `outreach_creators` / `negotiate` / `manage_campaigns` / `collections` / `exports` / `email_tasks` / `message_threads` / `crm` / `brand_monitor`
+- `tool_key`：`discover_creators` / `analyze_creator` / `track_performance` / `outreach_creators` / `negotiate` / `manage_campaigns` / `collections` / `exports` / `email_tasks` / `message_threads` / `crm` / `brand_monitor` / `product_center`
 - `availability`：`available` / `beta` / `planned`
