@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 2
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - quick start
   - skills.sh
@@ -117,11 +117,11 @@ hermes skills inspect skills-sh/noxinfluencer/skills/noxinfluencer
 
 NoxInfluencer Skill does not support ChatGPT as a runtime.
 
-The supported OpenAI path is OpenAI Codex. NoxInfluencer needs an execution environment that can install Skills, access local context, run the NoxInfluencer CLI, and pass API key configuration securely. ChatGPT does not expose that public execution path for this workflow. If you are already using OpenAI products and want this kind of agent workflow, use OpenAI Codex and follow the Skills CLI path above. Codex availability and limits are controlled by OpenAI and may change, so check OpenAI's current product guidance when access matters.
+The supported OpenAI path is OpenAI Codex. NoxInfluencer needs an execution environment that can install Skills, access local context, run the NoxInfluencer CLI, and pass API key configuration securely. ChatGPT does not expose that public Skill runtime path for this workflow. If you are already using OpenAI products and want this kind of agent workflow, use OpenAI Codex and follow the Skills CLI path above. Codex availability and limits are controlled by OpenAI and may change, so check OpenAI's current product guidance when access matters.
 
 ## Step 3: Install or refresh the CLI
 
-The current Skill expects `@noxinfluencer/cli` `0.4.6` or newer. Install the latest CLI package:
+The current Skill expects `@noxinfluencer/cli` `0.4.7` or newer. Install the latest CLI package:
 
 ```bash
 npm install -g @noxinfluencer/cli@latest

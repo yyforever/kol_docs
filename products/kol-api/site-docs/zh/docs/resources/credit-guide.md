@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 3
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - credit guide
   - quota
@@ -42,6 +42,7 @@ source_of_truth:
 - 想知道如何继续：回到 pricing 和套餐说明
 - 当前部分 API-backed CLI 响应可能仍带兼容旧字段 `credits`
 - 对外解释时，应以 `noxinfluencer quota` 和配额响应数据作为 Skill 配额快照的主来源
+- Remote MCP 只读工具与对应 API-backed read tools 复用同一套 quota 记账模型
 
 ## 不应该再沿用的旧心智
 

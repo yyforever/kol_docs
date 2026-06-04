@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 2
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - quick start
   - skills.sh
@@ -117,11 +117,11 @@ hermes skills inspect skills-sh/noxinfluencer/skills/noxinfluencer
 
 NoxInfluencer Skill 不支持把 ChatGPT 作为运行环境。
 
-OpenAI 体系下支持的路径是 OpenAI Codex。NoxInfluencer 需要一个能安装 Skill、读取本地上下文、运行 NoxInfluencer CLI、并安全传递 API key 的执行环境。ChatGPT 不提供这条公开执行路径。如果你已经在使用 OpenAI 产品，并希望使用这类 Agent 工作流，请使用 OpenAI Codex，并按上面的 Skills CLI 路径安装。Codex 的可用性和限制由 OpenAI 决定，关键场景请以 OpenAI 当前官方说明为准。
+OpenAI 体系下支持的路径是 OpenAI Codex。NoxInfluencer 需要一个能安装 Skill、读取本地上下文、运行 NoxInfluencer CLI、并安全传递 API key 的执行环境。ChatGPT 不提供这条公开 Skill 运行路径。如果你已经在使用 OpenAI 产品，并希望使用这类 Agent 工作流，请使用 OpenAI Codex，并按上面的 Skills CLI 路径安装。Codex 的可用性和限制由 OpenAI 决定，关键场景请以 OpenAI 当前官方说明为准。
 
 ## 第三步：安装或更新 CLI
 
-当前 Skill 需要 `@noxinfluencer/cli` `0.4.6` 或更新版本。安装最新 CLI：
+当前 Skill 需要 `@noxinfluencer/cli` `0.4.7` 或更新版本。安装最新 CLI：
 
 ```bash
 npm install -g @noxinfluencer/cli@latest

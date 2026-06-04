@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 3
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - authentication
   - account
@@ -41,6 +41,7 @@ For Skill / CLI usage, finish sign-up and open the Skills dashboard first. For t
 - In OpenClaw and other compatible environments, prefer a host-managed secret or `NOXINFLUENCER_API_KEY`.
 - If you need to configure the local CLI yourself, prefer `noxinfluencer auth --key-stdin`.
 - For Chinese onboarding URLs and CLI hints, add `--lang zh` to CLI commands such as `noxinfluencer --lang zh doctor`.
+- Remote MCP currently supports API-key based pilots and can also run in OAuth or dual mode when the surrounding authorization server is available. API-key setup and OAuth connector setup are different user flows.
 - Do not assume the Skill API key is the current Rest API key. Engineering may reuse key backing internally, but user-facing copy should say Rest API key / Rest API Credit.
 - The current Rest API documentation entry is Theneo, not the legacy Developer API Quick Start in this directory.
 

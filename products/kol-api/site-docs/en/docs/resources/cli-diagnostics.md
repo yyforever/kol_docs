@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 4
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - cli diagnostics
   - troubleshooting
@@ -63,6 +63,8 @@ npm install -g @noxinfluencer/cli@latest
 ```
 
 Version output alone is not enough when local or global compiled files are stale.
+
+The current documented baseline is `@noxinfluencer/cli` `0.4.7` or newer. Prefer `schema --all` over version checks when diagnosing a stale install.
 
 ## Inspect exact command parameters
 

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 1
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - introduction
   - noxinfluencer
@@ -60,7 +60,7 @@ NoxInfluencer helps you run creator and marketing operations from an AI agent en
 
 - Skill install and agent workflows are covered in [Quick Start](quick-start/index.md)
 - Account and API key setup are covered in [Authentication](authentication.md)
-- Remote MCP is a read-only tool surface for MCP-capable clients and is covered in [Remote MCP](remote-mcp.md)
+- Remote MCP is a read-only tool surface for MCP-capable clients, with API-key pilots and OAuth-capable resource-server support covered in [Remote MCP](remote-mcp.md)
 - Rest API free trial and self-service purchase use the existing `/api-service` page and Theneo docs, not the Skill quota model in these pages
 
 ## Boundaries to keep in mind
@@ -69,6 +69,7 @@ NoxInfluencer helps you run creator and marketing operations from an AI agent en
 - Email and message workflows do not write outreach copy for you; use approved content before send or schedule
 - Brand Monitor starts from `brand_id`, not `creator_id`
 - Product signal commands in Brand Monitor currently support YouTube only
+- ChatGPT is not a supported NoxInfluencer Skill runtime; use OpenAI Codex for OpenAI Skill workflows
 - NoxInfluencer uses a main account and quota model; do not reuse legacy standalone API product assumptions
 
 ## Recommended next steps

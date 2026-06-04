@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 10
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - message threads
   - communication workflows
@@ -52,8 +52,8 @@ Use `message send` or `message schedule` only for existing `thread_id` replies. 
 ## Safe execution rules
 
 - Mutation commands default to dry-run and require approval before `--force`
-- Send and schedule commands require approved content, sender configuration, and the exact target thread
-- `message schedule` requires an ISO 8601 timestamp with timezone offset
+- Send and schedule commands require approved content, `sender_auth_id`, and the exact target thread
+- `message schedule` requires an ISO 8601 timestamp with a whole-hour timezone offset, such as `Z`, `+08:00`, or `-05:00`
 
 ## Current boundary
 
@@ -61,6 +61,7 @@ Use `message send` or `message schedule` only for existing `thread_id` replies. 
 - It does not write message copy for you
 - It does not operate external messaging platforms outside NoxInfluencer
 - Some project-tab concepts are deprecated upstream; use the CLI schema for current filters
+- `message get` embeds composer state and metadata; there is no separate public draft-get or metadata-get command
 
 ## Recommended next steps
 

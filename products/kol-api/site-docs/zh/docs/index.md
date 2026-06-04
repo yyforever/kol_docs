@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - noxinfluencer 文档
   - influencer marketing
@@ -31,7 +31,7 @@ source_of_truth:
 
 - 第一次接入：看 [快速开始](getting-started/quick-start/index.md)
 - 账号、API key 和权限心智：看 [认证与账号](getting-started/authentication.md)
-- Remote MCP 只读工具：看 [Remote MCP](getting-started/remote-mcp.md)
+- Remote MCP 只读工具、OAuth resource metadata 和 scope 模型：看 [Remote MCP](getting-started/remote-mcp.md)
 - 产品范围和边界：看 [产品简介](getting-started/introduction.md)
 - 当前 Rest API 免费试用或自助购买：从现有 `/api-service` 页面进入，并以 Theneo API 文档和 API Runner 为准
 
@@ -41,6 +41,7 @@ source_of_truth:
 - Claude Code、OpenAI Codex、Cursor、Hermes 或其他兼容环境：优先从 [skills.sh](https://skills.sh/noxinfluencer/skills/noxinfluencer) 和 [快速开始](getting-started/quick-start/index.md) 中的命令开始
 - API key：打开 [Skills 控制台](https://cn.noxinfluencer.com/skills/dashboard)
 - GitHub：只有当 Agent 需要仓库地址，或商店路径无法完成时，再使用 [NoxInfluencer/skills](https://github.com/NoxInfluencer/skills/tree/main)
+- ChatGPT：不是 NoxInfluencer Skill 的支持运行环境；OpenAI 用户应使用 OpenAI Codex 来运行 Skill 工作流
 
 ## 工具参考
 

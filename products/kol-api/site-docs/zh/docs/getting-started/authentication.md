@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 3
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - authentication
   - account
@@ -41,6 +41,7 @@ source_of_truth:
 - 在 OpenClaw 和其他兼容环境中，优先使用宿主提供的安全密钥注入，或直接使用 `NOXINFLUENCER_API_KEY`。
 - 如果你需要在本地 CLI 中手动配置，优先使用 `noxinfluencer auth --key-stdin`。
 - 如果你希望 CLI 返回中文引导链接和提示，可以在命令中添加 `--lang zh`，例如 `noxinfluencer --lang zh doctor`。
+- Remote MCP 当前支持 API-key 试点，也可以在外围授权服务可用时以 OAuth 或 dual 模式运行。API-key 配置和 OAuth connector 配置是不同用户路径。
 - 不要默认把 Skill API key 当成当前 Rest API key；Rest API key 是否复用底层 key backing 需要研发确认，但用户侧文案应表达为 Rest API key / Rest API Credit。
 - 当前 Rest API 文档入口是 Theneo，不是本目录下的历史 Developer API Quick Start。
 

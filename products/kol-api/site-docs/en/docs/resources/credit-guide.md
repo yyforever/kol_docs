@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 3
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - credit guide
   - quota
@@ -42,6 +42,7 @@ Some actions count as both a Skill usage and an underlying service consumption. 
 - Legacy standalone credit assumptions should not be reused
 - Some current API-backed CLI responses may still include a legacy `credits` compatibility field
 - Treat `noxinfluencer quota` and the quota response data as the canonical Skill quota snapshot
+- Remote MCP read tools use the same quota accounting model as the matching API-backed read tools
 
 ## Old assumptions to stop reusing
 

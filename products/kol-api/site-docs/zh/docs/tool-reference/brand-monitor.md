@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 12
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - brand monitor
   - brand intelligence
@@ -58,6 +58,7 @@ source_of_truth:
 - 核心 brand monitor reads 支持 CLI schema 允许的平台
 - Product signal 命令当前只支持 YouTube
 - 如果你问 TikTok 或 Instagram 品牌问题，应使用 schema 允许的非产品 brand monitor reads 或 asset lists
+- Product asset list 和 product export 当前也沿用 YouTube-only 的产品边界
 
 ## 安全执行规则
 
@@ -66,12 +67,14 @@ source_of_truth:
 - 除非你已经明确确认目标品牌和动作，否则先 dry-run
 - 只有确认后才使用 `--force`
 - 导出命令会返回共享 `export_id`；后续状态和下载走 [导出任务](exports.md)
+- 部分导出命令只支持 query selector，另一些支持 explicit ID selector；准备 body 前先用 `noxinfluencer schema <cmd>` 查看当前契约
 
 ## 当前边界
 
 - 它不替代 creator-level analysis
 - 它不从搜索结果或 creator IDs 开始
 - 它不提供完整 AI report 生成，也不操作外部 spreadsheet 平台
+- 当前公开 CLI surface 不暴露 batch collect 或 product video list 工作流
 - 解锁或导出可能受配额与账号权限限制
 
 ## 推荐下一步

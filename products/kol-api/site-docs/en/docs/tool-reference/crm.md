@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 11
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - crm
   - relationship management
@@ -53,11 +53,13 @@ CRM helps you query and update NoxInfluencer-owned relationship records after cr
 - Staged workflows should run `validate`, then `preview`, then `apply --force`
 - Direct mutations such as update, archive, restore, export, group create/update/delete, and add-to-email apply require explicit approval before `--force`
 - Preserve stable opaque IDs such as `creator_id`, `group_id`, `task_id`, and `export_id`
+- For batch previews and applies, report existing, creatable, and created counts when present instead of inferring success from requested IDs alone
 
 ## Current boundary
 
 - This is NoxInfluencer CRM, not an external CRM integration
 - Owner-only or archive-only updates may require an existing CRM channel
+- Platform creator IDs can be materialized into CRM only for supported cooperation-status or label update paths; owner-only, email-only, remark-only, and URL-only updates require an existing CRM channel
 - `crm add-to-email` only adds existing NoxInfluencer CRM channels to an existing email task
 - CRM does not replace creator discovery, creator analysis, or contact retrieval
 

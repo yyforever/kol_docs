@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 9
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - email tasks
   - outreach operations
@@ -52,12 +52,15 @@ source_of_truth:
 - 写操作默认 dry-run；只有在你确认具体对象和动作后才使用 `--force`
 - 执行 `email send` 或 `email schedule` 前，需要先读回任务和收件人
 - 发送或定时前必须确认收件人、发件人、必要时的发送时间，以及内容已经获批
+- `email schedule` 的 `plan_send_at` 必须是带整点 timezone offset 的 ISO 8601 时间，例如 `Z`、`+08:00` 或 `-05:00`
+- 邮件报告会区分 email tracking replies、creator-level replied counts 和 inbound message counts
 
 ## 当前边界
 
 - 该工作流只操作 NoxInfluencer 邮件任务，不操作外部邮箱平台
 - 它不会代你撰写触达或谈判文案
 - 它不替代联系方式获取；如果你还没有可靠邮箱，先使用 [达人触达](outreach-creators.md)
+- 立即发送没有单独 preview endpoint；确认执行前应先读回任务状态和收件人
 - 发件人、模板和权限行为可能依赖你的账号配置
 
 ## 推荐下一步

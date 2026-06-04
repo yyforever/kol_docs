@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 10
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - message threads
   - communication workflows
@@ -52,8 +52,8 @@ source_of_truth:
 ## 安全执行规则
 
 - 写操作默认 dry-run，真正执行前需要确认并使用 `--force`
-- 发送和定时需要先确认内容、发件人配置和准确目标线程
-- `message schedule` 需要带 timezone offset 的 ISO 8601 时间
+- 发送和定时需要先确认内容、`sender_auth_id` 和准确目标线程
+- `message schedule` 需要带整点 timezone offset 的 ISO 8601 时间，例如 `Z`、`+08:00` 或 `-05:00`
 
 ## 当前边界
 
@@ -61,6 +61,7 @@ source_of_truth:
 - 它不会代你撰写消息文案
 - 它不操作 NoxInfluencer 之外的外部消息平台
 - 部分项目标签页概念在上游已废弃，当前筛选条件以 CLI schema 为准
+- `message get` 内联 composer state 和 metadata；当前没有单独的 draft-get 或 metadata-get 公开命令
 
 ## 推荐下一步
 

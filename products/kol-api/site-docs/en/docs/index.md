@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - noxinfluencer docs
   - influencer marketing
@@ -31,7 +31,7 @@ Use these docs to install NoxInfluencer in your agent environment, configure acc
 
 - New setup: start with [Quick Start](getting-started/quick-start/index.md)
 - Account, API key, and entitlement model: read [Authentication](getting-started/authentication.md)
-- Remote MCP read tools: read [Remote MCP](getting-started/remote-mcp.md)
+- Remote MCP read tools, OAuth resource metadata, and scope model: read [Remote MCP](getting-started/remote-mcp.md)
 - Product scope and boundaries: read [Introduction](getting-started/introduction.md)
 - Current Rest API free trial or self-service purchase: use the existing `/api-service` page and the Theneo API docs / API Runner as the source of truth
 
@@ -41,6 +41,7 @@ Use these docs to install NoxInfluencer in your agent environment, configure acc
 - Claude Code, OpenAI Codex, Cursor, Hermes, or another compatible environment: start from [skills.sh](https://skills.sh/noxinfluencer/skills/noxinfluencer) and the commands in [Quick Start](getting-started/quick-start/index.md)
 - API key: open the [Skills dashboard](https://www.noxinfluencer.com/skills/dashboard)
 - GitHub: use [NoxInfluencer/skills](https://github.com/NoxInfluencer/skills/tree/main) only when your agent needs the repository address or the store-based path cannot complete
+- ChatGPT: not a supported NoxInfluencer Skill runtime; OpenAI users should use OpenAI Codex for Skill workflows
 
 ## Tool Reference
 

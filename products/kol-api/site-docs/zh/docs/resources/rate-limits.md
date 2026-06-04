@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 1
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - rate limits
   - quota
@@ -31,9 +31,9 @@ Rate Limit 和 quota 不是一回事。
 
 限制单位时间内的请求频率，主要用于保护系统稳定性和异常使用检测。
 
-截至 2026-05-20，当前实现里的默认保护值是 **每个 API key 每分钟 30 次请求**。触发后，对外错误码为 `RATE_LIMITED`。
+截至 2026-06-04，当前实现里的默认保护值是 **每个 credential bucket 每分钟 30 次请求**。API-key 请求按 API key 分桶；OAuth Remote MCP 请求按 OAuth 审计身份分桶，例如 client 与 token metadata。触发后，对外错误码为 `RATE_LIMITED`。
 
-Remote MCP 请求也复用同一套 API key 认证和 rate limit，因此 `/mcp` 也受这一层保护。
+Remote MCP 复用同一套频率保护机制，无论部署在 API-key、OAuth 还是 dual 模式。
 
 ### Quota
 

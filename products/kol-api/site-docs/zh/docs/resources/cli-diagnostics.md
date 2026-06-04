@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 4
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - cli diagnostics
   - troubleshooting
@@ -63,6 +63,8 @@ npm install -g @noxinfluencer/cli@latest
 ```
 
 本地或全局编译文件过旧时，只看版本号不够。
+
+当前文档基线是 `@noxinfluencer/cli` `0.4.7` 或更新版本。排查旧安装时，优先看 `schema --all`，不要只看版本号。
 
 ## 查看具体命令参数
 

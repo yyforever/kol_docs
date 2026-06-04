@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 12
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - brand monitor
   - brand intelligence
@@ -58,6 +58,7 @@ If you do not know the target brand, list available brand monitors first, then i
 - Core brand monitor reads support the platforms permitted by the CLI schema
 - Product signal commands currently support YouTube only
 - For TikTok or Instagram brand questions, use non-product brand monitor reads or asset lists when schema permits
+- Product asset list and product export workflows currently keep the same YouTube-only product boundary
 
 ## Safe execution rules
 
@@ -66,12 +67,14 @@ If you do not know the target brand, list available brand monitors first, then i
 - Use dry-run first unless you already approved the exact brand and action
 - Use `--force` only after approval
 - Export commands return a shared `export_id`; follow status and download through [Exports](exports.md)
+- Some export commands support only query selectors, while others support explicit ID selectors; use `noxinfluencer schema <cmd>` before preparing the body
 
 ## Current boundary
 
 - It does not replace creator-level analysis
 - It does not start from search results or creator IDs
 - It does not provide full AI report generation or external spreadsheet operations
+- It does not expose batch collect or product video list workflows in the current public CLI surface
 - Quota and entitlement may block unlock or export operations
 
 ## Recommended next steps

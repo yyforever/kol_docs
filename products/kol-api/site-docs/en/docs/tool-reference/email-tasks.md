@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 9
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - email tasks
   - outreach operations
@@ -52,12 +52,15 @@ Email Tasks lets you manage NoxInfluencer email-task records after you have sele
 - Mutations default to dry-run; use `--force` only after you approve the exact action
 - Before `email send` or `email schedule`, read back the task and recipients
 - Confirm recipients, sender, scheduled time when relevant, and content approval before execution
+- `email schedule` requires `plan_send_at` in ISO 8601 format with a whole-hour timezone offset, such as `Z`, `+08:00`, or `-05:00`
+- Email reports distinguish email tracking replies from creator-level replied counts and inbound message counts
 
 ## Current boundary
 
 - This workflow operates NoxInfluencer email tasks, not external email platforms
 - It does not write outreach copy or negotiation copy for you
 - It does not replace contact retrieval; use [Outreach Creators](outreach-creators.md) first when you still need a reliable email address
+- Immediate send does not expose a separate preview endpoint; read back task state and recipients before approval
 - Some sender, template, and entitlement behavior may depend on your account configuration
 
 ## Recommended next steps

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 1
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-04
 keywords:
   - rate limits
   - quota
@@ -29,9 +29,9 @@ Rate limits and quota are not the same thing.
 
 Rate limits protect the system by controlling request intensity over time.
 
-As of 2026-05-20, the current implementation applies a default limit of **30 requests per minute per API key**. When this protection is triggered, the public error code is `RATE_LIMITED`.
+As of 2026-06-04, the current implementation applies a default limit of **30 requests per minute per credential bucket**. For API-key requests, that bucket is the API key. For OAuth Remote MCP requests, that bucket is derived from OAuth audit identity such as client and token metadata. When this protection is triggered, the public error code is `RATE_LIMITED`.
 
-The same API-key-level protection applies to Remote MCP requests because `/mcp` reuses API key authentication and rate limiting.
+Remote MCP uses the same rate-limit mechanism, whether the deployment uses API-key mode, OAuth mode, or dual mode.
 
 ## Quota
 
