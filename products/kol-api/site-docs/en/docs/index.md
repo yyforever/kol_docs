@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-06-09
 keywords:
   - noxinfluencer docs
   - influencer marketing
@@ -25,7 +25,7 @@ source_of_truth:
 
 # Documentation
 
-Use these docs to install NoxInfluencer in your agent environment, configure account access, understand the current creator workflow, and review the beta marketing ops, product center, and brand intelligence surface.
+Use these docs to install NoxInfluencer in your agent environment, configure account access, understand the current creator workflow, and review the beta marketing ops, product center, email collaboration, recipient filtering, and brand intelligence surface.
 
 ## Start here
 
@@ -33,6 +33,7 @@ Use these docs to install NoxInfluencer in your agent environment, configure acc
 - Account, API key, and entitlement model: read [Authentication](getting-started/authentication.md)
 - Remote MCP read tools, OAuth resource metadata, and scope model: read [Remote MCP](getting-started/remote-mcp.md)
 - Product scope and boundaries: read [Introduction](getting-started/introduction.md)
+- CLI 0.4.9 command-tree checks and stale install recovery: read [CLI Diagnostics](resources/cli-diagnostics.md)
 - Current Rest API free trial or self-service purchase: use the existing `/api-service` page and the Theneo API docs / API Runner as the source of truth
 
 ## Install entry overview

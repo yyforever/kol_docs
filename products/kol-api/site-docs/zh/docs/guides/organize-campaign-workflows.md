@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 5
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-06-09
 keywords:
   - campaign workflows
   - collections
@@ -32,11 +32,13 @@ source_of_truth:
 5. 当你需要关系状态、标签或加入邮件任务时，把正确的资源池和平台切片转入 CRM
 6. 需要稳定后续分层时，使用 CRM labels
 7. 邮件任务需要商品卡时，先使用商品中心准备商品记录
-8. 对已确认邮箱收件人发起首次邮件触达时，使用邮件任务
-9. 只有已有 `thread_id` 回复时，才使用消息线程
-10. 发送后需要回复指标时，使用 email report、team-summary 和 team-breakdown
-11. 当你需要交接或下载结果时，发起资源池、CRM 或品牌监控导出
-12. 再把新的结果回流到同一个活动上下文中
+8. 当任务需要隐藏已联系、已分组或已在其他邮件任务里的达人时，使用邮件收件人过滤
+9. 当其他团队成员需要访问任务或管理成员权限时，添加邮件协作者
+10. 对已确认邮箱收件人发起首次邮件触达时，使用邮件任务
+11. 只有已有 `thread_id` 回复时，才使用消息线程
+12. 发送后需要回复指标时，使用 email report、team-summary 和 team-breakdown
+13. 当你需要交接或下载结果时，发起资源池、CRM 或品牌监控导出
+14. 再把新的结果回流到同一个活动上下文中
 
 ## 常用命令顺序
 
@@ -51,6 +53,8 @@ noxinfluencer collection refresh-email apply --body-file refresh-email.json --fo
 noxinfluencer crm labels list --page_size 20
 noxinfluencer crm batch-update preview --body-file crm-batch-update.json
 noxinfluencer crm batch-update apply --body-file crm-batch-update.json --force
+noxinfluencer email recipients filter options
+noxinfluencer email collaborators list
 noxinfluencer email report <task_id>
 noxinfluencer export get <export_id>
 ```

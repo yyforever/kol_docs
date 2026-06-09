@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 4
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-06-09
 keywords:
   - cli diagnostics
   - troubleshooting
@@ -65,7 +65,7 @@ npm install -g @noxinfluencer/cli@latest
 
 本地或全局编译文件过旧时，只看版本号不够。
 
-当前文档基线是 `@noxinfluencer/cli` `0.4.7` 或更新版本。排查旧安装时，优先看 `schema --all`，不要只看版本号。如果缺少 `product`，当前安装的命令树就不能执行商品中心和邮件商品卡相关工作流。
+当前文档基线是 `@noxinfluencer/cli` `0.4.9` 或更新版本。排查旧安装时，优先看 `schema --all`，不要只看版本号。如果缺少 `product`，当前安装的命令树就不能执行商品中心和邮件商品卡相关工作流。如果缺少 `creator search-filter-options`、`email recipients filter options` 或 `email collaborators list` 等嵌套命令，需要先重新安装最新 CLI，再继续搜索去重或邮件协作工作流。
 
 ## 查看具体命令参数
 
@@ -73,13 +73,25 @@ npm install -g @noxinfluencer/cli@latest
 
 ```bash
 noxinfluencer schema "creator search"
+noxinfluencer schema "creator search-filter"
 noxinfluencer schema "email create"
+noxinfluencer schema "email recipients filter update"
+noxinfluencer schema "email collaborators add"
 noxinfluencer schema "email products replace"
 noxinfluencer schema "product list"
 noxinfluencer schema "brand-monitor influencer-list"
 ```
 
 很多营销运营命令需要 `--body-file`。优先准备最小 JSON body；如果工作流支持 validate 或 preview，先验证再执行。
+
+对于 SaaS 对齐的隐藏和去重菜单，先使用 options 命令，再构建请求 body：
+
+```bash
+noxinfluencer creator search-filter-options
+noxinfluencer email recipients filter options
+```
+
+这些命令会返回当前支持的选项和 JSON body patches。不要自己猜 SaaS 原始字段名。
 
 ## Agent 稳定 exit codes
 

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 1
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-09
 keywords:
   - discover creators
   - creator search
@@ -49,11 +49,25 @@ source_of_truth:
 - 传游标数组或复杂筛选条件时，优先通过 `--body-file -` 传 JSON body
 - 搜索结果行会提供后续可用的搜索结果标识，但完整达人身份需要通过后续达人读取获取
 
+## 对已返回页面做隐藏和去重
+
+搜索结果返回后，你可以对当前页面应用与 SaaS 对齐的隐藏和去重规则。
+
+适合用于隐藏已经合作完成、合作中、沟通中、被本账号或团队联系过、或已经在指定资源池里的候选达人。
+
+```bash
+noxinfluencer creator search-filter-options
+noxinfluencer creator search-filter --body-file search-filter.json
+```
+
+`creator search-filter` 只过滤当前页面里的 `data.items[].id`。它不会发起新的达人搜索，也不应该替代平台、关键词、国家或粉丝量这类普通搜索条件。
+
 ## 典型输出
 
 - 候选达人列表
 - 平台、体量、市场或内容方向等基础匹配信息
 - 帮你决定下一步看谁的搜索结果标识
+- 对当前页面应用隐藏或去重规则后的可选过滤结果
 
 ## 搜索结果暂时不包含什么
 

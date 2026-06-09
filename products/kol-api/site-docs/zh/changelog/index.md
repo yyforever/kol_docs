@@ -7,7 +7,7 @@ content_type: changelog
 nav_group: changelog
 order: 0
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-06-09
 keywords:
   - changelog
   - updates
@@ -22,6 +22,7 @@ source_of_truth:
 
 ## 已发布
 
+- [2026-06-09 — CLI 0.4.9 搜索与邮件控制能力对齐](2026-06-09-cli-049-search-and-email-controls.md)
 - [2026-06-04 — 商品中心与营销运营命令细节刷新](2026-06-04-product-center-and-marketing-ops-command-refresh.md)
 - [2026-06-04 — Remote MCP OAuth 与 CLI 0.4.7 对齐](2026-06-04-remote-mcp-oauth-and-cli-047-alignment.md)
 - [2026-05-20 — Skill 与 CLI 对齐刷新](2026-05-20-skill-cli-alignment.md)

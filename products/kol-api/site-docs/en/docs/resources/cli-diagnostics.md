@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 4
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-06-09
 keywords:
   - cli diagnostics
   - troubleshooting
@@ -65,7 +65,7 @@ npm install -g @noxinfluencer/cli@latest
 
 Version output alone is not enough when local or global compiled files are stale.
 
-The current documented baseline is `@noxinfluencer/cli` `0.4.7` or newer. Prefer `schema --all` over version checks when diagnosing a stale install. If `product` is missing, Product Center and email product-card workflows are not available from that installed command tree.
+The current documented baseline is `@noxinfluencer/cli` `0.4.9` or newer. Prefer `schema --all` over version checks when diagnosing a stale install. If `product` is missing, Product Center and email product-card workflows are not available from that installed command tree. If nested commands such as `creator search-filter-options`, `email recipients filter options`, or `email collaborators list` are missing, reinstall the latest CLI before continuing with search deduplication or email collaboration workflows.
 
 ## Inspect exact command parameters
 
@@ -73,13 +73,25 @@ Use schema before building JSON-first requests:
 
 ```bash
 noxinfluencer schema "creator search"
+noxinfluencer schema "creator search-filter"
 noxinfluencer schema "email create"
+noxinfluencer schema "email recipients filter update"
+noxinfluencer schema "email collaborators add"
 noxinfluencer schema "email products replace"
 noxinfluencer schema "product list"
 noxinfluencer schema "brand-monitor influencer-list"
 ```
 
 Many marketing ops commands use `--body-file`. Prefer a minimal JSON body and validate or preview when the workflow supports it.
+
+For SaaS-aligned hide and deduplication menus, use the options commands before writing request bodies:
+
+```bash
+noxinfluencer creator search-filter-options
+noxinfluencer email recipients filter options
+```
+
+These commands return supported choices and JSON body patches. Use them instead of inventing raw SaaS field names.
 
 ## Stable exit codes for agents
 

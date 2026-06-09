@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 9
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-06-09
 keywords:
   - email tasks
   - outreach operations
@@ -33,6 +33,8 @@ Email Tasks lets you manage NoxInfluencer email-task records after you have sele
 
 - You want to create or inspect email-task records
 - You need to manage recipients, sender settings, and approved content for an email task
+- You need to filter recipients by prior contact, CRM, collaboration, collection, or task state
+- You need to manage task collaborators and their member-management permission
 - You want to send or schedule a task after confirming the exact recipients, sender, timing, and content
 
 ## Current beta scope
@@ -41,6 +43,10 @@ Email Tasks lets you manage NoxInfluencer email-task records after you have sele
 - Read one task by `task_id`
 - Create, update, copy, or delete email tasks
 - Add, replace, and list task recipients
+- Delete or clear task recipients on unsent tasks
+- Save and inspect task-scoped recipient hide/deduplication filters
+- List available recipient filter options and filterable email tasks
+- List, replace, add, or remove task collaborators
 - Save task content and update sender settings
 - Send, schedule, or cancel an email task
 - List, save, and apply email content templates
@@ -57,14 +63,18 @@ Email Tasks lets you manage NoxInfluencer email-task records after you have sele
 - Email reports distinguish email tracking replies from creator-level replied counts and inbound message counts
 - Team report filters use SaaS team member `uid`, not Gmail or enterprise sender mailbox accounts
 - Product cards use Product Center `product_collect_id` values
+- Recipient filters use the public body patches returned by `email recipients filter options`; do not invent raw SaaS field names
+- Collaborator commands use SaaS team `user_uid`; list collaborators first when you need to discover valid team members
 
 ## Key commands
 
-Inspect schema before building task, recipient, content, sender, template, or product-card bodies:
+Inspect schema before building task, collaborator, recipient, filter, content, sender, template, or product-card bodies:
 
 ```bash
 noxinfluencer schema "email create"
+noxinfluencer schema "email collaborators add"
 noxinfluencer schema "email recipients add"
+noxinfluencer schema "email recipients filter update"
 noxinfluencer schema "email content save"
 noxinfluencer schema "email products replace"
 ```
@@ -78,11 +88,30 @@ noxinfluencer email get <task_id>
 noxinfluencer email recipients list <task_id>
 ```
 
+Manage recipient hide and deduplication filters only after reading supported options:
+
+```bash
+noxinfluencer email recipients filter options
+noxinfluencer email recipients filter tasks
+noxinfluencer email recipients filter get <task_id>
+noxinfluencer email recipients filter update <task_id> --body-file recipient-filter.json --force
+```
+
+Manage task collaborators by team member `user_uid`:
+
+```bash
+noxinfluencer email collaborators list
+noxinfluencer email collaborators list <task_id>
+noxinfluencer email collaborators add <task_id> --body-file collaborator.json --force
+noxinfluencer email collaborators remove <task_id> --body-file collaborator.json --force
+```
+
 Build the email task after you already have approved recipients and content:
 
 ```bash
 noxinfluencer email create --body-file email-task.json --force
 noxinfluencer email recipients add <task_id> --body-file recipients.json --force
+noxinfluencer email recipients delete <task_id> --body-file recipient-delete.json --force
 noxinfluencer email content save <task_id> --body-file content.json --force
 noxinfluencer email sender update <task_id> --body-file sender.json --force
 ```
@@ -118,6 +147,10 @@ noxinfluencer email products delete <task_id> <email_product_id> --force
 - It does not replace contact retrieval; use [Outreach Creators](outreach-creators.md) first when you still need a reliable email address
 - Immediate send does not expose a separate preview endpoint; read back task state and recipients before approval
 - Product card replace changes all current product cards on the task primary project and supports at most 5 product collect IDs
+- `email recipients filter update` saves filters on the task primary project; `{}` clears all recipient filters
+- `email recipients filter tasks` only lists tasks that can be used to hide recipients already present in another email task
+- `email collaborators replace` resets the collaborator set and must not be used when you only intend to add or remove one member
+- Collaborator `remove` keeps the task owner and remaining non-owner collaborators
 - Some sender, template, and entitlement behavior may depend on your account configuration
 
 ## Recommended next steps

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 4
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-06-09
 keywords:
   - manage campaigns
   - context
@@ -36,6 +36,7 @@ source_of_truth:
 - 已经筛过的候选名单
 - 值得继续观察的对象
 - 已经明确排除的对象和原因
+- 已经联系过、已经在合作中、或已经进入某个资源池的候选对象
 - 围绕同一条工作流建立的活动、资源池、CRM、邮件 / 消息、导出和品牌监控对象
 - Agent 后续应复用的 `creator_id`、`collection_id`、`label_id`、`product_collect_id`、`task_id`、`thread_id`、`brand_id` 和 `export_id`
 
@@ -48,9 +49,11 @@ source_of_truth:
 5. 对已经评估过的 creator IDs 使用 `collection add-creators`，对自有达人 URL 表格使用 `collection import-file`
 6. 当你要维护关系状态、分组、标签或加入邮件任务时，使用 CRM
 7. 当已确认邮件内容需要商品卡时，使用商品中心
-8. 只有收件人、对话线程、发件人、时间和内容确认后，才进入邮件任务或消息线程执行
-9. 当你需要分享结果或交接时，使用导出输出当前工作集
-10. 当问题从单个达人转向已监控品牌时，使用品牌监控
+8. 使用搜索结果过滤和邮件收件人过滤，避免重复处理团队已经联系或分组过的达人
+9. 当任务归属或成员管理权限需要共享时，使用邮件协作者
+10. 只有收件人、对话线程、发件人、时间和内容确认后，才进入邮件任务或消息线程执行
+11. 当你需要分享结果或交接时，使用导出输出当前工作集
+12. 当问题从单个达人转向已监控品牌时，使用品牌监控
 
 ## 帮助保留上下文的命令
 
@@ -61,6 +64,8 @@ noxinfluencer creator profile <creator_id>
 noxinfluencer collection get <collection_id>
 noxinfluencer crm labels list --page_size 20
 noxinfluencer product get <product_collect_id>
+noxinfluencer email recipients filter get <task_id>
+noxinfluencer email collaborators list <task_id>
 noxinfluencer email get <task_id>
 noxinfluencer message get <thread_id>
 noxinfluencer brand-monitor get <brand_id>

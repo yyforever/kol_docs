@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 9
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-06-09
 keywords:
   - email tasks
   - outreach operations
@@ -33,6 +33,8 @@ source_of_truth:
 
 - 你要创建或查看邮件任务
 - 你要管理某个任务的收件人、发件人设置和已确认内容
+- 你要按历史联系、CRM、合作、资源池或其他邮件任务状态过滤收件人
+- 你要管理邮件任务协作者及其成员管理权限
 - 你要在确认收件人、发件人、发送时间和内容后发送或定时邮件任务
 
 ## 当前 beta 范围
@@ -41,6 +43,10 @@ source_of_truth:
 - 通过 `task_id` 查看单个任务
 - 创建、更新、复制或删除邮件任务
 - 添加、替换和查看任务收件人
+- 删除或清空未发送任务的收件人
+- 保存和查看任务级收件人隐藏/去重过滤条件
+- 查看可用收件人过滤选项和可用于过滤的邮件任务
+- 查看、替换、添加或移除任务协作者
 - 保存任务内容、更新发件人设置
 - 发送、定时或取消邮件任务
 - 查看、保存和应用邮件内容模板
@@ -57,14 +63,18 @@ source_of_truth:
 - 邮件报告会区分 email tracking replies、creator-level replied counts 和 inbound message counts
 - 团队报告筛选使用 SaaS 团队成员 `uid`，不是 Gmail 或企业邮箱账号
 - 商品卡使用商品中心的 `product_collect_id`
+- 收件人过滤使用 `email recipients filter options` 返回的公开 body patches，不要自己猜 SaaS 原始字段名
+- 协作者命令使用 SaaS 团队 `user_uid`；如果不确定有效成员，先查看 collaborators list
 
 ## 关键命令
 
-构建任务、收件人、内容、发件人、模板或商品卡 body 前，先查看 schema：
+构建任务、协作者、收件人、过滤条件、内容、发件人、模板或商品卡 body 前，先查看 schema：
 
 ```bash
 noxinfluencer schema "email create"
+noxinfluencer schema "email collaborators add"
 noxinfluencer schema "email recipients add"
+noxinfluencer schema "email recipients filter update"
 noxinfluencer schema "email content save"
 noxinfluencer schema "email products replace"
 ```
@@ -78,11 +88,30 @@ noxinfluencer email get <task_id>
 noxinfluencer email recipients list <task_id>
 ```
 
+管理收件人隐藏和去重过滤前，先读取当前支持的选项：
+
+```bash
+noxinfluencer email recipients filter options
+noxinfluencer email recipients filter tasks
+noxinfluencer email recipients filter get <task_id>
+noxinfluencer email recipients filter update <task_id> --body-file recipient-filter.json --force
+```
+
+按团队成员 `user_uid` 管理任务协作者：
+
+```bash
+noxinfluencer email collaborators list
+noxinfluencer email collaborators list <task_id>
+noxinfluencer email collaborators add <task_id> --body-file collaborator.json --force
+noxinfluencer email collaborators remove <task_id> --body-file collaborator.json --force
+```
+
 在已经有确认过的收件人和内容后，再组装邮件任务：
 
 ```bash
 noxinfluencer email create --body-file email-task.json --force
 noxinfluencer email recipients add <task_id> --body-file recipients.json --force
+noxinfluencer email recipients delete <task_id> --body-file recipient-delete.json --force
 noxinfluencer email content save <task_id> --body-file content.json --force
 noxinfluencer email sender update <task_id> --body-file sender.json --force
 ```
@@ -118,6 +147,10 @@ noxinfluencer email products delete <task_id> <email_product_id> --force
 - 它不替代联系方式获取；如果你还没有可靠邮箱，先使用 [达人触达](outreach-creators.md)
 - 立即发送没有单独 preview endpoint；确认执行前应先读回任务状态和收件人
 - 商品卡 replace 会替换任务 primary project 上的当前所有商品卡，最多支持 5 个商品 collect IDs
+- `email recipients filter update` 会把过滤条件保存到任务 primary project；`{}` 表示清空全部收件人过滤条件
+- `email recipients filter tasks` 只列出可用于隐藏“已在其他邮件任务中”的收件人的任务
+- `email collaborators replace` 会重置整组协作者；如果只是新增或移除一个成员，不要用 replace
+- 协作者 `remove` 会保留任务 owner 和其他非 owner 协作者
 - 发件人、模板和权限行为可能依赖你的账号配置
 
 ## 推荐下一步

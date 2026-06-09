@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 5
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-06-09
 keywords:
   - campaign workflows
   - collections
@@ -32,11 +32,13 @@ Use this guide when you already know your campaign direction and want the same w
 5. Move the right collection + platform slice into CRM when relationship state, labels, or add-to-email work is needed
 6. Use CRM labels when you need stable follow-up segmentation across creators
 7. Use Product Center when an email task needs product cards
-8. Use email tasks for first email outreach to known, approved recipients
-9. Use message threads only for existing `thread_id` replies
-10. Use email reports, team summary, and team breakdown after send when you need reply metrics
-11. Launch collection, CRM, or brand-monitor exports when you need a shareable file
-12. Feed the updated result back into the same campaign context
+8. Apply email recipient filters when the task should hide creators already contacted, grouped, or present in another email task
+9. Add email collaborators when another team member needs task access or member-management permission
+10. Use email tasks for first email outreach to known, approved recipients
+11. Use message threads only for existing `thread_id` replies
+12. Use email reports, team summary, and team breakdown after send when you need reply metrics
+13. Launch collection, CRM, or brand-monitor exports when you need a shareable file
+14. Feed the updated result back into the same campaign context
 
 ## Useful command sequence
 
@@ -51,6 +53,8 @@ noxinfluencer collection refresh-email apply --body-file refresh-email.json --fo
 noxinfluencer crm labels list --page_size 20
 noxinfluencer crm batch-update preview --body-file crm-batch-update.json
 noxinfluencer crm batch-update apply --body-file crm-batch-update.json --force
+noxinfluencer email recipients filter options
+noxinfluencer email collaborators list
 noxinfluencer email report <task_id>
 noxinfluencer export get <export_id>
 ```

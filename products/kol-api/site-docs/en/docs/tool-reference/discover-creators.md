@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 1
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-09
 keywords:
   - discover creators
   - creator discovery
@@ -49,11 +49,25 @@ Discover Creators helps you find candidate creators and build a shortlist worth 
 - Prefer a JSON body through `--body-file -` when passing cursor arrays or complex filters
 - Search rows expose search-result identifiers for follow-up, but full identity comes from a later creator read
 
+## Hide and deduplicate a returned page
+
+After a search page is returned, you can apply SaaS-aligned hide and deduplication rules to that current page.
+
+Use this when you want to hide candidates that are already completed collaborations, under collaboration, in communication, contacted by your account or team, or already in a selected collection.
+
+```bash
+noxinfluencer creator search-filter-options
+noxinfluencer creator search-filter --body-file search-filter.json
+```
+
+`creator search-filter` filters the current page of `data.items[].id` values. It does not launch a new creator search, and it should not be used as a replacement for normal search filters such as platform, keyword, country, or follower range.
+
 ## Typical output
 
 - A list of candidate creators
 - Basic fit signals such as platform, audience size, market, or topical match
 - Search result identifiers that help you decide who to inspect next
+- Optional filtered rows after applying hide or deduplication rules to the current page
 
 ## What discovery output does not include yet
 

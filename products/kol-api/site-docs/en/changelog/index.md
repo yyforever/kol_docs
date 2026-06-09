@@ -7,7 +7,7 @@ content_type: changelog
 nav_group: changelog
 order: 0
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-06-09
 keywords:
   - changelog
   - updates
@@ -22,6 +22,7 @@ This section records notable updates to the public documentation source and capa
 
 ## Published entries
 
+- [2026-06-09 — CLI 0.4.9 search and email controls](2026-06-09-cli-049-search-and-email-controls.md)
 - [2026-06-04 — Product Center and marketing ops command detail refresh](2026-06-04-product-center-and-marketing-ops-command-refresh.md)
 - [2026-06-04 — Remote MCP OAuth and CLI 0.4.7 alignment](2026-06-04-remote-mcp-oauth-and-cli-047-alignment.md)
 - [2026-05-20 — Skill and CLI alignment refresh](2026-05-20-skill-cli-alignment.md)

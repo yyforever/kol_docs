@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 1
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-09
 keywords:
   - creator discovery
   - shortlist
@@ -16,6 +16,7 @@ source_of_truth:
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/references/search-filters.md"
 ---
 
 # Find Your First Creators
@@ -44,6 +45,12 @@ Your goal is not to run the broadest search possible. Your goal is to produce a 
 - For next-page follow-ups, reuse the prior response's `data.search_after`
 - If your request uses cursor arrays or complex filters, let your agent pass a JSON body instead of hand-editing shell-quoted arrays
 
+## Hide candidates you already know
+
+After a page is returned, ask your agent to use search filtering when you want to hide candidates that are already completed collaborations, under collaboration, in communication, contacted by your account or team, or already in a collection.
+
+This is a second step on the current page, not a new broad search. It is useful when the result quality is good but you want to remove candidates your team has already handled.
+
 ## What to do after the shortlist looks promising
 
 - Do not assume the discovery result already contains the full creator identity block
@@ -61,6 +68,7 @@ Your goal is not to run the broadest search possible. Your goal is to produce a 
 - Add geography constraints
 - Tighten the creator size range
 - Tighten the content direction
+- Use search filtering only after the returned page is already close to your target
 
 ## Recommended next steps
 

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 1
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-06-09
 keywords:
   - creator discovery
   - shortlist
@@ -16,6 +16,7 @@ source_of_truth:
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
+  - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/references/search-filters.md"
 ---
 
 # 完成第一次达人发现
@@ -46,6 +47,12 @@ source_of_truth:
 - 后续翻页需要复用上一页响应里的 `data.search_after`
 - 如果请求包含游标数组或复杂筛选条件，优先让 Agent 用 JSON body 传参，不要手动拼复杂 shell quoting
 
+## 隐藏已经处理过的候选人
+
+搜索页返回后，如果你想隐藏已经合作完成、合作中、沟通中、被本账号或团队联系过、或已经在某个资源池里的候选达人，可以让 Agent 使用搜索过滤。
+
+这是对当前页面的第二步处理，不是重新发起一次大范围搜索。它适合用于结果方向已经正确，但需要剔除团队已经处理过的对象。
+
 ## 候选名单看起来不错之后该做什么
 
 - 不要假设发现结果已经包含完整的达人身份字段
@@ -63,6 +70,7 @@ source_of_truth:
 - 增加地域约束
 - 收紧达人体量
 - 收紧内容方向
+- 只有当当前页面已经接近目标时，再使用搜索过滤做隐藏或去重
 
 ## 推荐下一步
 

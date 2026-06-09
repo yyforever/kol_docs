@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 1
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-06-09
 keywords:
   - introduction
   - noxinfluencer
@@ -25,7 +25,7 @@ source_of_truth:
 
 # Introduction
 
-NoxInfluencer helps you run creator and marketing operations from an AI agent environment. You can use it to discover creators, evaluate fit, retrieve contact information, monitor campaign videos, manage campaign/collection work, coordinate CRM/email/message tasks, manage product center items for email product cards, run exports, and inspect brand-monitor data.
+NoxInfluencer helps you run creator and marketing operations from an AI agent environment. You can use it to discover creators, hide or deduplicate returned search results, evaluate fit, retrieve contact information, monitor campaign videos, manage campaign/collection work, coordinate CRM/email/message tasks, manage product center items for email product cards, run exports, and inspect brand-monitor data.
 
 ## Who this is for
 
@@ -38,6 +38,7 @@ NoxInfluencer helps you run creator and marketing operations from an AI agent en
 ### Available creator workflow
 
 - Discover Creators: find candidates by market, platform, and content direction
+- Search-result filtering: hide or deduplicate returned candidates by collaboration, contact, CRM, or collection state
 - Analyze Creator: review profile, audience, content, and cooperation signals
 - Track Performance: manage video-monitor projects, tasks, summaries, and task history
 - Outreach Creators: retrieve contact information for selected creators
@@ -48,6 +49,7 @@ NoxInfluencer helps you run creator and marketing operations from an AI agent en
 - Collections: organize creators into reusable working groups
 - Exports: inspect and download async export tasks
 - Email Tasks: manage NoxInfluencer email tasks with explicit approval before send or schedule
+- Email recipient controls: filter recipients by collaboration/contact state and manage task collaborators by team member
 - Message Threads: manage existing thread state and approved replies
 - CRM: query and update NoxInfluencer CRM channels and groups
 - Product Center: manage collected product items and custom tags used by email product cards

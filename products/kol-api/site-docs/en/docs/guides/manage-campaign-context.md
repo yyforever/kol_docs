@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 4
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-06-09
 keywords:
   - manage campaigns
   - context
@@ -36,6 +36,7 @@ As your workflow expands beyond one-off discovery, context becomes the bridge be
 - The shortlist you have already reviewed
 - The creators you want to keep monitoring
 - The creators you have already ruled out, and why
+- The candidates already contacted, already in collaboration, or already assigned to a collection
 - The campaign, collection, CRM, email/message, export, and brand-monitor objects that package the same workflow
 - The `creator_id`, `collection_id`, `label_id`, `product_collect_id`, `task_id`, `thread_id`, `brand_id`, and `export_id` values your agent should reuse
 
@@ -48,9 +49,11 @@ As your workflow expands beyond one-off discovery, context becomes the bridge be
 5. Use `collection add-creators` for reviewed creator IDs and `collection import-file` for your own creator URL spreadsheets
 6. Use CRM when you need relationship state, grouping, labels, or add-to-email operations
 7. Use Product Center when approved email content should include product cards
-8. Use email tasks or message threads only after recipients, thread, sender, timing, and content are approved
-9. Use exports when you need a shareable output from that grouped workflow
-10. Use Brand Monitor when the question shifts from one creator to a monitored brand
+8. Use search-result and email-recipient filters to avoid reprocessing creators your team already contacted or grouped
+9. Use email collaborators when task ownership or member-management permission should be shared
+10. Use email tasks or message threads only after recipients, thread, sender, timing, and content are approved
+11. Use exports when you need a shareable output from that grouped workflow
+12. Use Brand Monitor when the question shifts from one creator to a monitored brand
 
 ## Commands that preserve context
 
@@ -61,6 +64,8 @@ noxinfluencer creator profile <creator_id>
 noxinfluencer collection get <collection_id>
 noxinfluencer crm labels list --page_size 20
 noxinfluencer product get <product_collect_id>
+noxinfluencer email recipients filter get <task_id>
+noxinfluencer email collaborators list <task_id>
 noxinfluencer email get <task_id>
 noxinfluencer message get <thread_id>
 noxinfluencer brand-monitor get <brand_id>
