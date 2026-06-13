@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-06-09
+updated_at: 2026-06-13
 keywords:
   - noxinfluencer docs
   - influencer marketing
@@ -30,17 +30,17 @@ Use these docs to install NoxInfluencer in your agent environment, configure acc
 ## Start here
 
 - New setup: start with [Quick Start](getting-started/quick-start/index.md)
-- Account, API key, and entitlement model: read [Authentication](getting-started/authentication.md)
+- Account sign-in, browser login, API key fallback, and entitlement model: read [Authentication](getting-started/authentication.md)
 - Remote MCP read tools, OAuth resource metadata, and scope model: read [Remote MCP](getting-started/remote-mcp.md)
 - Product scope and boundaries: read [Introduction](getting-started/introduction.md)
-- CLI 0.4.9 command-tree checks and stale install recovery: read [CLI Diagnostics](resources/cli-diagnostics.md)
+- CLI 0.4.12 command-tree checks and stale install recovery: read [CLI Diagnostics](resources/cli-diagnostics.md)
 - Current Rest API free trial or self-service purchase: use the existing `/api-service` page and the Theneo API docs / API Runner as the source of truth
 
 ## Install entry overview
 
 - OpenClaw: start from [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing)
 - Claude Code, OpenAI Codex, Cursor, Hermes, or another compatible environment: start from [skills.sh](https://skills.sh/noxinfluencer/skills/noxinfluencer) and the commands in [Quick Start](getting-started/quick-start/index.md)
-- API key: open the [Skills dashboard](https://www.noxinfluencer.com/skills/dashboard)
+- CLI sign-in: run `noxinfluencer login`; use the [Skills dashboard](https://www.noxinfluencer.com/skills/dashboard) only as the API key fallback
 - GitHub: use [NoxInfluencer/skills](https://github.com/NoxInfluencer/skills/tree/main) only when your agent needs the repository address or the store-based path cannot complete
 - ChatGPT: not a supported NoxInfluencer Skill runtime; OpenAI users should use OpenAI Codex for Skill workflows
 
@@ -71,4 +71,4 @@ Use these docs to install NoxInfluencer in your agent environment, configure acc
 - Creator review before outreach: [Evaluate Creators Before Outreach](guides/evaluate-creators-before-outreach.md)
 - Monitoring workflow: [Set Up Performance Monitoring](guides/set-up-performance-monitoring.md)
 - Campaign and ops continuity: [Organize Campaign Workflows](guides/organize-campaign-workflows.md)
-- Troubleshooting: [CLI Diagnostics](resources/cli-diagnostics.md), [Error Codes](resources/error-codes.md), and [Rate Limits](resources/rate-limits.md)
+- Troubleshooting and support: [CLI Diagnostics](resources/cli-diagnostics.md), [Support and Feedback](resources/support-feedback.md), [Error Codes](resources/error-codes.md), and [Rate Limits](resources/rate-limits.md)

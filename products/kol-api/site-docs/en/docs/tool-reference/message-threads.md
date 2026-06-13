@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 10
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-06-13
 keywords:
   - message threads
   - communication workflows
@@ -33,6 +33,7 @@ Message Threads helps you work with existing NoxInfluencer communication threads
 
 - You need to list or inspect existing message threads
 - You want to manage labels, cooperation status, or draft state on a known thread
+- You need to attach approved files to a thread draft before sending or scheduling
 - You need to send, schedule, or cancel an approved reply on an existing `thread_id`
 
 ## Current beta scope
@@ -43,11 +44,14 @@ Message Threads helps you work with existing NoxInfluencer communication threads
 - List and set labels
 - List and update cooperation status
 - Save a draft body
+- List, upload, and delete draft attachments
 - Send, schedule, or cancel a reply on one existing thread
 
 ## Important routing rule
 
-Use `message send` or `message schedule` only for existing `thread_id` replies. If you only have an email task ID, resolve the thread first with `message list --business_kind email_task --business_id <task_id>`. If no thread exists, use the [Email Tasks](email-tasks.md) path when you already have reliable email recipients.
+Use `message send` or `message schedule` only for existing `thread_id` replies. If you only have an email task ID, resolve the thread first with `message list --business_kind email_task --business_id <task_id>`. If no thread exists, use the [Email Tasks](email-tasks.md) path for platform creators or approved external email addresses.
+
+Message attachments belong to the thread draft. Upload them before `message send` or `message schedule`; NoxInfluencer attaches those draft files during send.
 
 ## Key commands
 
@@ -56,6 +60,8 @@ Inspect schema before building draft, send, schedule, label, or cooperation-stat
 ```bash
 noxinfluencer schema "message list"
 noxinfluencer schema "message send"
+noxinfluencer schema "message attachments upload"
+noxinfluencer schema "message attachments delete"
 noxinfluencer schema "message labels set"
 ```
 
@@ -85,6 +91,14 @@ noxinfluencer message templates use <template_id> --body-file template-use.json 
 noxinfluencer message draft save <thread_id> --body-file draft.json --force
 ```
 
+Attach approved files to the thread draft before send or schedule:
+
+```bash
+noxinfluencer message attachments list <thread_id>
+noxinfluencer message attachments upload <thread_id> --file brief.pdf --force
+noxinfluencer message attachments delete <thread_id> <attachment_id> --force
+```
+
 Send or schedule only after content and sender are approved:
 
 ```bash
@@ -98,6 +112,9 @@ noxinfluencer message cancel <thread_id> --force
 - Mutation commands default to dry-run and require approval before `--force`
 - Send and schedule commands require approved content, `sender_auth_id`, and the exact target thread
 - `message schedule` requires an ISO 8601 timestamp with a whole-hour timezone offset, such as `Z`, `+08:00`, or `-05:00`
+- Draft attachment upload uses `--file`, not `--body-file`
+- A thread supports at most 2 draft attachments, up to 10MB each; dangerous executable or script extensions are rejected
+- Upload or delete draft attachments only after confirming the exact `thread_id`
 
 ## Current boundary
 
@@ -107,6 +124,7 @@ noxinfluencer message cancel <thread_id> --force
 - It does not operate external messaging platforms outside NoxInfluencer
 - Some project-tab concepts are deprecated upstream; use the CLI schema for current filters
 - `message get` embeds composer state and metadata; there is no separate public draft-get or metadata-get command
+- Draft attachments are not message-template attachments; template attachments remain outside the current public command surface
 
 ## Recommended next steps
 

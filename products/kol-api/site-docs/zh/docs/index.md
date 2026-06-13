@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-06-09
+updated_at: 2026-06-13
 keywords:
   - noxinfluencer 文档
   - influencer marketing
@@ -30,17 +30,17 @@ source_of_truth:
 ## 从这里开始
 
 - 第一次接入：看 [快速开始](getting-started/quick-start/index.md)
-- 账号、API key 和权限心智：看 [认证与账号](getting-started/authentication.md)
+- 账号登录、浏览器登录、API key 兜底和权限心智：看 [认证与账号](getting-started/authentication.md)
 - Remote MCP 只读工具、OAuth resource metadata 和 scope 模型：看 [Remote MCP](getting-started/remote-mcp.md)
 - 产品范围和边界：看 [产品简介](getting-started/introduction.md)
-- CLI 0.4.9 命令树校验和旧安装排查：看 [CLI 诊断](resources/cli-diagnostics.md)
+- CLI 0.4.12 命令树校验和旧安装排查：看 [CLI 诊断](resources/cli-diagnostics.md)
 - 当前 Rest API 免费试用或自助购买：从现有 `/api-service` 页面进入，并以 Theneo API 文档和 API Runner 为准
 
 ## 安装入口概览
 
 - OpenClaw：优先从 [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing) 开始
 - Claude Code、OpenAI Codex、Cursor、Hermes 或其他兼容环境：优先从 [skills.sh](https://skills.sh/noxinfluencer/skills/noxinfluencer) 和 [快速开始](getting-started/quick-start/index.md) 中的命令开始
-- API key：打开 [Skills 控制台](https://cn.noxinfluencer.com/skills/dashboard)
+- CLI 登录：运行 `noxinfluencer login`；只有需要 API key 兜底时再打开 [Skills 控制台](https://cn.noxinfluencer.com/skills/dashboard)
 - GitHub：只有当 Agent 需要仓库地址，或商店路径无法完成时，再使用 [NoxInfluencer/skills](https://github.com/NoxInfluencer/skills/tree/main)
 - ChatGPT：不是 NoxInfluencer Skill 的支持运行环境；OpenAI 用户应使用 OpenAI Codex 来运行 Skill 工作流
 
@@ -71,4 +71,4 @@ source_of_truth:
 - 触达前评估：[触达前评估达人](guides/evaluate-creators-before-outreach.md)
 - 监控工作流：[建立表现监控](guides/set-up-performance-monitoring.md)
 - 活动和运营连续性：[组织活动工作流](guides/organize-campaign-workflows.md)
-- 排障：[CLI 诊断](resources/cli-diagnostics.md)、[错误码](resources/error-codes.md) 和 [频率限制](resources/rate-limits.md)
+- 排障与反馈：[CLI 诊断](resources/cli-diagnostics.md)、[支持与反馈](resources/support-feedback.md)、[错误码](resources/error-codes.md) 和 [频率限制](resources/rate-limits.md)

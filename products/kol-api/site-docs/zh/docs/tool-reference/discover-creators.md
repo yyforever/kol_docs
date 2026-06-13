@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 1
 status: published
-updated_at: 2026-06-09
+updated_at: 2026-06-13
 keywords:
   - discover creators
   - creator search
@@ -41,6 +41,7 @@ source_of_truth:
 - 品类、关键词或内容方向
 - 达人体量范围
 - 是否优先考虑商业合作可行性
+- 当平台邮件触达需要邮箱信号时，可以使用 `--has_email true`；这不代表已经导出了可见邮箱
 
 ## 分页和结果形态
 
@@ -74,6 +75,7 @@ noxinfluencer creator search-filter --body-file search-filter.json
 - 搜索结果不等于完整的 creator read
 - 不要把搜索结果直接当成已经包含统一达人身份字段：`creator_id`、`creator_name`、`channel_handle`、`channel_url`、`social_media`
 - 如果你要进入后续分析、触达或监控，先转到达人分析或其他达人读取，再复用返回的 `creator_id`
+- NoxInfluencer 平台邮件任务可以直接使用搜索或详情返回的 `creator_id`；只有外部触达才需要获取可见联系方式
 
 ## 不负责什么
 

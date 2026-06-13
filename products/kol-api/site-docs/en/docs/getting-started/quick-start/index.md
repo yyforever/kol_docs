@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 2
 status: published
-updated_at: 2026-06-09
+updated_at: 2026-06-13
 keywords:
   - quick start
   - skills.sh
@@ -23,6 +23,7 @@ source_of_truth:
   - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:cli/package.json"
   - "repo:kol_claw path:cli/src/main.ts"
+  - "repo:kol_claw path:cli/src/commands/login.ts"
 ---
 
 # Quick Start
@@ -30,28 +31,40 @@ source_of_truth:
 Use this page when you want the shortest supported setup path. Keep two things separate:
 
 - Install decision: where should the Skill be installed for your agent environment?
-- Access preparation: which NoxInfluencer account and API key should the Skill use?
+- Access preparation: how should the CLI sign in to your NoxInfluencer account?
 
 ## Public entry points
 
-- Skills dashboard / API key: `https://www.noxinfluencer.com/skills/dashboard` / `https://cn.noxinfluencer.com/skills/dashboard`
+- Browser login command: `noxinfluencer login`
+- Skills dashboard / API key fallback: `https://www.noxinfluencer.com/skills/dashboard` / `https://cn.noxinfluencer.com/skills/dashboard`
 - skills.sh listing: `https://skills.sh/noxinfluencer/skills/noxinfluencer`
 - ClawHub for OpenClaw: `https://clawhub.ai/noxinfluencer/nox-influencer-marketing`
 - GitHub fallback: `https://github.com/NoxInfluencer/skills/tree/main`
 
-## Before you run commands: prepare account access
+## Before you run workflows: sign in
 
-If you do not have a brand account yet, sign up first:
+After the CLI is available, the default setup path is browser login:
+
+```bash
+noxinfluencer login
+```
+
+The CLI opens NoxInfluencer in your browser, reuses your SaaS login session, creates or reuses a non-expiring API key, and saves it locally for the CLI.
+
+If you need Chinese onboarding URLs and hints, add `--lang zh`:
+
+```bash
+noxinfluencer --lang zh login
+```
+
+If browser login is not available in your environment, use the manual fallback:
 
 - English sign-up: `https://www.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
 - Chinese sign-up: `https://cn.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
-
-Then open the Skills dashboard and get your API key:
-
 - English dashboard: `https://www.noxinfluencer.com/skills/dashboard`
 - Chinese dashboard: `https://cn.noxinfluencer.com/skills/dashboard`
 
-For OpenClaw and other compatible environments, prefer host-managed secret injection or `NOXINFLUENCER_API_KEY`. If you configure the local CLI yourself, use `noxinfluencer auth --key-stdin` instead of placing the key in command arguments or logs.
+If you configure a key manually, use `noxinfluencer auth --key-stdin` instead of placing the key in command arguments or logs. Existing host-managed secret injection and `NOXINFLUENCER_API_KEY` are still supported, but they are fallback or host-managed paths rather than the normal first step.
 
 ## Step 1: Have you installed Skills before?
 
@@ -72,7 +85,7 @@ If ClawHub is not practical because of network or access limits, use Skills CLI:
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent openclaw
 ```
 
-OpenClaw metadata expects `NOXINFLUENCER_API_KEY` and the `noxinfluencer` binary to be available.
+OpenClaw metadata expects the `noxinfluencer` binary to be available. Use `noxinfluencer login` after installation unless your host already injects credentials.
 
 ### Claude Code, OpenAI Codex, Cursor, or another Skills CLI environment
 
@@ -121,7 +134,7 @@ The supported OpenAI path is OpenAI Codex. NoxInfluencer needs an execution envi
 
 ## Step 3: Install or refresh the CLI
 
-The current public documentation baseline is `@noxinfluencer/cli` `0.4.9` or newer. Install the latest CLI package:
+The current public documentation baseline is `@noxinfluencer/cli` `0.4.12` or newer. Install the latest CLI package:
 
 ```bash
 npm install -g @noxinfluencer/cli@latest
@@ -145,7 +158,7 @@ The command tree must include:
 - `export`
 - `agent`
 
-Version output alone is not enough if your machine has stale local or global compiled files. If `schema --all` does not show the expected command groups after reinstalling the latest package, stop the affected workflow and treat it as a CLI package or command-tree mismatch. For current marketing-ops workflows, the installed tree should also expose nested commands for creator search filtering, email recipient filters, email collaborators, Product Center, and brand monitor.
+Version output alone is not enough if your machine has stale local or global compiled files. If `schema --all` does not show the expected command groups after reinstalling the latest package, stop the affected workflow and treat it as a CLI package or command-tree mismatch. For current workflows, the installed tree should also expose `login`, creator search filtering, creator lookalikes, email recipient filters, email collaborators, email/message attachments, Product Center, brand monitor, and feedback commands.
 
 ## Step 4: Let your agent continue
 
@@ -167,6 +180,7 @@ A first run is successful when one of these works:
 ## If setup fails
 
 - Run `noxinfluencer doctor` first
+- If authentication is missing, run `noxinfluencer login`
 - Run `noxinfluencer schema --all` to confirm the installed command tree
 - Run `noxinfluencer agent exit-codes` when your agent or automation needs stable failure handling
 - If the network path is blocked, set `HTTPS_PROXY` and retry; add `HTTP_PROXY` only when the server URL is non-TLS

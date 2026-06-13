@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 9
 status: published
-updated_at: 2026-06-09
+updated_at: 2026-06-13
 keywords:
   - email tasks
   - outreach operations
@@ -19,6 +19,11 @@ source_of_truth:
   - "repo:kol_claw path:cli/src/commands/email.ts"
   - "repo:kol_claw path:cli/src/lib/email-guidance.ts"
   - "repo:kol_claw path:server/app/routers/email.py"
+  - "repo:kol_claw path:server/app/schemas.py"
+  - "repo:kol_claw path:server/app/services/email_api.py"
+  - "repo:kol_claw path:server/app/routers/email_attachment.py"
+  - "repo:kol_claw path:server/app/services/email_attachment_api.py"
+  - "repo:kol_claw path:server/app/services/attachment_upload.py"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/references/marketing-ops.md"
 ---
@@ -27,12 +32,14 @@ source_of_truth:
 
 **当前状态：Beta**
 
-邮件任务用于在你已经选定达人并确认可靠邮箱后，管理 NoxInfluencer 内的 email-task 记录。
+邮件任务用于在你已经选定达人，或已经有获批外部邮箱地址后，管理 NoxInfluencer 内的 email-task 记录。
 
 ## 适合什么场景
 
 - 你要创建或查看邮件任务
 - 你要管理某个任务的收件人、发件人设置和已确认内容
+- 你要用达人搜索或详情返回的 `creator_id` 发起 NoxInfluencer 平台邮件
+- 你要在发送或定时前，把已确认的 brief 或文件附加到邮件任务
 - 你要按历史联系、CRM、合作、资源池或其他邮件任务状态过滤收件人
 - 你要管理邮件任务协作者及其成员管理权限
 - 你要在确认收件人、发件人、发送时间和内容后发送或定时邮件任务
@@ -51,12 +58,15 @@ source_of_truth:
 - 发送、定时或取消邮件任务
 - 查看、保存和应用邮件内容模板
 - 查看、替换和删除邮件商品卡
+- 查看、上传和删除任务附件
 - 查看邮件任务报告、团队汇总和团队明细指标
 
 ## 安全执行规则
 
 - 很多 email 命令是 JSON-first，需要使用 `--body-file`
 - 写操作默认 dry-run；只有在你确认具体对象和动作后才使用 `--force`
+- NoxInfluencer 平台邮件优先使用搜索或详情返回的 `creator_id` 作为收件人
+- 只有已有外部邮箱地址时才使用 `email_address`；不要为了把达人加入平台邮件任务而先运行 `creator contacts`
 - 执行 `email send` 或 `email schedule` 前，需要先读回任务和收件人
 - 发送或定时前必须确认收件人、发件人、必要时的发送时间，以及内容已经获批
 - `email schedule` 的 `plan_send_at` 必须是带整点 timezone offset 的 ISO 8601 时间，例如 `Z`、`+08:00` 或 `-05:00`
@@ -65,6 +75,9 @@ source_of_truth:
 - 商品卡使用商品中心的 `product_collect_id`
 - 收件人过滤使用 `email recipients filter options` 返回的公开 body patches，不要自己猜 SaaS 原始字段名
 - 协作者命令使用 SaaS 团队 `user_uid`；如果不确定有效成员，先查看 collaborators list
+- 附件上传使用 `--file`，不是 `--body-file`
+- 邮件任务最多支持 1 个附件，最大 10MB；危险可执行文件或脚本扩展名会被拒绝
+- 上传或删除附件会取消该任务已有的定时发送。修改附件后，需要先读回任务，再确认最终附件状态后重新定时。
 
 ## 关键命令
 
@@ -77,6 +90,8 @@ noxinfluencer schema "email recipients add"
 noxinfluencer schema "email recipients filter update"
 noxinfluencer schema "email content save"
 noxinfluencer schema "email products replace"
+noxinfluencer schema "email attachments upload"
+noxinfluencer schema "email attachments delete"
 ```
 
 发送前先读取任务状态：
@@ -106,7 +121,7 @@ noxinfluencer email collaborators add <task_id> --body-file collaborator.json --
 noxinfluencer email collaborators remove <task_id> --body-file collaborator.json --force
 ```
 
-在已经有确认过的收件人和内容后，再组装邮件任务：
+在已经有确认过的收件人和内容后，再组装邮件任务。平台邮件收件人应使用达人搜索或详情返回的 `creator_id`；你自己已有的外部邮箱地址才使用 `email_address`。
 
 ```bash
 noxinfluencer email create --body-file email-task.json --force
@@ -114,6 +129,14 @@ noxinfluencer email recipients add <task_id> --body-file recipients.json --force
 noxinfluencer email recipients delete <task_id> --body-file recipient-delete.json --force
 noxinfluencer email content save <task_id> --body-file content.json --force
 noxinfluencer email sender update <task_id> --body-file sender.json --force
+```
+
+任务已存在后、发送或定时前，再附加已确认文件：
+
+```bash
+noxinfluencer email attachments list <task_id>
+noxinfluencer email attachments upload <task_id> --file brief.pdf --force
+noxinfluencer email attachments delete <task_id> <attachment_id> --force
 ```
 
 只有读回任务并确认无误后，才发送或定时：
@@ -144,7 +167,7 @@ noxinfluencer email products delete <task_id> <email_product_id> --force
 
 - 该工作流只操作 NoxInfluencer 邮件任务，不操作外部邮箱平台
 - 它不会代你撰写触达或谈判文案
-- 它不替代联系方式获取；如果你还没有可靠邮箱，先使用 [达人触达](outreach-creators.md)
+- 平台邮件不要求先获取可见联系方式；只有需要可见 / 可导出的外部联系信息时，才使用 [达人触达](outreach-creators.md)
 - 立即发送没有单独 preview endpoint；确认执行前应先读回任务状态和收件人
 - 商品卡 replace 会替换任务 primary project 上的当前所有商品卡，最多支持 5 个商品 collect IDs
 - `email recipients filter update` 会把过滤条件保存到任务 primary project；`{}` 表示清空全部收件人过滤条件
@@ -152,6 +175,8 @@ noxinfluencer email products delete <task_id> <email_product_id> --force
 - `email collaborators replace` 会重置整组协作者；如果只是新增或移除一个成员，不要用 replace
 - 协作者 `remove` 会保留任务 owner 和其他非 owner 协作者
 - 发件人、模板和权限行为可能依赖你的账号配置
+- 附件属于 NoxInfluencer 邮件任务 primary project，不是外部邮箱或外部邮件平台里的文件
+- 附件上传和删除可能改变定时发送状态；修改附件后，不要假设之前的定时仍然有效
 
 ## 推荐下一步
 

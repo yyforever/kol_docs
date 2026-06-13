@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 5
 status: published
-updated_at: 2026-06-09
+updated_at: 2026-06-13
 keywords:
   - campaign workflows
   - collections
@@ -34,11 +34,12 @@ source_of_truth:
 7. 邮件任务需要商品卡时，先使用商品中心准备商品记录
 8. 当任务需要隐藏已联系、已分组或已在其他邮件任务里的达人时，使用邮件收件人过滤
 9. 当其他团队成员需要访问任务或管理成员权限时，添加邮件协作者
-10. 对已确认邮箱收件人发起首次邮件触达时，使用邮件任务
-11. 只有已有 `thread_id` 回复时，才使用消息线程
-12. 发送后需要回复指标时，使用 email report、team-summary 和 team-breakdown
-13. 当你需要交接或下载结果时，发起资源池、CRM 或品牌监控导出
-14. 再把新的结果回流到同一个活动上下文中
+10. 触达需要 brief 或文件时，把已确认附件附加到邮件任务
+11. 对平台达人发起首次邮件触达时，使用 `creator_id` 加入邮件任务；如果你已经有获批外部邮箱，也可以作为外部收件人加入
+12. 只有已有 `thread_id` 回复时，才使用消息线程；如需附件，先附加草稿文件再发送或定时
+13. 发送后需要回复指标时，使用 email report、team-summary 和 team-breakdown
+14. 当你需要交接或下载结果时，发起资源池、CRM 或品牌监控导出
+15. 再把新的结果回流到同一个活动上下文中
 
 ## 常用命令顺序
 
@@ -55,6 +56,10 @@ noxinfluencer crm batch-update preview --body-file crm-batch-update.json
 noxinfluencer crm batch-update apply --body-file crm-batch-update.json --force
 noxinfluencer email recipients filter options
 noxinfluencer email collaborators list
+noxinfluencer email attachments list <task_id>
+noxinfluencer email attachments upload <task_id> --file brief.pdf --force
+noxinfluencer message attachments list <thread_id>
+noxinfluencer message attachments upload <thread_id> --file brief.pdf --force
 noxinfluencer email report <task_id>
 noxinfluencer export get <export_id>
 ```
@@ -64,8 +69,8 @@ noxinfluencer export get <export_id>
 - 活动目标和目标市场
 - 你决定保留的达人身份
 - 你纳入或排除对象的逻辑
-- 收件人、发件人、内容和发送时间的确认状态
-- 后续操作里使用的 `label_id`、`product_collect_id`、`task_id`、`thread_id` 和 `export_id`
+- 收件人、发件人、内容、附件和发送时间的确认状态
+- 后续操作里使用的 `label_id`、`product_collect_id`、`task_id`、`thread_id`、`attachment_id` 和 `export_id`
 - 这次导出的用途和原因
 
 ## 当前边界

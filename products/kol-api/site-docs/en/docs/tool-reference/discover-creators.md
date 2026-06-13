@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 1
 status: published
-updated_at: 2026-06-09
+updated_at: 2026-06-13
 keywords:
   - discover creators
   - creator discovery
@@ -41,6 +41,7 @@ Discover Creators helps you find candidate creators and build a shortlist worth 
 - Category, keywords, or content direction
 - Creator size range
 - Whether commercial fit or contactability should matter
+- Use `--has_email true` when platform email outreach needs creators with an email signal; this does not mean visible email has already been exported
 
 ## Pagination and result shape
 
@@ -74,6 +75,7 @@ noxinfluencer creator search-filter --body-file search-filter.json
 - Discovery results are not the same as a full creator read
 - Do not assume the search result already contains the unified creator identity block: `creator_id`, `creator_name`, `channel_handle`, `channel_url`, and `social_media`
 - When you need a stable identity for follow-up steps, move into creator analysis or another creator read and then reuse the returned `creator_id`
+- NoxInfluencer platform email tasks can use creator search/profile `creator_id` values directly; visible contact retrieval is only needed for external outreach
 
 ## What it is not for
 

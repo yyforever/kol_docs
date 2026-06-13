@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 5
 status: published
-updated_at: 2026-06-09
+updated_at: 2026-06-13
 keywords:
   - campaign workflows
   - collections
@@ -34,11 +34,12 @@ Use this guide when you already know your campaign direction and want the same w
 7. Use Product Center when an email task needs product cards
 8. Apply email recipient filters when the task should hide creators already contacted, grouped, or present in another email task
 9. Add email collaborators when another team member needs task access or member-management permission
-10. Use email tasks for first email outreach to known, approved recipients
-11. Use message threads only for existing `thread_id` replies
-12. Use email reports, team summary, and team breakdown after send when you need reply metrics
-13. Launch collection, CRM, or brand-monitor exports when you need a shareable file
-14. Feed the updated result back into the same campaign context
+10. Attach approved briefs or files to the email task when the outreach requires them
+11. Use email tasks for first platform email outreach by `creator_id`, or for approved external email recipients you already own
+12. Use message threads only for existing `thread_id` replies, and attach draft files before send or schedule when needed
+13. Use email reports, team summary, and team breakdown after send when you need reply metrics
+14. Launch collection, CRM, or brand-monitor exports when you need a shareable file
+15. Feed the updated result back into the same campaign context
 
 ## Useful command sequence
 
@@ -55,6 +56,10 @@ noxinfluencer crm batch-update preview --body-file crm-batch-update.json
 noxinfluencer crm batch-update apply --body-file crm-batch-update.json --force
 noxinfluencer email recipients filter options
 noxinfluencer email collaborators list
+noxinfluencer email attachments list <task_id>
+noxinfluencer email attachments upload <task_id> --file brief.pdf --force
+noxinfluencer message attachments list <thread_id>
+noxinfluencer message attachments upload <thread_id> --file brief.pdf --force
 noxinfluencer email report <task_id>
 noxinfluencer export get <export_id>
 ```
@@ -64,8 +69,8 @@ noxinfluencer export get <export_id>
 - The campaign goal and market
 - The creator identities you decided to keep
 - The logic behind who was included or excluded
-- The approval state for recipients, sender, content, and scheduled time
-- The `label_id`, `product_collect_id`, `task_id`, `thread_id`, and `export_id` values used in follow-up operations
+- The approval state for recipients, sender, content, attachments, and scheduled time
+- The `label_id`, `product_collect_id`, `task_id`, `thread_id`, `attachment_id`, and `export_id` values used in follow-up operations
 - The reason you exported the working set
 
 ## Current boundary
