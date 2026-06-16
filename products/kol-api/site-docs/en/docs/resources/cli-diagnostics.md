@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 4
 status: published
-updated_at: 2026-06-13
+updated_at: 2026-06-16
 keywords:
   - cli diagnostics
   - troubleshooting
@@ -76,7 +76,7 @@ npm install -g @noxinfluencer/cli@latest
 
 Version output alone is not enough when local or global compiled files are stale.
 
-The current documented baseline is `@noxinfluencer/cli` `0.4.12` or newer. Prefer `schema --all` over version checks when diagnosing a stale install. If `login` is missing, browser onboarding is unavailable from that installed tree. If `product` is missing, Product Center and email product-card workflows are unavailable. If nested commands such as `creator lookalikes`, `creator search-filter-options`, `email recipients filter options`, `email collaborators list`, `email attachments upload`, `message attachments upload`, or `feedback submit` are missing, reinstall the latest CLI before continuing.
+The current documented baseline is `@noxinfluencer/cli` `0.4.13` or newer. Prefer `schema --all` over version checks when diagnosing a stale install. If `login` is missing, browser onboarding is unavailable from that installed tree. If `product` is missing, Product Center and email product-card workflows are unavailable. If nested commands such as `creator lookalikes`, `creator search-filter-options`, `email recipients filter options`, `email collaborators list`, `email attachments upload`, `message project-filters`, `message creator-filters`, `message attachments upload`, or `feedback submit` are missing, reinstall the latest CLI before continuing.
 
 ## Inspect exact command parameters
 
@@ -93,6 +93,9 @@ noxinfluencer schema "email recipients filter update"
 noxinfluencer schema "email collaborators add"
 noxinfluencer schema "email products replace"
 noxinfluencer schema "email attachments upload"
+noxinfluencer schema "message list"
+noxinfluencer schema "message project-filters"
+noxinfluencer schema "message creator-filters"
 noxinfluencer schema "message attachments upload"
 noxinfluencer schema "product list"
 noxinfluencer schema "brand-monitor influencer-list"
@@ -108,9 +111,11 @@ For SaaS-aligned hide and deduplication menus, use the options commands before w
 ```bash
 noxinfluencer creator search-filter-options
 noxinfluencer email recipients filter options
+noxinfluencer message creator-filters
+noxinfluencer message project-filters
 ```
 
-These commands return supported choices and JSON body patches. Use them instead of inventing raw SaaS field names.
+These commands return supported choices, filter IDs, or JSON body patches. Use them instead of inventing raw SaaS field names.
 
 ## Stable exit codes for agents
 

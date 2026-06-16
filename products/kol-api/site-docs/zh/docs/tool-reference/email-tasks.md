@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 9
 status: published
-updated_at: 2026-06-13
+updated_at: 2026-06-16
 keywords:
   - email tasks
   - outreach operations
@@ -69,6 +69,7 @@ source_of_truth:
 - 只有已有外部邮箱地址时才使用 `email_address`；不要为了把达人加入平台邮件任务而先运行 `creator contacts`
 - 执行 `email send` 或 `email schedule` 前，需要先读回任务和收件人
 - 发送或定时前必须确认收件人、发件人、必要时的发送时间，以及内容已经获批
+- 执行 `email content save` 后，用 `email get <task_id>` 读回任务，并确认返回的主题、HTML 正文和纯文本正文与已批准内容一致
 - `email schedule` 的 `plan_send_at` 必须是带整点 timezone offset 的 ISO 8601 时间，例如 `Z`、`+08:00` 或 `-05:00`
 - 邮件报告会区分 email tracking replies、creator-level replied counts 和 inbound message counts
 - 团队报告筛选使用 SaaS 团队成员 `uid`，不是 Gmail 或企业邮箱账号
@@ -128,6 +129,7 @@ noxinfluencer email create --body-file email-task.json --force
 noxinfluencer email recipients add <task_id> --body-file recipients.json --force
 noxinfluencer email recipients delete <task_id> --body-file recipient-delete.json --force
 noxinfluencer email content save <task_id> --body-file content.json --force
+noxinfluencer email get <task_id>
 noxinfluencer email sender update <task_id> --body-file sender.json --force
 ```
 
@@ -172,6 +174,7 @@ noxinfluencer email products delete <task_id> <email_product_id> --force
 - 商品卡 replace 会替换任务 primary project 上的当前所有商品卡，最多支持 5 个商品 collect IDs
 - `email recipients filter update` 会把过滤条件保存到任务 primary project；`{}` 表示清空全部收件人过滤条件
 - `email recipients filter tasks` 只列出可用于隐藏“已在其他邮件任务中”的收件人的任务
+- `email content save` 会写入任务 primary project 的最新内容行，服务端会通过读取内容行做保存后校验；如果读回内容不一致，不要把该任务视为可发送
 - `email collaborators replace` 会重置整组协作者；如果只是新增或移除一个成员，不要用 replace
 - 协作者 `remove` 会保留任务 owner 和其他非 owner 协作者
 - 发件人、模板和权限行为可能依赖你的账号配置

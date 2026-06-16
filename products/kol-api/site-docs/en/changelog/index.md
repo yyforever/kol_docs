@@ -7,7 +7,7 @@ content_type: changelog
 nav_group: changelog
 order: 0
 status: published
-updated_at: 2026-06-13
+updated_at: 2026-06-16
 keywords:
   - changelog
   - updates
@@ -22,6 +22,7 @@ This section records notable updates to the public documentation source and capa
 
 ## Published entries
 
+- [2026-06-16 - CLI 0.4.13 message filters and email content readback](2026-06-16-cli-0413-message-filters-email-readback.md)
 - [2026-06-13 - Browser login, platform email, and feedback](2026-06-13-login-platform-email-feedback.md)
 - [2026-06-10 - Email and message attachment support](2026-06-10-email-message-attachments.md)
 - [2026-06-09 — CLI 0.4.9 search and email controls](2026-06-09-cli-049-search-and-email-controls.md)

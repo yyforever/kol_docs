@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 5
 status: published
-updated_at: 2026-06-13
+updated_at: 2026-06-16
 keywords:
   - campaign workflows
   - collections
@@ -37,9 +37,10 @@ Use this guide when you already know your campaign direction and want the same w
 10. Attach approved briefs or files to the email task when the outreach requires them
 11. Use email tasks for first platform email outreach by `creator_id`, or for approved external email recipients you already own
 12. Use message threads only for existing `thread_id` replies, and attach draft files before send or schedule when needed
-13. Use email reports, team summary, and team breakdown after send when you need reply metrics
-14. Launch collection, CRM, or brand-monitor exports when you need a shareable file
-15. Feed the updated result back into the same campaign context
+13. Use message creator/project filters when you need to find threads by SaaS task owner, team member, project, cooperation status, or label
+14. Use email reports, team summary, and team breakdown after send when you need reply metrics
+15. Launch collection, CRM, or brand-monitor exports when you need a shareable file
+16. Feed the updated result back into the same campaign context
 
 ## Useful command sequence
 
@@ -58,6 +59,9 @@ noxinfluencer email recipients filter options
 noxinfluencer email collaborators list
 noxinfluencer email attachments list <task_id>
 noxinfluencer email attachments upload <task_id> --file brief.pdf --force
+noxinfluencer message creator-filters
+noxinfluencer message project-filters --creator_uids <user_uid>
+noxinfluencer message list --project_ids email_task:<task_id> --creator_uids <user_uid>
 noxinfluencer message attachments list <thread_id>
 noxinfluencer message attachments upload <thread_id> --file brief.pdf --force
 noxinfluencer email report <task_id>
@@ -70,6 +74,7 @@ noxinfluencer export get <export_id>
 - The creator identities you decided to keep
 - The logic behind who was included or excluded
 - The approval state for recipients, sender, content, attachments, and scheduled time
+- The message filter IDs used to reconstruct a thread view, including `project_ids`, `creator_uids`, `label_id`, and `coop_status`
 - The `label_id`, `product_collect_id`, `task_id`, `thread_id`, `attachment_id`, and `export_id` values used in follow-up operations
 - The reason you exported the working set
 

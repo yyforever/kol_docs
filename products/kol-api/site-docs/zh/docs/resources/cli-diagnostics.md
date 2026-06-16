@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 4
 status: published
-updated_at: 2026-06-13
+updated_at: 2026-06-16
 keywords:
   - cli diagnostics
   - troubleshooting
@@ -76,7 +76,7 @@ npm install -g @noxinfluencer/cli@latest
 
 本地或全局编译文件过旧时，只看版本号不够。
 
-当前文档基线是 `@noxinfluencer/cli` `0.4.12` 或更新版本。排查旧安装时，优先看 `schema --all`，不要只看版本号。如果缺少 `login`，当前安装树无法使用浏览器登录。如果缺少 `product`，当前安装树就不能执行商品中心和邮件商品卡相关工作流。如果缺少 `creator lookalikes`、`creator search-filter-options`、`email recipients filter options`、`email collaborators list`、`email attachments upload`、`message attachments upload` 或 `feedback submit` 等嵌套命令，需要先重新安装最新 CLI，再继续。
+当前文档基线是 `@noxinfluencer/cli` `0.4.13` 或更新版本。排查旧安装时，优先看 `schema --all`，不要只看版本号。如果缺少 `login`，当前安装树无法使用浏览器登录。如果缺少 `product`，当前安装树就不能执行商品中心和邮件商品卡相关工作流。如果缺少 `creator lookalikes`、`creator search-filter-options`、`email recipients filter options`、`email collaborators list`、`email attachments upload`、`message project-filters`、`message creator-filters`、`message attachments upload` 或 `feedback submit` 等嵌套命令，需要先重新安装最新 CLI，再继续。
 
 ## 查看具体命令参数
 
@@ -93,6 +93,9 @@ noxinfluencer schema "email recipients filter update"
 noxinfluencer schema "email collaborators add"
 noxinfluencer schema "email products replace"
 noxinfluencer schema "email attachments upload"
+noxinfluencer schema "message list"
+noxinfluencer schema "message project-filters"
+noxinfluencer schema "message creator-filters"
 noxinfluencer schema "message attachments upload"
 noxinfluencer schema "product list"
 noxinfluencer schema "brand-monitor influencer-list"
@@ -108,9 +111,11 @@ noxinfluencer schema "feedback submit"
 ```bash
 noxinfluencer creator search-filter-options
 noxinfluencer email recipients filter options
+noxinfluencer message creator-filters
+noxinfluencer message project-filters
 ```
 
-这些命令会返回当前支持的选项和 JSON body patches。不要自己猜 SaaS 原始字段名。
+这些命令会返回当前支持的选项、筛选 ID 或 JSON body patches。不要自己猜 SaaS 原始字段名。
 
 ## Agent 稳定 exit codes
 

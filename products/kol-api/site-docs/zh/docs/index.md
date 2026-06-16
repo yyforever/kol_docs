@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-06-13
+updated_at: 2026-06-16
 keywords:
   - noxinfluencer 文档
   - influencer marketing
@@ -33,7 +33,7 @@ source_of_truth:
 - 账号登录、浏览器登录、API key 兜底和权限心智：看 [认证与账号](getting-started/authentication.md)
 - Remote MCP 只读工具、OAuth resource metadata 和 scope 模型：看 [Remote MCP](getting-started/remote-mcp.md)
 - 产品范围和边界：看 [产品简介](getting-started/introduction.md)
-- CLI 0.4.12 命令树校验和旧安装排查：看 [CLI 诊断](resources/cli-diagnostics.md)
+- CLI 0.4.13 命令树校验和旧安装排查：看 [CLI 诊断](resources/cli-diagnostics.md)
 - 当前 Rest API 免费试用或自助购买：从现有 `/api-service` 页面进入，并以 Theneo API 文档和 API Runner 为准
 
 ## 安装入口概览

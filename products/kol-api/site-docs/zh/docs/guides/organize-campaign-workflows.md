@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 5
 status: published
-updated_at: 2026-06-13
+updated_at: 2026-06-16
 keywords:
   - campaign workflows
   - collections
@@ -37,9 +37,10 @@ source_of_truth:
 10. 触达需要 brief 或文件时，把已确认附件附加到邮件任务
 11. 对平台达人发起首次邮件触达时，使用 `creator_id` 加入邮件任务；如果你已经有获批外部邮箱，也可以作为外部收件人加入
 12. 只有已有 `thread_id` 回复时，才使用消息线程；如需附件，先附加草稿文件再发送或定时
-13. 发送后需要回复指标时，使用 email report、team-summary 和 team-breakdown
-14. 当你需要交接或下载结果时，发起资源池、CRM 或品牌监控导出
-15. 再把新的结果回流到同一个活动上下文中
+13. 需要按 SaaS 任务负责人、团队成员、项目、合作状态或标签找线程时，使用 message creator/project filters
+14. 发送后需要回复指标时，使用 email report、team-summary 和 team-breakdown
+15. 当你需要交接或下载结果时，发起资源池、CRM 或品牌监控导出
+16. 再把新的结果回流到同一个活动上下文中
 
 ## 常用命令顺序
 
@@ -58,6 +59,9 @@ noxinfluencer email recipients filter options
 noxinfluencer email collaborators list
 noxinfluencer email attachments list <task_id>
 noxinfluencer email attachments upload <task_id> --file brief.pdf --force
+noxinfluencer message creator-filters
+noxinfluencer message project-filters --creator_uids <user_uid>
+noxinfluencer message list --project_ids email_task:<task_id> --creator_uids <user_uid>
 noxinfluencer message attachments list <thread_id>
 noxinfluencer message attachments upload <thread_id> --file brief.pdf --force
 noxinfluencer email report <task_id>
@@ -70,6 +74,7 @@ noxinfluencer export get <export_id>
 - 你决定保留的达人身份
 - 你纳入或排除对象的逻辑
 - 收件人、发件人、内容、附件和发送时间的确认状态
+- 用于复现线程视图的消息筛选 ID，包括 `project_ids`、`creator_uids`、`label_id` 和 `coop_status`
 - 后续操作里使用的 `label_id`、`product_collect_id`、`task_id`、`thread_id`、`attachment_id` 和 `export_id`
 - 这次导出的用途和原因
 

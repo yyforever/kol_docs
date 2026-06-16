@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 9
 status: published
-updated_at: 2026-06-13
+updated_at: 2026-06-16
 keywords:
   - email tasks
   - outreach operations
@@ -69,6 +69,7 @@ Email Tasks lets you manage NoxInfluencer email-task records after you have sele
 - Use `email_address` only for known external addresses; do not run `creator contacts` first just to add platform email recipients
 - Before `email send` or `email schedule`, read back the task and recipients
 - Confirm recipients, sender, scheduled time when relevant, and content approval before execution
+- After `email content save`, read the task back with `email get <task_id>` and confirm the returned subject, HTML body, and text body match the approved content
 - `email schedule` requires `plan_send_at` in ISO 8601 format with a whole-hour timezone offset, such as `Z`, `+08:00`, or `-05:00`
 - Email reports distinguish email tracking replies from creator-level replied counts and inbound message counts
 - Team report filters use SaaS team member `uid`, not Gmail or enterprise sender mailbox accounts
@@ -128,6 +129,7 @@ noxinfluencer email create --body-file email-task.json --force
 noxinfluencer email recipients add <task_id> --body-file recipients.json --force
 noxinfluencer email recipients delete <task_id> --body-file recipient-delete.json --force
 noxinfluencer email content save <task_id> --body-file content.json --force
+noxinfluencer email get <task_id>
 noxinfluencer email sender update <task_id> --body-file sender.json --force
 ```
 
@@ -172,6 +174,7 @@ noxinfluencer email products delete <task_id> <email_product_id> --force
 - Product card replace changes all current product cards on the task primary project and supports at most 5 product collect IDs
 - `email recipients filter update` saves filters on the task primary project; `{}` clears all recipient filters
 - `email recipients filter tasks` only lists tasks that can be used to hide recipients already present in another email task
+- `email content save` writes the latest content row for the task primary project and the server verifies the saved content by reading task content rows back; if the readback does not match, treat the task as not ready to send
 - `email collaborators replace` resets the collaborator set and must not be used when you only intend to add or remove one member
 - Collaborator `remove` keeps the task owner and remaining non-owner collaborators
 - Some sender, template, and entitlement behavior may depend on your account configuration

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 10
 status: published
-updated_at: 2026-06-13
+updated_at: 2026-06-16
 keywords:
   - message threads
   - communication workflows
@@ -32,6 +32,7 @@ source_of_truth:
 ## 适合什么场景
 
 - 你需要查看已有消息线程
+- 你需要按 SaaS 项目、任务创建人、团队成员、合作状态或标签筛选消息中心线程
 - 你要管理某个已知线程的标签、合作状态或草稿状态
 - 你要在发送或定时前，把已确认文件附加到线程草稿
 - 你要对已有 `thread_id` 发送、定时或取消一条已确认回复
@@ -39,6 +40,7 @@ source_of_truth:
 ## 当前 beta 范围
 
 - 查看消息线程列表和详情
+- 查看与 SaaS 对齐的项目筛选和任务创建人 / 团队成员筛选选项
 - 解析某个达人 / channel 的相关项目或相关线程
 - 查看、保存和应用消息模板
 - 查看和设置标签
@@ -53,12 +55,33 @@ source_of_truth:
 
 消息附件属于线程草稿。发送或定时前先上传附件，NoxInfluencer 会在发送时带上这些草稿文件。
 
+## SaaS 对齐的列表筛选
+
+构建消息线程筛选前，先使用筛选辅助命令：
+
+```bash
+noxinfluencer message creator-filters
+noxinfluencer message project-filters --creator_uids <user_uid>
+noxinfluencer message labels --page_size 20
+noxinfluencer message coop-statuses
+```
+
+然后把返回的筛选 ID 传给 `message list`：
+
+```bash
+noxinfluencer message list --project_ids email_task:<task_id> --creator_uids <user_uid> --coop_status 2 --label_id 12
+```
+
+`project_ids` 使用公开的 `<business_kind>:<business_id>` 格式，例如 `email_task:1829` 或 `campaign_offer:99001`。不要使用上游原始 business type。
+
 ## 关键命令
 
 构建草稿、发送、定时、标签或合作状态 body 前，先查看 schema：
 
 ```bash
 noxinfluencer schema "message list"
+noxinfluencer schema "message project-filters"
+noxinfluencer schema "message creator-filters"
 noxinfluencer schema "message send"
 noxinfluencer schema "message attachments upload"
 noxinfluencer schema "message attachments delete"
@@ -69,6 +92,7 @@ noxinfluencer schema "message labels set"
 
 ```bash
 noxinfluencer message list --business_kind email_task --business_id <task_id>
+noxinfluencer message list --project_ids email_task:<task_id> --creator_uids <user_uid> --page_size 20
 noxinfluencer message get <thread_id>
 noxinfluencer message projects <thread_id>
 ```
@@ -111,6 +135,9 @@ noxinfluencer message cancel <thread_id> --force
 
 - 写操作默认 dry-run，真正执行前需要确认并使用 `--force`
 - 发送和定时需要先确认内容、`sender_auth_id` 和准确目标线程
+- `status=draft` 和 `status=scheduled` 需要同时提供 `--business_kind` 与 `--business_id`；上游项目标签页已经废弃
+- `--project_ids` 不能和 `--business_kind` / `--business_id` 同时使用
+- `--creator_uids` 来自 `message creator-filters`，表示 SaaS 任务创建人或团队成员 ID，不是达人 channel ID
 - `message schedule` 需要带整点 timezone offset 的 ISO 8601 时间，例如 `Z`、`+08:00` 或 `-05:00`
 - 草稿附件上传使用 `--file`，不是 `--body-file`
 - 一个线程最多支持 2 个草稿附件，单个最大 10MB；危险可执行文件或脚本扩展名会被拒绝

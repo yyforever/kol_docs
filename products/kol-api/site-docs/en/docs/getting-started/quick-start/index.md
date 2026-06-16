@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 2
 status: published
-updated_at: 2026-06-13
+updated_at: 2026-06-16
 keywords:
   - quick start
   - skills.sh
@@ -134,7 +134,7 @@ The supported OpenAI path is OpenAI Codex. NoxInfluencer needs an execution envi
 
 ## Step 3: Install or refresh the CLI
 
-The current public documentation baseline is `@noxinfluencer/cli` `0.4.12` or newer. Install the latest CLI package:
+The current public documentation baseline is `@noxinfluencer/cli` `0.4.13` or newer. Install the latest CLI package:
 
 ```bash
 npm install -g @noxinfluencer/cli@latest
@@ -158,7 +158,7 @@ The command tree must include:
 - `export`
 - `agent`
 
-Version output alone is not enough if your machine has stale local or global compiled files. If `schema --all` does not show the expected command groups after reinstalling the latest package, stop the affected workflow and treat it as a CLI package or command-tree mismatch. For current workflows, the installed tree should also expose `login`, creator search filtering, creator lookalikes, email recipient filters, email collaborators, email/message attachments, Product Center, brand monitor, and feedback commands.
+Version output alone is not enough if your machine has stale local or global compiled files. If `schema --all` does not show the expected command groups after reinstalling the latest package, stop the affected workflow and treat it as a CLI package or command-tree mismatch. For current workflows, the installed tree should also expose `login`, creator search filtering, creator lookalikes, email recipient filters, email collaborators, email/message attachments, message project and creator filters, Product Center, brand monitor, and feedback commands.
 
 ## Step 4: Let your agent continue
 
