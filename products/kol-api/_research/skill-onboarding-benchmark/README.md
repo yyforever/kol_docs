@@ -21,3 +21,4 @@
 - [09_HeyReach_MCP_Chrome实测拆解_2026-06-23.md](./09_HeyReach_MCP_Chrome实测拆解_2026-06-23.md)
 - [10_Zevari_Chrome实测拆解_2026-06-23.md](./10_Zevari_Chrome实测拆解_2026-06-23.md)
 - [11_Postiz_Chrome实测拆解_2026-06-23.md](./11_Postiz_Chrome实测拆解_2026-06-23.md)
+- [12_LeadMagic_Chrome实测拆解_2026-06-23.md](./12_LeadMagic_Chrome实测拆解_2026-06-23.md)
