@@ -1,350 +1,266 @@
 # Seamless.AI Chrome 实测拆解
 
-日期：2026-06-22  
+日期：2026-06-22，重构：2026-06-23
 调研对象：Seamless.AI  
 调研目的：为聚星 Skill 新用户路径重构提供对标观察，不输出聚星最终路径结论。
 
-## 1. 实测范围
+## 1. 拆解原则
 
-已使用 Chrome 实际打开并检查的页面：
+本拆解不做全量页面遍历，也不把 docs 当功能清单抄录。判断依据优先级如下：
 
-- `https://seamless.ai/`
-- `https://seamless.ai/pricing`
-- `https://login.seamless.ai/register`
-- `https://login.seamless.ai/login`
-- `https://docs.seamless.ai/introduction`
-- `https://docs.seamless.ai/mcp-docs`
-- `https://docs.seamless.ai/mcp/quickstart`
-- `https://docs.seamless.ai/mcp/install/claude-code`
-- `https://docs.seamless.ai/mcp/workflows/prospect-to-meeting`
-- `https://docs.seamless.ai/authenticate-and-make-your-first-request`
-- `https://docs.seamless.ai/authentication/api-keys`
-- `https://docs.seamless.ai/authentication/oauth`
-- `https://docs.seamless.ai/rate-limits-and-credits`
-- `https://docs.seamless.ai/use-cases/ai-sales-automation`
-- `https://docs.seamless.ai/choose-the-right-workflow`
-- `https://docs.seamless.ai/mcp/authentication`
-- `https://docs.seamless.ai/mcp/risk-tiers`
-- `https://docs.seamless.ai/mcp/access-control`
-- `https://docs.seamless.ai/mcp/resources`
-- `https://docs.seamless.ai/mcp/tools/search`
-- `https://docs.seamless.ai/mcp/tools/research`
-- `https://docs.seamless.ai/mcp/tools/lists`
-- `https://docs.seamless.ai/mcp/tools/campaigns`
-- `https://docs.seamless.ai/mcp/tools/email`
-- `https://docs.seamless.ai/mcp/workflows`
-- `https://docs.seamless.ai/mcp/workflows/bulk-enrich-and-campaign`
-- `https://docs.seamless.ai/mcp/workflows/daily-activity-digest`
-- `https://docs.seamless.ai/mcp/workflows/job-change-trigger`
-- `https://docs.seamless.ai/mcp/install/cursor`
-- `https://docs.seamless.ai/mcp/install/vs-code`
-- `https://docs.seamless.ai/mcp/install/claude-desktop`
-- `https://docs.seamless.ai/mcp/install/chatgpt`
-- `https://docs.seamless.ai/mcp/install/gemini-cli`
-- `https://docs.seamless.ai/mcp/install/other-clients`
+1. 实际视觉体验：用户第一眼看到什么、被什么承诺吸引、下一步是什么。
+2. 主要场景路径：landing、注册、docs 分流、agent / MCP 接入、REST first request、workflow recipe。
+3. 关键摩擦：注册、授权、额度、权限、写操作风险、结果沉淀。
+4. 聚星映射价值：能否转成 `/skills`、dashboard、Quick Start、Agent runtime 接入、quota / billing 的实验假设。
 
-未验证内容：
+文档只记录对聚星有判断价值的观察，不保留无助于路径设计的细碎页面枚举。
+
+## 2. 事实边界
+
+已用 Chrome 实测：
+
+- Seamless.AI 官网、pricing、login / register 入口。
+- Docs introduction、MCP overview / quickstart、Claude Code 代表性安装页。
+- REST first request、API key、OAuth、rate limits / credits。
+- MCP authentication、risk tiers、access control、resources、代表性 tools 和 workflow recipes。
+
+未完成：
 
 - 登录后 dashboard。
-- 真实注册。
+- 真实 onboarding。
 - 真实 API key 创建。
 - 真实 OAuth / MCP 授权。
-- 真实扣量。
-- 真实发送邮件。
+- 真实 credits / 扣量。
+- 真实 send email / create campaign。
 
-浏览器备注：
+阻塞原因：
 
-- 直接打开 `https://docs.seamless.ai/llms.txt` 和若干 `.md` 形式 docs URL 时，Chrome 返回 `net::ERR_BLOCKED_BY_CLIENT`。这更像本机浏览器扩展拦截，不作为 Seamless.AI 产品判断依据。
-- 通过非 `.md` 的 canonical docs URL 可以正常访问，例如 `/introduction`、`/mcp-docs`、`/mcp/quickstart`、`/mcp/install/claude-code`、`/mcp/workflows/prospect-to-meeting`。
+- 注册流程要求美国手机号。
+- 本轮遇到短信频率限制，无法继续注册和登录后体验验证。
+- 因此本文所有登录后相关判断都保持为“未验证”，不写成事实。
 
-## 2. 总体判断
+## 3. 一句话判断
 
-Seamless.AI 的公开路径不是 `landing -> key -> call API` 的单线模型。它更像一个多入口系统：
+Seamless.AI 的公开新用户路径不是“拿 key 调 API”，而是“用 AI 帮销售团队找线索、研究联系人、创建触达动作”。API、MCP、OAuth、credits 和 workflow 都是这个业务承诺下面的支撑层。
 
-| Surface | Role |
+对聚星的核心启发：`/skills` 不应先把用户教育成“去拿 key / 看工具列表”，而应先验证用户是否能快速理解并完成一个达人营销任务。
+
+## 4. 主场景路径
+
+### 4.1 官网 landing：先卖业务结果
+
+视觉和文案重点：
+
+- 首页主叙事是 sales outcome：找线索、自动触达、预约会议、增长收入。
+- API / MCP / AI Agents 没有抢占首屏主叙事，而是被包装成达成销售结果的能力。
+- CTA 并存：business email 表单、free signup、demo。
+
+路径作用：
+
+- 给非技术用户建立“这能帮我完成销售任务”的 value perception。
+- 同时保留自助试用和销售承接，不强迫所有人走同一条技术路径。
+
+聚星映射：
+
+- `/skills` 首屏需要优先测试“达人营销任务结果”表达，而不是先讲 MCP、API key 或工具名称。
+- CTA 可以并存，但要明确主任务，避免用户不知道是去 dashboard、docs、CLI 还是 API。
+
+### 4.2 注册 / pricing：用免费额度承接试用，但存在强阻塞
+
+公开可见：
+
+- Pricing 有 Free / Pro / Enterprise。
+- Free 样本显示 `1 User`、`50 Credits`。
+- 注册页强调 `50 free leads`。
+
+实际阻塞：
+
+- 注册需要美国手机号。
+- 短信频率限制导致本轮不能进入后台。
+
+路径作用：
+
+- 免费额度把抽象试用转成“能拿多少 leads”的业务承诺。
+- 但手机号要求是明显激活摩擦，尤其会影响海外非美国用户、对隐私敏感用户和只想先试 Agent / API 的技术用户。
+
+聚星映射：
+
+- 聚星免费额度最好表达成“能完成多少个达人营销任务”，而不是只显示 credit 数字。
+- 如果聚星的 Skill / API 也有手机号、企业信息或强校验，需要判断它们放在 first value 前还是后；前置太重会压低激活。
+
+### 4.3 Docs introduction：先按意图分流，再进入技术细节
+
+Docs 的关键不是文档数量，而是入口分流：
+
+| 用户意图 | Seamless 承接方式 |
 |---|---|
-| Public homepage | 卖业务结果和可信度，降低非技术用户理解成本 |
-| Pricing / register | 用 Free / credits / leads 承接自助试用 |
-| Docs introduction | 让不同 persona 选择自己的路径 |
-| MCP docs | 给 AI client / agent 用户最短连接路径和 workflow recipes |
-| REST docs | 给 developer 可跑的 first request 和对象流 |
-| MCP governance docs | 用认证、权限、risk tiers、resources 解释 agent 能做什么和不能做什么 |
-| Workflow pages | 把工具调用包装成业务任务 |
-| Rate limits / credits | 解释可控性、失败原因和使用边界 |
+| AI builder / vibe coder | MCP in Cursor / Claude，或 REST automation |
+| RevOps / integrations | API research、CRM / warehouse sync |
+| Developer | curl / Python / Node / Postman first request |
+| Seller / operator | 先理解产品，再交给技术同事 |
 
-对聚星的核心启发：先用对标调研验证不同入口分别承接什么用户，不要在页面设计前把所有用户压成同一个路径。
+路径作用：
 
-## 3. Public Homepage
+- 用户先选择“我是谁 / 我要完成什么”，而不是先理解 API key、OAuth、MCP 的区别。
+- Docs 同时服务非技术购买者、开发者和 agent runtime 用户。
 
-首页主叙事是 sales outcome，不是 API / MCP：
+聚星映射：
 
-- `Every deal starts here`
-- `Find and close more deals`
-- `The AI revenue engine that turns data into deals`
-- 自动 outreach、book meetings、maximize revenue
+- 聚星可以测试按意图而不是按技术入口分流：营销人员、Agent runtime 用户、Developer、Admin / owner、Sales-assisted lead。
+- 非技术用户不一定应该读 API 文档；他们可能需要“把任务交给 Agent / 技术同事”的路径。
 
-页面把产品能力组织成：
+### 4.4 Agent / MCP 路径：短连接 + 业务任务
 
-- Data Engine
-- Engagement Hub
-- AI Agents
-- Automation Network
+实测到的公开路径：
 
-页面内可见：
+- MCP quickstart：添加 server、authorize、run search。
+- Claude Code 代表页：一条命令完成接入。
+- 其他 client 页面按 Cursor、VS Code、Claude Desktop、ChatGPT、Gemini CLI 等分别给最短配置。
 
-- business email 表单。
-- `Try Seamless risk-free`。
-- `Sign up free`。
-- `Get a demo`。
+关键判断：
 
-对聚星的启发：
+- Seamless 没有用一个 generic MCP 页面覆盖所有 client，而是承认不同 client 的配置位置和字段名不同。
+- 页面重点是“在你的工具里尽快连上并跑一个 search”，不是长篇解释 MCP。
 
-- `/skills` 首屏需要先验证是否应该讲“达人营销任务结果”，而不是先讲 MCP / API / key。
-- Skill / API / CLI / MCP 可以作为能力或入口，但不要天然抢走业务结果叙事。
-- 自助试用和销售承接可以并存，关键是不要让主信息架构混乱。
+聚星映射：
 
-## 4. Pricing and Registration
+- `Use in Codex`、`Use in Claude Code`、`Use in OpenClaw`、`Use in Hermes` 应该分别给最短可跑路径。
+- ChatGPT connector 属于 hosted connector 体验，和本地 coding-agent / CLI 体验不同，后续应单独评估，不应混成同一条路径。
+- Quick Start 的第一步应尽快落到业务任务，例如找达人、分析达人主页 URL、保存到 collection，而不是停在“连接成功”。
 
-Pricing 页可见 Free / Pro / Enterprise。Free 样本显示：
+### 4.5 REST API 路径：first request 串成 first value
 
-- `1 User`
-- `50 Credits`
+REST first request 的关键链路是：
 
-注册页可见：
+```text
+authenticate
+-> search
+-> research / enrich
+-> poll
+-> get enriched result
+```
 
-- `Welcome to Seamless.AI!`
-- `Sign up now and get your 50 free leads`
+路径作用：
 
-对聚星的启发：
+- 它不是只证明 API 能通，而是让开发者看到“搜索结果可以继续研究，最终得到可用业务结果”。
+- `searchResultId`、`requestId`、polling / webhook 这些对象让用户理解异步任务和结果流。
 
-- 免费额度最好用“可完成多少个具体任务”表达，而不是只写抽象余额。
-- 免费试用是入口承诺还是登录后解释，需要看它是否提高真实 activation，而不是只提高注册。
+聚星映射：
 
-## 5. Docs Information Architecture
+- Rest API Quick Start 不应只是 `curl /quota` 或 `curl /profile`，而应跑出一个完整达人营销结果。
+- 如果聚星有异步任务、监控、邮件任务或 campaign，需要明确 request id、结果在哪里查看、下一步怎么继续。
 
-Docs introduction 的关键结构是 `Choose your path`：
+### 4.6 Workflow recipes：把工具包装成业务剧本
 
-| Persona / intent | Seamless routing |
+Seamless 的 workflow 页面比 tool reference 更接近新用户路径设计。代表场景：
+
+| Workflow | 业务含义 |
 |---|---|
-| AI builder / vibe coder | MCP in Cursor / Claude, or REST automation |
-| RevOps / integrations | API research and CRM / warehouse sync |
-| Developer | First request in curl / Python / Node / Postman |
-| Seller / operator | Learn product, then hand off to technical teammate |
+| Prospect to meeting | 找联系人、研究、拿联系方式、触达 |
+| Bulk enrich and campaign | 批量研究联系人并创建 campaign |
+| Daily activity digest | 读取 activity feed，汇总成可发送的 digest |
+| Job change trigger | 发现职位变化，研究新角色并触达 |
 
-随后 `Get started` 才分：
+路径作用：
 
-- API keys
-- OAuth
-- First request
-- MCP for agents
+- 用户看到的是“完成一个销售动作”，不是“调用哪些工具”。
+- 写操作和外部发送可以被设计成“先生成草稿 / 汇总，用户批准后再发送”，降低风险焦虑。
+- workflow 自带 retention hook：campaign、activity digest、job change trigger 都会把用户带回产品。
 
-对聚星的启发：
+聚星映射：
 
-- 聚星可能需要先按用户意图分层，再按技术入口分层。
-- 可验证的第一版分层：marketer、agent-runtime user、developer、admin、sales-assisted lead。
-- 非技术用户可能需要“把需求交给技术同事 / Agent”的路径，而不是被迫读 API key 文档。
+- 聚星需要验证哪些达人营销 recipe 最适合作为 first value：
+  - 找一批达人并保存到 collection。
+  - 分析一个达人主页 URL。
+  - 基于 collection 生成 outreach 草稿。
+  - 创建 / 复盘 monitor。
+  - 生成 campaign summary。
+- Tool reference 应支撑 Agent，但新用户路径应优先展示 recipe。
 
-## 6. First Value Design
+### 4.7 权限、风险和额度：把焦虑前置解释清楚
 
-Seamless 的 first value 有多种表达：
+Seamless 公开 docs 把风险和权限拆开：
 
-| Surface | First value expression |
-|---|---|
-| REST first request | search -> research -> poll，得到公司或联系人 enriched result |
-| MCP quickstart | add server -> authorize -> run a search |
-| Workflow recipe | prospect to meeting：search、research、resolve contact、send email |
-| AI sales automation | 让 agent 找 CTO、研究联系人、输出联系方式和 cold email opener |
+- Risk tiers：read、write、destructive。
+- Access control：按 Search、Research、Lists、Campaigns、Email、Activity 等业务域说明权限。
+- Credits / rate limits：解释 headers、429、duplicate research、license vs credits。
 
-它不是只让用户“连接成功”，而是把连接导向业务任务。
+路径作用：
 
-对聚星的启发：
+- Agent 能做什么、什么时候会改数据、什么时候会发送邮件，用户有机会提前理解。
+- 额度不只是账单数字，也解释失败原因和重复操作。
 
-- 聚星 first value 需要验证，不应预设。
-- 候选 first value 包括：`find creators`、`analyze creator URL`、`save to collection`、`create campaign / email task`、`set monitor`。
-- 不同入口可能对应不同 first value。例如 developer 先跑 API request，marketer 先保存达人，agent runtime 用户先完成一次自然语言任务。
-- Prompt / command 示例可以要求返回 quota / status，帮助用户理解失败和额度。
+聚星映射：
 
-## 7. Auth and Setup
+- 聚星 Skill / MCP / API 应该显式区分 read、write、destructive 或类似风险层。
+- `send / schedule / apply` 等会产生外部影响的动作，需要确认、限额、失败提示和回滚边界。
+- Quota 说明应从“剩余 credit”升级到“还能完成哪些任务、为什么失败、升级后能多做什么”。
 
-Seamless 没有把 API key、OAuth 和 MCP auth 混在一页里强行解释，而是拆开：
+## 5. 对聚星最有价值的结论
 
-| Auth / setup | Observed treatment |
-|---|---|
-| API key | `Settings -> Public API` 生成 key，REST 使用 `Token` header |
-| OAuth | register app、authorization code、token exchange、Bearer、refresh |
-| MCP quickstart | add server、authorize、run search |
-| Claude Code | 一条 `claude mcp add --transport http seamless https://mcp.seamless.ai/mcp` 命令 |
+### 5.1 不要让 key 成为新用户心智中心
 
-MCP authentication 页进一步把 OAuth 细节单独解释：
+Seamless 的公开路径证明，API key / OAuth / MCP config 可以放在支撑层。新用户第一心智应是业务结果。
 
-- 支持 OAuth 2.1 或 API key。
-- OAuth discovery 指向 `https://mcp.seamless.ai/.well-known/oauth-authorization-server`。
-- authorize、token、register、revoke endpoint 分开列出。
-- grant types 包含 authorization code 和 refresh token。
-- PKCE `S256` required。
-- scope 使用 `mcp.all`。
+聚星假设：
 
-对聚星的启发：
+- `/skills` 首屏先讲“用 AI 完成达人发现、分析、触达、监控”，可能比先讲“接入 Skill / MCP / API”更容易激活。
 
-- CLI / MCP / Codex / Claude Code / OpenClaw / Hermes 是否都应该有“一条命令 / 一段配置 / 一个 first task”的独立 Quick Start，需要验证。
-- Dashboard 是否应该显示连接状态和下一步任务，而不是把 key / quota 作为第一视觉中心，需要验证。
-- API key 和 OAuth 是 fallback / developer route，还是所有用户必经步骤，不能在调研前定死。
-- 如果聚星支持多 client / 多 runtime，认证文档需要拆成“用户怎么连”和“系统怎么授权”两层，不要把 OAuth、API key、token exchange、quota、workspace 绑定混在一个长页。
+### 5.2 每个承接环境需要自己的最短路径
 
-## 8. MCP Client Install
+Seamless 针对不同 client 给不同安装页。它没有假设用户会从一个通用文档里自行推导配置。
 
-Seamless 的 MCP install 信息架构不是只给一个 generic config，而是为不同 client 单独给最短配置：
+聚星假设：
 
-| Client | Observed setup |
-|---|---|
-| Claude Code | 一条 `claude mcp add --transport http seamless https://mcp.seamless.ai/mcp` 命令 |
-| Cursor | `~/.cursor/mcp.json`，配置 `mcpServers.seamless.url` |
-| VS Code | `.vscode/mcp.json`，配置 `servers.seamless.type=http` 和 `url` |
-| Claude Desktop | `mcpServers.seamless.url` JSON |
-| ChatGPT | 配置 `https://mcp.seamless.ai/mcp` |
-| Gemini CLI | `settings.json` 下 `mcpServers.seamless.httpUrl` |
-| Other clients | 给通用 MCP server URL 和 JSON 形态 |
+- Codex、Claude Code、OpenClaw、Hermes、CLI、REST API、未来 ChatGPT connector 应分别有最短路径。
+- 每条路径都应包含一个 first task，而不是只给配置。
 
-这些页面文案很短，主要价值不是“解释 MCP 是什么”，而是让用户在自己的工具里少走弯路。
+### 5.3 Workflow 比 tool list 更适合转化
 
-对聚星的启发：
+Tool list 适合 reference；workflow recipe 更适合 onboarding。
 
-- `Use in Codex`、`Use in Claude Code`、`Use in OpenClaw`、`Use in Hermes` 不应简单复用一页 generic MCP 文档；每个 client 应该给最短可跑配置和一个 first task。
-- 如果未来接 ChatGPT connector，需要单独拆 hosted connector 体验，不要和本地 coding-agent / CLI 体验混为一谈。
-- 页面深度不一定要大，但必须减少用户在“配置文件放哪里、字段名是什么、是否支持远程 HTTP MCP”上的不确定性。
+聚星假设：
 
-## 9. Governance: Risk Tiers and Access Control
+- 新用户路径应优先展示 3-5 个达人营销 recipe，再把详细 tool reference 放到 docs 深层。
 
-Seamless 将 MCP tool 分成风险层：
+### 5.4 结果必须沉淀到 SaaS 对象
 
-| Tier | Meaning | Examples |
-|---|---|---|
-| read | 只读，不改数据 | search contacts、get credits、list campaigns |
-| write | 创建或修改数据 | research contacts、create campaign、send email |
-| destructive | 永久删除 | delete campaign、delete list、delete saved search |
+Seamless 的路径围绕 contact、list、campaign、email、activity。Agent 结果不是只停留在聊天里。
 
-Access control 页再按 domain 解释 license / permission：
+聚星假设：
 
-| Domain | Access pattern |
-|---|---|
-| Search / Research / User / Lists / Saved searches | All users |
-| Campaigns / Tasks / Templates / Email accounts / Email / Calls / Activity / Connect config | Connect 或更高权限 |
+- 聚星首次成功不应只定义成“调用成功”，而应尽量落到 collection、campaign、email task、monitor 或 CRM。
 
-对聚星的启发：
+### 5.5 风险和额度解释会影响首次写操作
 
-- 聚星不能只在文案里说“安全可控”，需要在 tool 层显式标记 read / write / destructive。
-- `send/schedule/apply` 这类写操作如果允许免费用户使用，也需要确认步骤、额度、失败提示和可回滚边界。
-- 权限说明应按业务域组织，例如 creator search、creator analysis、collection、campaign、email task、monitor、CRM、quota，而不是只按技术 endpoint。
-- Agent runtime 首次任务最好默认从 read 或低风险 write 开始，让用户先看到价值，再解释高风险动作确认。
+Agent 能发邮件、建 campaign、改对象时，用户会自然担心权限、费用和误操作。
 
-## 10. Tool Taxonomy and Resources
+聚星假设：
 
-Seamless MCP 工具页按业务域组织：
+- 在 first run 前后清晰解释 read / write、quota、confirm、failure reason，可能提高用户敢用写操作的比例。
 
-| Tool group | Observed tools / objects |
-|---|---|
-| Search | `search_contacts`、`search_companies` |
-| Research | `research_contacts`、`poll_contact_research`、`research_companies`、`poll_company_research` |
-| Lists | list CRUD |
-| Campaigns | campaign CRUD、steps、contacts、action execution |
-| Email | accounts、drafts、send、bulk send |
+## 6. 不应照搬
 
-Resources 页提供只读 `seamless://` URI：
+- 不照搬 Seamless 的 sales lead 业务语言；聚星要换成达人营销任务语言。
+- 不照搬它的工具复杂度；聚星第一屏应减少工具列表压力。
+- 不把 `50 free leads` 等同于聚星额度方案；聚星要按 Skill 成本和 activation 数据定义免费任务。
+- 不把 Claude Code 一条命令当作聚星唯一主路径；它只是 client-specific setup 的强样本。
+- 不假设登录后 onboarding 与公开 docs 一致；本轮登录后未验证。
+- 不因为 Seamless 支持 ChatGPT 页面，就把 hosted connector 体验混入当前 coding-agent / CLI 优化主问题。
 
-- `seamless://me`
-- `seamless://credits`
-- `seamless://campaigns/{campaignId}`
-- `seamless://templates`
-- `seamless://templates/variables`
-- `seamless://email-accounts`
-- `seamless://connect/config`
-
-对聚星的启发：
-
-- 聚星 Skill 文档可以把 tools 和 resources 分开：tools 做动作，resources 提供当前账号、quota、已有对象和配置上下文。
-- Tool reference 不应成为首屏主内容，但必须支撑 agent 做 discover 和自我解释。
-- Resources 对新用户路径很关键，因为它能让 agent 在执行前先读取账号、额度、workspace、已有 collection / campaign / monitor 状态，减少盲目调用。
-
-## 11. Object Handoff
-
-Seamless docs 反复出现对象标识和结果流：
-
-- `searchResultId`
-- `requestId`
-- webhooks / polling
-- saved contacts
-- email accounts
-- templates variables
-- CRM / warehouse sync
-
-它的 agent workflow 不是停在聊天回答，而是进入 contact、campaign、email、CRM 等业务对象。
-
-对聚星的启发：
-
-- Skill 调用结果要落到哪些聚星对象，需要验证：creator、collection、campaign、monitor、email task、CRM。
-- Agent runtime 的结果如果只停在聊天里，可能降低回访和付费转化。
-- Quick Start 里可能需要明确“结果保存在哪里、下一步在哪里继续”。
-
-## 12. Workflow Recipes
-
-本轮追加验证了更多 workflow 页面。它们的共同点是把 MCP 工具串成业务任务，而不是让用户自己从 tool catalog 里拼。
-
-| Workflow | Sequence |
-|---|---|
-| Prospect to meeting | search、research、resolve contact、send email |
-| Bulk enrich and campaign | search、research、resolve saved IDs、create campaign |
-| Daily activity digest | read activity feed、summarize、用户批准后再发 Slack |
-| Job change trigger | read existing contacts、search / research new role、send outbound |
-
-对聚星的启发：
-
-- 聚星 Quick Start 应该至少测试“任务 recipe”表达，而不是只写“如何连接 MCP”。
-- Workflow 可以跨 read / write 工具，但应该明确哪些步骤会改数据或发送消息。
-- Daily digest 这种 workflow 证明 retention hook 不一定来自用户主动搜索，也可以来自已有对象的周期性更新。
-- 聚星可以把候选 recipe 表达为：找达人并保存到 collection、分析达人主页 URL、基于 collection 生成 outreach 草稿、创建 / 复盘 monitor、生成 campaign summary。
-
-## 13. Credits, Limits and Failure Control
-
-Seamless 把 credits / limits 放在专门页面，覆盖：
-
-- `X-RateLimit-*`
-- `X-PublicAPI-Credits`
-- 429
-- duplicate research
-- license vs credits
-
-AI sales automation 的 prompt 示例也要求失败时 report credits/status。
-
-对聚星的启发：
-
-- Skill 的 quota 说明可以从“数字余额”改成“还能完成哪些任务”。
-- 失败状态需要区分 auth、permission、quota、rate limit、duplicate / repeated work。
-- Agent runtime prompt 可以默认包含“如果失败，说明原因和剩余额度 / 状态”。
-
-## 14. 不能直接照搬
-
-- 不要照搬 Seamless.AI 的 sales lead 业务语言；聚星要换成达人营销任务语言。
-- 不要照搬 54 tools 的复杂度；聚星第一屏需要减少工具列表压力。
-- 不要把 `50 free leads` 等同于聚星额度方案；聚星需要根据 Skill 实际成本和 activation 数据定。
-- 不要把 Claude Code 页面的一条命令当成最终路径结论；它只是一个强样本，说明 coding-agent setup 可以很短。
-- 不要照搬 Seamless 的 Connect 权限分层名称；聚星应按自己的 SaaS 权限、套餐、Skill 免费额度和业务对象定义权限。
-- 不要假设登录后 onboarding 与公开 docs 一致；本轮未验证登录后体验。
-
-## 15. 候选实验
+## 7. 可转成实验的问题
 
 | Hypothesis | Candidate experiment | Signal |
 |---|---|---|
-| 按用户意图区分入口比按技术名词区分入口更容易激活 | `/skills` 首屏测试 marketer / agent-runtime / developer / admin 四类入口 | CTA click、进入 setup、首次成功调用 |
-| first value 写成业务任务比写成连接工具更有效 | Quick Start 从 “connect MCP” 改为 “find 10 creators and save to collection” | first run completion、保存对象率 |
-| quota 任务化解释能减少焦虑 | usage 文案显示“剩余额度还能完成 N 次 creator analysis / monitor check” | quota page bounce、quota hit 后升级点击 |
-| 每个 runtime 单独 Quick Start 能降低失败 | Codex / Claude Code / CLI / dashboard 各给最短可跑路径 | setup success、first successful call |
-| 结果回写能提高 retention | first run 后强提示保存到 collection / campaign / monitor | next-day return、second run、付费转化 |
-| 风险层显式化能降低写操作焦虑 | Tool / workflow 标记 read / write / destructive，写操作前给确认和结果回滚说明 | write step start、write step completion、support issue |
-| resources 预读能提高首次任务成功率 | Agent first task 先读账号、quota、已有对象，再执行 search / analysis | first run success、quota error、wrong workspace error |
+| 任务结果型首屏比工具接入型首屏更容易激活 | `/skills` 首屏测试“找达人 / 分析 / 触达 / 监控”任务承诺 | CTA click、进入 setup、首次成功调用 |
+| client-specific Quick Start 能降低失败 | 分别产出 Codex / Claude Code / OpenClaw / Hermes / CLI 最短路径 | setup success、first run success |
+| workflow recipe 比 tool list 更适合新用户 | Quick Start 先展示 3-5 个达人营销 recipe | first task start、first task completion |
+| 结果回写能提高留存 | first run 后引导保存到 collection / campaign / monitor | next-day return、second run、付费转化 |
+| 风险层和额度解释能降低写操作焦虑 | 对 write / destructive 动作标记确认、额度和失败原因 | write step start、write step completion、support issue |
 
-## 16. 下一步
+## 8. 下一步
 
-1. 用同一框架拆 FoxReach，重点看 cold email MCP landing 如何把 lead / email / campaign 任务讲清。
+1. 拆 FoxReach，重点看 cold email MCP landing 如何把 lead / email / campaign 任务讲清。
 2. 拆 Amplemarket Skills，重点看 skill / play 命名和非技术用户文案。
 3. 拆 Twenty CRM MCP，重点看 object handoff、workspace records 和 developer docs。
-4. 再把四个业务主对标合并成聚星候选路径，而不是现在直接定稿。
+4. 后续横向合并时，只保留可映射到聚星页面、路径、实验和指标的结论。
