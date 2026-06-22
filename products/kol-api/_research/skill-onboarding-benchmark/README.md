@@ -23,3 +23,4 @@
 - [11_Postiz_Chrome实测拆解_2026-06-23.md](./11_Postiz_Chrome实测拆解_2026-06-23.md)
 - [12_LeadMagic_Chrome实测拆解_2026-06-23.md](./12_LeadMagic_Chrome实测拆解_2026-06-23.md)
 - [13_Lessie_Chrome实测拆解_2026-06-23.md](./13_Lessie_Chrome实测拆解_2026-06-23.md)
+- [14_Vibe_Prospecting_Chrome实测拆解_2026-06-23.md](./14_Vibe_Prospecting_Chrome实测拆解_2026-06-23.md)
