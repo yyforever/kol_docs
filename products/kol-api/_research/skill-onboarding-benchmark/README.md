@@ -16,3 +16,4 @@
 - [04_Clay_MCP_Chrome实测拆解_2026-06-23.md](./04_Clay_MCP_Chrome实测拆解_2026-06-23.md)
 - [05_Apollo_MCP_Chrome实测拆解_2026-06-23.md](./05_Apollo_MCP_Chrome实测拆解_2026-06-23.md)
 - [06_Salesforge_Forge_MCP_Chrome实测拆解_2026-06-23.md](./06_Salesforge_Forge_MCP_Chrome实测拆解_2026-06-23.md)
+- [07_AMT_MCP_Chrome实测拆解_2026-06-23.md](./07_AMT_MCP_Chrome实测拆解_2026-06-23.md)
