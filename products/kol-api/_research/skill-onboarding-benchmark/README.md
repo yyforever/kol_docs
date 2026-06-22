@@ -1,6 +1,6 @@
 # Skill 新用户路径对标调研
 
-本目录保存 Skill / MCP / API / Agent 新用户路径相关的竞品调研长文。候选产品不必主打 `Skill` 这个词，但必须由网站之外的 AI runtime 或 client 运行真实 SaaS 工作流，才适合作为聚星 Skill 新用户路径参考。
+本目录保存 Skill / MCP / API / Agent 新用户路径相关的竞品调研长文。候选产品不必主打 `Skill` 这个词，但必须像聚星 Skill 一样，由网站之外的平台 / AI runtime / client 运行真实 SaaS 工作流，例如 Codex、Claude Code、OpenClaw、Hermes、Cursor、ChatGPT、Claude。只有网页内聊天、普通 API 文档或普通 SaaS landing 的产品，不作为主对标。
 
 使用约定：
 
@@ -18,3 +18,4 @@
 - [06_Salesforge_Forge_MCP_Chrome实测拆解_2026-06-23.md](./06_Salesforge_Forge_MCP_Chrome实测拆解_2026-06-23.md)
 - [07_AMT_MCP_Chrome实测拆解_2026-06-23.md](./07_AMT_MCP_Chrome实测拆解_2026-06-23.md)
 - [08_Influee_Agent_Chrome实测拆解_2026-06-23.md](./08_Influee_Agent_Chrome实测拆解_2026-06-23.md)
+- [09_HeyReach_MCP_Chrome实测拆解_2026-06-23.md](./09_HeyReach_MCP_Chrome实测拆解_2026-06-23.md)
