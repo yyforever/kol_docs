@@ -25,3 +25,4 @@
 - [13_Lessie_Chrome实测拆解_2026-06-23.md](./13_Lessie_Chrome实测拆解_2026-06-23.md)
 - [14_Vibe_Prospecting_Chrome实测拆解_2026-06-23.md](./14_Vibe_Prospecting_Chrome实测拆解_2026-06-23.md)
 - [15_InfluencersClub_Creator_Data_MCP_Chrome实测拆解_2026-06-23.md](./15_InfluencersClub_Creator_Data_MCP_Chrome实测拆解_2026-06-23.md)
+- [16_HypeAuditor_HypeAgent_AI_MCP_Chrome实测拆解_2026-06-23.md](./16_HypeAuditor_HypeAgent_AI_MCP_Chrome实测拆解_2026-06-23.md)
