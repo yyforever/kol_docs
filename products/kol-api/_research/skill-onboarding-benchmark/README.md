@@ -11,3 +11,4 @@
 当前文档：
 
 - [01_Seamless_AI_Chrome实测拆解_2026-06-22.md](./01_Seamless_AI_Chrome实测拆解_2026-06-22.md)
+- [02_FoxReach_Chrome实测拆解_2026-06-23.md](./02_FoxReach_Chrome实测拆解_2026-06-23.md)
