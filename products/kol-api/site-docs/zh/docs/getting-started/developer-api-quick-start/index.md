@@ -27,7 +27,8 @@ source_of_truth:
 - 海外落地页：`https://www.noxinfluencer.com/api-service`
 - 国内 Theneo 文档：`https://app.theneo.io/noxdeveloper/cn-api/nox-api`
 - 海外 Theneo 文档：`https://app.theneo.io/noxdeveloper/kr-api/noxinfluencer-api-guide`
-- 国内 API Runner：`https://app.theneo.io/api-runner/noxdeveloper/cn-api`
+- API Runner：`https://app.theneo.io/api-runner/noxdeveloper/kr-api`
+- 中文暂无独立 API 调试入口，暂按现有 Runner 承接。
 
 ## 当前有效口径
 

@@ -27,7 +27,8 @@ Use the current online structure instead:
 - Overseas landing page: `https://www.noxinfluencer.com/api-service`
 - China Theneo docs: `https://app.theneo.io/noxdeveloper/cn-api/nox-api`
 - Overseas Theneo docs: `https://app.theneo.io/noxdeveloper/kr-api/noxinfluencer-api-guide`
-- China API Runner: `https://app.theneo.io/api-runner/noxdeveloper/cn-api`
+- API Runner: `https://app.theneo.io/api-runner/noxdeveloper/kr-api`
+- Chinese API debugging is not available as a separate runner yet.
 
 ## Current valid position
 

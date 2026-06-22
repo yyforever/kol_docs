@@ -35,8 +35,8 @@
 
 | 页面 / 模块 | 修改前 | 修改后 |
 |---|---|---|
-| Skills 相关 key 模块 | API 密钥 | Skills API 秘钥 |
-| Rest API Dashboard key 模块 | API Key | Rest API 秘钥 |
+| Skills 相关 key 模块 | API 密钥 | Skills API 密钥 |
+| Rest API Dashboard key 模块 | API Key | Rest API 密钥 |
 | Google 授权凭证 | OAuth Token | Google OAuth Token |
 | Outlook 授权凭证 | OAuth Token | Outlook OAuth Token |
 
@@ -71,7 +71,7 @@ Rest API 调用消耗 Rest API Credit。
 
 ### 3.3 Dashboard 新增“接口与计费说明”
 
-位置：Credit 概览之后、Rest API 秘钥模块之前。
+位置：Credit 概览之后、Rest API 密钥模块之前。
 
 标题：
 
@@ -164,7 +164,7 @@ Runner 默认提示：
 
 ```text
 选择一个可调试的 Self-service API 开始测试。
-如果你还没有 Rest API 秘钥，请先登录并开通免费试用。
+如果你还没有 Rest API 密钥，请先登录并开通免费试用。
 首次调用建议从 Convert URL / ID 开始。
 ```
 
@@ -172,7 +172,7 @@ Runner 默认提示：
 
 | 参数 | 说明 |
 |---|---|
-| `noxKey` | Rest API 秘钥，可在 `/developer-api/dashboard` 复制 |
+| `noxKey` | Rest API 密钥，可在 `/developer-api/dashboard` 复制 |
 | `channelId` | 频道 ID；可先使用 Convert URL / ID，把达人主页链接转换为内部 ID |
 | `videoId` | 视频 ID；可由视频链接或平台视频 ID 转换得到 |
 
@@ -188,8 +188,8 @@ YouTube 主页链接：https://www.youtube.com/@MrBeast
 ## 四、验收标准
 
 - 页面中不再出现无法区分产品线的裸写“API 密钥 / API Key”。
-- Skills 页面明确说明 Skills API 秘钥不适用于 Rest API。
-- Rest API Dashboard 明确说明 Rest API 秘钥不适用于 Skills、Nox Agent 或 CLI。
+- Skills 页面明确说明 Skills API 密钥不适用于 Rest API。
+- Rest API Dashboard 明确说明 Rest API 密钥不适用于 Skills、Nox Agent 或 CLI。
 - Rest API 免费试用额度在所有用户可见位置均为 `50 Credit`。
 - Dashboard 能直接看到核心接口、支持平台、Credit、计费说明和文档 / 调试入口。
 - `/api-service` 能让用户区分免费试用、月度订阅和定制接口。
