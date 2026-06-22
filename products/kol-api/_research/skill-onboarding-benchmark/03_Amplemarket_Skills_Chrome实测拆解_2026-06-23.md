@@ -46,7 +46,7 @@
 
 - Amplemarket 当前公开路径主要强调 Claude / ChatGPT，不是 Codex / Claude Code / OpenClaw first。
 - 本文把它作为“业务 skill 包装和 first task 设计”参考，不把它作为聚星 agent runtime 安装路径模板。
-- 对聚星更接近 Codex / Claude Code / OpenClaw 的路径，还需要继续拆 Clay、Apollo、HeyReach、Salesforge 等对象。
+- 对聚星更接近 Codex / Claude Code / OpenClaw 的路径，Clay 已补充 runtime 分流和 governance 参考，后续还需要继续拆 Apollo、HeyReach、Salesforge 等对象。
 
 ## 3. Fit check
 
@@ -320,8 +320,7 @@ Amplemarket 给 Claude、ChatGPT、Other 三种安装说明。虽然它不是 Co
 
 下一步优先级：
 
-1. Clay MCP：优先拆。它明确覆盖 ChatGPT、Claude、Codex，并强调 ops workflows、credits、admin controls，适合补充“外部 client + SaaS workflow + team governance”。
-2. Apollo MCP：适合拆成熟 SaaS 的 OAuth、permissions、credits 和 sales engagement 对象。
+1. Clay MCP 已完成后续拆解，重点结论是 runtime CTA 分流、ops-built Functions、credit limits、usage monitoring 和外部 platform CTA 风险。
+2. Apollo MCP：下一步优先拆，适合看成熟 SaaS 的 OAuth、permissions、credits、contacts、enrichment 和 sales engagement 对象。
 3. HeyReach Campaign API / MCP：适合拆高风险写操作、campaign 创建和 human-in-the-loop。
 4. Salesforge MCP：适合补充 outbound email / mailbox / deliverability / campaign object。
-
