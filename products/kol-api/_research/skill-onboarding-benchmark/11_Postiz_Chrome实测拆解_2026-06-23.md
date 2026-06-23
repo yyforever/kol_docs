@@ -353,13 +353,9 @@ read -> draft -> stage -> execute
 
 本轮 Postiz 拆解确认，聚星可以借鉴它的 landing 定位、runtime 覆盖和 SaaS object reuse，但不能把它作为免费试用 / 激活样板。当前对标方向已收敛到 Skill / 非 connector MCP，不再由 Postiz 继续扩展 social publishing 或 high-risk write 候选。
 
-当前主参考组合以 `kol_brain` 为准：
+当前处理方向已更新：
 
-- Lessie。
-- AMT MCP。
-- Influencers.club Creator Data MCP。
-- HypeAuditor / HypeAgent。
-- Vibe Prospecting。
-- Postiz。
-
-Postiz 的最大新增价值是证明：一个 SaaS 可以同时通过 MCP URL、CLI、Codex、OpenClaw、Public API 和 dashboard 使用，但所有路径都应该落回同一对象模型。
+- Postiz 是本轮聚星新用户路径重构的主参考。
+- Lessie、AMT MCP、Influencers.club、HypeAgent、Vibe Prospecting 只作为局部对照。
+- 体验地图与聚星优化方案见 [20_Postiz_用户路径体验地图与聚星优化方案_2026-06-23.md](./20_Postiz_用户路径体验地图与聚星优化方案_2026-06-23.md)。
+- Postiz 的最大新增价值是证明：一个 SaaS 可以同时通过 MCP URL、CLI、Codex、OpenClaw、Public API 和 dashboard 使用，但所有路径都应该落回同一对象模型。
