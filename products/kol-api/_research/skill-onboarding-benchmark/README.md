@@ -8,19 +8,22 @@
 - `kol_brain` 只沉淀跨项目可复用的关键结论、当前判断和索引，不保存长篇竞品拆解。
 - 每个竞品拆解都应注明实测范围、未验证范围和不能直接照搬的部分。
 
-当前主参考组合：
+当前主参考：
 
-- `Lessie`：Skill / CLI-first 和 creator / people search 路径最接近聚星，适合借鉴新用户路径和信息组织；客观成功证据偏弱。
-- `AMT MCP`：creator marketing 业务域接近，适合看 creator discovery、campaign analytics、OAuth 和 workspace-scoped agent access。
-- `Influencers.club Creator Data MCP`：creator data taxonomy、result cards、credits 和 export / local handoff 接近聚星；API key-first / local MCP 摩擦较大。
-- `HypeAuditor / HypeAgent`：landing 心智接近，`Add to your AI` 这类 CTA 值得参考；公开资料偏 Claude / connector。
-- `Vibe Prospecting`：plugin-first、sample preview、cost estimate、approve/export 和 workflow packaging 值得参考。
-- `Postiz`：landing 定位、runtime 覆盖和 SaaS object reuse 值得参考；注册后可能快速进入付费要求，不作为免费激活样板。
+- `Postiz`：作为本轮聚星新用户路径重构的主参考。重点学习 landing 定位、runtime-specific onboarding、CLI skill / MCP / Codex / OpenClaw / dashboard 复用同一 SaaS object model，以及 first value 如何回到业务对象。
+
+局部对照：
+
+- `Lessie`：Skill / CLI-first 和 creator / people search 路径接近聚星，但客观增长证据偏弱，只保留路径与信息组织参考。
+- `AMT MCP`：creator marketing 业务域接近，只保留 creator discovery、campaign analytics、OAuth 和 workspace-scoped agent access 参考。
+- `Influencers.club Creator Data MCP`：只保留 creator result cards、credits、CSV / local handoff 与工具分类参考。
+- `HypeAuditor / HypeAgent`：只保留 `Add to your AI` CTA、influencer analytics workflow packaging 与 trust metrics 参考。
+- `Vibe Prospecting`：只保留 sample preview、cost estimate、approve/export 和 workflow packaging 参考。
 
 降级规则：
 
 - Pin、Close、Klaviyo 只作为机制证据，不驱动当前新用户路径。
-- Customer.io、Shopify、HubSpot、Airtable、Attio、Upload-Post、AdManage.ai 等暂停，不进入当前主参考。
+- 其他历史候选只保留在对应 teardown 中，不进入当前主参考。
 - Connector-only、Shopify、安全治理、通用 agent 平台和纯网页 chatbot 不进入本轮主参考。
 
 当前文档：
@@ -44,3 +47,4 @@
 - [17_Pin_MCP_Chrome实测拆解_2026-06-23.md](./17_Pin_MCP_Chrome实测拆解_2026-06-23.md)
 - [18_Close_MCP_Chrome实测拆解_2026-06-23.md](./18_Close_MCP_Chrome实测拆解_2026-06-23.md)
 - [19_Klaviyo_MCP_Chrome实测拆解_2026-06-23.md](./19_Klaviyo_MCP_Chrome实测拆解_2026-06-23.md)
+- [20_Postiz_用户路径体验地图与聚星优化方案_2026-06-23.md](./20_Postiz_用户路径体验地图与聚星优化方案_2026-06-23.md)
