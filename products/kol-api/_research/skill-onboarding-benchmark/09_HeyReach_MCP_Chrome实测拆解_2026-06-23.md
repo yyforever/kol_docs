@@ -298,7 +298,7 @@ CLI 页面观察：
 | read-first runtime task 能降低首次使用焦虑 | Codex / Claude Code Quick Start 第一条任务改为 `Show my current collections / monitors / campaigns` | first runtime call success、second prompt rate、support issue | 如果用户没有对象，需提供 sample 或创建草稿路径 |
 | workspace scope 明示能减少误操作 | OAuth success / dashboard 显示当前 brand、workspace、quota、可操作对象 | wrong-workspace errors、workspace switch usage、activation completion | 页面信息过多会降低简洁度 |
 | 业务 play 比工具名更容易激活 | 提供 `Find creators`、`Analyze URL`、`Draft outreach`、`Monitor summary` 等 task cards | template run rate、first value completion | 模板质量不好会损害信任 |
-| risk tier 能支撑写操作上线 | tool list 标注 read / draft / execute，并在 execute 前确认 workspace、recipient、quota | execute confirmation rate、send error rate、complaints | 确认过重会削弱自动化感 |
+| 动作确认能支撑写操作上线 | execute 前确认 workspace、recipient、quota，并保留可回看记录 | execute confirmation rate、send error rate、complaints | 确认过重会削弱自动化感 |
 | SaaS 页面导流能提高 runtime adoption | creator search / campaign / monitor 页增加 `Use in Codex / Claude Code` CTA | runtime CTA click、oauth start、first runtime call | 不能干扰原页面主任务 |
 
 ## 8. 对标复盘

@@ -406,9 +406,9 @@ HypeAgent 补齐了 Influencers.club 的关键短板：
 
 本轮后更适合的下一个对标：
 
-1. `Pin MCP`：优先。原因是公开页面明确覆盖 Claude、ChatGPT、Codex、Cursor、Windsurf，且强调 OAuth scope、workspace-level tenancy、confirmation on every write、audit trail、one-click revoke。它可以补聚星仍缺的 permission / audit / revoke / safe write 机制。
+1. `Pin MCP`：优先。原因是公开页面明确覆盖 Claude、ChatGPT、Codex、Cursor、Windsurf，且强调 OAuth scope、workspace-level tenancy、confirmation on every write、audit trail、one-click revoke。它可以补聚星仍缺的 connected app、audit、revoke 和 workspace 可见性机制。
 2. `Attio MCP`：候选。原因是官方 hosted MCP 给 AI tools 安全访问 CRM workspace，覆盖 Claude、ChatGPT、Cursor 等；适合补 object handoff 和 CRM workspace 模型。
-3. `Close MCP`：候选。原因是 sales CRM 有 `mcp.read`、`mcp.write_safe`、`mcp.write_destructive` 三层 scope，适合补写权限分层。
+3. `Close MCP`：候选。原因是 sales CRM 有 `mcp.read`、`mcp.write_safe`、`mcp.write_destructive` 三层 scope，适合补 scope、organization selection 和 fallback 机制证据。
 4. `Klaviyo MCP / Claude`：候选。原因是 marketing SaaS 连接真实 campaign / flow / profile data，适合补 campaign performance、campaign creation 和 marketing workflow 解释。
 5. `PageCrawl / Octoparse / Airtable`：机制补充。只在需要补 OpenClaw / API token / OAuth / skill packaging 时短拆。
 

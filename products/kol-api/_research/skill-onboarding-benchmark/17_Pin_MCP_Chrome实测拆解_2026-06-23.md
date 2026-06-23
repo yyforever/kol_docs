@@ -420,17 +420,14 @@ Revoke any connected client anytime.
 - common failure；
 - revoke path。
 
-### 7.4 Write actions 需要 scope 分层
+### 7.4 Write actions 需要具体动作确认
 
-候选分层：
+Pin 的 confirmation、audit 和 revoke 说明外部 runtime 不能只靠“连接成功”。但聚星不应把抽象 scope 分层作为新用户路径主框架。更实际的处理是：
 
-| Layer | Examples | Default |
-|---|---|---|
-| read | search, analyze, quota check | allow after OAuth |
-| draft | save collection draft, create monitor draft, outreach draft | light confirmation |
-| safe write | update collection, update campaign context | explicit confirmation |
-| external write | send email, schedule, apply, export contacts | strong confirmation + dashboard review |
-| destructive | delete, cancel, bulk destructive update | disabled or admin only |
+- setup 阶段明确当前 workspace / brand / site。
+- first task 优先读状态、分析、保存结果。
+- send、export、apply、delete 等具体动作发生前展示 preview 和确认。
+- dashboard 保留可回看记录、失败原因和 revoke 入口。
 
 ### 7.5 Memory 应成为聚星对象的一部分
 
@@ -452,7 +449,7 @@ Revoke any connected client anytime.
 | 明确治理边界能降低写操作焦虑 | `/skills` 增加 OAuth scope、workspace、draft-first、audit、revoke 模块 | install click、write action continue、support question |
 | Phase-based tools 比工具列表更好懂 | Tool reference 改为 `connect -> brief -> discover -> review -> enrich -> save -> outreach -> memory` | docs bounce、first prompt copy、tool success |
 | Per-runtime setup tabs 能提高安装成功率 | Codex / Claude Code / OpenClaw / Hermes 各给独立 config、success check、first prompt | setup completion、auth success、first call |
-| Draft-first write 更适合高风险动作 | external write 先生成 dashboard draft，再由用户确认 | write completion、undo/cancel、complaint |
+| 具体动作确认更适合高风险动作 | send / export / apply 前生成 preview 或 dashboard review，再由用户确认 | write completion、undo/cancel、complaint |
 | Campaign memory 提高二次使用 | first workflow 保存 campaign preference memory，下一次自动读取 | second session rate、refine calls、manual re-entry |
 | Quota 文案一致降低误解 | landing 和 docs 统一“connector included, action costs quota” | quota page visit、quota error、support issue |
 
@@ -462,7 +459,7 @@ Pin 补齐了 HypeAgent 之后仍缺的一块：HypeAgent 解决了 influencer a
 
 新的判断：
 
-- 聚星 Skill 新用户路径不能只优化 first call，还要解释 AI 连接后的权限边界。
+- 聚星 Skill 新用户路径不能只优化 first call，还要让用户知道当前 workspace、quota、对象回写和失败恢复在哪里。
 - 对写操作，聚星不能只依赖 MCP client 的 tool approval，应设计 SaaS 内的 draft-first / staged confirmation。
 - 结果沉淀不仅是保存 collection，还应保存 campaign memory / preference memory。
 - 多 runtime 支持不能只放 logo，必须给 runtime-specific config、success check 和 first prompt。
@@ -470,7 +467,7 @@ Pin 补齐了 HypeAgent 之后仍缺的一块：HypeAgent 解决了 influencer a
 
 本轮后更适合的下一个对标：
 
-1. `Close MCP`：优先。原因是 Close 官方明确将 MCP scope 分成 `mcp.read`、`mcp.write_safe`、`mcp.write_destructive`，比 Pin 的 single `mcp` scope 更适合补聚星写操作权限模型。
+1. `Close MCP`：优先。原因是 Close 官方明确展示 MCP scope、organization selection、API key fallback 和 propose / apply 分离，适合补机制证据，但不作为新用户路径主框架。
 2. `Attio MCP`：候选。原因是 hosted MCP 连接 CRM workspace，适合补 contacts / companies / deals / tasks / notes 等 object handoff。
 3. `Klaviyo MCP / Claude`：候选。原因是 marketing SaaS 连接 campaign、flow、profile、template 等真实营销对象，适合补 marketing workflow 和 campaign action。
 4. `PageCrawl / Octoparse`：机制补充。原因是它们更清楚展示 OAuth 与 API token fallback、OpenClaw / Cursor / Windsurf 等 headless client 承接。
@@ -482,4 +479,4 @@ Pin 补齐了 HypeAgent 之后仍缺的一块：HypeAgent 解决了 influencer a
 - 不把 client-side tool approval 当作唯一安全层。
 - 不复制 `autonomous mode` 作为聚星早期主承诺。
 - 不写 “no metered call limit” 这种容易和 action quota 冲突的文案。
-- 不把 single `mcp` scope 当最终权限模型；聚星更可能需要 read / draft / safe write / external write / destructive 分层。
+- 不把 single `mcp` scope 或复杂 scope 分层当作聚星新用户路径主框架；这些只作为后续治理和具体动作确认的机制输入。
