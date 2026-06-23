@@ -8,6 +8,21 @@
 - `kol_brain` 只沉淀跨项目可复用的关键结论、当前判断和索引，不保存长篇竞品拆解。
 - 每个竞品拆解都应注明实测范围、未验证范围和不能直接照搬的部分。
 
+当前主参考组合：
+
+- `Lessie`：Skill / CLI-first 和 creator / people search 路径最接近聚星，适合借鉴新用户路径和信息组织；客观成功证据偏弱。
+- `AMT MCP`：creator marketing 业务域接近，适合看 creator discovery、campaign analytics、OAuth 和 workspace-scoped agent access。
+- `Influencers.club Creator Data MCP`：creator data taxonomy、result cards、credits 和 export / local handoff 接近聚星；API key-first / local MCP 摩擦较大。
+- `HypeAuditor / HypeAgent`：landing 心智接近，`Add to your AI` 这类 CTA 值得参考；公开资料偏 Claude / connector。
+- `Vibe Prospecting`：plugin-first、sample preview、cost estimate、approve/export 和 workflow packaging 值得参考。
+- `Postiz`：landing 定位、runtime 覆盖和 SaaS object reuse 值得参考；注册后可能快速进入付费要求，不作为免费激活样板。
+
+降级规则：
+
+- Pin、Close、Klaviyo 只作为机制证据，不驱动当前新用户路径。
+- Customer.io、Shopify、HubSpot、Airtable、Attio、Upload-Post、AdManage.ai 等暂停，不进入当前主参考。
+- Connector-only、Shopify、安全治理、通用 agent 平台和纯网页 chatbot 不进入本轮主参考。
+
 当前文档：
 
 - [01_Seamless_AI_Chrome实测拆解_2026-06-22.md](./01_Seamless_AI_Chrome实测拆解_2026-06-22.md)

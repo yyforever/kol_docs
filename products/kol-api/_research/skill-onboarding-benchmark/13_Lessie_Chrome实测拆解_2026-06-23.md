@@ -387,11 +387,10 @@ Lessie 修正了 LeadMagic 后的一个关键判断：聚星不仅需要参考 O
 - 业务页面必须先让用户看见达人结果，再引导登录或安装；纯安装命令对 marketer 不够。
 - 小型 creator search eval / benchmark 可以成为 landing trust、agent regression 和团队共识的共同资产。
 
-本轮后更适合的下一个对标：
+当前处理：
 
-1. `Vibe Prospecting`：优先。原因是它公开定位为 Claude Code、Codex、OpenClaw、Gemini CLI、Hermes-Agent 中运行的 prospecting workflow layer，能补 Lessie / LeadMagic 未完整展示的多步 workflow、CSV / JSON export 和 CRM / sales handoff。
-2. `Influencers.club Creator Data MCP`：第二优先。原因是 creator data 业务域更接近聚星，公开覆盖 Claude Desktop、Claude Code、Cursor、VS Code、Windsurf 等 MCP client，并提供 creator profiles / enrichment / audience analysis；但目前看起来更偏 API key + local MCP，应验证是否有完整 SaaS object handoff。
-3. `AdManage.ai` 或 Zevari 类 high-risk execution：只在需要补 send / schedule / apply / campaign execution 的 confirmation、approval、rollback、audit 时继续深拆。
+- Lessie 保留为当前 P0 主参考，用于指导 Skill / CLI-first 新用户路径、creator result preview、自诊断 Quick Start 和 credits 解释。
+- 不再从 Lessie 继续延展新的调研候选；后续以 Lessie、AMT MCP、Influencers.club、HypeAgent、Vibe Prospecting、Postiz 的横向复盘为准。
 
 ## 10. 不直接照搬
 

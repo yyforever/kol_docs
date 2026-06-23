@@ -465,12 +465,11 @@ Pin 补齐了 HypeAgent 之后仍缺的一块：HypeAgent 解决了 influencer a
 - 多 runtime 支持不能只放 logo，必须给 runtime-specific config、success check 和 first prompt。
 - 页面和 docs 的 quota 口径必须一致，尤其 “接入免费” 与 “动作扣量” 要分开。
 
-本轮后更适合的下一个对标：
+当前处理：
 
-1. `Close MCP`：优先。原因是 Close 官方明确展示 MCP scope、organization selection、API key fallback 和 propose / apply 分离，适合补机制证据，但不作为新用户路径主框架。
-2. `Attio MCP`：候选。原因是 hosted MCP 连接 CRM workspace，适合补 contacts / companies / deals / tasks / notes 等 object handoff。
-3. `Klaviyo MCP / Claude`：候选。原因是 marketing SaaS 连接 campaign、flow、profile、template 等真实营销对象，适合补 marketing workflow 和 campaign action。
-4. `PageCrawl / Octoparse`：机制补充。原因是它们更清楚展示 OAuth 与 API token fallback、OpenClaw / Cursor / Windsurf 等 headless client 承接。
+- Pin 只保留为机制证据，用于理解多 runtime setup、workspace 可见性、audit、revoke 和 per-object memory。
+- Pin 不再作为聚星 Skill 新用户路径主参考，也不驱动继续拆 Close、Klaviyo 或其他安全治理型候选。
+- 当前主参考组合以 `kol_brain` 的 Skill / 非 connector MCP 口径为准。
 
 ## 10. 不直接照搬
 

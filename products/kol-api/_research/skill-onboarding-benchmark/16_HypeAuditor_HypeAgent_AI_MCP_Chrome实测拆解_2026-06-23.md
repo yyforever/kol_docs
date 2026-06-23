@@ -404,13 +404,10 @@ HypeAgent 补齐了 Influencers.club 的关键短板：
 - Skill 的 first value 应该既有 creator search / enrichment，又要有质量判断和下一步对象沉淀。
 - ChatGPT / Claude hosted connector 是后续重要路径，但当前优化不应围绕它们定死；聚星主参考仍应覆盖 Codex / Claude Code / OpenClaw / Hermes。
 
-本轮后更适合的下一个对标：
+当前处理：
 
-1. `Pin MCP`：优先。原因是公开页面明确覆盖 Claude、ChatGPT、Codex、Cursor、Windsurf，且强调 OAuth scope、workspace-level tenancy、confirmation on every write、audit trail、one-click revoke。它可以补聚星仍缺的 connected app、audit、revoke 和 workspace 可见性机制。
-2. `Attio MCP`：候选。原因是官方 hosted MCP 给 AI tools 安全访问 CRM workspace，覆盖 Claude、ChatGPT、Cursor 等；适合补 object handoff 和 CRM workspace 模型。
-3. `Close MCP`：候选。原因是 sales CRM 有 `mcp.read`、`mcp.write_safe`、`mcp.write_destructive` 三层 scope，适合补 scope、organization selection 和 fallback 机制证据。
-4. `Klaviyo MCP / Claude`：候选。原因是 marketing SaaS 连接真实 campaign / flow / profile data，适合补 campaign performance、campaign creation 和 marketing workflow 解释。
-5. `PageCrawl / Octoparse / Airtable`：机制补充。只在需要补 OpenClaw / API token / OAuth / skill packaging 时短拆。
+- HypeAuditor / HypeAgent 保留为当前 P1 主参考，用于指导 `Add to your AI` CTA、influencer analytics workflow packaging、trust metrics 和 OAuth-first managed MCP。
+- 不再从 HypeAgent 继续延展新的调研候选；后续以 Lessie、AMT MCP、Influencers.club、HypeAgent、Vibe Prospecting、Postiz 的横向复盘为准。
 
 ## 10. 不直接照搬
 

@@ -395,11 +395,10 @@ Vibe 补齐了 Lessie / LeadMagic 没完全覆盖的一块：多步 workflow、s
 - Dashboard 的角色应是历史列表、对象沉淀、团队、计费和复盘；agent runtime 的角色是任务编排和上下文内调用。
 - Vibe 的 pricing inconsistency 提醒聚星：不同 surface 的 quota 必须统一，否则后续数据分析和用户理解都会混乱。
 
-本轮后更适合的下一个对标：
+当前处理：
 
-1. `Influencers.club Creator Data MCP`：优先。原因是业务域最接近 creator data，需验证它是否只是 data API / MCP，还是有可借鉴的新用户路径、quota 和对象 handoff。
-2. `AdManage.ai`：第二优先，只在需要补高风险写操作、launch ads、campaign execution、permission、confirmation、rollback、audit 时拆。
-3. `Pin MCP` 或 Airtable / Attio / HubSpot：只在需要补 OAuth、workspace tenancy、audit、permission inheritance 和 connected app revoke 机制时短拆。
+- Vibe Prospecting 保留为当前 P1 主参考，用于指导 plugin-first workflow、sample preview、cost estimate、approve / export 和 output handoff。
+- 不再从 Vibe 继续延展新的调研候选；后续以 Lessie、AMT MCP、Influencers.club、HypeAgent、Vibe Prospecting、Postiz 的横向复盘为准。
 
 ## 10. 不直接照搬
 

@@ -359,12 +359,11 @@ Klaviyo 补齐 Close 之后的三个关键空白：
 2. Close 的对象是 CRM；Klaviyo 的对象是 campaign、flow、profile、segment、template、report，更接近聚星未来的 campaign / outreach / monitor / collection 动作治理。
 3. Klaviyo 明确不同 client 有不同默认和限制，尤其 ChatGPT 默认 core tools 和 schema light，这能避免聚星继续把所有 runtime 当成同一种使用路径。
 
-本轮后应更新对标优先级：
+当前处理：
 
-1. `Customer.io MCP`：下一轮优先。原因是官方 docs 覆盖 ChatGPT、Claude、Cursor、MCP 与 CLI，并且明确 terminal-based agent 更适合 CLI。这正好对应聚星需要区分 hosted connector、MCP 和 CLI / coding-agent 路径的问题。
-2. `Shopify AI Toolkit`：第二优先。原因是官方把 AI instructions、agent skills、MCP server、plugin 安装和 Claude Code / Codex / Cursor / Gemini CLI / Hermes / VS Code 等 runtime 放在同一套 toolkit 里，适合补聚星 packaging。
-3. `Attio MCP / HubSpot MCP`：保留为 CRM object handoff 和权限继承补充，不作为下一轮主拆。
-4. `Markifact / Upload-Post`：保留为 high-risk marketing execution / social publishing 补充，用于验证外部 write action 的确认和回写。
+- Klaviyo 只保留为机制证据，用于理解 read-only、core-tools-only、UGC 风险、tool overload、client-specific defaults 和 remote / local fallback。
+- Klaviyo 不再作为聚星 Skill 新用户路径主参考，也不驱动继续拆 Customer.io、Shopify 或其他 connector-heavy / 安全治理候选。
+- 当前主参考组合以 `kol_brain` 的 Skill / 非 connector MCP 口径为准。
 
 ## 10. 不直接照搬
 

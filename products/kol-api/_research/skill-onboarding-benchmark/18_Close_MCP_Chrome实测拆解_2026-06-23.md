@@ -385,12 +385,11 @@ Close 修正了 Pin 之后的一个机制空白：Pin 的 single `mcp` scope 对
 
 但 Close 也暴露了一个风险：`safe write` 的边界如果只按 CRUD 判断，会在聚星场景里失真。对聚星而言，更重要的是用户当下要完成什么业务动作、是否影响外部对象、是否需要预览和确认。
 
-本轮后的候选优先级：
+当前处理：
 
-1. `Klaviyo MCP`：下一轮优先。原因是 marketing automation 场景更接近“campaign / flow / profile / content action”，并且公开材料提到 read-only、core-tools-only、禁用 user-generated content 等安全参数，适合补 Close 没覆盖的营销动作治理。
-2. `Attio MCP`：第二优先。原因是 CRM object handoff、OAuth、read auto-approve / write confirmation 对聚星 workspace object handoff 有价值。
-3. `Customer.io MCP`：候选。原因是 customer engagement / campaign workflow 与聚星 outreach / lifecycle 有相似性，可补复杂营销工作流如何交给外部 AI client。
-4. `HubSpot MCP`：机制补充。原因是大型 SaaS remote MCP / developer MCP 双路径清楚，但业务和规模不适合作为聚星增长主参考。
+- Close 只保留为机制证据，用于理解 organization selection、API key fallback、runtime-specific setup、propose / apply 和 scope 表达。
+- Close 不再作为聚星 Skill 新用户路径主参考，也不驱动继续拆 Klaviyo、Customer.io、HubSpot 或其他 CRM / marketing automation 机制候选。
+- 当前主参考组合以 `kol_brain` 的 Skill / 非 connector MCP 口径为准。
 
 ## 10. 不直接照搬
 

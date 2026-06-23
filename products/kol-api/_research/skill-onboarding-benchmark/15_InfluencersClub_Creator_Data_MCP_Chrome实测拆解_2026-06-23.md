@@ -435,12 +435,10 @@ Influencers.club 补齐了此前对标里最缺的一块：业务域足够接近
 - CSV export 只是 fallback。聚星要围绕 collection、campaign、monitor、outreach draft 建 growth loop。
 - Influencers.club 说明“creator data taxonomy”很关键；Vibe 说明“workflow / preview / cost estimate”很关键。两者要合并，而不是二选一。
 
-本轮后更适合的下一个对标：
+当前处理：
 
-1. `HypeAuditor / HypeAgent AI MCP`：优先。原因是业务域同样是 influencer analytics，但它公开是 OAuth-first MCP endpoint，并有 HypeAgent plugin、35+ metrics、fraud detection、ready-made workflows、Claude connector / plugin 路径。它可以补 Influencers.club 的 auth friction 和 workflow packaging。
-2. `InfluenceFlow / Deinai Creator SKILL`：候选。原因是它们也是 influencer marketing MCP / Claude Code skill，但公开证据较弱，应短拆确认是否真实连接 SaaS 账号和 credits。
-3. `AdManage.ai`：延后。只在需要补高风险写操作、campaign launch、permission、confirmation、rollback、audit 时拆。
-4. `Pin MCP` / Airtable / Attio / HubSpot：机制参考。只在需要补 OAuth、workspace tenancy、audit、connected app revoke 和 object permission 时短拆。
+- Influencers.club Creator Data MCP 保留为当前 P0 主参考，用于指导 creator data taxonomy、creator result cards、action credits、CSV / local handoff 和工具分组。
+- 不再从 Influencers.club 继续延展新的调研候选；后续以 Lessie、AMT MCP、Influencers.club、HypeAgent、Vibe Prospecting、Postiz 的横向复盘为准。
 
 ## 10. 不直接照搬
 

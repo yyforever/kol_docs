@@ -347,22 +347,19 @@ read -> draft -> stage -> execute
 - 不把 `human in the loop` 写成一句提醒就结束；聚星的高风险工具需要 staged object 和明确确认。
 - 不把社媒 scheduler 的 pricing / channel count 直接映射到 Skill quota。
 - 不把 Postiz 的 agentic audience 文案直接用于普通品牌 marketer。
+- 不把 Postiz 当作免费激活样板；公开页有 `Start for $0` / trial 承接，但用户实测注册后较快进入付费要求。
 
 ## 8. 对标复盘
 
-本轮 Postiz 拆解确认，下一阶段对标不应继续只找 sales / outbound MCP。对聚星更有价值的是覆盖不同业务阶段的组合：
+本轮 Postiz 拆解确认，聚星可以借鉴它的 landing 定位、runtime 覆盖和 SaaS object reuse，但不能把它作为免费试用 / 激活样板。当前对标方向已收敛到 Skill / 非 connector MCP，不再由 Postiz 继续扩展 social publishing 或 high-risk write 候选。
 
-- AMT / Influee：creator marketing 业务域。
-- Zevari / HeyReach：高风险 outbound / approval / hosted state。
-- Postiz：内容发布 / schedule / calendar / analytics / CLI skill packaging。
-- LeadMagic / Vibe Prospecting：live data / enrichment first value。
-- Airtable / Attio / Retool / Shopify：object handoff、permission、audit 和 plugin / skill packaging 机制。
+当前主参考组合以 `kol_brain` 为准：
+
+- Lessie。
+- AMT MCP。
+- Influencers.club Creator Data MCP。
+- HypeAuditor / HypeAgent。
+- Vibe Prospecting。
+- Postiz。
 
 Postiz 的最大新增价值是证明：一个 SaaS 可以同时通过 MCP URL、CLI、Codex、OpenClaw、Public API 和 dashboard 使用，但所有路径都应该落回同一对象模型。
-
-下一轮建议：
-
-1. `Upload-Post`：验证它对 Claude Code / Cursor / OpenClaw / OpenCode / Hermes 的 runtime packaging 是否比 Postiz 更贴近聚星。
-2. `AdManage.ai`：验证 launch ads 这类高风险 write action 如何通过 Claude Code / MCP 进行确认、执行和回滚。
-3. `LeadMagic / Vibe Prospecting`：只在需要补 live data enrichment 和 verification first value 时拆。
-
