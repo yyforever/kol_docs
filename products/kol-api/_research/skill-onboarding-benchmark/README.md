@@ -10,7 +10,7 @@
 
 当前主参考：
 
-- `Postiz`：作为本轮聚星新用户路径重构的主参考。重点学习 landing 定位、runtime-specific onboarding、CLI skill / MCP / Codex / OpenClaw / dashboard 复用同一 SaaS object model，以及 first value 如何回到业务对象。
+- `Postiz + AgentMedia`：作为本轮聚星新用户路径重构的主参考组合。Postiz 重点学习 landing 定位、runtime-specific onboarding 和 SaaS object model；AgentMedia 重点学习同一生态下 Skill / CLI / MCP / REST / dashboard 的统一承接、task card、credits / time 和 dashboard fallback。
 
 局部对照：
 
@@ -48,3 +48,4 @@
 - [18_Close_MCP_Chrome实测拆解_2026-06-23.md](./18_Close_MCP_Chrome实测拆解_2026-06-23.md)
 - [19_Klaviyo_MCP_Chrome实测拆解_2026-06-23.md](./19_Klaviyo_MCP_Chrome实测拆解_2026-06-23.md)
 - [20_Postiz_用户路径体验地图与聚星优化方案_2026-06-23.md](./20_Postiz_用户路径体验地图与聚星优化方案_2026-06-23.md)
+- [21_AgentMedia_Postiz同生态_Chrome实测拆解_2026-06-25.md](./21_AgentMedia_Postiz同生态_Chrome实测拆解_2026-06-25.md)
