@@ -77,6 +77,7 @@
 - [research/03_调研推进计划与净收益公式.md](research/03_调研推进计划与净收益公式.md)
 - [research/11_主要矛盾排序与反例验证.md](research/11_主要矛盾排序与反例验证.md)
 - [research/13_内部专家服务项目案例抽样与业务调研框架.md](research/13_内部专家服务项目案例抽样与业务调研框架.md)
+- [research/14_AhaCreator竞品拆解.md](research/14_AhaCreator竞品拆解.md)
 
 当前定位草案：
 
