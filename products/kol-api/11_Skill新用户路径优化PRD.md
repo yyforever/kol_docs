@@ -494,3 +494,38 @@ Dashboard 是结果管理和后续复用，不是首次转化的入口。
 - NoxInfluencer Skill：`https://github.com/NoxInfluencer/skills/tree/main/skills/noxinfluencer`
 - NoxInfluencer Skills README：`repo:noxinfluencer_skills path:README.md`
 - CLI README：`repo:kol_claw path:cli/README.md`
+
+---
+
+## 13. 实施状态（2026-06-26）
+
+### 13.1 已完成
+
+- `/skills` 已从旧 landing 组件聚合调整为 Skill Center 页面结构。
+- Hero 已调整为强业务承诺 + 单主 CTA：`Add to your AI`。
+- Runtime picker 已限定为 Codex、Claude Code、OpenClaw、Hermes。
+- Quick Start 已调整为三步：Add、Sign in、Ask。
+- First task 已固定为 creator search，并提供中英文 prompt。
+- Task cards 已调整为业务任务卡，不展示 credit / quota / API name / CLI command / dashboard run / MCP / REST / pricing。
+- Web 最小埋点已补齐：
+  - `skill_landing_view`
+  - `skill_add_to_ai_click`
+  - `skill_runtime_select`
+  - `skill_install_copy`
+  - `skill_deep_link_opened`
+- 页面 i18n 已补齐 `zh/en/tw/jp/kr` 五语。
+- kol-next 知识库与测试用例已同步更新。
+
+### 13.2 遗留问题
+
+- `skill_auth_start` 需要 runtime / CLI 侧补齐，不应由 Web 页面替代。
+- `skill_auth_complete` 需要服务端凭证创建或复用成功后补齐，不应由页面点击替代。
+- `skill_first_task_start`、`skill_first_task_success` 需要 runtime / kol_claw 任务执行链路补齐。
+- `skill_deep_link_returned` 需要 agent 返回真实 deep link 时补齐。
+- creator profile、collection、monitor、outreach 的真实 deep link 仍属于 P1。
+- setup failure 的内联恢复提示仍属于 P1。
+
+### 13.3 验证要求
+
+- kol-next 阶段验证以页面结构、五语 key、Web 埋点 source contract、lint、浏览器访问 `/skills` 为准。
+- 不允许把 Web 点击数据解释为 auth complete、first task success 或 deep link returned。
