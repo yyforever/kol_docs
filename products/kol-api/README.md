@@ -1,7 +1,7 @@
 # NoxInfluencer — Skill 与 Rest API 能力专题
 
 > 当前定位：本目录同时保留聚星 Skill 能力层文档，并承接新的 Rest API 免费试用 / 月度订阅产品设计
-> `01-05` 是 Skill 能力层口径；`06`、`08`、`09`、`10` 是当前 Rest API 口径
+> `01-05` 是 Skill 能力层口径；`11` 是当前 Skill 新用户路径优化 PRD；`06`、`08`、`09`、`10` 是当前 Rest API 口径
 > 调研基础：[10.1 达人数据智能层 (3.625)](../../research/market/20_机会方向/10_AI_Agent生态/10.1_达人数据智能层_调研报告.md)
 
 ---
@@ -22,6 +22,7 @@
 | [08_API原型任务拆分与开工资料](08_API原型任务拆分与开工资料.md) | 当前 Rest API 原型如何拆给产品、后端、前端和 Java backing？ | 🟡 2026-05-28 v1.5 开工包 |
 | [09_Rest_API免费试用与自助增购PRD](09_Rest_API免费试用与自助增购PRD.md) | 用户如何从当前 `/api-service` 进入 Rest API 免费试用、月度订阅或大额 / 定制接口？ | 🟡 2026-05-28 v1.6 主 PRD |
 | [10_Rest_API开发者体验优化PRD](10_Rest_API开发者体验优化PRD.md) | 李江反馈后的增量修改清单：密钥命名、接口计费说明、文档和调试体验。 | 🟡 2026-06-22 v1.1 |
+| [11_Skill新用户路径优化PRD](11_Skill新用户路径优化PRD.md) | 基于 AgentMedia / Postiz 对标，把 `/skills` 从普通 landing 改成 Skill Center，提高 Add to your AI 到 first task success 的转化。 | 🟡 2026-06-25 v1.1 |
 
 > 注意：`01-05` 中关于 `10 次搜索 + 30 次查看` 的免费试用额度属于旧 Skill 试用口径，已不再作为新的 Rest API Trial 方案依据。新的 Rest API 免费试用、Credit、月度订阅和大额 / 定制接口路径以 `09_Rest_API免费试用与自助增购PRD` 为准，`06` 和 `08` 作为方案与开工资料同步维护。
 > `07_MCP独立服务方案` 是独立 Agent connector 线，不要求改现有 Skill+CLI 安装链路；但后续应与 CLI / Skill 复用同一套 capability contract、权限、配额、风险等级和审计规则。
