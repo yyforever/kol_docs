@@ -1,7 +1,7 @@
 # 10 Rest API 开发者体验优化 PRD
 
-> 状态：草案 v1.1
-> 更新：2026-06-22
+> 状态：草案 v1.2
+> 更新：2026-07-01
 > 类型：增量修改 PRD
 > 来源：李江反馈《关于Skills和API》
 > 依赖：[09_Rest_API免费试用与自助增购PRD](09_Rest_API免费试用与自助增购PRD.md)
@@ -13,6 +13,7 @@
 
 - Skills 和 Rest API 都出现“API 密钥 / API Key”，用户容易误以为两套能力共用同一个 key。
 - Rest API Dashboard 没有直接说明订阅包含哪些接口、各接口消耗多少 Credit。
+- Rest API 控制台入口需要对所有登录账号可见，但子账号不能看到实际内容或进行操作。
 - 免费试用额度展示需要统一为 `50 Credit`。
 - `/api-service` 的免费试用、月度订阅、定制接口边界需要更清楚。
 - Theneo 文档和 API Runner 的接口选择、参数填写和首次调试路径不够顺。
@@ -72,6 +73,14 @@ Rest API 调用消耗 Rest API Credit。
 ### 3.3 Dashboard 新增“接口与计费说明”
 
 位置：Credit 概览之后、Rest API 密钥模块之前。
+
+可见性：
+
+- 主账号进入 `/developer-api/dashboard` 后展示完整控制台内容，包括 Credit 概览、接口与计费说明、Rest API 密钥、Usage、Quick Start、购买和销售入口。
+- 子账号也能从 Header / 侧边栏进入 `/developer-api/dashboard`。
+- 子账号进入后只展示空页面，提示：`只有主账号可以操作RestAPI`。
+- 子账号空页面不展示接口与计费说明、Rest API 密钥、Credit、Usage、Quick Start、试用开通、购买或销售操作入口。
+- key、Credit、usage、试用、购买和下单接口必须做主账号权限校验，不能只靠前端隐藏。
 
 标题：
 
@@ -190,6 +199,7 @@ YouTube 主页链接：https://www.youtube.com/@MrBeast
 - 页面中不再出现无法区分产品线的裸写“API 密钥 / API Key”。
 - Skills 页面明确说明 Skills API 密钥不适用于 Rest API。
 - Rest API Dashboard 明确说明 Rest API 密钥不适用于 Skills、Nox Agent 或 CLI。
+- 所有登录账号都能看到 Rest API 控制台入口；子账号进入后只能看到 `只有主账号可以操作RestAPI`，不能看到实际内容或操作入口。
 - Rest API 免费试用额度在所有用户可见位置均为 `50 Credit`。
 - Dashboard 能直接看到核心接口、支持平台、Credit、计费说明和文档 / 调试入口。
 - `/api-service` 能让用户区分免费试用、月度订阅和定制接口。

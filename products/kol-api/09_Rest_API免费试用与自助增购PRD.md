@@ -1,7 +1,7 @@
 # 09 Rest API 免费试用与月度订阅 PRD
 
-> 状态：草案 v1.6
-> 更新：2026-05-28
+> 状态：草案 v1.7
+> 更新：2026-07-01
 > 依赖：[06_对外API免费试用方案](06_对外API免费试用方案.md)、[08_API原型任务拆分与开工资料](08_API原型任务拆分与开工资料.md)
 > 本文回答：用户如何从当前 `/api-service` 进入 Rest API 免费试用、月度订阅或大额 / 定制接口？
 
@@ -33,7 +33,7 @@ Rest API 免费试用
 | 月度订阅 | `800 Credit / month`；国内 `1000 RMB / month`；海外 `180 USD / month` |
 | Credit 周期 | 每月重置；未使用 Credit 月末清零 |
 | 购买资格 | 国内站和海外站都只要求主账号登录；不要求付费会员 |
-| 账号边界 | 一个主账号固定一个 Rest API key；子账号看不到 Rest API |
+| 账号边界 | 一个主账号固定一个 Rest API key；所有登录账号都能看到 Rest API 控制台入口；子账号进入后只看到空状态，不看到实际内容，也不能操作 |
 | 价格展示 | `/product/pricing` 国内和海外都不展示 Rest API 价格 |
 | 计费线 | Rest API Credit 独立于 Skill 次数、Skill credit 和 SaaS 付费会员权益 |
 
@@ -154,10 +154,13 @@ Rest API 免费试用
 
 要求：
 
-- 子账号看不到 Rest API Dashboard。
+- 子账号可以看到登录态 Header / 侧边栏中的 Rest API 控制台入口，也可以进入 `/developer-api/dashboard`。
+- 子账号进入后只能看到空页面。
+- 空页面提示文案固定为：`只有主账号可以操作RestAPI`。
+- 子账号不能看到 Rest API key、Credit、usage、Quick Start、接口与计费说明、购买入口、试用开通入口或销售操作入口。
 - 子账号不拥有独立 Rest API key。
-- 子账号不能开通试用或购买订阅。
-- 子账号如进入相关入口，应提示联系主账号。
+- 子账号不能开通试用、购买订阅、复制 key、查看用量或执行任何 Rest API 控制台操作。
+- 前端隐藏内容不能替代服务端权限校验；涉及 key、Credit、usage、试用、购买和下单的接口都必须按主账号校验。
 
 ---
 
@@ -167,16 +170,16 @@ Rest API 免费试用
 |---|---|---|---|
 | `/api-service` landing | 已在线，偏咨询和文档入口 | 改造为免费试用、月度订阅说明 / 购买、大额 / 定制接口三类分流 | 不需要登录 |
 | 登录 / 注册 | 已有 | 复用为试用和购买前置门槛 | 访客开通试用或购买前必须完成 |
-| `/developer-api/dashboard` | 当前线上不可用 | 新增登录后承接页，展示 API key、Credit、usage、Quick Start、购买入口、销售入口 | 必须登录；仅主账号 |
-| 免费试用开通模块 | 当前没有 | 放在 `/developer-api/dashboard` Overview 区；开通后发放 `50 Credit` | 必须登录；不要求付费会员 |
-| Usage 统计模块 | 当前没有 Rest API Usage | 放在 `/developer-api/dashboard` Usage tab；按日、API 类型维度统计，日期范围可选 | 必须登录；仅主账号 |
-| 月度订阅购买入口 | 当前没有 | 在 `/api-service` 和 `/developer-api/dashboard` 展示；不进入 `/product/pricing` | 必须登录；仅主账号 |
-| 支付页 | `/product/payment/member` 裸路由不可直接访问，且现有语义偏付费会员购买 | 尽量复用支付 UI 与支付能力，但必须通过 Rest API 订阅商品上下文进入 | 必须登录；仅主账号 |
+| `/developer-api/dashboard` | 当前线上不可用 | 新增登录后承接页；主账号展示 API key、Credit、usage、Quick Start、购买入口、销售入口；子账号只展示空状态 | 必须登录；所有账号可进入，只有主账号可看内容和操作 |
+| 免费试用开通模块 | 当前没有 | 放在 `/developer-api/dashboard` Overview 区；开通后发放 `50 Credit` | 必须登录；仅主账号；不要求付费会员 |
+| Usage 统计模块 | 当前没有 Rest API Usage | 放在 `/developer-api/dashboard` Usage tab；按日、API 类型维度统计，日期范围可选 | 必须登录；主账号可见；子账号页面为空状态 |
+| 月度订阅购买入口 | 当前没有 | 在 `/api-service` 和 `/developer-api/dashboard` 展示；不进入 `/product/pricing` | 必须登录；仅主账号可购买 |
+| 支付页 | `/product/payment/member` 裸路由不可直接访问，且现有语义偏付费会员购买 | 尽量复用支付 UI 与支付能力，但必须通过 Rest API 订阅商品上下文进入 | 必须登录；仅主账号可下单 |
 | Quick Start | 当前缺少自助试用承接 | 新增基础接口首调指南 | 可公开浏览；带 key 操作必须登录 |
 | Theneo docs | 已有，但未清晰区分 Self-service 与 Custom only | 改造内容结构和接口标识 | 不需要登录 |
 | Theneo API Explorer | 已有，但提示不够清晰 | 改造默认引导和拦截提示 | 打开不需要登录；成功调用需要 API key |
 | `/contact` | 已有 API 数据服务选项 | 复用为搜索、监控、高级接口、大额采购和特殊需求承接 | 不强制登录 |
-| 登录态 Header / 侧边栏 | 当前无 Rest API 入口 | 新增入口，统一指向 `/developer-api/dashboard` | 登录后展示 |
+| 登录态 Header / 侧边栏 | 当前无 Rest API 入口 | 新增入口，统一指向 `/developer-api/dashboard` | 所有登录账号展示 |
 | `/product/pricing` | SaaS 付费会员定价页 | 国内和海外都不新增 Rest API 价格 section | 无 Rest API 动作 |
 
 支付页复用建议：
@@ -268,18 +271,22 @@ Rest API Dashboard 是登录后承接页，正式路由为 `/developer-api/dashb
 | Usage statistics | 按日、API 类型维度统计用量；支持日期范围筛选 |
 | Available APIs | 当前账号可用接口和 Custom only 接口 |
 | Quick Start | 辅助 ID API、profile、video content、email contact 的调用步骤 |
-| Purchase | 月度订阅包；主账号可购买；子账号不可见 |
+| Purchase | 月度订阅包；主账号可购买；子账号不展示购买入口 |
 | Contact sales | 大额 / 定制接口咨询 |
 
 展示规则：
 
 - 删除旧“近期用量”模块，不以最近调用列表作为主用量模块。
+- 所有登录账号都可以进入 `/developer-api/dashboard`。
+- 主账号进入后展示完整 Rest API 控制台内容和可操作入口。
+- 子账号进入后只展示空页面，文案为 `只有主账号可以操作RestAPI`。
+- 子账号空页面不展示 API key、Credit、usage、Quick Start、接口与计费说明、试用开通、购买或联系销售操作。
 - 默认遮罩 API key，只显示后几位。
 - Rest API key 独立于 Skill key；页面不得提示用户去 `/skills/dashboard` 复制 key。
 - Credit 必须单独展示为 Rest API Credit。
 - Usage 只展示 Rest API 调用，不混入 Skill 使用记录。
 - 如果用户同时是付费会员，可以展示其账号身份，但不能把付费会员权益和 Rest API Credit 合并。
-- 如果 Credit 不足，主账号显示购买月度订阅 / 联系销售；子账号提示联系主账号。
+- 如果 Credit 不足，主账号显示购买月度订阅 / 联系销售；子账号仍只显示空页面。
 
 ---
 
@@ -361,7 +368,7 @@ Theneo 文档分区：
 - 新注册用户登录后成为免费用户，并能开通 `50 Credit` 免费试用。
 - 老用户但非付费会员可以直接开通试用，也可以购买月度订阅。
 - 已付费会员不会看到“Rest API 属于付费会员权益”的误导。
-- 子账号看不到 Rest API Dashboard、key、Credit、usage 或购买入口。
+- 子账号可以进入 `/developer-api/dashboard`，但只能看到空页面和 `只有主账号可以操作RestAPI`，不能看到 key、Credit、usage、Quick Start、购买、试用或其他操作入口。
 - 用户能从 `/developer-api/dashboard` 进入 Quick Start、Theneo docs 和 API Explorer。
 - 用户在 Credit 不足时能看到购买月度订阅或联系销售路径。
 - `/product/pricing` 国内和海外都不展示 Rest API 价格。

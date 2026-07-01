@@ -1,7 +1,7 @@
 # 06 Rest API 免费试用与月度订阅方案
 
-> 状态：草案 v1.5
-> 更新：2026-05-28
+> 状态：草案 v1.6
+> 更新：2026-07-01
 > 依赖：现有 `/api-service` 线上页面、Theneo API 文档、Theneo API Runner、`kol_claw`、`noxinfluencer_skills`、`kol-next`、`KOLServer` 现有账号/权限/扣量能力、[09_Rest_API免费试用与自助增购PRD](09_Rest_API免费试用与自助增购PRD.md)
 > 本文回答：如何用 Rest API 免费试用承接开发者评估，并引流到 Rest API 月度订阅与大额 / 定制接口？
 
@@ -37,7 +37,7 @@ Rest API 免费试用
 | 海外价格 | `180 USD / month` |
 | Credit 周期 | 每月重置，未使用 Credit 月末清零 |
 | 购买资格 | 主账号登录即可；不要求付费会员 |
-| 可见性 | 只有主账号可见；子账号不可见 |
+| 可见性 | 所有登录账号都能看到 Rest API 控制台入口；主账号能看到实际内容并操作；子账号只能看到空页面 |
 
 旧口径已废弃：
 
@@ -85,11 +85,13 @@ Rest API 免费试用
 - `/api-service` 继续作为公开 landing，不把现有 `/developer-api` landing 草稿升级为公开主入口。
 - 登录后新增 `/developer-api/dashboard`，用于承接 Rest API key、Credit、usage、Quick Start、购买入口和销售入口。
 - 登录态 Header / 侧边栏新增 Rest API / Developer API 入口，指向 `/developer-api/dashboard`，不能指向 `/skills/dashboard`。
+- 入口对所有登录账号展示；子账号进入 `/developer-api/dashboard` 后只显示空页面，提示 `只有主账号可以操作RestAPI`。
 - `/api-service` 从纯 Custom API / 销售线索页面，改造成同时承接免费试用、月度订阅说明 / 购买、大额 / 定制接口联系销售。
 - 免费试用只要求注册登录，不要求 SaaS 付费会员。
 - Rest API 月度订阅购买只要求主账号登录，不要求 SaaS 付费会员。
 - `/product/pricing` 国内和海外都不展示 Rest API 价格，不新增 Rest API Credit section。
 - 购买 CTA、支付入口和下单路径必须按登录态和主账号 / 子账号状态展示。
+- 子账号不能看到 key、Credit、usage、Quick Start、试用开通、购买或销售操作入口；相关接口仍必须服务端校验主账号权限。
 - 支付能力尽量复用 `/product/payment/member`，但必须用 Rest API 月度订阅商品类型区分，页面不得显示购买会员、会员权益或 Skill 次数文案。
 - Theneo 继续作为统一 REST API 文档承载。
 - Theneo 文档中需要区分自助基础接口和大额 / 定制接口。
@@ -204,7 +206,7 @@ Self-service 当前只支持 `YT / TT / INS` 三个平台。
 | 访客 | 需要先注册 / 登录 | 需要先注册 / 登录 | 可浏览 `/api-service`、订阅说明和 Theneo 文档 |
 | 免费用户 | 可开通 | 可购买 | 不要求 SaaS 付费会员 |
 | 付费会员 | 可开通 | 可购买 | 付费会员身份不自动赠送 Rest API Credit |
-| 子账号 | 不可开通 | 不可购买 | 提示联系主账号 |
+| 子账号 | 不可开通 | 不可购买 | 可进入 `/developer-api/dashboard`，但只看到空页面和 `只有主账号可以操作RestAPI` |
 
 原则：
 
@@ -247,7 +249,8 @@ Rest API key 必须独立于 Skill key。
 
 - 一个主账号固定一个 Rest API key。
 - Rest API key 展示位置是 `/developer-api/dashboard`，不是 `/skills/dashboard`。
-- 子账号不可见，也不拥有独立 Rest API key。
+- 子账号可以进入 `/developer-api/dashboard`，但只能看到空页面，提示 `只有主账号可以操作RestAPI`。
+- 子账号不拥有独立 Rest API key，也不能看到主账号 key、Credit、usage、Quick Start、购买、试用或销售操作入口。
 - 页面和文档不得引导用户使用 Skill key 调 Rest API。
 
 ### 7.3 Credit 与限流
