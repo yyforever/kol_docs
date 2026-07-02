@@ -1,13 +1,13 @@
 ---
 doc_id: guide_manage_campaign_context
 title: 管理活动上下文
-description: 用统一上下文把活动、资源池、CRM、邮件 / 消息、导出和品牌监控串起来。
+description: 用统一上下文把活动、资源池、CRM、邮件 / 消息、短链、联盟营销、导出和品牌监控串起来。
 locale: zh
 content_type: doc
 nav_group: guides
 order: 4
 status: published
-updated_at: 2026-06-09
+updated_at: 2026-07-02
 keywords:
   - manage campaigns
   - context
@@ -27,7 +27,7 @@ source_of_truth:
 
 - 避免每次都重新解释品牌目标
 - 让候选名单、分析结论和监控对象能复用
-- 让活动、资源池、CRM、邮件 / 消息任务、导出和品牌监控输出围绕同一批对象保持一致
+- 让活动、资源池、CRM、邮件 / 消息任务、短链、联盟营销活动、导出和品牌监控输出围绕同一批对象保持一致
 - 减少 Agent 会话切换导致的信息丢失
 
 ## 适合保持一致的内容
@@ -37,8 +37,8 @@ source_of_truth:
 - 值得继续观察的对象
 - 已经明确排除的对象和原因
 - 已经联系过、已经在合作中、或已经进入某个资源池的候选对象
-- 围绕同一条工作流建立的活动、资源池、CRM、邮件 / 消息、导出和品牌监控对象
-- Agent 后续应复用的 `creator_id`、`collection_id`、`label_id`、`product_collect_id`、`task_id`、`thread_id`、`brand_id` 和 `export_id`
+- 围绕同一条工作流建立的活动、资源池、CRM、邮件 / 消息、短链、联盟营销、导出和品牌监控对象
+- Agent 后续应复用的 `creator_id`、`collection_id`、`label_id`、`product_collect_id`、`short_link_id`、`store_id`、`campaign_id`、`member_id`、`task_id`、`thread_id`、`brand_id` 和 `export_id`
 
 ## 你现在可以这样用
 
@@ -49,11 +49,13 @@ source_of_truth:
 5. 对已经评估过的 creator IDs 使用 `collection add-creators`，对自有达人 URL 表格使用 `collection import-file`
 6. 当你要维护关系状态、分组、标签或加入邮件任务时，使用 CRM
 7. 当已确认邮件内容需要商品卡时，使用商品中心
-8. 使用搜索结果过滤和邮件收件人过滤，避免重复处理团队已经联系或分组过的达人
-9. 当任务归属或成员管理权限需要共享时，使用邮件协作者
-10. 只有收件人、对话线程、发件人、时间和内容确认后，才进入邮件任务或消息线程执行
-11. 当你需要分享结果或交接时，使用导出输出当前工作集
-12. 当问题从单个达人转向已监控品牌时，使用品牌监控
+8. 已确认目标地址需要普通 Nox tracking link 时，使用短链
+9. 当工作流依赖 Shopify affiliate stores、campaigns、members、discount codes 或 affiliate tracking links 时，使用联盟营销
+10. 使用搜索结果过滤和邮件收件人过滤，避免重复处理团队已经联系或分组过的达人
+11. 当任务归属或成员管理权限需要共享时，使用邮件协作者
+12. 只有收件人、对话线程、发件人、时间和内容确认后，才进入邮件任务或消息线程执行
+13. 当你需要分享结果或交接时，使用导出输出当前工作集
+14. 当问题从单个达人转向已监控品牌时，使用品牌监控
 
 ## 帮助保留上下文的命令
 
@@ -64,6 +66,9 @@ noxinfluencer creator profile <creator_id>
 noxinfluencer collection get <collection_id>
 noxinfluencer crm labels list --page_size 20
 noxinfluencer product get <product_collect_id>
+noxinfluencer short-link get <short_link_id>
+noxinfluencer affiliation campaigns get <campaign_id>
+noxinfluencer affiliation members overview <member_id>
 noxinfluencer email recipients filter get <task_id>
 noxinfluencer email collaborators list <task_id>
 noxinfluencer email get <task_id>
@@ -74,6 +79,7 @@ noxinfluencer export get <export_id>
 
 ## 当前边界
 
-- 现在的活动、资源池、CRM、邮件 / 消息、导出和品牌监控仍属于 Beta 能力
+- 现在的活动、资源池、CRM、邮件 / 消息、短链、联盟营销、导出和品牌监控仍属于 Beta 能力
+- Shopify 店铺授权需要先在 SaaS 完成，联盟营销命令只操作账号已可见的 stores
 - 这是一条工作流桥接，不是外部 CRM、邮箱、消息或电子表格集成
 - 如果你现在最看重稳定性，发现、分析、触达准备和监控仍然是核心公开主链路

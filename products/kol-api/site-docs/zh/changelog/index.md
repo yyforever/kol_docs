@@ -7,7 +7,7 @@ content_type: changelog
 nav_group: changelog
 order: 0
 status: published
-updated_at: 2026-06-16
+updated_at: 2026-07-02
 keywords:
   - changelog
   - updates
@@ -22,6 +22,8 @@ source_of_truth:
 
 ## 已发布
 
+- [2026-07-02 - CLI 0.4.15 短链与联盟营销](2026-07-02-cli-0415-short-links-affiliation.md)
+- [2026-06-25 - CLI 0.4.14 消息回复状态对齐](2026-06-25-cli-0414-message-reply-state.md)
 - [2026-06-16 - CLI 0.4.13 消息筛选与邮件内容读回](2026-06-16-cli-0413-message-filters-email-readback.md)
 - [2026-06-13 - 浏览器登录、平台邮件与反馈入口](2026-06-13-login-platform-email-feedback.md)
 - [2026-06-10 - 邮件与消息附件能力对齐](2026-06-10-email-message-attachments.md)

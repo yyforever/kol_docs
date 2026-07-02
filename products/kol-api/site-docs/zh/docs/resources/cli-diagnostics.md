@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 4
 status: published
-updated_at: 2026-06-16
+updated_at: 2026-07-02
 keywords:
   - cli diagnostics
   - troubleshooting
@@ -63,6 +63,8 @@ noxinfluencer schema --all
 - `message`
 - `crm`
 - `product`
+- `short-link`
+- `affiliation`
 - `brand-monitor`
 - `export`
 - `feedback`
@@ -76,7 +78,7 @@ npm install -g @noxinfluencer/cli@latest
 
 本地或全局编译文件过旧时，只看版本号不够。
 
-当前文档基线是 `@noxinfluencer/cli` `0.4.13` 或更新版本。排查旧安装时，优先看 `schema --all`，不要只看版本号。如果缺少 `login`，当前安装树无法使用浏览器登录。如果缺少 `product`，当前安装树就不能执行商品中心和邮件商品卡相关工作流。如果缺少 `creator lookalikes`、`creator search-filter-options`、`email recipients filter options`、`email collaborators list`、`email attachments upload`、`message project-filters`、`message creator-filters`、`message attachments upload` 或 `feedback submit` 等嵌套命令，需要先重新安装最新 CLI，再继续。
+当前文档基线是 `@noxinfluencer/cli` `0.4.15` 或更新版本。排查旧安装时，优先看 `schema --all`，不要只看版本号。如果缺少 `login`，当前安装树无法使用浏览器登录。如果缺少 `product`，当前安装树就不能执行商品中心和邮件商品卡相关工作流。如果缺少 `short-link` 或 `affiliation`，当前安装树就不能执行普通短链和 Shopify 联盟营销工作流。如果缺少 `creator lookalikes`、`creator search-filter-options`、`email recipients filter options`、`email collaborators list`、`email attachments upload`、`message project-filters`、`message creator-filters`、`message projects`、`message attachments upload`、`short-link create`、`affiliation stores list`、`affiliation members status` 或 `feedback submit` 等嵌套命令，需要先重新安装最新 CLI，再继续。
 
 ## 查看具体命令参数
 
@@ -96,8 +98,16 @@ noxinfluencer schema "email attachments upload"
 noxinfluencer schema "message list"
 noxinfluencer schema "message project-filters"
 noxinfluencer schema "message creator-filters"
+noxinfluencer schema "message get"
+noxinfluencer schema "message projects"
+noxinfluencer schema "message send"
+noxinfluencer schema "message schedule"
 noxinfluencer schema "message attachments upload"
 noxinfluencer schema "product list"
+noxinfluencer schema "short-link create"
+noxinfluencer schema "affiliation stores list"
+noxinfluencer schema "affiliation campaigns create"
+noxinfluencer schema "affiliation members status"
 noxinfluencer schema "brand-monitor influencer-list"
 noxinfluencer schema "feedback submit"
 ```
@@ -116,6 +126,28 @@ noxinfluencer message project-filters
 ```
 
 这些命令会返回当前支持的选项、筛选 ID 或 JSON body patches。不要自己猜 SaaS 原始字段名。
+
+## 排查消息中心待处理状态
+
+排查消息中心工作流时，不要只依赖 `unread_count`。打开线程详情可能会清除未读状态，但当前任务仍可能需要回复。
+
+优先看 `message list`、`message get` 和 `message projects` 返回的这些字段：
+
+- `needs_reply`：当前任务是否仍需要回复
+- `last_message_direction`：最后一条消息方向，可能是 `inbound`、`outbound` 或 `unknown`
+- `pending_reason`：为什么当前线程被视为待处理
+
+常用检查命令：
+
+```bash
+noxinfluencer message list --status deal --page_size 20
+noxinfluencer message get <thread_id>
+noxinfluencer message projects <thread_id>
+```
+
+把 `--status deal` 理解为“达人最后发来消息”，不要把它等同于未读。如果打开的任务显示 `needs_reply=false`，但 NoxInfluencer 仍显示该达人有待处理工作，用 `message projects <thread_id>` 检查同一达人的兄弟任务。
+
+`message send` 和 `message schedule` 的 `html_body` 必须包含可见文本。`<p><br></p>` 这类空富文本占位会被拒绝，也不应被用来清除待处理状态。
 
 ## Agent 稳定 exit codes
 

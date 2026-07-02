@@ -7,7 +7,7 @@ content_type: changelog
 nav_group: changelog
 order: 0
 status: published
-updated_at: 2026-06-16
+updated_at: 2026-07-02
 keywords:
   - changelog
   - updates
@@ -22,6 +22,8 @@ This section records notable updates to the public documentation source and capa
 
 ## Published entries
 
+- [2026-07-02 - CLI 0.4.15 short links and affiliation](2026-07-02-cli-0415-short-links-affiliation.md)
+- [2026-06-25 - CLI 0.4.14 message reply-state alignment](2026-06-25-cli-0414-message-reply-state.md)
 - [2026-06-16 - CLI 0.4.13 message filters and email content readback](2026-06-16-cli-0413-message-filters-email-readback.md)
 - [2026-06-13 - Browser login, platform email, and feedback](2026-06-13-login-platform-email-feedback.md)
 - [2026-06-10 - Email and message attachment support](2026-06-10-email-message-attachments.md)

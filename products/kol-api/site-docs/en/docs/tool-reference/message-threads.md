@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 10
 status: published
-updated_at: 2026-06-16
+updated_at: 2026-06-25
 keywords:
   - message threads
   - communication workflows
@@ -32,6 +32,7 @@ Message Threads helps you work with existing NoxInfluencer communication threads
 ## Best-fit scenarios
 
 - You need to list or inspect existing message threads
+- You need to identify which message tasks still need a reply
 - You need to filter message-center threads by SaaS project, task creator, team member, cooperation status, or label
 - You want to manage labels, cooperation status, or draft state on a known thread
 - You need to attach approved files to a thread draft before sending or scheduling
@@ -40,6 +41,7 @@ Message Threads helps you work with existing NoxInfluencer communication threads
 ## Current beta scope
 
 - List and read message threads
+- Return task-level reply state with `needs_reply`, `last_message_direction`, and `pending_reason`
 - List SaaS-aligned project and task creator/team member filter options
 - Resolve sibling projects or related threads for a creator/channel
 - List, save, and apply message templates
@@ -54,6 +56,21 @@ Message Threads helps you work with existing NoxInfluencer communication threads
 Use `message send` or `message schedule` only for existing `thread_id` replies. If you only have an email task ID, resolve the thread first with `message list --business_kind email_task --business_id <task_id>`. If no thread exists, use the [Email Tasks](email-tasks.md) path for platform creators or approved external email addresses.
 
 Message attachments belong to the thread draft. Upload them before `message send` or `message schedule`; NoxInfluencer attaches those draft files during send.
+
+## Reply-state checks
+
+Use `needs_reply` and `last_message_direction` to decide whether a thread still needs action. Do not use unread state as the final decision signal: opening `message get <thread_id>` can mark the upstream thread as read, but that does not mean the current task was handled.
+
+`message list --status deal` means the creator sent the last message. It is different from `--status unread`, and it should be treated as pending-reply work only when the returned item has `needs_reply=true`.
+
+When a creator still appears in a pending or deal view, but the opened thread already has `needs_reply=false`, inspect sibling tasks:
+
+```bash
+noxinfluencer message get <thread_id>
+noxinfluencer message projects <thread_id>
+```
+
+If a pending task does not require a reply, do not send an empty reply or archive the channel as a workaround. Task-level mark-handled is not exposed in the current public command surface.
 
 ## SaaS-aligned list filters
 
@@ -93,6 +110,7 @@ Read thread state first:
 ```bash
 noxinfluencer message list --business_kind email_task --business_id <task_id>
 noxinfluencer message list --project_ids email_task:<task_id> --creator_uids <user_uid> --page_size 20
+noxinfluencer message list --status deal --page_size 20
 noxinfluencer message get <thread_id>
 noxinfluencer message projects <thread_id>
 ```
@@ -135,6 +153,8 @@ noxinfluencer message cancel <thread_id> --force
 
 - Mutation commands default to dry-run and require approval before `--force`
 - Send and schedule commands require approved content, `sender_auth_id`, and the exact target thread
+- `html_body` for send and schedule must contain visible text; empty rich-text placeholders such as `<p><br></p>` are rejected
+- Do not use an empty reply to clear a pending state
 - `status=draft` and `status=scheduled` require `--business_kind` and `--business_id`; upstream project tabs are deprecated
 - `--project_ids` cannot be combined with `--business_kind` and `--business_id`
 - Get `--creator_uids` values from `message creator-filters`; they are SaaS task creator or team member user IDs, not creator channel IDs
@@ -147,6 +167,7 @@ noxinfluencer message cancel <thread_id> --force
 
 - Message Threads does not start a new external messaging channel from scratch
 - It does not create a new message thread when no `thread_id` exists
+- It does not expose task-level mark-handled or no-reply-needed mutation
 - It does not write message copy for you
 - It does not operate external messaging platforms outside NoxInfluencer
 - Some project-tab concepts are deprecated upstream; use the CLI schema for current filters

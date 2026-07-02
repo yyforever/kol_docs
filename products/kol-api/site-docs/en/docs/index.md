@@ -1,13 +1,13 @@
 ---
 doc_id: docs_home
 title: Documentation
-description: Public documentation hub for NoxInfluencer Skills, CLI workflows, Remote MCP, tool reference, product center, and resources.
+description: Public documentation hub for NoxInfluencer Skills, CLI workflows, Remote MCP, tool reference, product center, short links, affiliation, and resources.
 locale: en
 content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-06-16
+updated_at: 2026-07-02
 keywords:
   - noxinfluencer docs
   - influencer marketing
@@ -25,7 +25,7 @@ source_of_truth:
 
 # Documentation
 
-Use these docs to install NoxInfluencer in your agent environment, configure account access, understand the current creator workflow, and review the beta marketing ops, product center, email collaboration, recipient filtering, and brand intelligence surface.
+Use these docs to install NoxInfluencer in your agent environment, configure account access, understand the current creator workflow, and review the beta marketing ops, product center, short-link, affiliation, email collaboration, recipient filtering, and brand intelligence surface.
 
 ## Start here
 
@@ -33,12 +33,12 @@ Use these docs to install NoxInfluencer in your agent environment, configure acc
 - Account sign-in, browser login, API key fallback, and entitlement model: read [Authentication](getting-started/authentication.md)
 - Remote MCP read tools, OAuth resource metadata, and scope model: read [Remote MCP](getting-started/remote-mcp.md)
 - Product scope and boundaries: read [Introduction](getting-started/introduction.md)
-- CLI 0.4.13 command-tree checks and stale install recovery: read [CLI Diagnostics](resources/cli-diagnostics.md)
+- CLI 0.4.15 command-tree checks and stale install recovery: read [CLI Diagnostics](resources/cli-diagnostics.md)
 - Current Rest API free trial or self-service purchase: use the existing `/api-service` page and the Theneo API docs / API Runner as the source of truth
 
 ## Install entry overview
 
-- OpenClaw: start from [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing)
+- OpenClaw: start from [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer)
 - Claude Code, OpenAI Codex, Cursor, Hermes, or another compatible environment: start from [skills.sh](https://skills.sh/noxinfluencer/skills/noxinfluencer) and the commands in [Quick Start](getting-started/quick-start/index.md)
 - CLI sign-in: run `noxinfluencer login`; use the [Skills dashboard](https://www.noxinfluencer.com/skills/dashboard) only as the API key fallback
 - GitHub: use [NoxInfluencer/skills](https://github.com/NoxInfluencer/skills/tree/main) only when your agent needs the repository address or the store-based path cannot complete
@@ -63,6 +63,8 @@ Use these docs to install NoxInfluencer in your agent environment, configure acc
 - [Message Threads](tool-reference/message-threads.md)
 - [CRM](tool-reference/crm.md)
 - [Product Center](tool-reference/product-center.md)
+- [Short Links](tool-reference/short-links.md)
+- [Affiliation](tool-reference/affiliation.md)
 - [Brand Monitor](tool-reference/brand-monitor.md)
 
 ## Common paths

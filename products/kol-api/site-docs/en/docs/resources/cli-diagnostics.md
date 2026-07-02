@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 4
 status: published
-updated_at: 2026-06-16
+updated_at: 2026-07-02
 keywords:
   - cli diagnostics
   - troubleshooting
@@ -63,6 +63,8 @@ The current CLI baseline expects the installed command tree to expose:
 - `message`
 - `crm`
 - `product`
+- `short-link`
+- `affiliation`
 - `brand-monitor`
 - `export`
 - `feedback`
@@ -76,7 +78,7 @@ npm install -g @noxinfluencer/cli@latest
 
 Version output alone is not enough when local or global compiled files are stale.
 
-The current documented baseline is `@noxinfluencer/cli` `0.4.13` or newer. Prefer `schema --all` over version checks when diagnosing a stale install. If `login` is missing, browser onboarding is unavailable from that installed tree. If `product` is missing, Product Center and email product-card workflows are unavailable. If nested commands such as `creator lookalikes`, `creator search-filter-options`, `email recipients filter options`, `email collaborators list`, `email attachments upload`, `message project-filters`, `message creator-filters`, `message attachments upload`, or `feedback submit` are missing, reinstall the latest CLI before continuing.
+The current documented baseline is `@noxinfluencer/cli` `0.4.15` or newer. Prefer `schema --all` over version checks when diagnosing a stale install. If `login` is missing, browser onboarding is unavailable from that installed tree. If `product` is missing, Product Center and email product-card workflows are unavailable. If `short-link` or `affiliation` is missing, normal short-link and Shopify affiliate workflows are unavailable. If nested commands such as `creator lookalikes`, `creator search-filter-options`, `email recipients filter options`, `email collaborators list`, `email attachments upload`, `message project-filters`, `message creator-filters`, `message projects`, `message attachments upload`, `short-link create`, `affiliation stores list`, `affiliation members status`, or `feedback submit` are missing, reinstall the latest CLI before continuing.
 
 ## Inspect exact command parameters
 
@@ -96,8 +98,16 @@ noxinfluencer schema "email attachments upload"
 noxinfluencer schema "message list"
 noxinfluencer schema "message project-filters"
 noxinfluencer schema "message creator-filters"
+noxinfluencer schema "message get"
+noxinfluencer schema "message projects"
+noxinfluencer schema "message send"
+noxinfluencer schema "message schedule"
 noxinfluencer schema "message attachments upload"
 noxinfluencer schema "product list"
+noxinfluencer schema "short-link create"
+noxinfluencer schema "affiliation stores list"
+noxinfluencer schema "affiliation campaigns create"
+noxinfluencer schema "affiliation members status"
 noxinfluencer schema "brand-monitor influencer-list"
 noxinfluencer schema "feedback submit"
 ```
@@ -116,6 +126,28 @@ noxinfluencer message project-filters
 ```
 
 These commands return supported choices, filter IDs, or JSON body patches. Use them instead of inventing raw SaaS field names.
+
+## Diagnose message-center pending state
+
+When troubleshooting message-center workflows, do not rely on `unread_count` alone. Reading a thread can clear unread state, while the current task may still need a reply.
+
+Use these fields from `message list`, `message get`, and `message projects`:
+
+- `needs_reply`: whether the current task still needs a reply
+- `last_message_direction`: `inbound`, `outbound`, or `unknown`
+- `pending_reason`: why the thread is treated as pending
+
+Useful checks:
+
+```bash
+noxinfluencer message list --status deal --page_size 20
+noxinfluencer message get <thread_id>
+noxinfluencer message projects <thread_id>
+```
+
+Treat `--status deal` as "creator sent the last message", not as a synonym for unread. If the opened task has `needs_reply=false` but NoxInfluencer still shows pending work for the creator, inspect sibling tasks with `message projects <thread_id>`.
+
+`message send` and `message schedule` require `html_body` with visible text. Empty rich-text placeholders such as `<p><br></p>` are rejected and must not be used to clear a pending state.
 
 ## Stable exit codes for agents
 

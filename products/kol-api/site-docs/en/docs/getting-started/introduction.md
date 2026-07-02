@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 1
 status: published
-updated_at: 2026-06-13
+updated_at: 2026-07-02
 keywords:
   - introduction
   - noxinfluencer
@@ -25,7 +25,7 @@ source_of_truth:
 
 # Introduction
 
-NoxInfluencer helps you run creator and marketing operations from an AI agent environment. You can use it to discover creators, hide or deduplicate returned search results, evaluate fit, send platform email through NoxInfluencer, retrieve visible contacts for external outreach, monitor campaign videos, manage campaign/collection work, coordinate CRM/email/message tasks, manage product center items for email product cards, run exports, and inspect brand-monitor data.
+NoxInfluencer helps you run creator and marketing operations from an AI agent environment. You can use it to discover creators, hide or deduplicate returned search results, evaluate fit, send platform email through NoxInfluencer, retrieve visible contacts for external outreach, monitor campaign videos, manage campaign/collection work, coordinate CRM/email/message tasks, manage product center items for email product cards, manage normal Nox short links, operate Shopify affiliate campaigns after SaaS store authorization, run exports, and inspect brand-monitor data.
 
 ## Who this is for
 
@@ -53,6 +53,8 @@ NoxInfluencer helps you run creator and marketing operations from an AI agent en
 - Message Threads: manage existing thread state and approved replies
 - CRM: query and update NoxInfluencer CRM channels and groups
 - Product Center: manage collected product items and custom tags used by email product cards
+- Short Links: manage normal Nox short links and read short-link effect data
+- Affiliation: manage Shopify affiliate stores, campaigns, members, discount codes, tracking links, and performance reads after SaaS store authorization
 - Brand Monitor: inspect monitored brands, strategy signals, product signals, assets, and brand-monitor exports
 
 ### Planned capability
@@ -73,6 +75,8 @@ NoxInfluencer helps you run creator and marketing operations from an AI agent en
 - Email and message workflows do not write outreach copy for you; use approved content before send or schedule
 - Brand Monitor starts from `brand_id`, not `creator_id`
 - Product Center uses `product_collect_id`; email product cards use Product Center collect IDs, not external marketplace product IDs
+- Short Links are normal Nox short links; Shopify affiliate tracking links belong to Affiliation
+- Shopify store authorization stays in NoxInfluencer SaaS, not in the Skill or CLI
 - Product signal commands in Brand Monitor currently support YouTube only
 - ChatGPT is not a supported NoxInfluencer Skill runtime; use OpenAI Codex for OpenAI Skill workflows
 - NoxInfluencer uses a main account and quota model; do not reuse legacy standalone API product assumptions

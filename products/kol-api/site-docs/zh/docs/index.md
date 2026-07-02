@@ -1,13 +1,13 @@
 ---
 doc_id: docs_home
 title: 文档中心
-description: NoxInfluencer Skill、CLI 工作流、Remote MCP、工具参考、商品中心和资源说明的公共文档首页。
+description: NoxInfluencer Skill、CLI 工作流、Remote MCP、工具参考、商品中心、短链、联盟营销和资源说明的公共文档首页。
 locale: zh
 content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-06-16
+updated_at: 2026-07-02
 keywords:
   - noxinfluencer 文档
   - influencer marketing
@@ -25,7 +25,7 @@ source_of_truth:
 
 # 文档中心
 
-你可以在这里安装 NoxInfluencer、配置账号访问、理解当前达人工作流，并查看 Beta 营销运营、商品中心、邮件协作、收件人过滤和品牌情报能力边界。
+你可以在这里安装 NoxInfluencer、配置账号访问、理解当前达人工作流，并查看 Beta 营销运营、商品中心、短链、联盟营销、邮件协作、收件人过滤和品牌情报能力边界。
 
 ## 从这里开始
 
@@ -33,12 +33,12 @@ source_of_truth:
 - 账号登录、浏览器登录、API key 兜底和权限心智：看 [认证与账号](getting-started/authentication.md)
 - Remote MCP 只读工具、OAuth resource metadata 和 scope 模型：看 [Remote MCP](getting-started/remote-mcp.md)
 - 产品范围和边界：看 [产品简介](getting-started/introduction.md)
-- CLI 0.4.13 命令树校验和旧安装排查：看 [CLI 诊断](resources/cli-diagnostics.md)
+- CLI 0.4.15 命令树校验和旧安装排查：看 [CLI 诊断](resources/cli-diagnostics.md)
 - 当前 Rest API 免费试用或自助购买：从现有 `/api-service` 页面进入，并以 Theneo API 文档和 API Runner 为准
 
 ## 安装入口概览
 
-- OpenClaw：优先从 [ClawHub](https://clawhub.ai/noxinfluencer/nox-influencer-marketing) 开始
+- OpenClaw：优先从 [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer) 开始
 - Claude Code、OpenAI Codex、Cursor、Hermes 或其他兼容环境：优先从 [skills.sh](https://skills.sh/noxinfluencer/skills/noxinfluencer) 和 [快速开始](getting-started/quick-start/index.md) 中的命令开始
 - CLI 登录：运行 `noxinfluencer login`；只有需要 API key 兜底时再打开 [Skills 控制台](https://cn.noxinfluencer.com/skills/dashboard)
 - GitHub：只有当 Agent 需要仓库地址，或商店路径无法完成时，再使用 [NoxInfluencer/skills](https://github.com/NoxInfluencer/skills/tree/main)
@@ -63,6 +63,8 @@ source_of_truth:
 - [消息线程](tool-reference/message-threads.md)
 - [CRM](tool-reference/crm.md)
 - [商品中心](tool-reference/product-center.md)
+- [短链](tool-reference/short-links.md)
+- [联盟营销](tool-reference/affiliation.md)
 - [品牌监控](tool-reference/brand-monitor.md)
 
 ## 常见路径

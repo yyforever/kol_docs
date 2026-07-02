@@ -1,13 +1,13 @@
 ---
 doc_id: guide_manage_campaign_context
 title: Manage Campaign Context
-description: Keep campaign, collection, CRM, email/message, export, and brand-monitor context aligned instead of restarting each workflow from scratch.
+description: Keep campaign, collection, CRM, email/message, short-link, affiliation, export, and brand-monitor context aligned instead of restarting each workflow from scratch.
 locale: en
 content_type: doc
 nav_group: guides
 order: 4
 status: published
-updated_at: 2026-06-09
+updated_at: 2026-07-02
 keywords:
   - manage campaigns
   - context
@@ -27,7 +27,7 @@ As your workflow expands beyond one-off discovery, context becomes the bridge be
 
 - It reduces repeated setup work
 - It preserves shortlist, monitoring, and campaign decisions
-- It helps campaigns, collections, CRM, email/message tasks, exports, and brand-monitor outputs reflect the same working set
+- It helps campaigns, collections, CRM, email/message tasks, short links, affiliation campaigns, exports, and brand-monitor outputs reflect the same working set
 - It makes cross-session workflows more reliable
 
 ## What you should keep aligned
@@ -37,8 +37,8 @@ As your workflow expands beyond one-off discovery, context becomes the bridge be
 - The creators you want to keep monitoring
 - The creators you have already ruled out, and why
 - The candidates already contacted, already in collaboration, or already assigned to a collection
-- The campaign, collection, CRM, email/message, export, and brand-monitor objects that package the same workflow
-- The `creator_id`, `collection_id`, `label_id`, `product_collect_id`, `task_id`, `thread_id`, `brand_id`, and `export_id` values your agent should reuse
+- The campaign, collection, CRM, email/message, short-link, affiliation, export, and brand-monitor objects that package the same workflow
+- The `creator_id`, `collection_id`, `label_id`, `product_collect_id`, `short_link_id`, `store_id`, `campaign_id`, `member_id`, `task_id`, `thread_id`, `brand_id`, and `export_id` values your agent should reuse
 
 ## How to use this today
 
@@ -49,11 +49,13 @@ As your workflow expands beyond one-off discovery, context becomes the bridge be
 5. Use `collection add-creators` for reviewed creator IDs and `collection import-file` for your own creator URL spreadsheets
 6. Use CRM when you need relationship state, grouping, labels, or add-to-email operations
 7. Use Product Center when approved email content should include product cards
-8. Use search-result and email-recipient filters to avoid reprocessing creators your team already contacted or grouped
-9. Use email collaborators when task ownership or member-management permission should be shared
-10. Use email tasks or message threads only after recipients, thread, sender, timing, and content are approved
-11. Use exports when you need a shareable output from that grouped workflow
-12. Use Brand Monitor when the question shifts from one creator to a monitored brand
+8. Use short links when you need a normal Nox tracking link for an approved destination
+9. Use affiliation when the workflow depends on Shopify affiliate stores, campaigns, members, discount codes, or affiliate tracking links
+10. Use search-result and email-recipient filters to avoid reprocessing creators your team already contacted or grouped
+11. Use email collaborators when task ownership or member-management permission should be shared
+12. Use email tasks or message threads only after recipients, thread, sender, timing, and content are approved
+13. Use exports when you need a shareable output from that grouped workflow
+14. Use Brand Monitor when the question shifts from one creator to a monitored brand
 
 ## Commands that preserve context
 
@@ -64,6 +66,9 @@ noxinfluencer creator profile <creator_id>
 noxinfluencer collection get <collection_id>
 noxinfluencer crm labels list --page_size 20
 noxinfluencer product get <product_collect_id>
+noxinfluencer short-link get <short_link_id>
+noxinfluencer affiliation campaigns get <campaign_id>
+noxinfluencer affiliation members overview <member_id>
 noxinfluencer email recipients filter get <task_id>
 noxinfluencer email collaborators list <task_id>
 noxinfluencer email get <task_id>
@@ -74,6 +79,7 @@ noxinfluencer export get <export_id>
 
 ## Current boundary
 
-- The current campaign, collection, CRM, email/message, export, and brand-monitor surface is still beta
+- The current campaign, collection, CRM, email/message, short-link, affiliation, export, and brand-monitor surface is still beta
+- Shopify store authorization stays in SaaS before affiliation commands can operate stores
 - This is a workflow bridge, not a full external CRM, email, messaging, or spreadsheet integration
 - If you need the most stable path today, discovery, analysis, outreach preparation, and monitoring still form the core public workflow

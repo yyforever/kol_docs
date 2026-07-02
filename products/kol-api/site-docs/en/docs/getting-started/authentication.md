@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 3
 status: published
-updated_at: 2026-06-13
+updated_at: 2026-07-02
 keywords:
   - authentication
   - account
@@ -59,7 +59,7 @@ For the current Rest API free-trial and self-service purchase line, use `/api-se
 - Run `noxinfluencer login` when the CLI is not authenticated.
 - Run `noxinfluencer doctor` when you need to confirm account and key configuration.
 - Run `noxinfluencer quota` to see the current Skill quota snapshot.
-- Run `noxinfluencer schema --all` after installing or updating the CLI. The current CLI baseline expects `login`, `campaign`, `collection`, `email`, `message`, `crm`, `product`, `brand-monitor`, `export`, `feedback`, and `agent` command coverage.
+- Run `noxinfluencer schema --all` after installing or updating the CLI. The current CLI baseline expects `login`, `campaign`, `collection`, `email`, `message`, `crm`, `product`, `short-link`, `affiliation`, `brand-monitor`, `export`, `feedback`, and `agent` command coverage.
 - For automation, use `noxinfluencer agent exit-codes` to map stable CLI exit codes to retry or recovery behavior.
 
 ## Four layers to keep in mind

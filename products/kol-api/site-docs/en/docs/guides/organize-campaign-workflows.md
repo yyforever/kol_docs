@@ -1,13 +1,13 @@
 ---
 doc_id: guide_organize_campaign_workflows
 title: Organize Campaign Workflows
-description: Use campaigns, collections, CRM, email/message tasks, exports, and brand-monitor data as a beta operations loop.
+description: Use campaigns, collections, CRM, email/message tasks, short links, affiliation, exports, and brand-monitor data as a beta operations loop.
 locale: en
 content_type: doc
 nav_group: guides
 order: 5
 status: published
-updated_at: 2026-06-16
+updated_at: 2026-07-02
 keywords:
   - campaign workflows
   - collections
@@ -32,15 +32,19 @@ Use this guide when you already know your campaign direction and want the same w
 5. Move the right collection + platform slice into CRM when relationship state, labels, or add-to-email work is needed
 6. Use CRM labels when you need stable follow-up segmentation across creators
 7. Use Product Center when an email task needs product cards
-8. Apply email recipient filters when the task should hide creators already contacted, grouped, or present in another email task
-9. Add email collaborators when another team member needs task access or member-management permission
-10. Attach approved briefs or files to the email task when the outreach requires them
-11. Use email tasks for first platform email outreach by `creator_id`, or for approved external email recipients you already own
-12. Use message threads only for existing `thread_id` replies, and attach draft files before send or schedule when needed
-13. Use message creator/project filters when you need to find threads by SaaS task owner, team member, project, cooperation status, or label
-14. Use email reports, team summary, and team breakdown after send when you need reply metrics
-15. Launch collection, CRM, or brand-monitor exports when you need a shareable file
-16. Feed the updated result back into the same campaign context
+8. Use short links when an approved destination needs a normal Nox tracking link
+9. Use affiliation when the workflow is specifically about Shopify affiliate campaigns, members, discount codes, or affiliate tracking links
+10. Apply email recipient filters when the task should hide creators already contacted, grouped, or present in another email task
+11. Add email collaborators when another team member needs task access or member-management permission
+12. Attach approved briefs or files to the email task when the outreach requires them
+13. Use email tasks for first platform email outreach by `creator_id`, or for approved external email recipients you already own
+14. Use message threads only for existing `thread_id` replies, and attach draft files before send or schedule when needed
+15. Use `needs_reply` and `last_message_direction` instead of unread count to decide which message tasks still need action
+16. Use message creator/project filters when you need to find threads by SaaS task owner, team member, project, cooperation status, or label
+17. Use `message projects <thread_id>` when the opened task is already replied but NoxInfluencer still shows pending work for the same creator
+18. Use email reports, team summary, and team breakdown after send when you need reply metrics
+19. Launch collection, CRM, or brand-monitor exports when you need a shareable file
+20. Feed the updated result back into the same campaign context
 
 ## Useful command sequence
 
@@ -59,9 +63,15 @@ noxinfluencer email recipients filter options
 noxinfluencer email collaborators list
 noxinfluencer email attachments list <task_id>
 noxinfluencer email attachments upload <task_id> --file brief.pdf --force
+noxinfluencer short-link list --page_size 20
+noxinfluencer affiliation stores list
+noxinfluencer affiliation campaigns list --store-id <store_id> --page_size 20
 noxinfluencer message creator-filters
 noxinfluencer message project-filters --creator_uids <user_uid>
+noxinfluencer message list --status deal --page_size 20
 noxinfluencer message list --project_ids email_task:<task_id> --creator_uids <user_uid>
+noxinfluencer message get <thread_id>
+noxinfluencer message projects <thread_id>
 noxinfluencer message attachments list <thread_id>
 noxinfluencer message attachments upload <thread_id> --file brief.pdf --force
 noxinfluencer email report <task_id>
@@ -74,6 +84,9 @@ noxinfluencer export get <export_id>
 - The creator identities you decided to keep
 - The logic behind who was included or excluded
 - The approval state for recipients, sender, content, attachments, and scheduled time
+- Whether a link is a normal Nox short link or an affiliate tracking link
+- Shopify `store_id`, affiliate `campaign_id`, and `member_id` values when the workflow uses Affiliation
+- The reply-state fields that drove message follow-up decisions, especially `needs_reply`, `last_message_direction`, and `pending_reason`
 - The message filter IDs used to reconstruct a thread view, including `project_ids`, `creator_uids`, `label_id`, and `coop_status`
 - The `label_id`, `product_collect_id`, `task_id`, `thread_id`, `attachment_id`, and `export_id` values used in follow-up operations
 - The reason you exported the working set
@@ -81,6 +94,8 @@ noxinfluencer export get <export_id>
 ## Current boundary
 
 - This is a beta workflow bridge, not a full external CRM, email, messaging, or spreadsheet playbook
+- Message pending state cannot be cleared with an empty reply; task-level mark-handled is not exposed in the current public commands
+- Shopify store authorization stays in SaaS; do not treat the CLI as a store authorization surface
 - You may still rely on discovery, analysis, outreach preparation, and monitoring for the core creator decisions
 
 ## Recommended reading
@@ -92,4 +107,6 @@ noxinfluencer export get <export_id>
 - [Message Threads](../tool-reference/message-threads.md)
 - [Exports](../tool-reference/exports.md)
 - [Product Center](../tool-reference/product-center.md)
+- [Short Links](../tool-reference/short-links.md)
+- [Affiliation](../tool-reference/affiliation.md)
 - [Brand Monitor](../tool-reference/brand-monitor.md)

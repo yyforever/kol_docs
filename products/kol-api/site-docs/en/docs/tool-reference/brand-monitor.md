@@ -5,7 +5,7 @@ description: Beta public capability page for monitored brand intelligence, produ
 locale: en
 content_type: doc
 nav_group: tool-reference
-order: 13
+order: 15
 status: published
 updated_at: 2026-06-04
 keywords:

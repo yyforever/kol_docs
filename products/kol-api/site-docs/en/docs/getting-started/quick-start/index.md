@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 2
 status: published
-updated_at: 2026-06-16
+updated_at: 2026-07-02
 keywords:
   - quick start
   - skills.sh
@@ -38,7 +38,7 @@ Use this page when you want the shortest supported setup path. Keep two things s
 - Browser login command: `noxinfluencer login`
 - Skills dashboard / API key fallback: `https://www.noxinfluencer.com/skills/dashboard` / `https://cn.noxinfluencer.com/skills/dashboard`
 - skills.sh listing: `https://skills.sh/noxinfluencer/skills/noxinfluencer`
-- ClawHub for OpenClaw: `https://clawhub.ai/noxinfluencer/nox-influencer-marketing`
+- ClawHub for OpenClaw: `https://clawhub.ai/noxinfluencer/noxinfluencer`
 - GitHub fallback: `https://github.com/NoxInfluencer/skills/tree/main`
 
 ## Before you run workflows: sign in
@@ -77,7 +77,7 @@ If you configure a key manually, use `noxinfluencer auth --key-stdin` instead of
 
 Start with ClawHub:
 
-[https://clawhub.ai/noxinfluencer/nox-influencer-marketing](https://clawhub.ai/noxinfluencer/nox-influencer-marketing)
+[https://clawhub.ai/noxinfluencer/noxinfluencer](https://clawhub.ai/noxinfluencer/noxinfluencer)
 
 If ClawHub is not practical because of network or access limits, use Skills CLI:
 
@@ -134,7 +134,7 @@ The supported OpenAI path is OpenAI Codex. NoxInfluencer needs an execution envi
 
 ## Step 3: Install or refresh the CLI
 
-The current public documentation baseline is `@noxinfluencer/cli` `0.4.13` or newer. Install the latest CLI package:
+The current public documentation baseline is `@noxinfluencer/cli` `0.4.15` or newer. Install the latest CLI package:
 
 ```bash
 npm install -g @noxinfluencer/cli@latest
@@ -154,11 +154,13 @@ The command tree must include:
 - `message`
 - `crm`
 - `product`
+- `short-link`
+- `affiliation`
 - `brand-monitor`
 - `export`
 - `agent`
 
-Version output alone is not enough if your machine has stale local or global compiled files. If `schema --all` does not show the expected command groups after reinstalling the latest package, stop the affected workflow and treat it as a CLI package or command-tree mismatch. For current workflows, the installed tree should also expose `login`, creator search filtering, creator lookalikes, email recipient filters, email collaborators, email/message attachments, message project and creator filters, Product Center, brand monitor, and feedback commands.
+Version output alone is not enough if your machine has stale local or global compiled files. If `schema --all` does not show the expected command groups after reinstalling the latest package, stop the affected workflow and treat it as a CLI package or command-tree mismatch. For current workflows, the installed tree should also expose `login`, creator search filtering, creator lookalikes, email recipient filters, email collaborators, email/message attachments, message project and creator filters, Product Center, short links, affiliation, brand monitor, and feedback commands.
 
 ## Step 4: Let your agent continue
 
@@ -175,7 +177,7 @@ A first run is successful when one of these works:
 - Creator discovery returns a usable shortlist
 - Creator analysis returns decision-ready signals
 - Video monitoring can be created, listed, or queried
-- A marketing ops read command such as campaign, collection, CRM, email, message, product, export, or brand-monitor returns the expected account-scoped data
+- A marketing ops read command such as campaign, collection, CRM, email, message, product, short-link, affiliation, export, or brand-monitor returns the expected account-scoped data
 
 ## If setup fails
 

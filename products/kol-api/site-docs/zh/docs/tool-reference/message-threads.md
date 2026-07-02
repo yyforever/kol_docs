@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 10
 status: published
-updated_at: 2026-06-16
+updated_at: 2026-06-25
 keywords:
   - message threads
   - communication workflows
@@ -32,6 +32,7 @@ source_of_truth:
 ## 适合什么场景
 
 - 你需要查看已有消息线程
+- 你需要判断哪些消息任务仍需要回复
 - 你需要按 SaaS 项目、任务创建人、团队成员、合作状态或标签筛选消息中心线程
 - 你要管理某个已知线程的标签、合作状态或草稿状态
 - 你要在发送或定时前，把已确认文件附加到线程草稿
@@ -40,6 +41,7 @@ source_of_truth:
 ## 当前 beta 范围
 
 - 查看消息线程列表和详情
+- 返回任务级回复状态，包括 `needs_reply`、`last_message_direction` 和 `pending_reason`
 - 查看与 SaaS 对齐的项目筛选和任务创建人 / 团队成员筛选选项
 - 解析某个达人 / channel 的相关项目或相关线程
 - 查看、保存和应用消息模板
@@ -54,6 +56,21 @@ source_of_truth:
 `message send` 和 `message schedule` 只适用于已有 `thread_id` 的回复。如果你只有邮件任务 ID，先用 `message list --business_kind email_task --business_id <task_id>` 找到线程。如果没有线程，应对平台达人或已确认外部邮箱地址改走 [邮件任务](email-tasks.md) 路径。
 
 消息附件属于线程草稿。发送或定时前先上传附件，NoxInfluencer 会在发送时带上这些草稿文件。
+
+## 回复状态判断
+
+用 `needs_reply` 和 `last_message_direction` 判断当前线程是否仍需要处理。不要把未读状态当成最终判断依据：打开 `message get <thread_id>` 可能会让上游线程变成已读，但这不代表当前任务已经处理完成。
+
+`message list --status deal` 表示达人最后发来消息。它不同于 `--status unread`，只有返回项里的 `needs_reply=true` 时，才应当按待回复任务处理。
+
+如果某个达人仍出现在 pending 或 deal 视图里，但你打开的线程已经是 `needs_reply=false`，先检查同一达人的兄弟任务：
+
+```bash
+noxinfluencer message get <thread_id>
+noxinfluencer message projects <thread_id>
+```
+
+如果某个待处理任务实际不需要回复，不要用空回复或归档 channel 作为绕过方案。当前公开命令面还没有暴露任务级 mark-handled / no-reply-needed 写操作。
 
 ## SaaS 对齐的列表筛选
 
@@ -93,6 +110,7 @@ noxinfluencer schema "message labels set"
 ```bash
 noxinfluencer message list --business_kind email_task --business_id <task_id>
 noxinfluencer message list --project_ids email_task:<task_id> --creator_uids <user_uid> --page_size 20
+noxinfluencer message list --status deal --page_size 20
 noxinfluencer message get <thread_id>
 noxinfluencer message projects <thread_id>
 ```
@@ -135,6 +153,8 @@ noxinfluencer message cancel <thread_id> --force
 
 - 写操作默认 dry-run，真正执行前需要确认并使用 `--force`
 - 发送和定时需要先确认内容、`sender_auth_id` 和准确目标线程
+- 发送和定时的 `html_body` 必须包含可见文本；`<p><br></p>` 这类空富文本占位会被拒绝
+- 不要用空回复来清除待处理状态
 - `status=draft` 和 `status=scheduled` 需要同时提供 `--business_kind` 与 `--business_id`；上游项目标签页已经废弃
 - `--project_ids` 不能和 `--business_kind` / `--business_id` 同时使用
 - `--creator_uids` 来自 `message creator-filters`，表示 SaaS 任务创建人或团队成员 ID，不是达人 channel ID
@@ -147,6 +167,7 @@ noxinfluencer message cancel <thread_id> --force
 
 - 消息线程不会从零创建外部消息渠道
 - 当没有 `thread_id` 时，它不会创建新的消息线程
+- 它不暴露任务级 mark-handled 或 no-reply-needed 写操作
 - 它不会代你撰写消息文案
 - 它不操作 NoxInfluencer 之外的外部消息平台
 - 部分项目标签页概念在上游已废弃，当前筛选条件以 CLI schema 为准

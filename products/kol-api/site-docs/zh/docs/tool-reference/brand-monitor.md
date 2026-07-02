@@ -5,7 +5,7 @@ description: 面向已监控品牌情报、产品信号、资产列表和品牌�
 locale: zh
 content_type: doc
 nav_group: tool-reference
-order: 13
+order: 15
 status: published
 updated_at: 2026-06-04
 keywords:
