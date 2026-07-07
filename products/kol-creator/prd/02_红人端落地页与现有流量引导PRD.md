@@ -1,6 +1,6 @@
 # 红人端落地页与现有流量引导 PRD 大纲
 
-> 状态：PRD 大纲 v0.3，待设计与开发评估
+> 状态：PRD 大纲 v0.4，待设计与开发评估
 > 更新时间：2026-07-07
 > 依据：`prd/01_第一版PRD.md`、NoxInfluencer 线上页面浏览器验证、GA4 BigQuery `2026-06-29` 至 `2026-07-05` 最近完整 7 天 landing session 聚合
 
@@ -12,7 +12,7 @@
 
 红人端当前还缺两个承接面：
 
-- 独立落地页：解释红人端如何帮创作者增加收入、获得付费品牌合作和联盟营销机会。
+- 独立落地页：解释红人端如何帮创作者最大化频道收益，包括付费品牌合作和联盟营销机会。
 - 现有流量引导：从 NoxInfluencer 现有高流量页面，把合适的红人意图引到红人端。
 
 本 PRD 先解决：
@@ -20,14 +20,14 @@
 ```text
 在不破坏现有品牌侧主链路的前提下，
 把已有红人意图流量引导到红人端落地页或变现流程，
-验证红人是否愿意注册、连接账号，并继续看商单 / 合作机会。
+验证红人是否愿意为了最大化频道收益而注册、连接账号，并继续看商单 / 合作机会。
 ```
 
 本 PRD 不重新定义红人端产品本体。红人端核心价值仍以 `prd/01_第一版PRD.md` 和后续方向修正为准：
 
 ```text
 帮有内容基础、愿意接品牌合作、但没有稳定商单来源的中小达人，
-更省力地发现、判断、回复和推进品牌合作 / 联盟营销机会。
+最大化频道收益，更省力地发现、判断、回复和推进品牌合作 / 联盟营销机会。
 ```
 
 ---
@@ -44,7 +44,7 @@
 
 ```text
 从频道估值、标题工具、频道详情和搜索页来的用户，
-比泛首页流量更容易接受“把账号内容变成付费合作和联盟收入”的承诺。
+比泛首页流量更容易接受“最大化频道收益”的承诺。
 ```
 
 ---
@@ -90,7 +90,7 @@
 2. 首版建议先覆盖 `www / kr / jp / tw`。`cn` 是否导入红人端需要业务判断；`vn / id` 在部分页面量大但本轮未做浏览器样例验证，先作为观察项。
 3. `/youtube/channel-calculator` 是第一重点；它不只是流量入口，而是“收入 / 估值 / 赞助价值”心智最强的变现入口。
 4. `/youtube/video-title` 应上调为 P0；它的用户身份更接近创作者，适合把“内容增长”直接接到 paid campaigns。
-5. `/youtube/channel/:id` 和 `/search/youtube/channel` 在未登录态有红人流量，可以切，但前台文案不使用“认领”为主卖点，而是直接讲“用你的频道获得付费合作 / 增加收入”。
+5. `/youtube/channel/:id` 和 `/search/youtube/channel` 在未登录态有红人流量，可以切，但前台文案不使用“认领”为主卖点，而是直接讲“最大化频道收益 / 获得付费合作”。
 6. `/youtube/video-analytics` 直进显示 `Video Not Found`，应先修成输入视频 URL 的空状态，再承接红人端引流。
 7. 部分页面在登录态浏览器下会展示主站导航和账号态信息；本 PRD 不把登录态导航当作公开未登录首屏事实，只使用页面标题、输入任务、页面工具属性和错误状态。
 
@@ -140,7 +140,7 @@
 
 ```text
 让从 Nox 现有页面来的红人理解：
-这里不是普通数据工具，而是帮她把频道、内容增长和数据表现变成付费品牌合作 / 联盟营销收入。
+这里不是普通数据工具，也不是泛创作者工具中心，而是帮她最大化频道收益。
 ```
 
 页面结构：
@@ -156,13 +156,13 @@
 主 CTA：
 
 ```text
-Start earning with my channel
+Maximize my channel revenue
 ```
 
 中文设计稿可写：
 
 ```text
-开始用我的频道变现
+最大化我的频道收益
 ```
 
 次 CTA：
@@ -179,7 +179,7 @@ See brand opportunities
 
 #### B. 现有页面变现入口
 
-前台入口不以“认领”为主卖点，统一讲“变现 / 增加收入 / 付费合作”。频道归属验证如果需要，放在注册后的流程里处理。
+前台入口不以“认领”为主卖点，统一讲“最大化频道收益 / 变现 / 付费合作”。频道归属验证如果需要，放在注册后的流程里处理。
 
 重点入口：
 
@@ -190,13 +190,13 @@ See brand opportunities
 建议文案：
 
 ```text
-Earn more from your channel with paid brand deals and affiliate opportunities.
+Maximize your channel revenue with paid brand deals and affiliate opportunities.
 ```
 
 中文设计稿可写：
 
 ```text
-用你的频道获得更多品牌合作和联盟收入。
+用品牌合作和联盟营销最大化你的频道收益。
 ```
 
 首版点击后：
@@ -296,15 +296,15 @@ video_id
 建议英文文案：
 
 ```text
-Turn your creator growth into paid opportunities
-Get matched with brand deals and affiliate campaigns that help you earn more from your channel.
+Maximize your channel revenue
+Get matched with brand deals and affiliate campaigns that turn your creator growth into income.
 ```
 
 建议中文设计稿文案：
 
 ```text
-把你的内容增长变成收入机会
-获得匹配的品牌合作和联盟营销机会，让频道赚更多钱。
+最大化你的频道收益
+获得匹配的品牌合作和联盟营销机会，把内容增长变成收入。
 ```
 
 组件：
@@ -382,7 +382,7 @@ Get matched with brand deals and affiliate campaigns that help you earn more fro
 | `/youtube/video-title` | 强 | 首屏工具区旁 / 结果区 | `Grow your videos. Get matched with paid campaigns.` | `Find campaigns` |
 | `/youtube/channel/:id` | 中强 | 身份区 / 合作潜力旁 | `Channels like this can earn from sponsorships. See what paid opportunities fit yours.` | `Earn with my channel` |
 | `/search/youtube/channel` | 中 | 搜索结果上方 / 结果卡片间 | `Creators: use your channel to get paid brand and affiliate opportunities.` | `Start earning` |
-| `/` | 弱但常驻 | 顶部导航 | `Creators` 或 `Earn as a Creator` | `Creators` |
+| `/` | 弱但常驻 | 顶部导航 | `Creators` 或 `Maximize Revenue` | `Creators` |
 | `/youtube/realtime-subs-count` | 中弱 | 查询框下方 / 结果卡旁 | `Turn subscriber growth into sponsorship income.` | `Explore deals` |
 | `/youtube/video-analytics` | 中弱 | 空状态 / 分析结果页 | `Use video performance to unlock paid collaborations.` | `Explore deals` |
 | `/youtube-video-rank` | 弱 | 榜单底部 / 侧边内容卡 | `Use trending videos to grow and monetize your channel.` | `Learn more` |
