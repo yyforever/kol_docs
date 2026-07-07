@@ -1,8 +1,8 @@
 # 红人端落地页与现有流量引导 PRD 大纲
 
-> 状态：PRD 大纲 v0.4，待设计与开发评估
+> 状态：PRD 大纲 v0.5，待设计与开发评估
 > 更新时间：2026-07-07
-> 依据：`prd/01_第一版PRD.md`、NoxInfluencer 线上页面浏览器验证、GA4 BigQuery `2026-06-29` 至 `2026-07-05` 最近完整 7 天 landing session 聚合
+> 依据：`prd/01_第一版PRD.md`、NoxInfluencer 线上页面浏览器验证、外部工具页视觉参考、GA4 BigQuery `2026-06-29` 至 `2026-07-05` 最近完整 7 天 landing session 聚合
 
 ---
 
@@ -374,19 +374,38 @@ Get matched with brand deals and affiliate campaigns that turn your creator grow
 - 数据是否会公开？
 - 如何退出或删除数据？
 
-### 6.2 引导位规格
+### 6.2 引导形式设计
 
-| 页面组 | 引导强度 | 位置 | 主文案 | CTA |
+本轮区分的重点是形式，不只是话术。参考外部工具页后，首版采用四类形式：
+
+- `tool-integrated card`：和工具输入 / 结果区合在一个视觉系统里，适合强相关工具页。
+- `result-embedded panel`：在结果卡里把“收益证明”与下一步变现 CTA 放在一起，适合计算器和详情页。
+- `inline feed card`：插在搜索结果 / 榜单内容流里，不打断原任务，适合混合意图页面。
+- `navigation entry`：只做发现入口，适合首页和全站导航。
+
+禁用形式：
+
+- 不做自动弹窗、遮罩弹窗或强制登录弹窗承接红人端。Nox 搜索页和频道详情页已有登录 / 权限弹层，叠加弹窗会损害原页面任务。
+- 不把右下角客服浮球改成红人端入口，避免和现有客服 / 帮助入口冲突。
+- 不在品牌侧强任务页面使用全屏 takeover。
+
+| 页面组 | 引导强度 | 推荐形式 | 具体落点 | 视觉与交互要求 |
 |---|---|---|---|---|
-| `/youtube/channel-calculator` | 最强 | 首屏工具区旁 / 估值结果区 | `Your channel has earning potential. Start getting paid brand deals.` | `Get paid deals` |
-| `/youtube/video-title` | 强 | 首屏工具区旁 / 结果区 | `Grow your videos. Get matched with paid campaigns.` | `Find campaigns` |
-| `/youtube/channel/:id` | 中强 | 身份区 / 合作潜力旁 | `Channels like this can earn from sponsorships. See what paid opportunities fit yours.` | `Earn with my channel` |
-| `/search/youtube/channel` | 中 | 搜索结果上方 / 结果卡片间 | `Creators: use your channel to get paid brand and affiliate opportunities.` | `Start earning` |
-| `/` | 弱但常驻 | 顶部导航 | `Creators` 或 `Maximize Revenue` | `Creators` |
-| `/youtube/realtime-subs-count` | 中弱 | 查询框下方 / 结果卡旁 | `Turn subscriber growth into sponsorship income.` | `Explore deals` |
-| `/youtube/video-analytics` | 中弱 | 空状态 / 分析结果页 | `Use video performance to unlock paid collaborations.` | `Explore deals` |
-| `/youtube-video-rank` | 弱 | 榜单底部 / 侧边内容卡 | `Use trending videos to grow and monetize your channel.` | `Learn more` |
-| `/youtube-channel-rank` | 弱 | 榜单说明 / 行尾轻入口 | `Want to earn from your own channel?` | `Learn more` |
+| `/youtube/channel-calculator` | 最强 | `tool-integrated card` + `result-embedded panel` | 首屏输入框下方增加细窄收益提示；估值结果卡右侧或底部增加“最大化收益”面板 | 不改变原输入主路径；结果区面板使用白底卡片、品牌橙主按钮、收益数字作为视觉锚点；按钮可写 `Get paid deals` |
+| `/youtube/video-title` | 强 | `tool-integrated card` | 搜索框下方或推荐区上方增加 creator revenue strip | 形式参考 vidIQ 的“Connect your channel”二级入口，但不做浮层 offer；轻背景条 + 橙色按钮，强调“内容增长后变现” |
+| `/youtube/channel/:id` | 中强 | `result-embedded panel` | 频道身份区、NoxScore / Coop. Potential 附近、锁定数据区下方 | 不问“这是你的频道吗”；用“类似频道可获得赞助收入”承接；如果页面出现登录 / 升级条，红人端面板必须是页内卡片而不是弹窗 |
+| `/search/youtube/channel` | 中 | `inline feed card` | 搜索结果第一屏顶部一张；后续每 8-10 条结果最多插一张 | 卡片应明显区别于达人结果，不能伪装成结果；不遮挡筛选器、不抢搜索按钮；点击带 `source_page_group` 和查询上下文 |
+| `/` | 弱但常驻 | `navigation entry` | 顶部导航或 `Products&Services` 下增加 creator 入口 | 不改首页主叙事；桌面端优先放在导航，移动端放在菜单第一屏可见区域 |
+| `/youtube/realtime-subs-count` | 中弱 | `tool-integrated card` | 查询框下方、结果卡旁或结果后 | 不在首屏强压；当用户查看增长数据后出现“增长可转化为赞助收入”的轻卡片 |
+| `/youtube/video-analytics` | 中弱 | `empty-state card` + `result-embedded panel` | 直进空状态、视频分析结果区 | 先把直进 `Video Not Found` 改成输入 URL 的空状态；空状态内可放轻 CTA，结果页再放收益面板 |
+| `/youtube-video-rank` | 弱 | `inline feed card` | 榜单下方或侧边内容卡 | 只做趋势到变现的轻引导，不进入首批主战场 |
+| `/youtube-channel-rank` | 弱 | `inline feed card` | 榜单说明下方或页面底部 | 频道榜偏围观 / benchmarking，不放首屏强 CTA |
+
+外部视觉参考：
+
+- [vidIQ 标题工具](https://vidiq.com/ai-title-generator/)：主输入下方放连接频道的二级 CTA，同时保留工具任务主按钮。
+- [SocialBlade 收益计算器](https://socialblade.com/youtube/calculator)：把输入参数和收益结果并列展示，让结果本身成为转化证据。
+- [LiveReacting 收益计算器](https://www.livereacting.com/tools/youtube-money-calculator)：居中大输入卡 + 满宽主按钮，强化单任务路径。
 
 ---
 
@@ -480,6 +499,8 @@ high-intent entry page
 - `/` 在导航栏上线轻量红人端入口。
 - `video analytics` 先修空状态，再上线中弱引导入口。
 - `search/youtube/channel` 展示明确变现入口，但不影响品牌搜索任务。
+- 设计稿必须明确每个入口的形式：`tool-integrated card`、`result-embedded panel`、`inline feed card`、`navigation entry` 或 `empty-state card`，不能只交一组 CTA 文案。
+- 强相关页面必须在首屏可见；混合意图页面只能使用页内卡片或内容流插卡，不使用弹窗。
 - `channel-compare` 在恢复正常前不投放。
 - 所有入口点击都带来源上下文参数。
 
@@ -567,8 +588,10 @@ creator_signup_finish / creator_landing_view
 - [ ] 确认落地页路由，例如 `/creator`、`/creator/landing` 或独立子路径。
 - [ ] 输出 `www / kr / jp / tw` 首版文案。
 - [ ] 设计 landing 首屏、来源上下文卡片、三步流程、FAQ。
-- [ ] 设计 `channel calculator` 和 `video title` 强变现 CTA。
-- [ ] 设计 `channel detail` 和 `search/youtube/channel` 中强变现入口。
+- [ ] 设计 `channel calculator` 的 `tool-integrated card` 和 `result-embedded panel`。
+- [ ] 设计 `video title` 的 `tool-integrated card`。
+- [ ] 设计 `channel detail` 的 `result-embedded panel`。
+- [ ] 设计 `search/youtube/channel` 的 `inline feed card`。
 - [ ] 设计首页导航轻入口。
 - [ ] 设计 `realtime-subs-count`、`video-analytics` 和榜单页弱引导样式。
 
