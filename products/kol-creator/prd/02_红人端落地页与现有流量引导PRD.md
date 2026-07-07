@@ -1,0 +1,605 @@
+# 红人端落地页与现有流量引导 PRD 大纲
+
+> 状态：PRD 大纲 v0.1，待设计与开发评估
+> 更新时间：2026-07-07
+> 依据：`prd/01_第一版PRD.md`、NoxInfluencer 线上页面浏览器验证、GA4 BigQuery `2026-06-29` 至 `2026-07-05` 最近完整 7 天 landing session 聚合
+
+---
+
+## 1. 背景与目标
+
+聚星当前已经有大量红人相关自然流量，尤其集中在 YouTube 频道估值、频道详情、实时订阅、视频分析、排行榜和搜索页。这些流量里有一部分用户不是品牌方，而是正在查看自己或同类创作者数据的红人。
+
+红人端当前还缺两个承接面：
+
+- 独立落地页：解释红人端是什么，为什么值得红人注册 / 认领 / 授权。
+- 现有流量引导：从 NoxInfluencer 现有高流量页面，把合适的红人意图引到红人端。
+
+本 PRD 先解决：
+
+```text
+在不破坏现有品牌侧主链路的前提下，
+把已有红人意图流量引导到红人端落地页或认领流程，
+验证红人是否愿意注册、认领频道、连接账号，并继续看商单 / 合作机会。
+```
+
+本 PRD 不重新定义红人端产品本体。红人端核心价值仍以 `prd/01_第一版PRD.md` 和后续方向修正为准：
+
+```text
+帮有内容基础、愿意接品牌合作、但没有稳定商单来源的中小达人，
+更省力地发现、判断、回复和推进品牌合作 / 联盟营销机会。
+```
+
+---
+
+## 2. 关键推理链
+
+1. NoxInfluencer 现有公开流量中，部分工具页天然服务红人自查：频道估值、实时订阅、视频分析、标题工具。
+2. 频道详情页虽然也是品牌尽调入口，但如果访问者正在查看自己的频道，它是最自然的“认领频道 / 生成 Media Kit / 接合作机会”入口。
+3. 榜单和搜索页混合了品牌找人、围观和创作者参考意图，不适合强推红人端，但适合放轻量认领入口。
+4. 红人端第一版的难点不是让用户点一次 CTA，而是让红人完成至少一个可验证动作：注册、认领频道、授权社媒 / 邮箱、查看合作机会或留下兴趣。
+5. 因此首版不能只做一个泛落地页，还必须按来源页面带入上下文，否则用户会从“看数据 / 看估值”跳到“商单工作台”时断裂。
+
+当前核心假设：
+
+```text
+从频道估值、频道详情、实时订阅和视频分析来的用户，
+比泛首页流量更容易理解“把自己的频道数据变成合作机会”。
+```
+
+---
+
+## 3. 数据与浏览器验证摘要
+
+### 3.1 GA4 最近 7 天候选入口
+
+口径：
+
+- 数据源：GA4 BigQuery `kol-userdata.analytics_354133687.events_*`
+- 时间：`2026-06-29` 至 `2026-07-05`
+- 范围：`*.noxinfluencer.com`
+- 指标：landing sessions；不是红人端转化结果
+
+| 优先级 | 页面组 | Landing sessions | 现有判断 |
+|---|---:|---:|---|
+| P0 | `/youtube/channel/:id` | 17,481 | 频道详情页，适合做本人认领、Media Kit 和合作机会入口 |
+| P0 | `/youtube/channel-calculator` | 4,695 | 频道估值页，创作者收入 / 频道价值意图强 |
+| P0 | `/youtube/realtime-subs-count` | 9,758 | 实时订阅页，创作者增长 / 自查意图明确 |
+| P0/P1 | `/youtube/video-analytics` | 21,517 | 量大，视频表现分析意图强，但当前登录 / 转化桥接弱 |
+| P1 | `/` | 11,916 | 首页量和登录事件强，但意图泛，不应作为红人端唯一判断 |
+| P1 | `/youtube-channel-rank` | 5,614 | 榜单页，适合轻量引导，不适合强弹 |
+| P1 | `/youtube-video-rank` | 1,093 | 视频榜，适合轻量引导 |
+| P2 | `/search/youtube/channel` | 33,053 | 总量最大，但品牌搜索 / 工作台意图强，避免强推红人端 |
+| P2 | `/youtube/video-title` | 16,449 | 总量高但 Direct 占比异常高，先轻量测试 |
+
+### 3.2 多语言站点优先级
+
+不应只做 `www` 英文站。GA4 显示候选页流量明显分布在多语言站点：
+
+| 页面组 | 优先站点信号 |
+|---|---|
+| `/youtube/channel-calculator` | `kr`、`jp`、`tw`、`www`、`th` |
+| `/youtube/channel/:id` | `kr`、`cn`、`www`、`es`、`jp` |
+| `/youtube/realtime-subs-count` | `tw`、`jp`、`kr`、`www`、`vn` |
+| `/youtube/video-analytics` | `kr`、`vn`、`jp`、`tw`、`id` |
+
+首版建议先覆盖：
+
+```text
+www / kr / jp / tw
+```
+
+`cn` 是否引导到红人端，需要业务判断是否希望国内红人进入这条新链路。`vn / id` 在部分页面量大但 organic 弱，先作为观察项。
+
+### 3.3 浏览器验证事实
+
+浏览器只读验证时间：`2026-07-07`。
+
+| 页面 | 稳定页面任务 | 验证信号 | 引导判断 |
+|---|---|---|---|
+| `/youtube/channel-calculator` | 输入 YouTube Channel URL，估算频道收入 / 频道价值 | H1 为 `YOUTUBE CHANNEL CALCULATOR`；输入框提示导入 YouTube Channel URL；页面存在 `I'M AN INFLUENCER` / `I'M A BRAND` 区块 | 强引导，替换或新增更贴近红人端的 CTA |
+| `kr /youtube/channel-calculator` | 韩语频道收益估算 | H1 为韩语 YouTube 频道预计收入查询；输入框为 YouTube 频道链接 | 多语言版本也适合承接 |
+| `/youtube/channel/:id` | 查看具体频道分析报告 | 页面标题为具体频道 YouTube Channel Analytics and Report；展示 followers、NoxScore、合作潜力、Audience / Content / Brand 等分析区 | 强引导，但要用“这是你的频道？”而不是泛弹窗 |
+| `/youtube/realtime-subs-count` | 查询某 YouTuber 实时订阅数 | H1 为 `LIVE SUB COUNT`；输入框询问要查看哪个 YouTuber 的实时订阅 | 强引导，但放在查询结果或侧边卡片 |
+| `/youtube/video-analytics` | 输入 YouTube Video URL，分析视频表现 | H1 为 `YOUTUBE VIDEO ANALYTICS AND REPORT`；输入框为 YouTube Video URL | 中强引导，文案从“用视频表现生成合作资料”切入 |
+| `/youtube-channel-rank` | 查看 Top YouTubers 榜单 | H1 为 Top 100 Most Subscribed Youtubers；筛选地区 / 类目 / 排序 | 轻引导，只在榜单说明或详情入口旁出现 |
+| `/youtube-video-rank` | 查看 24 小时热门视频 | H1 为 Most Viewed YouTube Videos in 24 hours | 轻引导，偏内容增长，不是主入口 |
+| `/search/youtube/channel` | 搜索达人 / 频道 | 搜索框提示 `Enter keywords, influencer links, or Amazon links...`；页面有大量品牌侧操作入口 | 仅做“认领本人频道”旁路，不干扰品牌侧搜索 |
+| `/youtube/video-title` | YouTube 标题生成 / 标题建议 | H1 为 YouTube Video Title Generator；输入 keyword / title | 轻量测试，不作为首批主战场 |
+| `/youtube/channel-compare` | 频道对比 | 浏览器显示 `Oops. Internal Server Error` | 暂不作为引流位，先修页面或下线入口 |
+
+边界说明：部分页面在登录态浏览器下会展示主站导航和账号态信息；本 PRD 不把登录态导航当作公开未登录首屏事实，只使用页面标题、输入任务、页面工具属性和错误状态。
+
+---
+
+## 4. 用户与场景
+
+### 4.1 目标用户
+
+首版目标用户：
+
+```text
+已经有 YouTube / TikTok / Instagram 内容基础，
+正在查看自己账号数据、频道价值、视频表现或同类创作者榜单，
+并且愿意接品牌合作或联盟营销机会的中小创作者。
+```
+
+非首版主目标：
+
+- 纯围观看榜单的普通用户。
+- 品牌 / agency / seller 搜索达人用户。
+- 只想用一次工具、不愿意留下任何身份或账号信息的用户。
+- MCN / 大型机构账号的完整团队管理场景。
+
+### 4.2 主要进入场景
+
+| 来源页面 | 用户心智 | 最自然的问题 | 推荐承接 |
+|---|---|---|---|
+| 频道估值页 | 我的频道值多少钱 / 能赚多少钱 | 我能不能接品牌合作赚钱？ | 进入红人端 landing 或创建资料页 |
+| 频道详情页 | 这是我的频道 / 我在看某个频道商业价值 | 我能不能认领这个频道，让品牌找到我？ | 频道认领流程 |
+| 实时订阅页 | 我在看增长情况 | 增长后能不能变成合作机会？ | 轻 CTA 到 landing |
+| 视频分析页 | 这个视频表现如何 | 这些表现数据能不能变成 Media Kit？ | 生成合作资料 / Media Kit |
+| 榜单页 | 我在看同类创作者 | 我怎样也获得品牌合作？ | 轻 CTA / 内容卡片 |
+| 搜索页 | 我在找达人，或被搜索结果命中 | 如果这是我的频道，怎么认领？ | 详情页旁路认领 |
+
+---
+
+## 5. 产品范围
+
+### 5.1 首版必须做
+
+#### A. 红人端落地页
+
+目标：
+
+```text
+让从 Nox 现有页面来的红人理解：
+这里不是普通数据工具，而是帮她把频道数据、Media Kit 和合作机会连接起来。
+```
+
+页面结构：
+
+1. Hero：一句话价值主张、主 CTA、次 CTA。
+2. 来源上下文卡片：根据来源页面展示不同引导语。
+3. 三步流程：认领 / 连接账号 -> 生成资料 -> 查看合作机会。
+4. 合作机会说明：品牌合作 + 联盟营销都兼容。
+5. 信任与控制：AI 只辅助判断 / 草稿 / 跟进，高风险消息由用户确认。
+6. FAQ：数据授权、邮箱授权、是否收费、是否保证接单。
+7. 最终 CTA。
+
+主 CTA：
+
+```text
+Claim my channel
+```
+
+中文设计稿可写：
+
+```text
+认领我的频道
+```
+
+次 CTA：
+
+```text
+See brand opportunities
+```
+
+中文设计稿可写：
+
+```text
+先看看可接合作
+```
+
+#### B. 频道认领入口
+
+入口位置：
+
+- 频道详情页身份区。
+- 频道详情页合作潜力 / NoxScore 附近。
+- 搜索结果卡片或频道详情跳转处的轻入口。
+
+建议文案：
+
+```text
+Is this your channel? Claim it to receive brand deals.
+```
+
+中文设计稿可写：
+
+```text
+这是你的频道？认领后接收品牌合作机会。
+```
+
+首版点击后：
+
+- 已登录红人账号：进入认领流程。
+- 未登录：进入红人端注册 / 登录，带 `service` 或 `redirect` 回认领上下文。
+- 不是本人：允许取消，不要打断当前页面。
+
+#### C. 工具页上下文 CTA
+
+频道估值页：
+
+```text
+Your channel has sponsorship value. Get matched with brand deals.
+```
+
+实时订阅页：
+
+```text
+Turn your growth into collaboration opportunities.
+```
+
+视频分析页：
+
+```text
+Use this performance data to build your creator media kit.
+```
+
+标题工具 / 榜单页：
+
+```text
+Growing your channel? Get ready for brand collaborations.
+```
+
+#### D. 来源上下文参数
+
+所有入口跳转红人端时必须带上下文参数，用于页面文案、归因和后续分析。
+
+建议参数：
+
+```text
+source_page_group
+source_host
+source_path
+cta_position
+locale
+channel_id
+video_id
+```
+
+如有隐私或 URL 长度顾虑，可用后端生成短 `entry_context_id`，但首版仍要保留可分析的来源维度。
+
+#### E. 最小埋点
+
+首版必须补埋点，否则无法判断现有流量是否真的能转化为红人端用户。
+
+| Event | 触发时机 | 必带属性 |
+|---|---|---|
+| `creator_entry_impression` | 引导位曝光 | `source_page_group`、`source_host`、`cta_position`、`locale` |
+| `creator_entry_click` | 点击引导位 | 同上，加 `target_url` |
+| `creator_landing_view` | 红人端 landing 打开 | `source_page_group`、`source_host`、`source_path`、`locale` |
+| `creator_signup_start` | 开始注册 / 登录 | `source_page_group`、`auth_method` |
+| `creator_signup_finish` | 注册 / 登录完成 | `source_page_group`、`auth_method` |
+| `creator_channel_claim_start` | 开始频道认领 | `source_page_group`、`channel_platform` |
+| `creator_channel_claim_finish` | 频道认领成功 | `source_page_group`、`channel_platform` |
+| `creator_social_connect_start` | 开始社媒授权 | `platform`、`source_page_group` |
+| `creator_social_connect_finish` | 社媒授权完成 | `platform`、`source_page_group` |
+| `creator_deal_view` | 打开合作机会列表或详情 | `source_page_group`、`deal_source` |
+
+### 5.2 首版不做
+
+- 不重做 `search/youtube/channel` 主搜索体验。
+- 不在品牌侧工作台强弹红人端。
+- 不承诺“注册后一定接到品牌单”。
+- 不做复杂 A/B 实验平台，先用固定参数和 GA / BigQuery 分析。
+- 不做完整多语言文案精修；首版只保证 `www / kr / jp / tw` 有可用版本或明确 fallback。
+- 不把 `channel-compare` 纳入首批引流，除非该页面先恢复正常。
+
+---
+
+## 6. 页面规格大纲
+
+### 6.1 落地页结构
+
+#### Section 1：Hero
+
+目的：
+
+- 让用户 5 秒内理解“这是给创作者接合作机会的页面”。
+
+建议英文文案：
+
+```text
+Turn your creator data into brand opportunities
+Claim your channel, build a media kit, and get matched with brand and affiliate deals.
+```
+
+建议中文设计稿文案：
+
+```text
+把你的频道数据变成品牌合作机会
+认领频道，生成合作资料，接收品牌合作和联盟营销机会。
+```
+
+组件：
+
+- 顶部导航
+- Hero title
+- Subtitle
+- Primary Button
+- Secondary Button
+- 来源上下文 badge
+
+状态：
+
+- 默认：展示来源上下文
+- 无来源：展示通用版本
+- 已登录：主 CTA 指向认领 / 资料完善
+- 未登录：主 CTA 指向注册 / 登录
+
+#### Section 2：来源上下文卡片
+
+目的：
+
+- 承接不同来源页面的用户心智，避免跳转断裂。
+
+示例：
+
+| 来源 | 卡片文案 |
+|---|---|
+| channel calculator | `You just checked your channel value. Next, use that value to win better brand deals.` |
+| channel detail | `If this is your channel, claim it and let brands contact you with the right context.` |
+| realtime subs | `Your growth is a signal. Let brands see why your channel is worth working with.` |
+| video analytics | `Use your video performance to build a media kit brands can understand.` |
+
+#### Section 3：三步流程
+
+1. Claim / connect your channel.
+2. Build your creator profile and media kit.
+3. View matched brand and affiliate opportunities.
+
+#### Section 4：机会类型
+
+必须兼容两类机会：
+
+- Brand deals：固定费用、样品、内容合作、报价 / 议价。
+- Affiliate deals：share link、自主承接、转化数据、佣金。
+
+文案必须避免把联盟营销写成已经完整结算闭环；当前只承诺“机会和数据查看方向”，真实 tracking / 结算仍以产品实现为准。
+
+#### Section 5：信任与控制
+
+必须强调：
+
+- 用户控制是否授权社媒 / 邮箱。
+- AI 可以帮助判断、总结、起草，不默认替用户发送高风险消息。
+- 用户可以断开连接或删除授权数据；具体实现规则待开发确认。
+
+#### Section 6：FAQ
+
+首版问题：
+
+- 是否保证我能接到合作？
+- 是否必须授权 YouTube / Gmail？
+- 品牌如何看到我？
+- 支持哪些合作类型？
+- 数据是否会公开？
+- 如何退出或删除数据？
+
+### 6.2 引导位规格
+
+| 页面组 | 引导强度 | 位置 | 主文案 | CTA |
+|---|---|---|---|---|
+| `/youtube/channel/:id` | 强 | 身份区 / 合作潜力旁 | `Is this your channel? Claim it to receive brand deals.` | `Claim channel` |
+| `/youtube/channel-calculator` | 强 | 估值结果下方 / 页面底部双栏区 | `Your channel has sponsorship value. Start receiving brand opportunities.` | `Get brand deals` |
+| `/youtube/realtime-subs-count` | 中强 | 查询框下方 / 结果卡旁 | `Turn your growth into collaboration opportunities.` | `Create creator profile` |
+| `/youtube/video-analytics` | 中强 | 分析结果页 / 空状态旁 | `Use your video performance to build a media kit.` | `Build media kit` |
+| `/youtube-channel-rank` | 轻 | 榜单说明 / 行尾轻入口 | `Are you on this list? Claim your channel.` | `Claim` |
+| `/youtube-video-rank` | 轻 | 榜单底部 / 侧边内容卡 | `Growing with viral videos? Prepare for brand deals.` | `Learn more` |
+| `/search/youtube/channel` | 轻 | 频道卡片 / 详情页旁路 | `This is your channel? Claim it.` | `Claim` |
+| `/youtube/video-title` | 轻 | 工具结果下方 | `Ready to turn content growth into brand deals?` | `Learn more` |
+
+---
+
+## 7. 交互与技术边界
+
+### 7.1 跳转与身份
+
+推荐路径：
+
+```text
+Nox existing page
+-> creator landing with context
+-> signup / login
+-> channel claim or profile setup
+-> opportunities / deal list
+```
+
+对于频道详情页，允许更短路径：
+
+```text
+channel detail
+-> claim channel
+-> signup / login
+-> claim verification
+-> profile setup
+```
+
+### 7.2 认领校验
+
+首版 PRD 只定义产品要求，不提前指定技术方案。
+
+可选校验方式：
+
+- OAuth 验证频道归属。
+- 通过平台账号绑定验证。
+- 通过人工审核或备用证明方式。
+
+待开发确认：
+
+- YouTube / TikTok / Instagram 各平台可用授权范围。
+- 是否允许先创建资料，再延迟校验归属。
+- 失败、取消和误认领处理。
+
+### 7.3 多语言
+
+首版建议：
+
+- `www`：英文。
+- `kr`：韩文。
+- `jp`：日文。
+- `tw`：繁体中文。
+
+要求：
+
+- CTA 不要硬编码中文。
+- 入口参数保留 `locale`。
+- 若某语言文案未完成，fallback 到英文，但必须不影响页面功能。
+
+### 7.4 登录态与公开态
+
+浏览器验证发现部分页面在登录态展示主站导航与账号态内容。实现时必须分别确认：
+
+- 未登录公开页是否能看到引导位。
+- 已登录品牌用户是否应该看到红人端引导。
+- 已登录红人用户是否直接进入红人端。
+- 已登录但身份未知用户如何分流。
+
+首版建议：
+
+- 未登录：展示红人端引导。
+- 已登录品牌用户：只在低干扰位置展示，不强弹。
+- 已登录红人用户：CTA 直接进入红人端。
+- 身份未知：点击后进入身份选择或红人端注册。
+
+---
+
+## 8. 验收标准
+
+### 8.1 页面验收
+
+- 红人端 landing 能独立说明价值，不依赖用户读过 Nox 旧页面。
+- 从 `channel-calculator` 进入时，首屏能看出与频道价值 / 商业合作相关。
+- 从 `channel detail` 进入时，首屏能看出“认领当前频道”。
+- 页面包含品牌合作和联盟营销两类机会，但不承诺已完整支持 tracking / 结算。
+- 页面明确 AI 不默认替用户发送高风险消息。
+- 页面至少覆盖默认、无来源、未登录、已登录红人、已登录品牌用户的文案 / 跳转规则。
+
+### 8.2 引导位验收
+
+- P0 页面至少上线三个入口：`channel detail`、`channel calculator`、`realtime subs count`。
+- `video analytics` 至少上线一个软引导入口。
+- `search/youtube/channel` 只出现轻量认领入口，不影响品牌搜索任务。
+- `channel-compare` 在恢复正常前不投放。
+- 所有入口点击都带来源上下文参数。
+
+### 8.3 埋点验收
+
+- `creator_entry_impression` 和 `creator_entry_click` 能按页面组、站点、语言和 CTA 位置拆分。
+- `creator_landing_view` 能关联到上游入口。
+- 注册、认领、授权、机会查看事件能形成最小漏斗。
+- GA4 / BigQuery 能在上线后按周输出：
+  - 入口曝光
+  - 入口点击
+  - landing view
+  - signup start / finish
+  - channel claim start / finish
+  - social connect finish
+  - deal view
+
+### 8.4 设计验收
+
+遵循 NoxInfluencer SaaS 设计基线：
+
+- 主 CTA 使用品牌橙 `#FA6300`。
+- 页面背景使用浅灰，主要内容使用白色卡片。
+- 表单、CTA、卡片使用现有 Nox 控件风格。
+- 多语言长文本不挤压主 CTA。
+- 移动端至少保证首屏 CTA、来源上下文和三步流程可读。
+
+---
+
+## 9. 上线后观察口径
+
+上线后至少观察两周。
+
+### 9.1 核心指标
+
+首版核心指标不是页面 PV，而是：
+
+```text
+creator_channel_claim_finish / creator_landing_view
+```
+
+如果首版认领链路尚未完成，则临时核心指标为：
+
+```text
+creator_signup_finish / creator_landing_view
+```
+
+但必须标记为临时指标，不能直接等同于红人端方向成立。
+
+### 9.2 分入口判断
+
+每周按入口页组比较：
+
+- `entry_click_rate = creator_entry_click / creator_entry_impression`
+- `landing_to_signup = creator_signup_finish / creator_landing_view`
+- `landing_to_claim = creator_channel_claim_finish / creator_landing_view`
+- `claim_to_connect = creator_social_connect_finish / creator_channel_claim_finish`
+- `deal_view_rate = creator_deal_view / creator_landing_view`
+
+优先保留：
+
+- 点击率高且注册 / 认领也高的入口。
+- 点击率不高但认领率高的高质量入口。
+
+优先降级：
+
+- 曝光高、点击低、且干扰原页面任务的入口。
+- 点击高但注册 / 认领几乎为零的误导性入口。
+
+### 9.3 止损与调整
+
+需要调整的情况：
+
+- 红人端 landing 点击高，但注册低：首屏价值或信任解释不足。
+- 注册高，但认领低：认领流程太重或不可信。
+- 认领高，但授权低：数据授权风险未解释清楚。
+- 授权高，但 deal view 低：商单 / 机会供给不足，回到红人端主 PRD 的供给问题。
+- 品牌用户投诉或关键业务链路下降：降低品牌侧页面引导强度。
+
+---
+
+## 10. 第一轮实施清单
+
+### 10.1 产品 / 设计
+
+- [ ] 确认落地页路由，例如 `/creator`、`/creator/landing` 或独立子路径。
+- [ ] 输出 `www / kr / jp / tw` 首版文案。
+- [ ] 设计 landing 首屏、来源上下文卡片、三步流程、FAQ。
+- [ ] 设计 `channel detail` 认领入口。
+- [ ] 设计 `channel calculator` 强 CTA。
+- [ ] 设计 `realtime-subs-count` 和 `video-analytics` 软 CTA。
+- [ ] 设计轻量引导在榜单 / 搜索页的样式。
+
+### 10.2 前端 / 后端
+
+- [ ] 增加入口上下文参数解析。
+- [ ] 增加 creator landing 页面。
+- [ ] 增加 P0 页面引导位。
+- [ ] 增加登录态 / 用户身份分流。
+- [ ] 增加最小认领流程入口；若认领后端未完成，则先收集意向并标记为 temporary。
+- [ ] 增加多语言文案 key。
+
+### 10.3 数据
+
+- [ ] 增加最小埋点事件。
+- [ ] BigQuery 周报查询按页面组、host、locale、CTA 位置拆分。
+- [ ] 单独观察 `channel-compare` 页面错误是否修复。
+- [ ] 上线前记录 baseline，避免把自然波动误判为引导效果。
+
+---
+
+## 11. 开放问题
+
+- 红人端 landing 最终路由放在 `www.noxinfluencer.com` 还是独立红人端域名 / 子路径？
+- `cn` 站是否也进入首版引流范围？
+- 频道认领首版必须真实校验，还是允许先创建资料并延迟校验？
+- 已登录品牌用户看到红人端入口是否会造成业务干扰？
+- 红人端注册是否复用现有账号体系，还是使用独立 creator account？
+- 首批合作机会不足时，landing 是否展示 waitlist / selected deals / 示例机会？
+- `channel-compare` 是否修复后重新纳入工具页引流池？
+
