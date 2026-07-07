@@ -1,6 +1,6 @@
 # 红人端落地页与现有流量引导 PRD 大纲
 
-> 状态：PRD 大纲 v0.1，待设计与开发评估
+> 状态：PRD 大纲 v0.2，待设计与开发评估
 > 更新时间：2026-07-07
 > 依据：`prd/01_第一版PRD.md`、NoxInfluencer 线上页面浏览器验证、GA4 BigQuery `2026-06-29` 至 `2026-07-05` 最近完整 7 天 landing session 聚合
 
@@ -51,64 +51,46 @@
 
 ## 3. 数据与浏览器验证摘要
 
-### 3.1 GA4 最近 7 天候选入口
+### 3.1 口径说明
 
-口径：
+本节把 GA4 流量数据和浏览器验证合并到一张表里，但两者不是同一口径：
 
-- 数据源：GA4 BigQuery `kol-userdata.analytics_354133687.events_*`
-- 时间：`2026-06-29` 至 `2026-07-05`
-- 范围：`*.noxinfluencer.com`
-- 指标：landing sessions；不是红人端转化结果
+- GA4 数据源：BigQuery `kol-userdata.analytics_354133687.events_*`
+- GA4 时间：`2026-06-29` 至 `2026-07-05`
+- GA4 范围：`*.noxinfluencer.com`，按 `page_group` 聚合，不是单个 URL。
+- GA4 指标：landing sessions、users、organic search sessions；不是红人端转化结果。
+- 浏览器验证时间：`2026-07-07`，只验证样例 URL 的页面任务、首屏信号和可投放风险。
+- 如果 GA 的 `top_hosts` 与浏览器样例 URL host 不完全一致，不代表数据冲突；它表示首版实现需要覆盖这些多语言 host。
 
-| 优先级 | 页面组 | Landing sessions | 现有判断 |
-|---|---:|---:|---|
-| P0 | `/youtube/channel/:id` | 17,481 | 频道详情页，适合做本人认领、Media Kit 和合作机会入口 |
-| P0 | `/youtube/channel-calculator` | 4,695 | 频道估值页，创作者收入 / 频道价值意图强 |
-| P0 | `/youtube/realtime-subs-count` | 9,758 | 实时订阅页，创作者增长 / 自查意图明确 |
-| P0/P1 | `/youtube/video-analytics` | 21,517 | 量大，视频表现分析意图强，但当前登录 / 转化桥接弱 |
-| P1 | `/` | 11,916 | 首页量和登录事件强，但意图泛，不应作为红人端唯一判断 |
-| P1 | `/youtube-channel-rank` | 5,614 | 榜单页，适合轻量引导，不适合强弹 |
-| P1 | `/youtube-video-rank` | 1,093 | 视频榜，适合轻量引导 |
-| P2 | `/search/youtube/channel` | 33,053 | 总量最大，但品牌搜索 / 工作台意图强，避免强推红人端 |
-| P2 | `/youtube/video-title` | 16,449 | 总量高但 Direct 占比异常高，先轻量测试 |
+### 3.2 GA4 流量与浏览器验证合并表
 
-### 3.2 多语言站点优先级
+| 优先级 | GA page group | Landing sessions | Users | Organic search sessions | Top hosts | 浏览器验证样例 | 引导判断 |
+|---|---|---:|---:|---:|---|---|---|
+| P0 | `/youtube/channel/:id` | 17,481 | 15,082 | 9,055 | `kr`: 4,130; `cn`: 3,864; `www`: 3,740; `es`: 1,088 | [频道详情样例](https://www.noxinfluencer.com/youtube/channel/UCuHzBCaKmtaLcRAOoazhCPA)：频道分析报告，展示 NoxScore、合作潜力、Audience / Content / Brand 等区块 | 强引导；用“这是你的频道？”承接认领，不做泛弹窗 |
+| P0 | `/youtube/channel-calculator` | 4,695 | 3,807 | 3,611 | `kr`: 2,702; `jp`: 496; `tw`: 433; `www`: 329 | [www 样例](https://www.noxinfluencer.com/youtube/channel-calculator)：H1 为 `YOUTUBE CHANNEL CALCULATOR`；[kr 样例](https://kr.noxinfluencer.com/youtube/channel-calculator)：韩语频道收益估算 | 强引导；频道价值和收入心智最接近红人端 |
+| P0 | `/youtube/realtime-subs-count` | 9,758 | 9,227 | 4,012 | `tw`: 3,112; `jp`: 2,152; `kr`: 1,263; `www`: 864 | [实时订阅样例](https://www.noxinfluencer.com/youtube/realtime-subs-count)：H1 为 `LIVE SUB COUNT`，输入要查看的 YouTuber | 强引导；放在查询结果或侧边卡片，避免打断工具任务 |
+| P0/P1 | `/youtube/video-analytics` | 21,517 | 21,124 | 6,063 | `kr`: 5,312; `vn`: 4,041; `jp`: 2,124; `tw`: 1,580 | [视频分析样例](https://www.noxinfluencer.com/youtube/video-analytics)：H1 为 `YOUTUBE VIDEO ANALYTICS AND REPORT`，输入 YouTube Video URL | 中强引导；从“视频表现生成合作资料 / Media Kit”切入 |
+| P1 | `/` | 11,916 | 8,303 | 5,192 | `cn`: 5,084; `www`: 3,241; `kr`: 1,044; `jp`: 874 | 未单独抽样；只作为泛首页入口观察 | 可做轻入口，不应作为红人端主判断依据 |
+| P1 | `/youtube-channel-rank` | 5,614 | 5,451 | 618 | `cn`: 3,037; `tw`: 1,137; `kr`: 376; `jp`: 269 | [榜单样例](https://www.noxinfluencer.com/youtube-channel-rank/top-100-us-all-youtuber-sorted-by-subs-weekly)：Top YouTubers 榜单，按地区 / 类目 / 排序浏览 | 轻引导；适合榜单说明或详情入口旁，不适合强弹 |
+| P1 | `/youtube-video-rank` | 1,093 | 979 | 730 | `jp`: 466; `kr`: 373; `cn`: 116; `www`: 65 | [视频榜样例](https://www.noxinfluencer.com/youtube-video-rank)：H1 为 `Most Viewed YouTube Videos in 24 hours` | 轻引导；偏内容增长，不是首批主战场 |
+| P2 | `/search/youtube/channel` | 33,053 | 25,609 | 2,821 | `cn`: 13,247; `www`: 6,368; `kr`: 3,862; `jp`: 2,355 | [搜索页样例](https://www.noxinfluencer.com/search/youtube/channel)：搜索框提示 `Enter keywords, influencer links, or Amazon links...`，品牌侧操作入口多 | 仅做“认领本人频道”旁路，不干扰品牌侧搜索 |
+| P2 | `/youtube/video-title` | 16,449 | 16,371 | 71 | `jp`: 3,099; `kr`: 2,240; `vn`: 2,026; `tw`: 1,649 | [标题工具样例](https://www.noxinfluencer.com/youtube/video-title)：YouTube 标题生成 / 标题建议 | 轻量测试；Direct 占比异常高，先观察 |
+| P2 | `/trend/keywords` | 923 | 915 | 70 | `kr`: 367; `jp`: 212; `www`: 92; `tw`: 62 | 未抽样 | 观察项；不进入首批强引导 |
+| P2 | `/instagram-channel-rank` | 295 | 250 | 172 | `kr`: 84; `cn`: 66; `www`: 43; `tw`: 33 | 未抽样 | 观察项；可等 YouTube 链路验证后再扩展 |
+| P2 | `/tiktok-channel-rank` | 142 | 105 | 59 | `cn`: 47; `kr`: 35; `www`: 20; `vn`: 16 | 未抽样 | 观察项；可等 YouTube 链路验证后再扩展 |
+| P2 | `/trend` | 42 | 39 | 12 | `kr`: 23; `jp`: 8; `cn`: 4; `tw`: 4 | 未抽样 | 观察项；当前量级低 |
+| P2 | `/youtube/thumbnails-gallery` | 30 | 30 | 7 | `kr`: 15; `jp`: 11; `id`: 2; `es`: 1 | 未抽样 | 观察项；当前量级低 |
+| P2 | `/marketing-calculator` | 5 | 5 | 2 | `www`: 2; `pt`: 2; `cn`: 1 | 未抽样 | 不作为红人端引流入口 |
 
-不应只做 `www` 英文站。GA4 显示候选页流量明显分布在多语言站点：
+额外浏览器异常：[`/youtube/channel-compare`](https://www.noxinfluencer.com/youtube/channel-compare) 显示 `Oops. Internal Server Error`。该页不在本次 GA 候选主表内，在恢复正常前不纳入首批引流位。
 
-| 页面组 | 优先站点信号 |
-|---|---|
-| `/youtube/channel-calculator` | `kr`、`jp`、`tw`、`www`、`th` |
-| `/youtube/channel/:id` | `kr`、`cn`、`www`、`es`、`jp` |
-| `/youtube/realtime-subs-count` | `tw`、`jp`、`kr`、`www`、`vn` |
-| `/youtube/video-analytics` | `kr`、`vn`、`jp`、`tw`、`id` |
+### 3.3 读表结论
 
-首版建议先覆盖：
-
-```text
-www / kr / jp / tw
-```
-
-`cn` 是否引导到红人端，需要业务判断是否希望国内红人进入这条新链路。`vn / id` 在部分页面量大但 organic 弱，先作为观察项。
-
-### 3.3 浏览器验证事实
-
-浏览器只读验证时间：`2026-07-07`。
-
-| 页面 | 稳定页面任务 | 验证信号 | 引导判断 |
-|---|---|---|---|
-| `/youtube/channel-calculator` | 输入 YouTube Channel URL，估算频道收入 / 频道价值 | H1 为 `YOUTUBE CHANNEL CALCULATOR`；输入框提示导入 YouTube Channel URL；页面存在 `I'M AN INFLUENCER` / `I'M A BRAND` 区块 | 强引导，替换或新增更贴近红人端的 CTA |
-| `kr /youtube/channel-calculator` | 韩语频道收益估算 | H1 为韩语 YouTube 频道预计收入查询；输入框为 YouTube 频道链接 | 多语言版本也适合承接 |
-| `/youtube/channel/:id` | 查看具体频道分析报告 | 页面标题为具体频道 YouTube Channel Analytics and Report；展示 followers、NoxScore、合作潜力、Audience / Content / Brand 等分析区 | 强引导，但要用“这是你的频道？”而不是泛弹窗 |
-| `/youtube/realtime-subs-count` | 查询某 YouTuber 实时订阅数 | H1 为 `LIVE SUB COUNT`；输入框询问要查看哪个 YouTuber 的实时订阅 | 强引导，但放在查询结果或侧边卡片 |
-| `/youtube/video-analytics` | 输入 YouTube Video URL，分析视频表现 | H1 为 `YOUTUBE VIDEO ANALYTICS AND REPORT`；输入框为 YouTube Video URL | 中强引导，文案从“用视频表现生成合作资料”切入 |
-| `/youtube-channel-rank` | 查看 Top YouTubers 榜单 | H1 为 Top 100 Most Subscribed Youtubers；筛选地区 / 类目 / 排序 | 轻引导，只在榜单说明或详情入口旁出现 |
-| `/youtube-video-rank` | 查看 24 小时热门视频 | H1 为 Most Viewed YouTube Videos in 24 hours | 轻引导，偏内容增长，不是主入口 |
-| `/search/youtube/channel` | 搜索达人 / 频道 | 搜索框提示 `Enter keywords, influencer links, or Amazon links...`；页面有大量品牌侧操作入口 | 仅做“认领本人频道”旁路，不干扰品牌侧搜索 |
-| `/youtube/video-title` | YouTube 标题生成 / 标题建议 | H1 为 YouTube Video Title Generator；输入 keyword / title | 轻量测试，不作为首批主战场 |
-| `/youtube/channel-compare` | 频道对比 | 浏览器显示 `Oops. Internal Server Error` | 暂不作为引流位，先修页面或下线入口 |
-
-边界说明：部分页面在登录态浏览器下会展示主站导航和账号态信息；本 PRD 不把登录态导航当作公开未登录首屏事实，只使用页面标题、输入任务、页面工具属性和错误状态。
+1. 首批实现不能只覆盖 `www` 英文站。`/youtube/channel-calculator`、`/youtube/channel/:id`、`/youtube/realtime-subs-count`、`/youtube/video-analytics` 的流量明显分布在 `kr / jp / tw / cn / vn` 等 host。
+2. 首版建议先覆盖 `www / kr / jp / tw`。`cn` 是否导入红人端需要业务判断；`vn / id` 在部分页面量大但本轮未做浏览器样例验证，先作为观察项。
+3. `landing sessions` 最高的 `/search/youtube/channel` 不应排第一优先级，因为浏览器验证显示它更接近品牌搜索 / 工作台任务，应只做“认领本人频道”旁路。
+4. `/youtube/channel-calculator` 的总量不是最高，但 organic 占比高、页面任务明确，是最适合强引导的第一批入口之一。
+5. 部分页面在登录态浏览器下会展示主站导航和账号态信息；本 PRD 不把登录态导航当作公开未登录首屏事实，只使用页面标题、输入任务、页面工具属性和错误状态。
 
 ---
 
@@ -602,4 +584,3 @@ creator_signup_finish / creator_landing_view
 - 红人端注册是否复用现有账号体系，还是使用独立 creator account？
 - 首批合作机会不足时，landing 是否展示 waitlist / selected deals / 示例机会？
 - `channel-compare` 是否修复后重新纳入工具页引流池？
-
