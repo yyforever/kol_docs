@@ -1,6 +1,6 @@
 # 红人端落地页与现有流量引导 PRD 大纲
 
-> 状态：PRD 大纲 v0.2，待设计与开发评估
+> 状态：PRD 大纲 v0.3，待设计与开发评估
 > 更新时间：2026-07-07
 > 依据：`prd/01_第一版PRD.md`、NoxInfluencer 线上页面浏览器验证、GA4 BigQuery `2026-06-29` 至 `2026-07-05` 最近完整 7 天 landing session 聚合
 
@@ -12,15 +12,15 @@
 
 红人端当前还缺两个承接面：
 
-- 独立落地页：解释红人端是什么，为什么值得红人注册 / 认领 / 授权。
+- 独立落地页：解释红人端如何帮创作者增加收入、获得付费品牌合作和联盟营销机会。
 - 现有流量引导：从 NoxInfluencer 现有高流量页面，把合适的红人意图引到红人端。
 
 本 PRD 先解决：
 
 ```text
 在不破坏现有品牌侧主链路的前提下，
-把已有红人意图流量引导到红人端落地页或认领流程，
-验证红人是否愿意注册、认领频道、连接账号，并继续看商单 / 合作机会。
+把已有红人意图流量引导到红人端落地页或变现流程，
+验证红人是否愿意注册、连接账号，并继续看商单 / 合作机会。
 ```
 
 本 PRD 不重新定义红人端产品本体。红人端核心价值仍以 `prd/01_第一版PRD.md` 和后续方向修正为准：
@@ -34,17 +34,17 @@
 
 ## 2. 关键推理链
 
-1. NoxInfluencer 现有公开流量中，部分工具页天然服务红人自查：频道估值、实时订阅、视频分析、标题工具。
-2. 频道详情页虽然也是品牌尽调入口，但如果访问者正在查看自己的频道，它是最自然的“认领频道 / 生成 Media Kit / 接合作机会”入口。
-3. 榜单和搜索页混合了品牌找人、围观和创作者参考意图，不适合强推红人端，但适合放轻量认领入口。
-4. 红人端第一版的难点不是让用户点一次 CTA，而是让红人完成至少一个可验证动作：注册、认领频道、授权社媒 / 邮箱、查看合作机会或留下兴趣。
-5. 因此首版不能只做一个泛落地页，还必须按来源页面带入上下文，否则用户会从“看数据 / 看估值”跳到“商单工作台”时断裂。
+1. NoxInfluencer 现有公开流量中，部分页面天然服务创作者自查：频道估值、标题生成、频道详情、搜索、实时订阅、视频分析。
+2. 首版不是按“入口组件类型”分流，而是按用户场景与变现动机强度分流：越接近“我的内容能不能赚钱”，引导越强。
+3. `/youtube/channel-calculator` 和 `/youtube/video-title` 最接近创作者变现心智，应直接使用收入 / paid deals 承诺。
+4. `/youtube/channel/:id` 和 `/search/youtube/channel` 在未登录态也有红人流量，可以切，但需要避免破坏品牌搜索和频道分析主任务。
+5. 红人端第一版的难点不是让用户点一次 CTA，而是让红人完成至少一个可验证动作：注册、连接账号、授权社媒 / 邮箱、查看合作机会或留下兴趣。
 
 当前核心假设：
 
 ```text
-从频道估值、频道详情、实时订阅和视频分析来的用户，
-比泛首页流量更容易理解“把自己的频道数据变成合作机会”。
+从频道估值、标题工具、频道详情和搜索页来的用户，
+比泛首页流量更容易接受“把账号内容变成付费合作和联盟收入”的承诺。
 ```
 
 ---
@@ -64,17 +64,17 @@
 
 ### 3.2 GA4 流量与浏览器验证合并表
 
-| 优先级 | GA page group | Landing sessions | Users | Organic search sessions | Top hosts | 浏览器验证样例 | 引导判断 |
+| 优先级 | GA page group | Landing sessions | Users | Organic search sessions | Top hosts | 浏览器验证样例 | 引流强度与判断 |
 |---|---|---:|---:|---:|---|---|---|
-| P0 | `/youtube/channel/:id` | 17,481 | 15,082 | 9,055 | `kr`: 4,130; `cn`: 3,864; `www`: 3,740; `es`: 1,088 | [频道详情样例](https://www.noxinfluencer.com/youtube/channel/UCuHzBCaKmtaLcRAOoazhCPA)：频道分析报告，展示 NoxScore、合作潜力、Audience / Content / Brand 等区块 | 强引导；用“这是你的频道？”承接认领，不做泛弹窗 |
-| P0 | `/youtube/channel-calculator` | 4,695 | 3,807 | 3,611 | `kr`: 2,702; `jp`: 496; `tw`: 433; `www`: 329 | [www 样例](https://www.noxinfluencer.com/youtube/channel-calculator)：H1 为 `YOUTUBE CHANNEL CALCULATOR`；[kr 样例](https://kr.noxinfluencer.com/youtube/channel-calculator)：韩语频道收益估算 | 强引导；频道价值和收入心智最接近红人端 |
-| P0 | `/youtube/realtime-subs-count` | 9,758 | 9,227 | 4,012 | `tw`: 3,112; `jp`: 2,152; `kr`: 1,263; `www`: 864 | [实时订阅样例](https://www.noxinfluencer.com/youtube/realtime-subs-count)：H1 为 `LIVE SUB COUNT`，输入要查看的 YouTuber | 强引导；放在查询结果或侧边卡片，避免打断工具任务 |
-| P0/P1 | `/youtube/video-analytics` | 21,517 | 21,124 | 6,063 | `kr`: 5,312; `vn`: 4,041; `jp`: 2,124; `tw`: 1,580 | [视频分析样例](https://www.noxinfluencer.com/youtube/video-analytics)：H1 为 `YOUTUBE VIDEO ANALYTICS AND REPORT`，输入 YouTube Video URL | 中强引导；从“视频表现生成合作资料 / Media Kit”切入 |
-| P1 | `/` | 11,916 | 8,303 | 5,192 | `cn`: 5,084; `www`: 3,241; `kr`: 1,044; `jp`: 874 | 未单独抽样；只作为泛首页入口观察 | 可做轻入口，不应作为红人端主判断依据 |
-| P1 | `/youtube-channel-rank` | 5,614 | 5,451 | 618 | `cn`: 3,037; `tw`: 1,137; `kr`: 376; `jp`: 269 | [榜单样例](https://www.noxinfluencer.com/youtube-channel-rank/top-100-us-all-youtuber-sorted-by-subs-weekly)：Top YouTubers 榜单，按地区 / 类目 / 排序浏览 | 轻引导；适合榜单说明或详情入口旁，不适合强弹 |
-| P1 | `/youtube-video-rank` | 1,093 | 979 | 730 | `jp`: 466; `kr`: 373; `cn`: 116; `www`: 65 | [视频榜样例](https://www.noxinfluencer.com/youtube-video-rank)：H1 为 `Most Viewed YouTube Videos in 24 hours` | 轻引导；偏内容增长，不是首批主战场 |
-| P2 | `/search/youtube/channel` | 33,053 | 25,609 | 2,821 | `cn`: 13,247; `www`: 6,368; `kr`: 3,862; `jp`: 2,355 | [搜索页样例](https://www.noxinfluencer.com/search/youtube/channel)：搜索框提示 `Enter keywords, influencer links, or Amazon links...`，品牌侧操作入口多 | 仅做“认领本人频道”旁路，不干扰品牌侧搜索 |
-| P2 | `/youtube/video-title` | 16,449 | 16,371 | 71 | `jp`: 3,099; `kr`: 2,240; `vn`: 2,026; `tw`: 1,649 | [标题工具样例](https://www.noxinfluencer.com/youtube/video-title)：YouTube 标题生成 / 标题建议 | 轻量测试；Direct 占比异常高，先观察 |
+| P0 | `/youtube/channel-calculator` | 4,695 | 3,807 | 3,611 | `kr`: 2,702; `jp`: 496; `tw`: 433; `www`: 329 | [www 样例](https://www.noxinfluencer.com/youtube/channel-calculator)：H1 为 `YOUTUBE CHANNEL CALCULATOR`；[kr 样例](https://kr.noxinfluencer.com/youtube/channel-calculator)：韩语频道收益估算 | 最强；频道价值和收入心智最接近红人端，首屏和结果区都要看到变现入口 |
+| P0 | `/youtube/video-title` | 16,449 | 16,371 | 71 | `jp`: 3,099; `kr`: 2,240; `vn`: 2,026; `tw`: 1,649 | [标题工具样例](https://www.noxinfluencer.com/youtube/video-title)：YouTube 标题生成 / 标题建议 | 强；基本是创作者工具用户，适合从内容增长切到 paid campaigns |
+| P0 | `/youtube/channel/:id` | 17,481 | 15,082 | 9,055 | `kr`: 4,130; `cn`: 3,864; `www`: 3,740; `es`: 1,088 | [频道详情样例](https://www.noxinfluencer.com/youtube/channel/UCuHzBCaKmtaLcRAOoazhCPA)：频道分析报告，展示 NoxScore、合作潜力、Audience / Content / Brand 等区块 | 中强；未登录态有红人流量，直接讲“类似频道可获得付费合作”，不以认领作为前台主卖点 |
+| P0 | `/search/youtube/channel` | 33,053 | 25,609 | 2,821 | `cn`: 13,247; `www`: 6,368; `kr`: 3,862; `jp`: 2,355 | [搜索页样例](https://www.noxinfluencer.com/search/youtube/channel)：搜索框提示 `Enter keywords, influencer links, or Amazon links...`，品牌侧操作入口多 | 中；未登录态有红人流量，但品牌搜索也多，做明确但不打断的变现入口 |
+| P0/P1 | `/` | 11,916 | 8,303 | 5,192 | `cn`: 5,084; `www`: 3,241; `kr`: 1,044; `jp`: 874 | 未单独抽样；只作为泛首页入口观察 | 弱但常驻；主页面导航栏增加轻量红人端入口，不改首页主叙事 |
+| P1 | `/youtube/realtime-subs-count` | 9,758 | 9,227 | 4,012 | `tw`: 3,112; `jp`: 2,152; `kr`: 1,263; `www`: 864 | [实时订阅样例](https://www.noxinfluencer.com/youtube/realtime-subs-count)：H1 为 `LIVE SUB COUNT`，输入要查看的 YouTuber | 中弱；增长监控场景可切收入，但不一定是商单意图 |
+| P1 | `/youtube/video-analytics` | 21,517 | 21,124 | 6,063 | `kr`: 5,312; `vn`: 4,041; `jp`: 2,124; `tw`: 1,580 | [视频分析样例](https://www.noxinfluencer.com/youtube/video-analytics)：直进会出现 `Video Not Found` / 无有效视频状态 | 中弱；先优化空状态，再从视频表现切到变现 |
+| P2 | `/youtube-video-rank` | 1,093 | 979 | 730 | `jp`: 466; `kr`: 373; `cn`: 116; `www`: 65 | [视频榜样例](https://www.noxinfluencer.com/youtube-video-rank)：H1 为 `Most Viewed YouTube Videos in 24 hours` | 弱；更适合创作者看趋势，但量小 |
+| P2 | `/youtube-channel-rank` | 5,614 | 5,451 | 618 | `cn`: 3,037; `tw`: 1,137; `kr`: 376; `jp`: 269 | [榜单样例](https://www.noxinfluencer.com/youtube-channel-rank/top-100-us-all-youtuber-sorted-by-subs-weekly)：Top YouTubers 榜单，按地区 / 类目 / 排序浏览 | 弱；频道榜偏围观 / benchmarking / 品牌找人，不做首批核心战场 |
 | P2 | `/trend/keywords` | 923 | 915 | 70 | `kr`: 367; `jp`: 212; `www`: 92; `tw`: 62 | 未抽样 | 观察项；不进入首批强引导 |
 | P2 | `/instagram-channel-rank` | 295 | 250 | 172 | `kr`: 84; `cn`: 66; `www`: 43; `tw`: 33 | 未抽样 | 观察项；可等 YouTube 链路验证后再扩展 |
 | P2 | `/tiktok-channel-rank` | 142 | 105 | 59 | `cn`: 47; `kr`: 35; `www`: 20; `vn`: 16 | 未抽样 | 观察项；可等 YouTube 链路验证后再扩展 |
@@ -86,11 +86,13 @@
 
 ### 3.3 读表结论
 
-1. 首批实现不能只覆盖 `www` 英文站。`/youtube/channel-calculator`、`/youtube/channel/:id`、`/youtube/realtime-subs-count`、`/youtube/video-analytics` 的流量明显分布在 `kr / jp / tw / cn / vn` 等 host。
+1. 首批实现不能只覆盖 `www` 英文站。`/youtube/channel-calculator`、`/youtube/video-title`、`/youtube/channel/:id`、`/search/youtube/channel`、`/youtube/video-analytics` 的流量明显分布在 `kr / jp / tw / cn / vn` 等 host。
 2. 首版建议先覆盖 `www / kr / jp / tw`。`cn` 是否导入红人端需要业务判断；`vn / id` 在部分页面量大但本轮未做浏览器样例验证，先作为观察项。
-3. `landing sessions` 最高的 `/search/youtube/channel` 不应排第一优先级，因为浏览器验证显示它更接近品牌搜索 / 工作台任务，应只做“认领本人频道”旁路。
-4. `/youtube/channel-calculator` 的总量不是最高，但 organic 占比高、页面任务明确，是最适合强引导的第一批入口之一。
-5. 部分页面在登录态浏览器下会展示主站导航和账号态信息；本 PRD 不把登录态导航当作公开未登录首屏事实，只使用页面标题、输入任务、页面工具属性和错误状态。
+3. `/youtube/channel-calculator` 是第一重点；它不只是流量入口，而是“收入 / 估值 / 赞助价值”心智最强的变现入口。
+4. `/youtube/video-title` 应上调为 P0；它的用户身份更接近创作者，适合把“内容增长”直接接到 paid campaigns。
+5. `/youtube/channel/:id` 和 `/search/youtube/channel` 在未登录态有红人流量，可以切，但前台文案不使用“认领”为主卖点，而是直接讲“用你的频道获得付费合作 / 增加收入”。
+6. `/youtube/video-analytics` 直进显示 `Video Not Found`，应先修成输入视频 URL 的空状态，再承接红人端引流。
+7. 部分页面在登录态浏览器下会展示主站导航和账号态信息；本 PRD 不把登录态导航当作公开未登录首屏事实，只使用页面标题、输入任务、页面工具属性和错误状态。
 
 ---
 
@@ -117,12 +119,14 @@
 
 | 来源页面 | 用户心智 | 最自然的问题 | 推荐承接 |
 |---|---|---|---|
-| 频道估值页 | 我的频道值多少钱 / 能赚多少钱 | 我能不能接品牌合作赚钱？ | 进入红人端 landing 或创建资料页 |
-| 频道详情页 | 这是我的频道 / 我在看某个频道商业价值 | 我能不能认领这个频道，让品牌找到我？ | 频道认领流程 |
-| 实时订阅页 | 我在看增长情况 | 增长后能不能变成合作机会？ | 轻 CTA 到 landing |
-| 视频分析页 | 这个视频表现如何 | 这些表现数据能不能变成 Media Kit？ | 生成合作资料 / Media Kit |
-| 榜单页 | 我在看同类创作者 | 我怎样也获得品牌合作？ | 轻 CTA / 内容卡片 |
-| 搜索页 | 我在找达人，或被搜索结果命中 | 如果这是我的频道，怎么认领？ | 详情页旁路认领 |
+| 频道估值页 | 我的频道值多少钱 / 能赚多少钱 | 我能不能靠频道获得更多收入？ | 强引导到红人端变现 landing |
+| 标题工具页 | 我在优化视频标题和内容增长 | 内容增长后怎么获得付费合作？ | 强引导到红人端变现 landing |
+| 频道详情页 | 我在看自己或同类频道商业价值 | 类似频道能获得哪些品牌合作？ | 中强引导到变现 landing |
+| 搜索页 | 我在找频道，或被搜索结果命中 | 创作者如何让自己的频道获得合作机会？ | 中引导，不打断搜索 |
+| 首页 | 我还没有明确任务 | 平台是否也服务创作者赚钱？ | 导航栏轻入口 |
+| 实时订阅页 | 我在看增长情况 | 增长后能不能变成合作收入？ | 中弱引导 |
+| 视频分析页 | 我在看视频表现 | 视频表现能不能帮助接合作？ | 修空状态后中弱引导 |
+| 榜单页 | 我在看趋势 / 排名 / 同类账号 | 我怎样也获得品牌合作？ | 弱引导 / 观察 |
 
 ---
 
@@ -136,14 +140,14 @@
 
 ```text
 让从 Nox 现有页面来的红人理解：
-这里不是普通数据工具，而是帮她把频道数据、Media Kit 和合作机会连接起来。
+这里不是普通数据工具，而是帮她把频道、内容增长和数据表现变成付费品牌合作 / 联盟营销收入。
 ```
 
 页面结构：
 
 1. Hero：一句话价值主张、主 CTA、次 CTA。
-2. 来源上下文卡片：根据来源页面展示不同引导语。
-3. 三步流程：认领 / 连接账号 -> 生成资料 -> 查看合作机会。
+2. 来源上下文卡片：根据来源页面展示不同收入引导语。
+3. 三步流程：连接账号 -> 完善创作者资料 -> 查看品牌合作 / 联盟机会。
 4. 合作机会说明：品牌合作 + 联盟营销都兼容。
 5. 信任与控制：AI 只辅助判断 / 草稿 / 跟进，高风险消息由用户确认。
 6. FAQ：数据授权、邮箱授权、是否收费、是否保证接单。
@@ -152,13 +156,13 @@
 主 CTA：
 
 ```text
-Claim my channel
+Start earning with my channel
 ```
 
 中文设计稿可写：
 
 ```text
-认领我的频道
+开始用我的频道变现
 ```
 
 次 CTA：
@@ -173,53 +177,61 @@ See brand opportunities
 先看看可接合作
 ```
 
-#### B. 频道认领入口
+#### B. 现有页面变现入口
 
-入口位置：
+前台入口不以“认领”为主卖点，统一讲“变现 / 增加收入 / 付费合作”。频道归属验证如果需要，放在注册后的流程里处理。
 
-- 频道详情页身份区。
-- 频道详情页合作潜力 / NoxScore 附近。
-- 搜索结果卡片或频道详情跳转处的轻入口。
+重点入口：
+
+- 频道详情页身份区、合作潜力 / NoxScore 附近。
+- 搜索结果页顶部或频道卡片之间。
+- 首页导航栏轻量入口。
 
 建议文案：
 
 ```text
-Is this your channel? Claim it to receive brand deals.
+Earn more from your channel with paid brand deals and affiliate opportunities.
 ```
 
 中文设计稿可写：
 
 ```text
-这是你的频道？认领后接收品牌合作机会。
+用你的频道获得更多品牌合作和联盟收入。
 ```
 
 首版点击后：
 
-- 已登录红人账号：进入认领流程。
-- 未登录：进入红人端注册 / 登录，带 `service` 或 `redirect` 回认领上下文。
-- 不是本人：允许取消，不要打断当前页面。
+- 已登录红人账号：进入红人端机会 / 资料完善页。
+- 未登录：进入红人端注册 / 登录，带 `service` 或 `redirect` 回来源上下文。
+- 如果后续需要频道归属校验，在注册后完成，不在入口文案里强调。
 
 #### C. 工具页上下文 CTA
 
 频道估值页：
 
 ```text
-Your channel has sponsorship value. Get matched with brand deals.
+Your channel has earning potential. Start getting paid brand deals.
+```
+
+标题工具页：
+
+```text
+Grow your videos. Get matched with paid campaigns.
 ```
 
 实时订阅页：
 
 ```text
-Turn your growth into collaboration opportunities.
+Turn subscriber growth into sponsorship income.
 ```
 
 视频分析页：
 
 ```text
-Use this performance data to build your creator media kit.
+Use video performance to unlock paid collaborations.
 ```
 
-标题工具 / 榜单页：
+榜单页：
 
 ```text
 Growing your channel? Get ready for brand collaborations.
@@ -254,8 +266,8 @@ video_id
 | `creator_landing_view` | 红人端 landing 打开 | `source_page_group`、`source_host`、`source_path`、`locale` |
 | `creator_signup_start` | 开始注册 / 登录 | `source_page_group`、`auth_method` |
 | `creator_signup_finish` | 注册 / 登录完成 | `source_page_group`、`auth_method` |
-| `creator_channel_claim_start` | 开始频道认领 | `source_page_group`、`channel_platform` |
-| `creator_channel_claim_finish` | 频道认领成功 | `source_page_group`、`channel_platform` |
+| `creator_account_connect_start` | 开始连接创作者账号 / 频道 | `source_page_group`、`channel_platform` |
+| `creator_account_connect_finish` | 创作者账号 / 频道连接成功 | `source_page_group`、`channel_platform` |
 | `creator_social_connect_start` | 开始社媒授权 | `platform`、`source_page_group` |
 | `creator_social_connect_finish` | 社媒授权完成 | `platform`、`source_page_group` |
 | `creator_deal_view` | 打开合作机会列表或详情 | `source_page_group`、`deal_source` |
@@ -284,15 +296,15 @@ video_id
 建议英文文案：
 
 ```text
-Turn your creator data into brand opportunities
-Claim your channel, build a media kit, and get matched with brand and affiliate deals.
+Turn your creator growth into paid opportunities
+Get matched with brand deals and affiliate campaigns that help you earn more from your channel.
 ```
 
 建议中文设计稿文案：
 
 ```text
-把你的频道数据变成品牌合作机会
-认领频道，生成合作资料，接收品牌合作和联盟营销机会。
+把你的内容增长变成收入机会
+获得匹配的品牌合作和联盟营销机会，让频道赚更多钱。
 ```
 
 组件：
@@ -308,7 +320,7 @@ Claim your channel, build a media kit, and get matched with brand and affiliate 
 
 - 默认：展示来源上下文
 - 无来源：展示通用版本
-- 已登录：主 CTA 指向认领 / 资料完善
+- 已登录：主 CTA 指向机会列表 / 资料完善
 - 未登录：主 CTA 指向注册 / 登录
 
 #### Section 2：来源上下文卡片
@@ -321,15 +333,17 @@ Claim your channel, build a media kit, and get matched with brand and affiliate 
 
 | 来源 | 卡片文案 |
 |---|---|
-| channel calculator | `You just checked your channel value. Next, use that value to win better brand deals.` |
-| channel detail | `If this is your channel, claim it and let brands contact you with the right context.` |
-| realtime subs | `Your growth is a signal. Let brands see why your channel is worth working with.` |
-| video analytics | `Use your video performance to build a media kit brands can understand.` |
+| channel calculator | `You just checked your earning potential. Start turning it into paid brand deals.` |
+| video title | `You are improving content growth. Next, turn that growth into paid campaigns.` |
+| channel detail | `Channels like this can earn from sponsorships. See what paid opportunities fit yours.` |
+| search channel | `Creators can use Nox to find paid brand and affiliate opportunities, not just analytics.` |
+| realtime subs | `Subscriber growth is a monetization signal. Turn it into sponsorship income.` |
+| video analytics | `Use video performance to unlock paid collaborations.` |
 
 #### Section 3：三步流程
 
-1. Claim / connect your channel.
-2. Build your creator profile and media kit.
+1. Connect your creator account.
+2. Build a monetization-ready creator profile.
 3. View matched brand and affiliate opportunities.
 
 #### Section 4：机会类型
@@ -364,14 +378,15 @@ Claim your channel, build a media kit, and get matched with brand and affiliate 
 
 | 页面组 | 引导强度 | 位置 | 主文案 | CTA |
 |---|---|---|---|---|
-| `/youtube/channel/:id` | 强 | 身份区 / 合作潜力旁 | `Is this your channel? Claim it to receive brand deals.` | `Claim channel` |
-| `/youtube/channel-calculator` | 强 | 估值结果下方 / 页面底部双栏区 | `Your channel has sponsorship value. Start receiving brand opportunities.` | `Get brand deals` |
-| `/youtube/realtime-subs-count` | 中强 | 查询框下方 / 结果卡旁 | `Turn your growth into collaboration opportunities.` | `Create creator profile` |
-| `/youtube/video-analytics` | 中强 | 分析结果页 / 空状态旁 | `Use your video performance to build a media kit.` | `Build media kit` |
-| `/youtube-channel-rank` | 轻 | 榜单说明 / 行尾轻入口 | `Are you on this list? Claim your channel.` | `Claim` |
-| `/youtube-video-rank` | 轻 | 榜单底部 / 侧边内容卡 | `Growing with viral videos? Prepare for brand deals.` | `Learn more` |
-| `/search/youtube/channel` | 轻 | 频道卡片 / 详情页旁路 | `This is your channel? Claim it.` | `Claim` |
-| `/youtube/video-title` | 轻 | 工具结果下方 | `Ready to turn content growth into brand deals?` | `Learn more` |
+| `/youtube/channel-calculator` | 最强 | 首屏工具区旁 / 估值结果区 | `Your channel has earning potential. Start getting paid brand deals.` | `Get paid deals` |
+| `/youtube/video-title` | 强 | 首屏工具区旁 / 结果区 | `Grow your videos. Get matched with paid campaigns.` | `Find campaigns` |
+| `/youtube/channel/:id` | 中强 | 身份区 / 合作潜力旁 | `Channels like this can earn from sponsorships. See what paid opportunities fit yours.` | `Earn with my channel` |
+| `/search/youtube/channel` | 中 | 搜索结果上方 / 结果卡片间 | `Creators: use your channel to get paid brand and affiliate opportunities.` | `Start earning` |
+| `/` | 弱但常驻 | 顶部导航 | `Creators` 或 `Earn as a Creator` | `Creators` |
+| `/youtube/realtime-subs-count` | 中弱 | 查询框下方 / 结果卡旁 | `Turn subscriber growth into sponsorship income.` | `Explore deals` |
+| `/youtube/video-analytics` | 中弱 | 空状态 / 分析结果页 | `Use video performance to unlock paid collaborations.` | `Explore deals` |
+| `/youtube-video-rank` | 弱 | 榜单底部 / 侧边内容卡 | `Use trending videos to grow and monetize your channel.` | `Learn more` |
+| `/youtube-channel-rank` | 弱 | 榜单说明 / 行尾轻入口 | `Want to earn from your own channel?` | `Learn more` |
 
 ---
 
@@ -385,23 +400,22 @@ Claim your channel, build a media kit, and get matched with brand and affiliate 
 Nox existing page
 -> creator landing with context
 -> signup / login
--> channel claim or profile setup
+-> account connection or profile setup
 -> opportunities / deal list
 ```
 
-对于频道详情页，允许更短路径：
+对于强相关页面，允许更短路径：
 
 ```text
-channel detail
--> claim channel
+high-intent entry page
+-> creator landing with monetization context
 -> signup / login
--> claim verification
--> profile setup
+-> opportunities / profile setup
 ```
 
-### 7.2 认领校验
+### 7.2 频道连接与归属校验
 
-首版 PRD 只定义产品要求，不提前指定技术方案。
+首版前台不使用“认领”作为主卖点，但注册后可能仍需要频道连接或归属校验。这里仅定义产品要求，不提前指定技术方案。
 
 可选校验方式：
 
@@ -413,7 +427,7 @@ channel detail
 
 - YouTube / TikTok / Instagram 各平台可用授权范围。
 - 是否允许先创建资料，再延迟校验归属。
-- 失败、取消和误认领处理。
+- 失败、取消和归属错误处理。
 
 ### 7.3 多语言
 
@@ -453,17 +467,19 @@ channel detail
 ### 8.1 页面验收
 
 - 红人端 landing 能独立说明价值，不依赖用户读过 Nox 旧页面。
-- 从 `channel-calculator` 进入时，首屏能看出与频道价值 / 商业合作相关。
-- 从 `channel detail` 进入时，首屏能看出“认领当前频道”。
+- 从 `channel-calculator` 进入时，首屏能看出与频道收入 / 付费合作相关。
+- 从 `video-title` 进入时，首屏能看出“内容增长 -> 付费合作”的关系。
+- 从 `channel detail` 或 `search/youtube/channel` 进入时，首屏能看出“用自己的频道获得合作机会”，但不以“认领”为主卖点。
 - 页面包含品牌合作和联盟营销两类机会，但不承诺已完整支持 tracking / 结算。
 - 页面明确 AI 不默认替用户发送高风险消息。
 - 页面至少覆盖默认、无来源、未登录、已登录红人、已登录品牌用户的文案 / 跳转规则。
 
 ### 8.2 引导位验收
 
-- P0 页面至少上线三个入口：`channel detail`、`channel calculator`、`realtime subs count`。
-- `video analytics` 至少上线一个软引导入口。
-- `search/youtube/channel` 只出现轻量认领入口，不影响品牌搜索任务。
+- P0 页面至少上线四个入口：`channel calculator`、`video title`、`channel detail`、`search/youtube/channel`。
+- `/` 在导航栏上线轻量红人端入口。
+- `video analytics` 先修空状态，再上线中弱引导入口。
+- `search/youtube/channel` 展示明确变现入口，但不影响品牌搜索任务。
 - `channel-compare` 在恢复正常前不投放。
 - 所有入口点击都带来源上下文参数。
 
@@ -471,13 +487,13 @@ channel detail
 
 - `creator_entry_impression` 和 `creator_entry_click` 能按页面组、站点、语言和 CTA 位置拆分。
 - `creator_landing_view` 能关联到上游入口。
-- 注册、认领、授权、机会查看事件能形成最小漏斗。
+- 注册、连接账号、授权、机会查看事件能形成最小漏斗。
 - GA4 / BigQuery 能在上线后按周输出：
   - 入口曝光
   - 入口点击
   - landing view
   - signup start / finish
-  - channel claim start / finish
+  - account connect start / finish
   - social connect finish
   - deal view
 
@@ -502,16 +518,16 @@ channel detail
 首版核心指标不是页面 PV，而是：
 
 ```text
-creator_channel_claim_finish / creator_landing_view
+creator_deal_view / creator_landing_view
 ```
 
-如果首版认领链路尚未完成，则临时核心指标为：
+如果首版机会列表尚未完成，则临时核心指标为：
 
 ```text
 creator_signup_finish / creator_landing_view
 ```
 
-但必须标记为临时指标，不能直接等同于红人端方向成立。
+但必须标记为临时指标，不能直接等同于红人端变现方向成立。
 
 ### 9.2 分入口判断
 
@@ -519,27 +535,26 @@ creator_signup_finish / creator_landing_view
 
 - `entry_click_rate = creator_entry_click / creator_entry_impression`
 - `landing_to_signup = creator_signup_finish / creator_landing_view`
-- `landing_to_claim = creator_channel_claim_finish / creator_landing_view`
-- `claim_to_connect = creator_social_connect_finish / creator_channel_claim_finish`
+- `landing_to_account_connect = creator_account_connect_finish / creator_landing_view`
+- `landing_to_social_connect = creator_social_connect_finish / creator_landing_view`
 - `deal_view_rate = creator_deal_view / creator_landing_view`
 
 优先保留：
 
-- 点击率高且注册 / 认领也高的入口。
-- 点击率不高但认领率高的高质量入口。
+- 点击率高且注册 / 连接 / 机会查看也高的入口。
+- 点击率不高但机会查看率高的高质量入口。
 
 优先降级：
 
 - 曝光高、点击低、且干扰原页面任务的入口。
-- 点击高但注册 / 认领几乎为零的误导性入口。
+- 点击高但注册 / 连接 / 机会查看几乎为零的误导性入口。
 
 ### 9.3 止损与调整
 
 需要调整的情况：
 
 - 红人端 landing 点击高，但注册低：首屏价值或信任解释不足。
-- 注册高，但认领低：认领流程太重或不可信。
-- 认领高，但授权低：数据授权风险未解释清楚。
+- 注册高，但连接低：账号连接或数据授权解释不足。
 - 授权高，但 deal view 低：商单 / 机会供给不足，回到红人端主 PRD 的供给问题。
 - 品牌用户投诉或关键业务链路下降：降低品牌侧页面引导强度。
 
@@ -552,18 +567,19 @@ creator_signup_finish / creator_landing_view
 - [ ] 确认落地页路由，例如 `/creator`、`/creator/landing` 或独立子路径。
 - [ ] 输出 `www / kr / jp / tw` 首版文案。
 - [ ] 设计 landing 首屏、来源上下文卡片、三步流程、FAQ。
-- [ ] 设计 `channel detail` 认领入口。
-- [ ] 设计 `channel calculator` 强 CTA。
-- [ ] 设计 `realtime-subs-count` 和 `video-analytics` 软 CTA。
-- [ ] 设计轻量引导在榜单 / 搜索页的样式。
+- [ ] 设计 `channel calculator` 和 `video title` 强变现 CTA。
+- [ ] 设计 `channel detail` 和 `search/youtube/channel` 中强变现入口。
+- [ ] 设计首页导航轻入口。
+- [ ] 设计 `realtime-subs-count`、`video-analytics` 和榜单页弱引导样式。
 
 ### 10.2 前端 / 后端
 
 - [ ] 增加入口上下文参数解析。
 - [ ] 增加 creator landing 页面。
 - [ ] 增加 P0 页面引导位。
+- [ ] 优化 `video-analytics` 直进空状态，避免显示 `Video Not Found`。
 - [ ] 增加登录态 / 用户身份分流。
-- [ ] 增加最小认领流程入口；若认领后端未完成，则先收集意向并标记为 temporary。
+- [ ] 增加最小账号连接 / 频道校验入口；若后端未完成，则先收集意向并标记为 temporary。
 - [ ] 增加多语言文案 key。
 
 ### 10.3 数据
@@ -579,7 +595,7 @@ creator_signup_finish / creator_landing_view
 
 - 红人端 landing 最终路由放在 `www.noxinfluencer.com` 还是独立红人端域名 / 子路径？
 - `cn` 站是否也进入首版引流范围？
-- 频道认领首版必须真实校验，还是允许先创建资料并延迟校验？
+- 频道连接 / 归属校验首版必须真实完成，还是允许先创建资料并延迟校验？
 - 已登录品牌用户看到红人端入口是否会造成业务干扰？
 - 红人端注册是否复用现有账号体系，还是使用独立 creator account？
 - 首批合作机会不足时，landing 是否展示 waitlist / selected deals / 示例机会？
