@@ -1,8 +1,8 @@
 # 红人端落地页与现有流量引导 PRD 大纲
 
-> 状态：PRD 大纲 v0.8，待设计与开发评估
+> 状态：PRD 大纲 v0.9，待设计与开发评估
 > 更新时间：2026-07-08
-> 依据：`prd/01_第一版PRD.md`、NoxInfluencer 线上页面浏览器验证、外部工具页视觉参考、GA4 BigQuery `2026-06-29` 至 `2026-07-05` 最近完整 7 天 landing session 聚合
+> 依据：`prd/01_第一版PRD.md`、NoxInfluencer 线上页面浏览器验证、AhaCreator creator landing 参考、外部工具页视觉参考、GA4 BigQuery `2026-06-29` 至 `2026-07-05` 最近完整 7 天 landing session 聚合
 
 ---
 
@@ -96,8 +96,8 @@
 
 页面结构：
 
-1. Hero：一句话价值主张、主注册 CTA、红人登录入口。
-2. 来源上下文卡片：根据来源页面展示不同收入引导语。
+1. Hero：一句话价值主张、主注册 CTA、红人登录入口、Google Play / App Store 占位按钮。
+2. 首屏视觉证明：展示 mock 合作机会、收益增长、creator story 卡片，不展示调试感的 `Source` 标签。
 3. Creator stories：先用 mock 占位案例说明“真实创作者如何获得收益”，具体案例后续补。
 4. 三步流程：连接账号 -> 完善创作者资料 -> 查看品牌合作 / 联盟机会。
 5. 合作机会说明：品牌合作 + 联盟营销都兼容。
@@ -128,6 +128,12 @@ Log in as creator
 ```text
 红人账号登录
 ```
+
+App 下载占位：
+
+- 首版展示 `Google Play` 和 `App Store` 按钮，位置参考 AhaCreator 放在首屏 CTA 附近。
+- 当前不跳转真实商店；点击后弹出 `Modal`，文案为 `已收到您的需求，敬请期待`。
+- Modal 只做占位反馈，不收集手机号、邮箱或其他表单信息。
 
 #### B. 入口形式与上下文参数
 
@@ -186,6 +192,7 @@ auth_target
 |---|---|---|
 | `creator_entry_impression` | 引导位曝光 | `source_page_group`、`source_host`、`cta_position`、`entry_form`、`locale` |
 | `creator_entry_click` | 点击引导位 | 同上，加 `target_url`、`auth_target` |
+| `creator_app_placeholder_click` | 点击 Google Play / App Store 占位 | `store_type`、`source_page_group`、`source_host`、`locale` |
 | `creator_landing_view` | 红人端 landing 打开 | `source_page_group`、`source_host`、`source_path`、`entry_form`、`locale` |
 | `creator_signup_start` | 开始注册 / 登录 | `source_page_group`、`auth_method`、`auth_target` |
 | `creator_signup_finish` | 注册 / 登录完成 | `source_page_group`、`auth_method` |
@@ -239,20 +246,29 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 - Subtitle
 - Primary Button
 - Creator login link
-- 来源上下文 badge
+- Google Play placeholder button
+- App Store placeholder button
+- 右侧视觉证明区：mock 合作机会卡、creator story 摘要、收益提示
 
 状态：
 
-- 默认：展示来源上下文
-- 无来源：展示通用版本
+- 默认：展示通用版本，不出现 `Source: xxx` 这类调试感信息
+- 有来源：只用于归因、埋点和可选文案个性化，不在首屏直接显示 `source_page_group`
 - 已登录：主 CTA 指向机会列表 / 资料完善
 - 未登录：主 CTA 指向红人端注册，登录入口指向红人端登录
+- 点击 Google Play / App Store：弹出 `Modal`，提示 `已收到您的需求，敬请期待`
 
-#### Section 2：来源上下文卡片
+#### Section 2：流量来源上下文处理
 
 目的：
 
-- 承接不同来源页面的用户心智，避免跳转断裂。
+- 承接不同来源页面的用户心智，避免跳转断裂，但不要把来源参数当成页面内容展示。
+
+规则：
+
+- 不在 landing 首屏展示 `Source: YouTube Channel Calculator`。
+- `source_page_group` 只用于归因、埋点和 landing 文案轻量个性化。
+- 如果需要个性化文案，直接写成用户能理解的句子，例如 `You just checked your earning potential. Turn it into paid deals.`，不要暴露内部来源名。
 
 示例：
 
@@ -321,23 +337,31 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 
 ```text
 +--------------------------------------------------------------------------------+
-| NoxInfluencer                                               Login as creator   |
-|                                                        [Start maximizing revenue]|
+| NoxInfluencer                           For Brands     Log in as creator       |
 +--------------------------------------------------------------------------------+
 |                                                                                |
-|  Source: YouTube Channel Calculator                                            |
-|                                                                                |
 |  MAXIMIZE YOUR CHANNEL REVENUE                                                 |
+|                                                                                |
 |  Compare deals across 26 channels.                                             |
 |  AI negotiation expert helps you get the best price.                           |
 |                                                                                |
-|  [Start maximizing revenue]   Log in as creator                                |
+|  [Start maximizing revenue]                                                    |
 |                                                                                |
-|  +---------------------------+     +----------------------------------------+   |
-|  | Your channel can earn from|     | 26 deal sources                         |   |
-|  | brand deals + affiliate   |     | AI price negotiation                    |   |
-|  | commissions.              |     | Matched brand + affiliate opportunities |   |
-|  +---------------------------+     +----------------------------------------+   |
+|  [Google Play]  [App Store]                                                     |
+|  click -> Modal: 已收到您的需求，敬请期待                                      |
+|                                                                                |
+|                                           +----------------------------------+ |
+|                                           | Mock creator story               | |
+|                                           | Beauty creator, 80K followers    | |
+|                                           | Brand deal + affiliate offer     | |
+|                                           | Result placeholder               | |
+|                                           +----------------------------------+ |
+|                                                                                |
+|                                           +----------------------------------+ |
+|                                           | 26 deal sources                  | |
+|                                           | AI negotiation expert            | |
+|                                           | Matched opportunities            | |
+|                                           +----------------------------------+ |
 |                                                                                |
 +--------------------------------------------------------------------------------+
 ```
@@ -346,8 +370,9 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 
 ```text
 +--------------------------------------------------------------------------------+
-| Context card                                                                    |
+| Contextual copy, optional                                                       |
 | "You just checked your earning potential. Turn it into paid deals."             |
+| Do not display raw source labels such as "Source: YouTube Channel Calculator".  |
 +--------------------------------------------------------------------------------+
 | Creator stories (mock placeholders, replace with real cases before final launch)|
 | +-------------------+  +-------------------+  +-------------------+             |
@@ -363,7 +388,7 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 | Trust and control: user confirms authorization and high-risk actions            |
 +--------------------------------------------------------------------------------+
 | FAQ                                                                             |
-| [Start maximizing revenue]     Log in as creator                                |
+| [Start maximizing revenue]     [Google Play] [App Store]     Log in as creator  |
 +--------------------------------------------------------------------------------+
 ```
 
@@ -395,8 +420,9 @@ Optional contextual overlay after calculation:
 
 - [ ] 使用独立子域名 `https://www.creators.noxinfluencer.com` 承载红人端 landing。
 - [ ] 输出 `www / kr / jp / tw` 首版文案。
-- [ ] 设计 landing 首屏、来源上下文卡片、mock creator stories、三步流程、FAQ。
+- [ ] 设计 landing 首屏、上下文文案、mock creator stories、三步流程、FAQ；不做可见 `Source` 模块。
 - [ ] 设计注册和登录分开的导航与首屏入口：主 CTA 注册，辅助入口登录。
+- [ ] 设计 Google Play / App Store 占位按钮；点击后使用 `Modal` 显示 `已收到您的需求，敬请期待`。
 - [ ] 设计 `channel calculator` 的 `tool-integrated card` 和 `result-embedded panel`。
 - [ ] 设计 `channel calculator` 计算完成后的可关闭、限频弹窗方案。
 - [ ] 设计 `video title` 的 `tool-integrated card` 和生成结果后的轻弹窗 / 结果区强化入口。
@@ -415,6 +441,7 @@ Optional contextual overlay after calculation:
 - [ ] 按登录态规则控制入口：已登录品牌用户不显示红人入口；未登录用户和红人用户可见。
 - [ ] 在高确定红人场景页将主 CTA 路由到红人端注册，登录按钮路由到红人端登录；混合场景页保留广告主端登录，只新增独立红人 CTA。
 - [ ] 将红人端注册和登录拆成两个路由入口，避免单个“注册 / 登录”入口造成意图不清。
+- [ ] Google Play / App Store 首版不跳转真实商店，只触发占位 Modal，不提交表单。
 - [ ] 若使用弹窗，增加关闭、限频、弹窗互斥和移动端可关闭校验。
 - [ ] 复用现有账号体系，但保持品牌端和红人端业务资料独立。
 - [ ] 联调已完成开发的频道连接 / 归属校验，待上线验证。
@@ -440,6 +467,7 @@ Optional contextual overlay after calculation:
 - `/youtube/channel-calculator`、`/youtube/video-title` 按高确定红人场景处理，主 CTA 去红人端注册，登录按钮去红人端登录。
 - 红人 landing 的注册和登录入口拆开；主 CTA 做注册 / 开始变现，登录作为辅助入口。
 - 首版可以使用 mock creator stories 占位，但上线前不得伪装成真实案例。
+- Google Play / App Store 首版作为占位入口，点击后弹出 `已收到您的需求，敬请期待`。
 - `channel-compare` 页面恢复正常后，重新纳入工具页引流池。
 
 仍待确认：
