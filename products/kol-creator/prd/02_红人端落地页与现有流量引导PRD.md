@@ -1,6 +1,6 @@
 # 红人端落地页与现有流量引导 PRD 大纲
 
-> 状态：PRD 大纲 v0.7，待设计与开发评估
+> 状态：PRD 大纲 v0.8，待设计与开发评估
 > 更新时间：2026-07-08
 > 依据：`prd/01_第一版PRD.md`、NoxInfluencer 线上页面浏览器验证、外部工具页视觉参考、GA4 BigQuery `2026-06-29` 至 `2026-07-05` 最近完整 7 天 landing session 聚合
 
@@ -38,8 +38,9 @@
 2. 首版不是按“入口组件类型”分流，而是按用户场景与变现动机强度分流：越接近“我的内容能不能赚钱”，引导越强。
 3. `/youtube/channel-calculator` 和 `/youtube/video-title` 最接近创作者变现心智，应直接使用收入 / paid deals 承诺。
 4. `/youtube/channel/:id` 和 `/search/youtube/channel` 在未登录态也有红人流量，可以切，但需要避免破坏品牌搜索和频道分析主任务。
-5. 已确认是红人场景的页面，登录按钮和主 CTA 应直接进入红人端登录 / 注册，而不是广告主端登录。
-6. 红人端第一版的难点不是让用户点一次 CTA，而是让红人完成至少一个可验证动作：注册、连接账号、授权社媒 / 邮箱、查看合作机会或留下兴趣。
+5. 已确认是红人场景的页面，主 CTA 应直接进入红人端注册，登录按钮进入红人端登录，而不是广告主端登录。
+6. 红人端 landing 上注册和登录应拆成两个清晰入口：主 CTA 做注册 / 开始变现，登录是已有红人账号的辅助入口。
+7. 红人端第一版的难点不是让用户点一次 CTA，而是让红人完成至少一个可验证动作：注册、连接账号、授权社媒 / 邮箱、查看合作机会或留下兴趣。
 
 当前核心假设：
 
@@ -61,7 +62,7 @@
 3. `/youtube/video-title` 应上调为 P0；它的用户身份更接近创作者，适合把“内容增长”直接接到 paid campaigns。
 4. `/youtube/channel/:id` 和 `/search/youtube/channel` 在未登录态有红人流量，可以切，但不能破坏品牌搜索和频道分析主任务。
 5. `/youtube/video-analytics` 直进显示 `Video Not Found`，应先修成输入视频 URL 的空状态，再承接红人端引流。
-6. `/youtube/channel-calculator`、`/youtube/video-title` 首批按高确定红人场景处理：登录按钮 / 主 CTA 可直接去红人端登录。
+6. `/youtube/channel-calculator`、`/youtube/video-title` 首批按高确定红人场景处理：主 CTA 去红人端注册，登录按钮去红人端登录。
 7. 首页只做导航发现入口，不改变主站首页叙事。
 
 ### 3.2 首批入口优先级
@@ -95,13 +96,14 @@
 
 页面结构：
 
-1. Hero：一句话价值主张、主 CTA、次 CTA。
+1. Hero：一句话价值主张、主注册 CTA、红人登录入口。
 2. 来源上下文卡片：根据来源页面展示不同收入引导语。
-3. 三步流程：连接账号 -> 完善创作者资料 -> 查看品牌合作 / 联盟机会。
-4. 合作机会说明：品牌合作 + 联盟营销都兼容。
-5. 信任与控制：AI 只辅助判断 / 草稿 / 跟进，高风险消息由用户确认。
-6. FAQ：数据授权、邮箱授权、是否收费、是否保证接单。
-7. 最终 CTA。
+3. Creator stories：先用 mock 占位案例说明“真实创作者如何获得收益”，具体案例后续补。
+4. 三步流程：连接账号 -> 完善创作者资料 -> 查看品牌合作 / 联盟机会。
+5. 合作机会说明：品牌合作 + 联盟营销都兼容。
+6. 信任与控制：AI 只辅助判断 / 草稿 / 跟进，高风险消息由用户确认。
+7. FAQ：数据授权、邮箱授权、是否收费、是否保证接单。
+8. 最终 CTA。
 
 主 CTA：
 
@@ -115,16 +117,16 @@ Maximize my channel revenue
 最大化我的频道收益
 ```
 
-次 CTA：
+登录入口：
 
 ```text
-See brand opportunities
+Log in as creator
 ```
 
 中文设计稿可写：
 
 ```text
-先看看可接合作
+红人账号登录
 ```
 
 #### B. 入口形式与上下文参数
@@ -142,8 +144,8 @@ See brand opportunities
 
 | 页面组 | 推荐形式 | 具体落点 | 登录 / 弹窗规则 |
 |---|---|---|---|
-| `/youtube/channel-calculator` | `tool-integrated card` + `result-embedded panel` + `contextual overlay` | 首屏输入框下方；估值结果卡右侧或底部；计算完成后 | 主登录 / 主 CTA 去红人端；弹层只在结果出现后触发，可关闭、限频 |
-| `/youtube/video-title` | `tool-integrated card` + `contextual overlay` | 搜索框下方或推荐区上方；标题生成后 | 主登录 / 主 CTA 去红人端；弹层强调“内容增长变收入”，不阻断生成动作 |
+| `/youtube/channel-calculator` | `tool-integrated card` + `result-embedded panel` + `contextual overlay` | 首屏输入框下方；估值结果卡右侧或底部；计算完成后 | 主 CTA 去红人端注册，登录按钮去红人端登录；弹层只在结果出现后触发，可关闭、限频 |
+| `/youtube/video-title` | `tool-integrated card` + `contextual overlay` | 搜索框下方或推荐区上方；标题生成后 | 主 CTA 去红人端注册，登录按钮去红人端登录；弹层强调“内容增长变收入”，不阻断生成动作 |
 | `/youtube/channel/:id` | `result-embedded panel` | 频道身份区、NoxScore / Coop. Potential 附近、锁定数据区下方 | 混合场景，保留原登录；单独提供红人 CTA，不问“这是你的频道吗” |
 | `/search/youtube/channel` | `inline feed card` | 搜索结果第一屏顶部；后续每 8-10 条结果最多插一张 | 混合场景，保留原登录；不遮挡筛选器、不抢搜索按钮、不弹窗 |
 | `/` | `navigation entry` | 顶部导航或 `Products&Services` 下 | 仅未登录或红人用户可见；已登录品牌用户不展示 |
@@ -198,6 +200,7 @@ auth_target
 - 不重做 `search/youtube/channel` 主搜索体验。
 - 不在品牌侧工作台强弹红人端。
 - 不在混合意图页面替换广告主端登录入口。
+- 不做“验证邮箱域名 / 验证官方邀请”入口；这是品牌侧或邀请邮件链路的能力，不作为本轮红人 landing 主功能。
 - 不承诺“注册后一定接到品牌单”。
 - 不做复杂 A/B 实验平台，先用固定参数和 GA / BigQuery 分析。
 - 不做完整多语言文案精修；首版只保证 `www / kr / jp / tw` 有可用版本或明确 fallback。
@@ -235,7 +238,7 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 - Hero title
 - Subtitle
 - Primary Button
-- Secondary Button
+- Creator login link
 - 来源上下文 badge
 
 状态：
@@ -243,7 +246,7 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 - 默认：展示来源上下文
 - 无来源：展示通用版本
 - 已登录：主 CTA 指向机会列表 / 资料完善
-- 未登录：主 CTA 指向红人端注册 / 登录
+- 未登录：主 CTA 指向红人端注册，登录入口指向红人端登录
 
 #### Section 2：来源上下文卡片
 
@@ -262,13 +265,29 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 | realtime subs | `Subscriber growth is a monetization signal. Turn it into sponsorship income.` |
 | video analytics | `Use video performance to unlock paid collaborations.` |
 
-#### Section 3：三步流程
+#### Section 3：Creator stories 占位案例
+
+目的：
+
+- 用可替换的 mock 案例证明“这里有真实变现机会”，不要只讲功能。
+
+首版先放 3 个占位案例，后续由真实案例替换：
+
+| 占位案例 | 内容方向 | 展示字段 |
+|---|---|---|
+| Creator A | 美妆 / 生活方式 | 频道规模、合作类型、预计收益提升、品牌合作结果 |
+| Creator B | 游戏 / 科技评测 | 频道规模、联盟营销机会、点击 / 转化数据占位 |
+| Creator C | 教育 / 工具教程 | 频道规模、品牌赞助机会、AI 谈判节省时间 |
+
+占位案例必须明确标记为设计占位，不在上线文案中伪装成真实成交。
+
+#### Section 4：三步流程
 
 1. Connect your creator account.
 2. Build a monetization-ready creator profile.
 3. View matched brand and affiliate opportunities.
 
-#### Section 4：机会类型
+#### Section 5：机会类型
 
 必须兼容两类机会，并突出“全网26个商单渠道比价”：
 
@@ -277,7 +296,7 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 
 文案必须避免把联盟营销写成已经完整结算闭环；当前只承诺“机会和数据查看方向”，真实 tracking / 结算仍以产品实现为准。
 
-#### Section 5：信任与控制
+#### Section 6：信任与控制
 
 必须强调：
 
@@ -285,7 +304,7 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 - AI 可以帮助判断、总结、起草，不默认替用户发送高风险消息。
 - 用户可以断开连接或删除授权数据；具体规则以实现方案为准。
 
-#### Section 6：FAQ
+#### Section 7：FAQ
 
 首版问题：
 
@@ -296,13 +315,88 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 - 数据是否会公开？
 - 如何退出或删除数据？
 
+### 5.2 ASCII 原型
+
+#### A. Creator landing 首屏
+
+```text
++--------------------------------------------------------------------------------+
+| NoxInfluencer                                               Login as creator   |
+|                                                        [Start maximizing revenue]|
++--------------------------------------------------------------------------------+
+|                                                                                |
+|  Source: YouTube Channel Calculator                                            |
+|                                                                                |
+|  MAXIMIZE YOUR CHANNEL REVENUE                                                 |
+|  Compare deals across 26 channels.                                             |
+|  AI negotiation expert helps you get the best price.                           |
+|                                                                                |
+|  [Start maximizing revenue]   Log in as creator                                |
+|                                                                                |
+|  +---------------------------+     +----------------------------------------+   |
+|  | Your channel can earn from|     | 26 deal sources                         |   |
+|  | brand deals + affiliate   |     | AI price negotiation                    |   |
+|  | commissions.              |     | Matched brand + affiliate opportunities |   |
+|  +---------------------------+     +----------------------------------------+   |
+|                                                                                |
++--------------------------------------------------------------------------------+
+```
+
+#### B. Landing 中段结构
+
+```text
++--------------------------------------------------------------------------------+
+| Context card                                                                    |
+| "You just checked your earning potential. Turn it into paid deals."             |
++--------------------------------------------------------------------------------+
+| Creator stories (mock placeholders, replace with real cases before final launch)|
+| +-------------------+  +-------------------+  +-------------------+             |
+| | Creator A         |  | Creator B         |  | Creator C         |             |
+| | Beauty / lifestyle|  | Gaming / tech     |  | Education / tools |             |
+| | Brand deals       |  | Affiliate deals   |  | Sponsorship       |             |
+| | Result placeholder|  | Result placeholder|  | Result placeholder|             |
+| +-------------------+  +-------------------+  +-------------------+             |
++--------------------------------------------------------------------------------+
+| 1. Connect creator account  ->  2. Build profile  ->  3. View opportunities     |
++--------------------------------------------------------------------------------+
+| Brand deals + affiliate deals                                                   |
+| Trust and control: user confirms authorization and high-risk actions            |
++--------------------------------------------------------------------------------+
+| FAQ                                                                             |
+| [Start maximizing revenue]     Log in as creator                                |
++--------------------------------------------------------------------------------+
+```
+
+#### C. 强红人场景页入口
+
+```text
+Channel calculator result
++--------------------------------------------------------------------------------+
+| Estimated earning potential                                                     |
+| $X - $Y / month                                                                 |
+|                                                                                |
+| Turn this estimate into real paid opportunities.                                |
+| Compare 26 deal channels and let AI help negotiate the best price.              |
+|                                                                                |
+| [Start maximizing revenue]     Log in as creator                                |
++--------------------------------------------------------------------------------+
+
+Optional contextual overlay after calculation:
++--------------------------------------------------------------+
+| Your channel may be ready for paid brand deals                |
+| Compare available sponsorship and affiliate opportunities.    |
+| [Start maximizing revenue]        Not now                     |
++--------------------------------------------------------------+
+```
+
 ## 6. 第一轮实施清单
 
 ### 6.1 产品 / 设计
 
 - [ ] 使用独立子域名 `https://www.creators.noxinfluencer.com` 承载红人端 landing。
 - [ ] 输出 `www / kr / jp / tw` 首版文案。
-- [ ] 设计 landing 首屏、来源上下文卡片、三步流程、FAQ。
+- [ ] 设计 landing 首屏、来源上下文卡片、mock creator stories、三步流程、FAQ。
+- [ ] 设计注册和登录分开的导航与首屏入口：主 CTA 注册，辅助入口登录。
 - [ ] 设计 `channel calculator` 的 `tool-integrated card` 和 `result-embedded panel`。
 - [ ] 设计 `channel calculator` 计算完成后的可关闭、限频弹窗方案。
 - [ ] 设计 `video title` 的 `tool-integrated card` 和生成结果后的轻弹窗 / 结果区强化入口。
@@ -310,6 +404,7 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 - [ ] 设计 `search/youtube/channel` 的 `inline feed card`。
 - [ ] 设计首页导航轻入口。
 - [ ] 设计 `realtime-subs-count`、`video-analytics` 和榜单页弱引导样式。
+- [ ] 准备 3 个 creator stories 占位案例，等待真实案例替换。
 
 ### 6.2 前端 / 后端
 
@@ -318,7 +413,8 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 - [ ] 增加 P0 页面引导位。
 - [ ] 优化 `video-analytics` 直进空状态，避免显示 `Video Not Found`。
 - [ ] 按登录态规则控制入口：已登录品牌用户不显示红人入口；未登录用户和红人用户可见。
-- [ ] 在高确定红人场景页将主登录 / 主 CTA 路由到红人端登录；混合场景页保留广告主端登录，只新增独立红人 CTA。
+- [ ] 在高确定红人场景页将主 CTA 路由到红人端注册，登录按钮路由到红人端登录；混合场景页保留广告主端登录，只新增独立红人 CTA。
+- [ ] 将红人端注册和登录拆成两个路由入口，避免单个“注册 / 登录”入口造成意图不清。
 - [ ] 若使用弹窗，增加关闭、限频、弹窗互斥和移动端可关闭校验。
 - [ ] 复用现有账号体系，但保持品牌端和红人端业务资料独立。
 - [ ] 联调已完成开发的频道连接 / 归属校验，待上线验证。
@@ -341,7 +437,9 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 - 已登录品牌用户不显示红人入口；退出登录后，或直接访问红人端网页，才能看到红人端页面。
 - 红人端复用现有账号体系，但品牌端和红人端账户资料 / 业务数据相互独立。
 - 频道连接 / 归属校验已完成开发，待上线验证。
-- `/youtube/channel-calculator`、`/youtube/video-title` 按高确定红人场景处理，主登录 / 主 CTA 直接去红人端。
+- `/youtube/channel-calculator`、`/youtube/video-title` 按高确定红人场景处理，主 CTA 去红人端注册，登录按钮去红人端登录。
+- 红人 landing 的注册和登录入口拆开；主 CTA 做注册 / 开始变现，登录作为辅助入口。
+- 首版可以使用 mock creator stories 占位，但上线前不得伪装成真实案例。
 - `channel-compare` 页面恢复正常后，重新纳入工具页引流池。
 
 仍待确认：
