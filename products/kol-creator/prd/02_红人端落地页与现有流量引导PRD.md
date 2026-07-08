@@ -1,6 +1,6 @@
 # 红人端落地页与现有流量引导 PRD 大纲
 
-> 状态：PRD 大纲 v0.6，待设计与开发评估
+> 状态：PRD 大纲 v0.7，待设计与开发评估
 > 更新时间：2026-07-08
 > 依据：`prd/01_第一版PRD.md`、NoxInfluencer 线上页面浏览器验证、外部工具页视觉参考、GA4 BigQuery `2026-06-29` 至 `2026-07-05` 最近完整 7 天 landing session 聚合
 
@@ -38,7 +38,8 @@
 2. 首版不是按“入口组件类型”分流，而是按用户场景与变现动机强度分流：越接近“我的内容能不能赚钱”，引导越强。
 3. `/youtube/channel-calculator` 和 `/youtube/video-title` 最接近创作者变现心智，应直接使用收入 / paid deals 承诺。
 4. `/youtube/channel/:id` 和 `/search/youtube/channel` 在未登录态也有红人流量，可以切，但需要避免破坏品牌搜索和频道分析主任务。
-5. 红人端第一版的难点不是让用户点一次 CTA，而是让红人完成至少一个可验证动作：注册、连接账号、授权社媒 / 邮箱、查看合作机会或留下兴趣。
+5. 已确认是红人场景的页面，登录按钮和主 CTA 应直接进入红人端登录 / 注册，而不是广告主端登录。
+6. 红人端第一版的难点不是让用户点一次 CTA，而是让红人完成至少一个可验证动作：注册、连接账号、授权社媒 / 邮箱、查看合作机会或留下兴趣。
 
 当前核心假设：
 
@@ -60,14 +61,15 @@
 3. `/youtube/video-title` 应上调为 P0；它的用户身份更接近创作者，适合把“内容增长”直接接到 paid campaigns。
 4. `/youtube/channel/:id` 和 `/search/youtube/channel` 在未登录态有红人流量，可以切，但不能破坏品牌搜索和频道分析主任务。
 5. `/youtube/video-analytics` 直进显示 `Video Not Found`，应先修成输入视频 URL 的空状态，再承接红人端引流。
-6. 首页只做导航发现入口，不改变主站首页叙事。
+6. `/youtube/channel-calculator`、`/youtube/video-title` 首批按高确定红人场景处理：登录按钮 / 主 CTA 可直接去红人端登录。
+7. 首页只做导航发现入口，不改变主站首页叙事。
 
 ### 3.2 首批入口优先级
 
 | 页面组 | 近 7 天 landing sessions | 用户场景 | 引导强度 | 入口形式 | 判断 |
 |---|---:|---|---|---|---|
-| `/youtube/channel-calculator` | 4,695 | 用户正在计算频道收入、估值和赞助价值 | 最强 | `tool-integrated card` + `result-embedded panel` | 首屏和结果区都要看到变现入口 |
-| `/youtube/video-title` | 16,449 | 用户正在优化视频标题和内容增长 | 强 | `tool-integrated card` | 用户身份最接近创作者，适合直接切到收益最大化 |
+| `/youtube/channel-calculator` | 4,695 | 用户正在计算频道收入、估值和赞助价值 | 最强 | `tool-integrated card` + `result-embedded panel` + 条件弹层 | 首屏和结果区都要看到变现入口，计算完成后可用可关闭弹层强化转化 |
+| `/youtube/video-title` | 16,449 | 用户正在优化视频标题和内容增长 | 强 | `tool-integrated card` + 条件弹层 | 用户身份最接近创作者，生成结果后可直接切到收益最大化 |
 | `/youtube/channel/:id` | 17,481 | 用户在看自己或同类频道商业价值 | 中强 | `result-embedded panel` | 未登录有红人流量，但不以“认领”为主卖点 |
 | `/search/youtube/channel` | 33,053 | 用户在找频道，或被搜索结果命中 | 中 | `inline feed card` | 有红人流量，但品牌搜索也多，不能打断搜索任务 |
 | `/` | 11,916 | 用户还没有明确任务 | 弱但常驻 | `navigation entry` | 顶部导航增加红人入口，不改首页主叙事 |
@@ -136,24 +138,25 @@ See brand opportunities
 - `inline feed card`：插在搜索结果 / 榜单内容流里，不打断原任务，适合混合意图页面。
 - `navigation entry`：只做发现入口，适合首页和全站导航。
 - `empty-state card`：用于无输入 / 无结果状态，尤其是 `video-analytics`。
+- `contextual overlay`：弹窗、浮层或轻抽屉，只在强红人意图页面、且用户完成当前工具动作后触发，用于短决策，不承载大表单。
 
-| 页面组 | 推荐形式 | 具体落点 | 关键要求 |
+| 页面组 | 推荐形式 | 具体落点 | 登录 / 弹窗规则 |
 |---|---|---|---|
-| `/youtube/channel-calculator` | `tool-integrated card` + `result-embedded panel` | 首屏输入框下方；估值结果卡右侧或底部 | 不改变原输入主路径；结果区用收益数字作为视觉锚点 |
-| `/youtube/video-title` | `tool-integrated card` | 搜索框下方或推荐区上方 | 轻背景条 + 橙色按钮，强调“内容增长后变现” |
-| `/youtube/channel/:id` | `result-embedded panel` | 频道身份区、NoxScore / Coop. Potential 附近、锁定数据区下方 | 不问“这是你的频道吗”；不用弹窗 |
-| `/search/youtube/channel` | `inline feed card` | 搜索结果第一屏顶部；后续每 8-10 条结果最多插一张 | 卡片明显区别于达人结果；不遮挡筛选器、不抢搜索按钮 |
-| `/` | `navigation entry` | 顶部导航或 `Products&Services` 下 | 不改首页主叙事 |
-| `/youtube/realtime-subs-count` | `tool-integrated card` | 查询框下方、结果卡旁或结果后 | 不在首屏强压，结果后轻引导 |
-| `/youtube/video-analytics` | `empty-state card` + `result-embedded panel` | 直进空状态、视频分析结果区 | 先修 `Video Not Found` 空状态 |
+| `/youtube/channel-calculator` | `tool-integrated card` + `result-embedded panel` + `contextual overlay` | 首屏输入框下方；估值结果卡右侧或底部；计算完成后 | 主登录 / 主 CTA 去红人端；弹层只在结果出现后触发，可关闭、限频 |
+| `/youtube/video-title` | `tool-integrated card` + `contextual overlay` | 搜索框下方或推荐区上方；标题生成后 | 主登录 / 主 CTA 去红人端；弹层强调“内容增长变收入”，不阻断生成动作 |
+| `/youtube/channel/:id` | `result-embedded panel` | 频道身份区、NoxScore / Coop. Potential 附近、锁定数据区下方 | 混合场景，保留原登录；单独提供红人 CTA，不问“这是你的频道吗” |
+| `/search/youtube/channel` | `inline feed card` | 搜索结果第一屏顶部；后续每 8-10 条结果最多插一张 | 混合场景，保留原登录；不遮挡筛选器、不抢搜索按钮、不弹窗 |
+| `/` | `navigation entry` | 顶部导航或 `Products&Services` 下 | 仅未登录或红人用户可见；已登录品牌用户不展示 |
+| `/youtube/realtime-subs-count` | `tool-integrated card` | 查询框下方、结果卡旁或结果后 | 轻引导，红人 CTA 去红人端；暂不替换全站登录 |
+| `/youtube/video-analytics` | `empty-state card` + `result-embedded panel` | 直进空状态、视频分析结果区 | 先修 `Video Not Found` 空状态；红人 CTA 去红人端；暂不弹窗 |
 | `/youtube-video-rank` | `inline feed card` | 榜单下方或侧边内容卡 | 弱引导，不进首批主战场 |
 | `/youtube-channel-rank` | `inline feed card` | 榜单说明下方或页面底部 | 弱引导 |
 
-禁用形式：
+形式边界：
 
-- 不做自动弹窗、遮罩弹窗或强制登录弹窗承接红人端。
-- 不把右下角客服浮球改成红人端入口。
-- 不在品牌侧强任务页面使用全屏 takeover。
+- 弹层只用于 `channel-calculator`、`video-title` 这类高确定红人场景，并且必须由用户完成工具动作后触发。
+- 弹层必须可关闭、限频，不与登录、付费、授权等已有弹层叠加；不在移动端用难关闭遮罩。
+- 混合意图页面不做首屏弹窗、不做全屏 takeover，不把右下角客服浮球改成红人入口。
 
 所有入口跳转红人端时必须带上下文参数，用于页面文案、归因和后续分析。
 
@@ -164,9 +167,11 @@ source_page_group
 source_host
 source_path
 cta_position
+entry_form
 locale
 channel_id
 video_id
+auth_target
 ```
 
 如有隐私或 URL 长度顾虑，可用后端生成短 `entry_context_id`，但首版仍要保留可分析的来源维度。
@@ -177,10 +182,10 @@ video_id
 
 | Event | 触发时机 | 必带属性 |
 |---|---|---|
-| `creator_entry_impression` | 引导位曝光 | `source_page_group`、`source_host`、`cta_position`、`locale` |
-| `creator_entry_click` | 点击引导位 | 同上，加 `target_url` |
-| `creator_landing_view` | 红人端 landing 打开 | `source_page_group`、`source_host`、`source_path`、`locale` |
-| `creator_signup_start` | 开始注册 / 登录 | `source_page_group`、`auth_method` |
+| `creator_entry_impression` | 引导位曝光 | `source_page_group`、`source_host`、`cta_position`、`entry_form`、`locale` |
+| `creator_entry_click` | 点击引导位 | 同上，加 `target_url`、`auth_target` |
+| `creator_landing_view` | 红人端 landing 打开 | `source_page_group`、`source_host`、`source_path`、`entry_form`、`locale` |
+| `creator_signup_start` | 开始注册 / 登录 | `source_page_group`、`auth_method`、`auth_target` |
 | `creator_signup_finish` | 注册 / 登录完成 | `source_page_group`、`auth_method` |
 | `creator_account_connect_start` | 开始连接创作者账号 / 频道 | `source_page_group`、`channel_platform` |
 | `creator_account_connect_finish` | 创作者账号 / 频道连接成功 | `source_page_group`、`channel_platform` |
@@ -192,6 +197,7 @@ video_id
 
 - 不重做 `search/youtube/channel` 主搜索体验。
 - 不在品牌侧工作台强弹红人端。
+- 不在混合意图页面替换广告主端登录入口。
 - 不承诺“注册后一定接到品牌单”。
 - 不做复杂 A/B 实验平台，先用固定参数和 GA / BigQuery 分析。
 - 不做完整多语言文案精修；首版只保证 `www / kr / jp / tw` 有可用版本或明确 fallback。
@@ -237,7 +243,7 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 - 默认：展示来源上下文
 - 无来源：展示通用版本
 - 已登录：主 CTA 指向机会列表 / 资料完善
-- 未登录：主 CTA 指向注册 / 登录
+- 未登录：主 CTA 指向红人端注册 / 登录
 
 #### Section 2：来源上下文卡片
 
@@ -298,7 +304,8 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 - [ ] 输出 `www / kr / jp / tw` 首版文案。
 - [ ] 设计 landing 首屏、来源上下文卡片、三步流程、FAQ。
 - [ ] 设计 `channel calculator` 的 `tool-integrated card` 和 `result-embedded panel`。
-- [ ] 设计 `video title` 的 `tool-integrated card`。
+- [ ] 设计 `channel calculator` 计算完成后的可关闭、限频弹窗方案。
+- [ ] 设计 `video title` 的 `tool-integrated card` 和生成结果后的轻弹窗 / 结果区强化入口。
 - [ ] 设计 `channel detail` 的 `result-embedded panel`。
 - [ ] 设计 `search/youtube/channel` 的 `inline feed card`。
 - [ ] 设计首页导航轻入口。
@@ -311,6 +318,8 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 - [ ] 增加 P0 页面引导位。
 - [ ] 优化 `video-analytics` 直进空状态，避免显示 `Video Not Found`。
 - [ ] 按登录态规则控制入口：已登录品牌用户不显示红人入口；未登录用户和红人用户可见。
+- [ ] 在高确定红人场景页将主登录 / 主 CTA 路由到红人端登录；混合场景页保留广告主端登录，只新增独立红人 CTA。
+- [ ] 若使用弹窗，增加关闭、限频、弹窗互斥和移动端可关闭校验。
 - [ ] 复用现有账号体系，但保持品牌端和红人端业务资料独立。
 - [ ] 联调已完成开发的频道连接 / 归属校验，待上线验证。
 - [ ] 增加多语言文案 key。
@@ -332,6 +341,7 @@ Compare deals across 26 channels and let an AI negotiation expert help you get t
 - 已登录品牌用户不显示红人入口；退出登录后，或直接访问红人端网页，才能看到红人端页面。
 - 红人端复用现有账号体系，但品牌端和红人端账户资料 / 业务数据相互独立。
 - 频道连接 / 归属校验已完成开发，待上线验证。
+- `/youtube/channel-calculator`、`/youtube/video-title` 按高确定红人场景处理，主登录 / 主 CTA 直接去红人端。
 - `channel-compare` 页面恢复正常后，重新纳入工具页引流池。
 
 仍待确认：
