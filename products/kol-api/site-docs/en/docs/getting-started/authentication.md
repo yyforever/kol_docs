@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 3
 status: published
-updated_at: 2026-07-02
+updated_at: 2026-07-10
 keywords:
   - authentication
   - account
@@ -19,6 +19,8 @@ source_of_truth:
   - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:cli/src/main.ts"
   - "repo:kol_claw path:cli/src/commands/login.ts"
+  - "repo:kol_claw path:cli/src/commands/quota.ts"
+  - "repo:kol_claw path:cli/src/commands/pricing.ts"
   - "repo:kol_claw path:server/app/dependencies.py"
   - "repo:kol_claw path:server/app/services/saas_skill_quota.py"
 ---
@@ -59,7 +61,9 @@ For the current Rest API free-trial and self-service purchase line, use `/api-se
 - Run `noxinfluencer login` when the CLI is not authenticated.
 - Run `noxinfluencer doctor` when you need to confirm account and key configuration.
 - Run `noxinfluencer quota` to see the current Skill quota snapshot.
-- Run `noxinfluencer schema --all` after installing or updating the CLI. The current CLI baseline expects `login`, `campaign`, `collection`, `email`, `message`, `crm`, `product`, `short-link`, `affiliation`, `brand-monitor`, `export`, `feedback`, and `agent` command coverage.
+- Run `noxinfluencer quota usage --days 7` to review recent Skill Credit consumption.
+- Run `noxinfluencer pricing tools --charged-only` to see current server-side action prices before a broad or bulk workflow.
+- Run `noxinfluencer schema --all` after installing or updating the CLI. The current CLI baseline expects `login`, `campaign`, `collection`, `email`, `message`, `crm`, `product`, `short-link`, `affiliation`, `brand-monitor`, `export`, `feedback`, `quota`, `pricing`, and `agent` command coverage.
 - For automation, use `noxinfluencer agent exit-codes` to map stable CLI exit codes to retry or recovery behavior.
 
 ## Four layers to keep in mind
@@ -84,6 +88,8 @@ Skill / CLI usage is explained through a quota model that may include:
 - Underlying service quota
 
 Rest API uses independent `Credit`. Do not mix it with Skill quota / Skill credit.
+
+Use `pricing tools` for current Skill action prices and `quota usage` for historical consumption. Creator search and lookalike discovery are currently priced by returned creator count, so smaller, purposeful pages are easier to control than broad exploratory pages.
 
 ## Common mistakes
 

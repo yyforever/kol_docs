@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 2
 status: published
-updated_at: 2026-07-02
+updated_at: 2026-07-10
 keywords:
   - quick start
   - skills.sh
@@ -24,6 +24,9 @@ source_of_truth:
   - "repo:kol_claw path:cli/package.json"
   - "repo:kol_claw path:cli/src/main.ts"
   - "repo:kol_claw path:cli/src/commands/login.ts"
+  - "repo:kol_claw path:cli/src/commands/quota.ts"
+  - "repo:kol_claw path:cli/src/commands/pricing.ts"
+  - "repo:kol_claw path:cli/src/commands/creator.ts"
 ---
 
 # Quick Start
@@ -134,7 +137,7 @@ The supported OpenAI path is OpenAI Codex. NoxInfluencer needs an execution envi
 
 ## Step 3: Install or refresh the CLI
 
-The current public documentation baseline is `@noxinfluencer/cli` `0.4.15` or newer. Install the latest CLI package:
+The current public documentation baseline is `@noxinfluencer/cli` `0.4.19` or newer. Install the latest CLI package:
 
 ```bash
 npm install -g @noxinfluencer/cli@latest
@@ -148,6 +151,7 @@ noxinfluencer schema --all
 
 The command tree must include:
 
+- `login`
 - `campaign`
 - `collection`
 - `email`
@@ -158,9 +162,19 @@ The command tree must include:
 - `affiliation`
 - `brand-monitor`
 - `export`
+- `feedback`
+- `quota`
+- `pricing`
 - `agent`
 
-Version output alone is not enough if your machine has stale local or global compiled files. If `schema --all` does not show the expected command groups after reinstalling the latest package, stop the affected workflow and treat it as a CLI package or command-tree mismatch. For current workflows, the installed tree should also expose `login`, creator search filtering, creator lookalikes, email recipient filters, email collaborators, email/message attachments, message project and creator filters, Product Center, short links, affiliation, brand monitor, and feedback commands.
+Version output alone is not enough if your machine has stale local or global compiled files. If `schema --all` does not show the expected command groups after reinstalling the latest package, stop the affected workflow and treat it as a CLI package or command-tree mismatch. For current workflows, the installed tree should also expose creator search filtering, `creator_name` search, all-keyword search, creator lookalikes, email recipient filters, email collaborators, email/message attachments, message project and creator filters, Product Center, short links, affiliation, brand monitor, feedback, quota, and pricing commands.
+
+Before a broad discovery or bulk workflow, let your agent check current unit prices and recent usage:
+
+```bash
+noxinfluencer pricing tools --charged-only
+noxinfluencer quota usage --days 7
+```
 
 ## Step 4: Let your agent continue
 
@@ -184,6 +198,8 @@ A first run is successful when one of these works:
 - Run `noxinfluencer doctor` first
 - If authentication is missing, run `noxinfluencer login`
 - Run `noxinfluencer schema --all` to confirm the installed command tree
+- Run `noxinfluencer pricing tools --charged-only` if you need current Skill Credit prices
+- Run `noxinfluencer quota usage --days 7` if you need recent consumption history
 - Run `noxinfluencer agent exit-codes` when your agent or automation needs stable failure handling
 - If the network path is blocked, set `HTTPS_PROXY` and retry; add `HTTP_PROXY` only when the server URL is non-TLS
 - Review [Error Codes](../../resources/error-codes.md) and [CLI Diagnostics](../../resources/cli-diagnostics.md) for recovery paths

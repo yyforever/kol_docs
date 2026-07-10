@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 1
 status: published
-updated_at: 2026-06-13
+updated_at: 2026-07-10
 keywords:
   - discover creators
   - creator discovery
@@ -18,6 +18,7 @@ source_of_truth:
   - ../../../../03_API能力设计.md
   - ../../../../05_PRD.md
   - "repo:kol_claw path:cli/src/commands/creator.ts"
+  - "repo:kol_claw path:cli/src/commands/pricing.ts"
   - "repo:kol_claw path:server/app/routers/discover.py"
   - "repo:kol_claw path:server/contracts/capabilities/creator_search.json"
 ---
@@ -38,17 +39,41 @@ Discover Creators helps you find candidate creators and build a shortlist worth 
 
 - Platform
 - Market or country
-- Category, keywords, or content direction
+- Query mode: use `--keywords` for topic discovery, or `--creator_name` when you already know a creator name or handle
 - Creator size range
 - Whether commercial fit or contactability should matter
 - Use `--has_email true` when platform email outreach needs creators with an email signal; this does not mean visible email has already been exported
 
+## Query modes
+
+- Use `--keywords` when you are exploring a topic, category, or niche
+- Use `--creator_name` when you are looking for a known creator name or handle
+- Do not combine `--keywords` and `--creator_name` in the same search
+- Use `--keyword_match all` only when every supplied keyword must match; the default behavior is broader any-keyword matching
+
+```bash
+noxinfluencer creator search --platform youtube --creator_name "MrBeast" --page_size 5
+noxinfluencer creator search --platform tiktok --keywords '[coffee,review]' --keyword_match all
+```
+
 ## Pagination and result shape
 
-- The CLI defaults to `page_size=10` and supports up to `--page_size 20`
+- The CLI defaults to `page_size=20` and supports up to `--page_size 100`
 - For deeper pagination, reuse the prior response's `data.search_after`
 - Prefer a JSON body through `--body-file -` when passing cursor arrays or complex filters
 - Search rows expose search-result identifiers for follow-up, but full identity comes from a later creator read
+
+## Pricing and usage planning
+
+Creator search and lookalike discovery are currently priced by returned creator count, not by a fixed page request. Before a broad shortlist expansion, check current prices and recent usage:
+
+```bash
+noxinfluencer pricing tools --action creator_search
+noxinfluencer pricing tools --action creator_lookalikes
+noxinfluencer quota usage --days 7 --tool discover_creators
+```
+
+Use smaller, purposeful pages for exploration. Increase `page_size` only when the filters are already specific enough and you actually need a larger shortlist.
 
 ## Hide and deduplicate a returned page
 

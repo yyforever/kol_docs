@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 1
 status: published
-updated_at: 2026-06-09
+updated_at: 2026-07-10
 keywords:
   - creator discovery
   - shortlist
@@ -32,6 +32,7 @@ source_of_truth:
 - 品类或内容方向
 - 目标达人体量
 - 是否优先考虑可合作或可联系对象
+- 这是主题发现（`--keywords`），还是已知达人名称 / handle 查询（`--creator_name`）
 
 ## 推荐流程
 
@@ -43,9 +44,23 @@ source_of_truth:
 
 ## 分页提醒
 
-- Creator search 默认 `page_size=10`，最大支持 `--page_size 20`
+- Creator search 默认 `page_size=20`，最大支持 `--page_size 100`
 - 后续翻页需要复用上一页响应里的 `data.search_after`
 - 如果请求包含游标数组或复杂筛选条件，优先让 Agent 用 JSON body 传参，不要手动拼复杂 shell quoting
+
+## 搜索模式和成本提醒
+
+- 做主题发现时用 `--keywords`；只有已经知道达人名称或 handle 时才用 `--creator_name`
+- 不要同时使用 `--keywords` 和 `--creator_name`
+- 只有要求每个关键词都命中时，才使用 `--keyword_match all`
+- 搜索和相似达人当前按返回达人数量计费，探索阶段先使用明确筛选和较小分页
+
+常用检查：
+
+```bash
+noxinfluencer pricing tools --action creator_search
+noxinfluencer quota usage --days 7 --tool discover_creators
+```
 
 ## 隐藏已经处理过的候选人
 

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: guides
 order: 1
 status: published
-updated_at: 2026-06-09
+updated_at: 2026-07-10
 keywords:
   - creator discovery
   - shortlist
@@ -30,6 +30,7 @@ Your goal is not to run the broadest search possible. Your goal is to produce a 
 - Category or niche
 - Creator size range
 - Whether commercial contactability matters
+- Whether this is topic discovery (`--keywords`) or a known creator lookup (`--creator_name`)
 
 ## Recommended flow
 
@@ -41,9 +42,23 @@ Your goal is not to run the broadest search possible. Your goal is to produce a 
 
 ## Pagination note
 
-- Creator search defaults to `page_size=10` and supports up to `--page_size 20`
+- Creator search defaults to `page_size=20` and supports up to `--page_size 100`
 - For next-page follow-ups, reuse the prior response's `data.search_after`
 - If your request uses cursor arrays or complex filters, let your agent pass a JSON body instead of hand-editing shell-quoted arrays
+
+## Search mode and cost note
+
+- Use `--keywords` for topic discovery; use `--creator_name` only when you already know the creator name or handle
+- Do not combine `--keywords` and `--creator_name`
+- Use `--keyword_match all` only when every keyword must match
+- Search and lookalike discovery are priced by returned creator count, so start with focused filters and smaller pages when exploring
+
+Useful checks:
+
+```bash
+noxinfluencer pricing tools --action creator_search
+noxinfluencer quota usage --days 7 --tool discover_creators
+```
 
 ## Hide candidates you already know
 

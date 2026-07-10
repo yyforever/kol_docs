@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 4
 status: published
-updated_at: 2026-07-02
+updated_at: 2026-07-10
 keywords:
   - cli diagnostics
   - troubleshooting
@@ -17,6 +17,9 @@ source_of_truth:
   - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:cli/src/main.ts"
   - "repo:kol_claw path:cli/src/commands/login.ts"
+  - "repo:kol_claw path:cli/src/commands/creator.ts"
+  - "repo:kol_claw path:cli/src/commands/quota.ts"
+  - "repo:kol_claw path:cli/src/commands/pricing.ts"
   - "repo:kol_claw path:cli/src/lib/exit-codes.ts"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/references/cli-response-format.md"
@@ -68,6 +71,8 @@ noxinfluencer schema --all
 - `brand-monitor`
 - `export`
 - `feedback`
+- `quota`
+- `pricing`
 - `agent`
 
 如果缺少这些命令组，重新安装最新 CLI：
@@ -78,7 +83,7 @@ npm install -g @noxinfluencer/cli@latest
 
 本地或全局编译文件过旧时，只看版本号不够。
 
-当前文档基线是 `@noxinfluencer/cli` `0.4.15` 或更新版本。排查旧安装时，优先看 `schema --all`，不要只看版本号。如果缺少 `login`，当前安装树无法使用浏览器登录。如果缺少 `product`，当前安装树就不能执行商品中心和邮件商品卡相关工作流。如果缺少 `short-link` 或 `affiliation`，当前安装树就不能执行普通短链和 Shopify 联盟营销工作流。如果缺少 `creator lookalikes`、`creator search-filter-options`、`email recipients filter options`、`email collaborators list`、`email attachments upload`、`message project-filters`、`message creator-filters`、`message projects`、`message attachments upload`、`short-link create`、`affiliation stores list`、`affiliation members status` 或 `feedback submit` 等嵌套命令，需要先重新安装最新 CLI，再继续。
+当前文档基线是 `@noxinfluencer/cli` `0.4.19` 或更新版本。排查旧安装时，优先看 `schema --all`，不要只看版本号。如果缺少 `login`，当前安装树无法使用浏览器登录。如果缺少 `quota` 或 `pricing`，当前安装树无法查看 Skill 当前额度、近期用量或服务端动作单价。如果缺少 `product`，当前安装树就不能执行商品中心和邮件商品卡相关工作流。如果缺少 `short-link` 或 `affiliation`，当前安装树就不能执行普通短链和 Shopify 联盟营销工作流。如果缺少 `creator lookalikes`、`creator search-filter-options`、`pricing tools`、`quota usage`、`email recipients filter options`、`email collaborators list`、`email attachments upload`、`message project-filters`、`message creator-filters`、`message projects`、`message attachments upload`、`short-link create`、`affiliation stores list`、`affiliation members status` 或 `feedback submit` 等嵌套命令，需要先重新安装最新 CLI，再继续。
 
 ## 查看具体命令参数
 
@@ -89,6 +94,8 @@ noxinfluencer schema "creator search"
 noxinfluencer schema "creator search-filter"
 noxinfluencer schema "creator lookalikes"
 noxinfluencer schema "login"
+noxinfluencer schema "pricing tools"
+noxinfluencer schema "quota usage"
 noxinfluencer schema "email create"
 noxinfluencer schema "email recipients add"
 noxinfluencer schema "email recipients filter update"
@@ -126,6 +133,20 @@ noxinfluencer message project-filters
 ```
 
 这些命令会返回当前支持的选项、筛选 ID 或 JSON body patches。不要自己猜 SaaS 原始字段名。
+
+## 检查价格和用量
+
+开始大范围发现、相似达人、导出或批量工作流前，先检查当前单价和近期消耗：
+
+```bash
+noxinfluencer pricing tools --charged-only
+noxinfluencer pricing tools --action creator_search
+noxinfluencer pricing tools --action creator_lookalikes
+noxinfluencer quota usage --days 7
+noxinfluencer quota usage --days 30 --tool discover_creators
+```
+
+达人搜索和相似达人当前按返回达人数量计费。如果你需要控制成本，先减小 `page_size`、收紧筛选条件，并在扩大结果集前确认当前单位价格。
 
 ## 排查消息中心待处理状态
 

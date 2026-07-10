@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 4
 status: published
-updated_at: 2026-07-02
+updated_at: 2026-07-10
 keywords:
   - cli diagnostics
   - troubleshooting
@@ -17,6 +17,9 @@ source_of_truth:
   - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:cli/src/main.ts"
   - "repo:kol_claw path:cli/src/commands/login.ts"
+  - "repo:kol_claw path:cli/src/commands/creator.ts"
+  - "repo:kol_claw path:cli/src/commands/quota.ts"
+  - "repo:kol_claw path:cli/src/commands/pricing.ts"
   - "repo:kol_claw path:cli/src/lib/exit-codes.ts"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/references/cli-response-format.md"
@@ -68,6 +71,8 @@ The current CLI baseline expects the installed command tree to expose:
 - `brand-monitor`
 - `export`
 - `feedback`
+- `quota`
+- `pricing`
 - `agent`
 
 If those command groups are missing, reinstall the latest CLI:
@@ -78,7 +83,7 @@ npm install -g @noxinfluencer/cli@latest
 
 Version output alone is not enough when local or global compiled files are stale.
 
-The current documented baseline is `@noxinfluencer/cli` `0.4.15` or newer. Prefer `schema --all` over version checks when diagnosing a stale install. If `login` is missing, browser onboarding is unavailable from that installed tree. If `product` is missing, Product Center and email product-card workflows are unavailable. If `short-link` or `affiliation` is missing, normal short-link and Shopify affiliate workflows are unavailable. If nested commands such as `creator lookalikes`, `creator search-filter-options`, `email recipients filter options`, `email collaborators list`, `email attachments upload`, `message project-filters`, `message creator-filters`, `message projects`, `message attachments upload`, `short-link create`, `affiliation stores list`, `affiliation members status`, or `feedback submit` are missing, reinstall the latest CLI before continuing.
+The current documented baseline is `@noxinfluencer/cli` `0.4.19` or newer. Prefer `schema --all` over version checks when diagnosing a stale install. If `login` is missing, browser onboarding is unavailable from that installed tree. If `quota` or `pricing` is missing, the install cannot show current Skill quota, recent usage, or server-side action prices. If `product` is missing, Product Center and email product-card workflows are unavailable. If `short-link` or `affiliation` is missing, normal short-link and Shopify affiliate workflows are unavailable. If nested commands such as `creator lookalikes`, `creator search-filter-options`, `pricing tools`, `quota usage`, `email recipients filter options`, `email collaborators list`, `email attachments upload`, `message project-filters`, `message creator-filters`, `message projects`, `message attachments upload`, `short-link create`, `affiliation stores list`, `affiliation members status`, or `feedback submit` are missing, reinstall the latest CLI before continuing.
 
 ## Inspect exact command parameters
 
@@ -89,6 +94,8 @@ noxinfluencer schema "creator search"
 noxinfluencer schema "creator search-filter"
 noxinfluencer schema "creator lookalikes"
 noxinfluencer schema "login"
+noxinfluencer schema "pricing tools"
+noxinfluencer schema "quota usage"
 noxinfluencer schema "email create"
 noxinfluencer schema "email recipients add"
 noxinfluencer schema "email recipients filter update"
@@ -126,6 +133,20 @@ noxinfluencer message project-filters
 ```
 
 These commands return supported choices, filter IDs, or JSON body patches. Use them instead of inventing raw SaaS field names.
+
+## Check pricing and usage
+
+Before a broad discovery, lookalike, export, or bulk workflow, inspect current prices and recent consumption:
+
+```bash
+noxinfluencer pricing tools --charged-only
+noxinfluencer pricing tools --action creator_search
+noxinfluencer pricing tools --action creator_lookalikes
+noxinfluencer quota usage --days 7
+noxinfluencer quota usage --days 30 --tool discover_creators
+```
+
+Creator search and lookalike discovery are priced by returned creator count. If cost matters, reduce `page_size`, tighten filters, and confirm the current unit price before expanding the result set.
 
 ## Diagnose message-center pending state
 

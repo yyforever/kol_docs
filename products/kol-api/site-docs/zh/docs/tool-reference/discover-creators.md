@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 1
 status: published
-updated_at: 2026-06-13
+updated_at: 2026-07-10
 keywords:
   - discover creators
   - creator search
@@ -18,6 +18,7 @@ source_of_truth:
   - ../../../../03_API能力设计.md
   - ../../../../05_PRD.md
   - "repo:kol_claw path:cli/src/commands/creator.ts"
+  - "repo:kol_claw path:cli/src/commands/pricing.ts"
   - "repo:kol_claw path:server/app/routers/discover.py"
   - "repo:kol_claw path:server/contracts/capabilities/creator_search.json"
 ---
@@ -38,17 +39,41 @@ source_of_truth:
 
 - 平台
 - 市场或国家
-- 品类、关键词或内容方向
+- 查询模式：探索主题时使用 `--keywords`；已经知道达人名称或 handle 时使用 `--creator_name`
 - 达人体量范围
 - 是否优先考虑商业合作可行性
 - 当平台邮件触达需要邮箱信号时，可以使用 `--has_email true`；这不代表已经导出了可见邮箱
 
+## 查询模式
+
+- 探索某个话题、品类或内容方向时，使用 `--keywords`
+- 已经知道达人名称或 handle 时，使用 `--creator_name`
+- 不要在同一次搜索里同时使用 `--keywords` 和 `--creator_name`
+- 只有当你要求所有关键词都命中时，才使用 `--keyword_match all`；默认行为是更宽的任一关键词匹配
+
+```bash
+noxinfluencer creator search --platform youtube --creator_name "MrBeast" --page_size 5
+noxinfluencer creator search --platform tiktok --keywords '[coffee,review]' --keyword_match all
+```
+
 ## 分页和结果形态
 
-- CLI 默认 `page_size=10`，最大支持 `--page_size 20`
+- CLI 默认 `page_size=20`，最大支持 `--page_size 100`
 - 深分页需要复用上一次响应里的 `data.search_after`
 - 传游标数组或复杂筛选条件时，优先通过 `--body-file -` 传 JSON body
 - 搜索结果行会提供后续可用的搜索结果标识，但完整达人身份需要通过后续达人读取获取
+
+## 价格和用量规划
+
+达人搜索和相似达人当前按返回达人数量计费，不是按固定页面请求计费。大范围扩展短名单前，先检查当前单价和近期用量：
+
+```bash
+noxinfluencer pricing tools --action creator_search
+noxinfluencer pricing tools --action creator_lookalikes
+noxinfluencer quota usage --days 7 --tool discover_creators
+```
+
+探索阶段优先使用小而明确的分页。只有当筛选条件已经足够具体、且确实需要更大的候选名单时，再提高 `page_size`。
 
 ## 对已返回页面做隐藏和去重
 

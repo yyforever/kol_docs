@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-07-02
+updated_at: 2026-07-10
 keywords:
   - noxinfluencer docs
   - influencer marketing
@@ -33,7 +33,7 @@ Use these docs to install NoxInfluencer in your agent environment, configure acc
 - Account sign-in, browser login, API key fallback, and entitlement model: read [Authentication](getting-started/authentication.md)
 - Remote MCP read tools, OAuth resource metadata, and scope model: read [Remote MCP](getting-started/remote-mcp.md)
 - Product scope and boundaries: read [Introduction](getting-started/introduction.md)
-- CLI 0.4.15 command-tree checks and stale install recovery: read [CLI Diagnostics](resources/cli-diagnostics.md)
+- CLI 0.4.19 command-tree checks, quota/pricing checks, and stale install recovery: read [CLI Diagnostics](resources/cli-diagnostics.md)
 - Current Rest API free trial or self-service purchase: use the existing `/api-service` page and the Theneo API docs / API Runner as the source of truth
 
 ## Install entry overview
@@ -41,6 +41,7 @@ Use these docs to install NoxInfluencer in your agent environment, configure acc
 - OpenClaw: start from [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer)
 - Claude Code, OpenAI Codex, Cursor, Hermes, or another compatible environment: start from [skills.sh](https://skills.sh/noxinfluencer/skills/noxinfluencer) and the commands in [Quick Start](getting-started/quick-start/index.md)
 - CLI sign-in: run `noxinfluencer login`; use the [Skills dashboard](https://www.noxinfluencer.com/skills/dashboard) only as the API key fallback
+- Cost and usage planning: use `noxinfluencer pricing tools --charged-only` and `noxinfluencer quota usage --days 7`
 - GitHub: use [NoxInfluencer/skills](https://github.com/NoxInfluencer/skills/tree/main) only when your agent needs the repository address or the store-based path cannot complete
 - ChatGPT: not a supported NoxInfluencer Skill runtime; OpenAI users should use OpenAI Codex for Skill workflows
 
