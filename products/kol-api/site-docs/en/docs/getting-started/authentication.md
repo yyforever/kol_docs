@@ -1,13 +1,13 @@
 ---
 doc_id: authentication
 title: Authentication
-description: Understand account sign-in, browser login, API key fallback, entitlement, Skill quota, CLI configuration, and the separate Rest API Credit model.
+description: Learn agent-guided sign-in, the free Credit allowance, permissions and quotas, and the safe API key fallback.
 locale: en
 content_type: doc
 nav_group: getting-started
 order: 3
 status: published
-updated_at: 2026-07-10
+updated_at: 2026-07-15
 keywords:
   - authentication
   - account
@@ -15,6 +15,7 @@ keywords:
 source_of_truth:
   - ../../../../04_定价与商业模式.md
   - ../../../../05_PRD.md
+  - "https://www.noxinfluencer.com/skills"
   - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
   - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:cli/src/main.ts"
@@ -27,75 +28,82 @@ source_of_truth:
 
 # Authentication
 
-The public capability model is built on a main account system, not on the legacy idea of a standalone API product.
+Most users do not need to create, copy, or manage an API key first. Let your agent check sign-in status. When authentication is required, it opens the official NoxInfluencer page so you can sign in or create an account.
 
-## First-time setup starts with browser login
+## New-user sign-in flow
+
+After installing the Skill, tell your agent:
+
+> Help me get started with NoxInfluencer Skill. Check my sign-in status and guide me through signing in or creating an account if needed.
+
+The normal flow is:
+
+1. Your agent checks the NoxInfluencer CLI and authentication state.
+2. If you are not signed in, it opens the browser sign-in page.
+3. Sign in to an existing account or create a new one.
+4. The CLI creates or reuses access credentials and stores them in local configuration.
+5. Your agent checks available usage, then continues with your first task.
+
+New accounts receive a one-time allowance of 30 free Credits with no credit card required. Review your current balance and plan status in the [Skills Dashboard](https://www.noxinfluencer.com/skills/dashboard).
+
+## Start browser sign-in manually
+
+Only when your agent does not start sign-in automatically, run:
 
 ```bash
 noxinfluencer login
 ```
 
-The CLI opens NoxInfluencer in your browser, reuses your SaaS login session, creates or reuses a non-expiring API key, and saves it to the local CLI config. This is now the preferred Skill / CLI setup path.
+For Chinese onboarding URLs and hints:
 
-If browser login cannot run in your environment, use the manual fallback:
+```bash
+noxinfluencer --lang zh login
+```
 
-- English sign-up: `https://www.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
-- Chinese sign-up: `https://cn.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
-- English Skills dashboard: `https://www.noxinfluencer.com/skills/dashboard`
-- Chinese Skills dashboard: `https://cn.noxinfluencer.com/skills/dashboard`
+The Chinese account entry is [NoxInfluencer Skills Dashboard](https://cn.noxinfluencer.com/skills/dashboard).
 
-For the current Rest API free-trial and self-service purchase line, use `/api-service` plus the Theneo docs. Do not treat the historical Developer API Quick Start as the current Rest API source of truth.
+## API key is a fallback
 
-## API key and environment setup
+Configure an API key manually only when browser sign-in is unavailable or your agent environment is managed centrally.
 
-- Skill / CLI public access still depends on a valid API key internally, but most users should let `noxinfluencer login` create or reuse it.
-- Host-managed secret injection and `NOXINFLUENCER_API_KEY` remain supported for environments that already provide credentials.
-- If you need to configure a key manually, use `noxinfluencer auth --key-stdin`.
-- For Chinese onboarding URLs and CLI hints, add `--lang zh` to CLI commands such as `noxinfluencer --lang zh doctor`.
-- Remote MCP currently supports API-key based pilots and can also run in OAuth or dual mode when the surrounding authorization server is available. API-key setup and OAuth connector setup are different user flows.
-- Do not assume the Skill API key is the current Rest API key. Engineering may reuse key backing internally, but user-facing copy should say Rest API key / Rest API Credit.
-- The current Rest API documentation entry is Theneo, not the legacy Developer API Quick Start in this directory.
+- Obtain the key from the official Skills Dashboard
+- Use `noxinfluencer auth --key-stdin` instead of passing the key as a command argument
+- Managed environments can use `NOXINFLUENCER_API_KEY`
+- Never put an API key in chat messages, logs, screenshots, support messages, or shared files
 
-## CLI and agent setup checks
+## Account access and Credits
 
-- Run `noxinfluencer login` when the CLI is not authenticated.
-- Run `noxinfluencer doctor` when you need to confirm account and key configuration.
-- Run `noxinfluencer quota` to see the current Skill quota snapshot.
-- Run `noxinfluencer quota usage --days 7` to review recent Skill Credit consumption.
-- Run `noxinfluencer pricing tools --charged-only` to see current server-side action prices before a broad or bulk workflow.
-- Run `noxinfluencer schema --all` after installing or updating the CLI. The current CLI baseline expects `login`, `campaign`, `collection`, `email`, `message`, `crm`, `product`, `short-link`, `affiliation`, `brand-monitor`, `export`, `feedback`, `quota`, `pricing`, and `agent` command coverage.
-- For automation, use `noxinfluencer agent exit-codes` to map stable CLI exit codes to retry or recovery behavior.
+Whether an action can run may depend on all of the following:
 
-## Four layers to keep in mind
+- Whether your account plan includes the capability
+- Whether the Tool is marked available or beta
+- Whether you have enough Credits
+- Whether the matching underlying NoxInfluencer service quota or permission is available
 
-### 1. Main account
+The website uses **Credits** for plans and consumption. The CLI uses `quota` to show your current balance and availability. Some actions also check an underlying service quota, so a remaining Credit balance does not guarantee access to every capability.
 
-Your main account determines plan tier, access, and upgrade path.
+Creator search and lookalike discovery are priced by the number of creators returned. Before a broad workflow, let your agent check current prices and recent usage:
 
-### 2. Capability availability
+```bash
+noxinfluencer quota
+noxinfluencer pricing tools --charged-only
+noxinfluencer quota usage --days 7
+```
 
-Not every capability is public or included for every account.
+See [Credits and Quotas](../resources/credit-guide.md) for details.
 
-### 3. Scope and permission requirements
+## Skill, Remote MCP, and Rest API
 
-Some requests also depend on specific capability permissions. In the current implementation, missing access for advanced search, audience analytics, brand analytics, or contact retrieval can return `SCOPE_REQUIRED`.
+- This page describes the normal Skill / CLI sign-in path
+- Remote MCP is a read-only surface for MCP clients and uses its own API key or OAuth connector setup; see [Remote MCP](remote-mcp.md)
+- Rest API starts from `/api-service` and the current Theneo docs. It uses Rest API Credit, which is separate from the Skill's Credits
 
-### 4. Quota constraints
+## If sign-in fails
 
-Skill / CLI usage is explained through a quota model that may include:
+Ask your agent to check, in order:
 
-- Skill quota
-- Underlying service quota
+1. `noxinfluencer doctor`
+2. `noxinfluencer login`
+3. `noxinfluencer quota`
 
-Rest API uses independent `Credit`. Do not mix it with Skill quota / Skill credit.
-
-Use `pricing tools` for current Skill action prices and `quota usage` for historical consumption. Creator search and lookalike discovery are currently priced by returned creator count, so smaller, purposeful pages are easier to control than broad exploratory pages.
-
-## Common mistakes
-
-- Assuming every documented tool is fully public today
-- Assuming account access automatically means all capabilities are included
-- Assuming only one quota layer matters
-- Assuming quota is the only reason a request can be blocked
-- Assuming Skill API key / Skill quota is the same as the current Rest API key / Rest API Credit
-- Putting API keys into shell arguments, logs, screenshots, or chat messages instead of using browser login or `auth --key-stdin`
+If setup still fails, use [CLI Diagnostics](../resources/cli-diagnostics.md) and [Error Codes](../resources/error-codes.md).

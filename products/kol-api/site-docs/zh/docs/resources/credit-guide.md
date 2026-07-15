@@ -1,13 +1,13 @@
 ---
 doc_id: resource_credit_guide
-title: 配额说明
-description: 解释当前公开能力下的 quota 心智、双配额关系与升级触发点。
+title: Credits 与配额
+description: 了解新账号免费 Credits、动作计费、CLI quota 和底层服务配额之间的关系。
 locale: zh
 content_type: doc
 nav_group: resources
 order: 3
 status: published
-updated_at: 2026-07-10
+updated_at: 2026-07-15
 keywords:
   - credit guide
   - quota
@@ -15,6 +15,8 @@ keywords:
 source_of_truth:
   - ../../../../04_定价与商业模式.md
   - ../../../../05_PRD.md
+  - "https://cn.noxinfluencer.com/skills"
+  - "https://cn.noxinfluencer.com/product/pricing?modal=ai-pricing"
   - "repo:kol_claw path:server/app/dependencies.py"
   - "repo:kol_claw path:server/app/services/saas_skill_quota.py"
   - "repo:kol_claw path:cli/src/commands/quota.ts"
@@ -23,32 +25,36 @@ source_of_truth:
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/references/cli-response-format.md"
 ---
 
-# 配额说明
+# Credits 与配额
 
-虽然导航仍沿用 Credit Guide 这一命名，但当前公开口径应统一理解为 **quota 模型**。
+官网使用 **Credits** 表达套餐额度和使用消耗；CLI 使用 `quota` 显示当前余额、使用状态和相关限制。这两个词描述的是同一条 Skill 使用链路中的不同视角，不应互相替代或混用成 Rest API Credit。
 
-## 当前心智
+## 免费开始
 
-多数关键能力不是只看一层额度，而是同时看：
+- 新账号注册后可获得一次性 30 Credits 免费额度
+- 无需绑定信用卡
+- 免费 Credits 是一次性体验额度，不是每月自动续发额度
+- 当前付费套餐和价格以 [NoxInfluencer 定价页](https://cn.noxinfluencer.com/product/pricing?modal=ai-pricing) 为准
 
-- Skill 技能额度
-- 对应底层服务配额
+## Credits 如何消耗
 
-## 为什么会出现“两层都要过”
+- 不同动作可以有不同单价
+- 达人搜索和相似达人按实际返回的达人数计费
+- 小而明确的候选名单通常比一次拉取大量结果更容易控制消耗
+- 提交产品反馈不消耗 Credits
+- Remote MCP 只读工具与对应 API-backed read tools 复用同一套 Skill 记账模型
 
-因为某些能力既代表一次 Skill 使用，也会消耗底层服务能力。只有两层都满足，动作才会继续进行。
+当前动作价格由服务端返回。不要把历史 prototype、旧公告或固定示例价格当成现行标准。
 
-## 推荐理解方式
+## 为什么有余额仍可能无法执行
 
-- 想知道还能不能继续用：先看 quota
-- 想知道为什么被拦：区分是 Skill 不足、服务不足，还是能力未开放
-- 想知道如何继续：回到 pricing 和套餐说明
-- 当前部分 API-backed CLI 响应可能仍带兼容旧字段 `credits`
-- 对外解释时，应以 `noxinfluencer quota` 和配额响应数据作为 Skill 配额快照的主来源
-- 需要看近期 Skill Credit 消耗时，使用 `noxinfluencer quota usage --days 7`
-- 需要看当前服务端动作单价时，使用 `noxinfluencer pricing tools --charged-only`
-- 达人搜索和相似达人当前按返回达人数量计费
-- Remote MCP 只读工具与对应 API-backed read tools 复用同一套 quota 记账模型
+部分能力除了 Credits，还依赖 NoxInfluencer 底层服务配额、套餐权益或 scope。一次动作可能同时检查：
+
+- Credits 是否足够
+- 当前账号是否拥有目标能力
+- 底层服务配额是否可用
+
+因此，Credits 有余额不代表所有 Tool 都自动可用。遇到拦截时，应区分余额不足、底层服务配额不足和能力未开放。
 
 ## 常用命令
 
@@ -60,8 +66,6 @@ noxinfluencer pricing tools --action creator_search
 noxinfluencer pricing tools --action creator_lookalikes
 ```
 
-## 不应该再沿用的旧心智
+## 与 Rest API Credit 的区别
 
-- 旧独立 API 产品额度
-- 只看一层 credit 的理解
-- 把旧 prototype 里的价格和调用说明视为现行标准
+Rest API 从 `/api-service` 和当前 API 文档进入，使用单独的 Rest API Credit。不要用 Skill 的 Credits 余额判断 Rest API 是否可用，也不要把 Rest API key 当成 Skill / CLI 的默认登录凭证。

@@ -1,13 +1,13 @@
 ---
 doc_id: intro
 title: Introduction
-description: Understand what NoxInfluencer helps you do, which surfaces are available today, and where the current boundaries are.
+description: Learn how NoxInfluencer Skill lets an AI agent run creator marketing tasks and where you stay in control.
 locale: en
 content_type: doc
 nav_group: getting-started
 order: 1
 status: published
-updated_at: 2026-07-02
+updated_at: 2026-07-15
 keywords:
   - introduction
   - noxinfluencer
@@ -17,6 +17,7 @@ source_of_truth:
   - ../../../../01_定位与假设.md
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
+  - "https://www.noxinfluencer.com/skills"
   - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
   - "repo:kol_claw path:cli/README.md"
@@ -25,13 +26,26 @@ source_of_truth:
 
 # Introduction
 
-NoxInfluencer helps you run creator and marketing operations from an AI agent environment. You can use it to discover creators, hide or deduplicate returned search results, evaluate fit, send platform email through NoxInfluencer, retrieve visible contacts for external outreach, monitor campaign videos, manage campaign/collection work, coordinate CRM/email/message tasks, manage product center items for email product cards, manage normal Nox short links, operate Shopify affiliate campaigns after SaaS store authorization, run exports, and inspect brand-monitor data.
+NoxInfluencer Skill connects creator marketing capabilities to the AI agent you already use. Describe your campaign goal and let your agent find creators, analyze audience fit, prepare a shortlist, organize outreach next steps, and follow campaign-video performance.
+
+It is not another dashboard you need to keep switching into. AI handles repetitive research, checks, and cleanup first, then gives you candidates, evidence, watchouts, and next steps. You remain responsible for final partnership decisions, approved content, and high-impact actions.
 
 ## Who this is for
 
-- You work in OpenClaw, Claude Code, OpenAI Codex, Cursor, Hermes, or another compatible agent environment
+- You work in OpenAI Codex, Claude Code, OpenClaw, or Hermes
 - You want your agent to operate NoxInfluencer workflows through the CLI or Remote MCP instead of switching manually across tools
 - You need creator discovery, due diligence, monitoring, or campaign operations across YouTube, TikTok, and Instagram
+
+Other Skills CLI-compatible agents can use the general install path, but Codex, Claude Code, OpenClaw, and Hermes are the primary agents currently presented on the official website.
+
+## What your first run looks like
+
+1. Add NoxInfluencer Skill to the agent you already use.
+2. Your agent checks the required tools and opens a browser when you need to sign in or create an account.
+3. Give it your campaign goal, platform, and region.
+4. Your agent returns creator candidates, fit reasons, watchouts, and next steps, with NoxInfluencer results you can continue reviewing.
+
+New accounts receive a one-time allowance of 30 free Credits with no credit card required. See [Quick Start](quick-start/index.md) for the complete path.
 
 ## Current capability groups
 
@@ -66,7 +80,7 @@ NoxInfluencer helps you run creator and marketing operations from an AI agent en
 - Skill install and agent workflows are covered in [Quick Start](quick-start/index.md)
 - Browser login, API key fallback, and account setup are covered in [Authentication](authentication.md)
 - Remote MCP is a read-only tool surface for MCP-capable clients, with API-key pilots and OAuth-capable resource-server support covered in [Remote MCP](remote-mcp.md)
-- Rest API free trial and self-service purchase use the existing `/api-service` page and Theneo docs, not the Skill quota model in these pages
+- Rest API free trial and self-service purchase use the existing `/api-service` page and Theneo docs, not the Credits model in these pages
 
 ## Boundaries to keep in mind
 
@@ -79,7 +93,7 @@ NoxInfluencer helps you run creator and marketing operations from an AI agent en
 - Shopify store authorization stays in NoxInfluencer SaaS, not in the Skill or CLI
 - Product signal commands in Brand Monitor currently support YouTube only
 - ChatGPT is not a supported NoxInfluencer Skill runtime; use OpenAI Codex for OpenAI Skill workflows
-- NoxInfluencer uses a main account and quota model; do not reuse legacy standalone API product assumptions
+- The website uses Credits for plans and consumption; the CLI uses `quota` to show current balance and availability. Rest API Credit is a separate product path
 
 ## Recommended next steps
 

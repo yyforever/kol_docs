@@ -7,7 +7,7 @@ content_type: changelog
 nav_group: changelog
 order: 0
 status: published
-updated_at: 2026-07-10
+updated_at: 2026-07-15
 keywords:
   - changelog
   - updates
@@ -22,6 +22,7 @@ source_of_truth:
 
 ## 已发布
 
+- [2026-07-15 - 官网新用户路径对齐](2026-07-15-website-onboarding-alignment.md)
 - [2026-07-10 - CLI 0.4.19 价格与达人搜索对齐](2026-07-10-cli-0419-pricing-creator-search.md)
 - [2026-07-02 - CLI 0.4.15 短链与联盟营销](2026-07-02-cli-0415-short-links-affiliation.md)
 - [2026-06-25 - CLI 0.4.14 消息回复状态对齐](2026-06-25-cli-0414-message-reply-state.md)

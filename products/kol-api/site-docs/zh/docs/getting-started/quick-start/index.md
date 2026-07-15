@@ -1,13 +1,13 @@
 ---
 doc_id: quick_start_home
 title: 快速开始
-description: 按你的 Agent 环境安装 NoxInfluencer，配置访问凭证，并验证当前 CLI 命令树。
+description: 选择 AI Agent，安装 NoxInfluencer Skill，让 Agent 引导登录并完成第一次达人发现。
 locale: zh
 content_type: doc
 nav_group: getting-started
 order: 2
 status: published
-updated_at: 2026-07-10
+updated_at: 2026-07-15
 keywords:
   - quick start
   - skills.sh
@@ -18,6 +18,7 @@ keywords:
 source_of_truth:
   - ../../../../../02_用户场景.md
   - ../../../../../05_PRD.md
+  - "https://cn.noxinfluencer.com/skills"
   - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
   - "repo:kol_claw path:cli/README.md"
@@ -31,180 +32,122 @@ source_of_truth:
 
 # 快速开始
 
-如果你想尽快跑通 NoxInfluencer，先把两件事分开看：
+你不需要先理解 CLI、API key 或复杂的开发者配置。按照官网的新用户路径，先把 NoxInfluencer 添加到常用 Agent，再让 Agent 帮你完成检查和登录。
 
-- 安装决策：这个 Skill 应该装到哪个 Agent 环境里
-- 访问准备：CLI 应该如何登录你的 NoxInfluencer 账号
+新账号注册后可获得一次性 30 Credits 免费额度，无需绑定信用卡。
 
-## 公开入口
+## 第一步：选择并安装到你的 Agent
 
-- 浏览器登录命令：`noxinfluencer login`
-- Skills 控制台 / API key 兜底：`https://www.noxinfluencer.com/skills/dashboard` / `https://cn.noxinfluencer.com/skills/dashboard`
-- skills.sh 页面：`https://skills.sh/noxinfluencer/skills/noxinfluencer`
-- OpenClaw 使用的 ClawHub：`https://clawhub.ai/noxinfluencer/noxinfluencer`
-- GitHub 兜底来源：`https://github.com/NoxInfluencer/skills/tree/main`
-
-## 运行工作流前：先登录
-
-CLI 可用后，默认设置路径是浏览器登录：
+### OpenAI Codex
 
 ```bash
-noxinfluencer login
+npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent codex
 ```
 
-CLI 会打开 NoxInfluencer 浏览器页面，复用你的 SaaS 登录状态，创建或复用一个不会自动过期的 API key，并保存到本地 CLI 配置。
-
-如果你希望 CLI 返回中文引导链接和提示：
+### Claude Code
 
 ```bash
-noxinfluencer --lang zh login
+npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent claude-code
 ```
 
-如果当前环境无法使用浏览器登录，再使用手动兜底：
+### OpenClaw
 
-- 英文注册：`https://www.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
-- 中文注册：`https://cn.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
-- 英文控制台：`https://www.noxinfluencer.com/skills/dashboard`
-- 中文控制台：`https://cn.noxinfluencer.com/skills/dashboard`
+官方 OpenClaw 用户优先打开 [NoxInfluencer ClawHub Skill 页面](https://clawhub.ai/noxinfluencer/skills/nox-influencer-marketing)，让 OpenClaw 从技能页继续安装。
 
-如果你需要手动配置 key，使用 `noxinfluencer auth --key-stdin`，不要把 key 放进命令参数或日志里。已有的宿主安全注入和 `NOXINFLUENCER_API_KEY` 仍然支持，但它们是兜底或宿主管理路径，不是普通首次接入的默认步骤。
-
-## 第一步：你是否已经安装过 Skill
-
-- 如果你已经装过其他 Skill，先去你平时常用的 Skill 商店或安装入口搜索 `Nox Influencer`
-- 如果这是你第一次安装，或者你不确定当前 Agent 使用哪个商店或安装器，继续看第二步
-
-## 第二步：按环境选择安装入口
-
-### 官方 OpenClaw
-
-优先从 ClawHub 开始：
-
-[https://clawhub.ai/noxinfluencer/noxinfluencer](https://clawhub.ai/noxinfluencer/noxinfluencer)
-
-如果 ClawHub 因网络或访问限制无法完成安装，再使用 Skills CLI：
+如果当前环境无法使用 ClawHub，再让 Agent 执行：
 
 ```bash
 npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent openclaw
 ```
 
-OpenClaw 元数据要求 `noxinfluencer` 命令可用。安装后默认运行 `noxinfluencer login`，除非你的宿主环境已经注入凭证。
-
-### Claude Code、OpenAI Codex、Cursor 或其他支持 Skills CLI 的环境
-
-优先从 skills.sh 页面或 Skills CLI 开始。页面适合浏览确认；当你的 Agent 可以执行安装时，命令更直接：
-
-[https://skills.sh/noxinfluencer/skills/noxinfluencer](https://skills.sh/noxinfluencer/skills/noxinfluencer)
-
-```bash
-npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer
-```
-
-常见环境命令：
-
-```bash
-npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent claude-code
-npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent codex
-npx skills add https://github.com/NoxInfluencer/skills --skill noxinfluencer --agent cursor
-```
-
-Claude Code 也可以走 plugin marketplace：
-
-```bash
-claude plugin marketplace add https://github.com/NoxInfluencer/skills
-claude plugin install nox-influencer@noxinfluencer
-```
-
-### Hermes Skills Hub
-
-Hermes 可以通过 skills.sh identifier 安装：
+### Hermes
 
 ```bash
 hermes skills install skills-sh/noxinfluencer/skills/noxinfluencer
 ```
 
-安装前也可以先 inspect：
+如果你希望先查看公开 Skill 信息，可以打开 [skills.sh](https://skills.sh/noxinfluencer/skills/noxinfluencer)。其他兼容 Skills CLI 的 Agent 也可以从该页面和通用安装器开始，但具体兼容性取决于 Agent 环境。
 
-```bash
-hermes skills inspect skills-sh/noxinfluencer/skills/noxinfluencer
-```
+## 第二步：让 Agent 完成设置和登录
 
-### ChatGPT 当前状态
+安装完成后，直接对 Agent 说：
 
-NoxInfluencer Skill 不支持把 ChatGPT 作为运行环境。
+> 帮我开始使用 NoxInfluencer Skill。请检查安装和登录状态，并在需要时引导我完成设置。
 
-OpenAI 体系下支持的路径是 OpenAI Codex。NoxInfluencer 需要一个能安装 Skill、读取本地上下文、运行 NoxInfluencer CLI、并安全传递 API key 的执行环境。ChatGPT 不提供这条公开 Skill 运行路径。如果你已经在使用 OpenAI 产品，并希望使用这类 Agent 工作流，请使用 OpenAI Codex，并按上面的 Skills CLI 路径安装。Codex 的可用性和限制由 OpenAI 决定，关键场景请以 OpenAI 当前官方说明为准。
+Agent 会检查 NoxInfluencer CLI 和认证状态。需要登录时，它会打开 NoxInfluencer 浏览器页面；你可以登录已有账号，也可以创建新账号。完成后，CLI 会创建或复用访问凭证并安全保存到本地配置。
 
-## 第三步：安装或更新 CLI
+普通首次使用不需要你手动复制 API key，也不要把 API key 发到聊天消息、命令参数、日志或截图中。
 
-当前公开文档基线是 `@noxinfluencer/cli` `0.4.19` 或更新版本。安装最新 CLI：
+## 第三步：直接下第一个达人任务
+
+官网推荐从达人发现开始。你可以直接复制这条任务：
+
+> 帮我在美国 YouTube 找 20 个适合推广 AI 生产力工具的达人，按合作优先级排序，并说明先看谁。
+
+换成你自己的任务时，至少说明：
+
+- 推广目标或品类
+- 平台
+- 国家或地区
+
+首次成功时，Agent 应返回候选达人、匹配理由、风险点和下一步。需要查看、复盘或与团队协作时，打开 [NoxInfluencer Dashboard](https://cn.noxinfluencer.com/skills/dashboard)。
+
+## ChatGPT 当前状态
+
+NoxInfluencer Skill 不支持把 ChatGPT 作为运行环境。OpenAI 体系下支持的路径是 OpenAI Codex，因为它可以安装 Skill、运行 NoxInfluencer CLI，并在本地执行 Agent 工作流。
+
+## 高级设置与手动兜底
+
+下面的命令主要用于 Agent 无法自动完成设置或你需要排查环境时。普通新用户可以先跳过。
+
+### 手动安装或更新 CLI
+
+当前公开文档基线是 `@noxinfluencer/cli` `0.4.19` 或更新版本：
 
 ```bash
 npm install -g @noxinfluencer/cli@latest
 ```
 
-然后验证命令树：
+### 手动触发浏览器登录
 
 ```bash
-noxinfluencer schema --all
+noxinfluencer login
 ```
 
-命令树必须包含：
-
-- `login`
-- `campaign`
-- `collection`
-- `email`
-- `message`
-- `crm`
-- `product`
-- `short-link`
-- `affiliation`
-- `brand-monitor`
-- `export`
-- `feedback`
-- `quota`
-- `pricing`
-- `agent`
-
-只看版本号不够。如果本地或全局安装残留了旧编译文件，版本输出可能看起来正常，但命令树仍然不完整。重新安装 latest 后如果 `schema --all` 仍缺少上述命令组，应停止对应工作流，并按 CLI 包或命令树不匹配处理。当前工作流还需要安装树暴露达人搜索过滤、`creator_name` 搜索、全关键词匹配搜索、相似达人、邮件收件人过滤、邮件协作者、邮件 / 消息附件、消息项目与创建人筛选、商品中心、短链、联盟营销、品牌监控、feedback、quota 和 pricing 等命令。
-
-开始大范围发现或批量工作流前，建议让 Agent 先检查当前单价和最近用量：
+需要中文引导链接和提示时：
 
 ```bash
+noxinfluencer --lang zh login
+```
+
+### API key 兜底
+
+只有浏览器登录不可用时，才打开 [Skills 控制台](https://cn.noxinfluencer.com/skills/dashboard) 手动获取 key，并使用：
+
+```bash
+noxinfluencer auth --key-stdin
+```
+
+英文账号入口为 [NoxInfluencer Skills Dashboard](https://www.noxinfluencer.com/skills/dashboard)。宿主安全注入和 `NOXINFLUENCER_API_KEY` 仍适用于已经托管凭证的环境。
+
+### 检查安装和用量
+
+```bash
+noxinfluencer doctor
+noxinfluencer schema --all
 noxinfluencer pricing tools --charged-only
 noxinfluencer quota usage --days 7
 ```
 
-## 第四步：让你的 Agent 继续完成
+`schema --all` 应包含 `login`、`campaign`、`collection`、`email`、`message`、`crm`、`product`、`short-link`、`affiliation`、`brand-monitor`、`export`、`feedback`、`quota`、`pricing` 和 `agent`。如果命令组缺失，请重新安装最新 CLI，再查看 [CLI 诊断](../../resources/cli-diagnostics.md)。
 
-在大多数支持环境里，你不需要手动移动文件、修改目录或配置复杂路径。把商店链接或安装命令交给你的 Agent，让它继续完成安装和 CLI 校验。
+GitHub 是补充来源和最终兜底，不是普通新用户的第一步：[NoxInfluencer/skills](https://github.com/NoxInfluencer/skills/tree/main)。
 
-只有当 Agent 需要仓库地址，或前面的安装路径无法完成时，再使用 GitHub：
+## 如果仍未成功
 
-[https://github.com/NoxInfluencer/skills/tree/main](https://github.com/NoxInfluencer/skills/tree/main)
+- 让 Agent 运行 `noxinfluencer doctor` 并只修复缺失项
+- 没有认证时，让 Agent 运行 `noxinfluencer login`
+- 命令缺失时，重新安装最新 CLI 并检查 `schema --all`
+- 查看 [认证与账号](../authentication.md)、[CLI 诊断](../../resources/cli-diagnostics.md) 和 [错误码](../../resources/error-codes.md)
 
-## 第五步：确认首次运行成功
-
-以下任一结果都可以视为首次接入成功：
-
-- 达人发现返回可用候选名单
-- 达人分析返回可判断的信号
-- 视频监控可以创建、查看或查询
-- 活动、资源池、CRM、邮件、消息、商品、短链、联盟营销、导出或品牌监控等营销运营读取命令返回当前账号可见数据
-
-## 如果接入失败
-
-- 先运行 `noxinfluencer doctor`
-- 如果还没有认证，运行 `noxinfluencer login`
-- 再运行 `noxinfluencer schema --all` 确认当前命令树
-- 如果需要确认当前 Skill Credit 单价，运行 `noxinfluencer pricing tools --charged-only`
-- 如果需要查看近期消耗，运行 `noxinfluencer quota usage --days 7`
-- 当 Agent 或自动化需要稳定错误处理时，运行 `noxinfluencer agent exit-codes`
-- 如果当前网络链路受限，先设置 `HTTPS_PROXY`；只有服务地址是非 TLS 时再补 `HTTP_PROXY`
-- 查看 [错误码](../../resources/error-codes.md) 和 [CLI 诊断](../../resources/cli-diagnostics.md) 里的恢复路径
-
-## 常见下一步
-
-- 如果你要先理解账号和权限心智，请看 [认证与账号](../authentication.md)
-- 如果你已经接入成功，建议继续看 [完成第一次达人发现](../../guides/find-your-first-creators.md)
+接入成功后，继续阅读 [完成第一次达人发现](../../guides/find-your-first-creators.md)。

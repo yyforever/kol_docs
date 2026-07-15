@@ -1,13 +1,13 @@
 ---
 doc_id: authentication
 title: 认证与账号
-description: 了解账号登录、浏览器登录、API key 兜底、能力权限、Skill quota、CLI 配置和当前 Rest API Credit 的区别。
+description: 了解 Agent 引导登录、新账号免费 Credits、权限与配额，以及 API key 的安全兜底方式。
 locale: zh
 content_type: doc
 nav_group: getting-started
 order: 3
 status: published
-updated_at: 2026-07-10
+updated_at: 2026-07-15
 keywords:
   - authentication
   - account
@@ -15,6 +15,7 @@ keywords:
 source_of_truth:
   - ../../../../04_定价与商业模式.md
   - ../../../../05_PRD.md
+  - "https://cn.noxinfluencer.com/skills"
   - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
   - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:cli/src/main.ts"
@@ -27,81 +28,82 @@ source_of_truth:
 
 # 认证与账号
 
-当前公开能力基于主账号体系运作，不再使用旧的“独立产品注册 + 独立额度 + 独立凭证”心智。
+大多数用户不需要先创建、复制或管理 API key。让 Agent 检查登录状态；需要登录时，它会打开 NoxInfluencer 官方页面，由你完成注册或登录。
 
-## 首次使用从浏览器登录开始
+## 新用户登录路径
+
+安装 Skill 后，直接告诉 Agent：
+
+> 帮我开始使用 NoxInfluencer Skill。请检查登录状态，并在需要时引导我注册或登录。
+
+正常流程是：
+
+1. Agent 检查 NoxInfluencer CLI 和认证状态。
+2. 如果尚未登录，Agent 打开浏览器登录页面。
+3. 你登录已有账号，或创建一个新账号。
+4. CLI 创建或复用访问凭证，并保存到本地配置。
+5. Agent 检查可用额度，然后继续执行你的第一个任务。
+
+新账号注册后可获得一次性 30 Credits 免费额度，无需绑定信用卡。当前余额和套餐状态可在 [Skills Dashboard](https://cn.noxinfluencer.com/skills/dashboard) 查看。
+
+## 手动触发浏览器登录
+
+只有 Agent 没有自动触发时，才需要手动运行：
 
 ```bash
 noxinfluencer login
 ```
 
-CLI 会打开 NoxInfluencer 浏览器页面，复用你的 SaaS 登录状态，创建或复用一个不会自动过期的 API key，并保存到本地 CLI 配置。这是当前 Skill / CLI 的首选设置路径。
+需要中文引导链接和提示时：
 
-如果当前环境无法运行浏览器登录，再使用手动兜底：
+```bash
+noxinfluencer --lang zh login
+```
 
-- 英文注册入口：`https://www.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
-- 中文注册入口：`https://cn.noxinfluencer.com/signup?userType=brand&service=%2Fskills%2Fdashboard`
-- 英文 Skills 控制台：`https://www.noxinfluencer.com/skills/dashboard`
-- 中文 Skills 控制台：`https://cn.noxinfluencer.com/skills/dashboard`
+英文账号入口是 [NoxInfluencer Skills Dashboard](https://www.noxinfluencer.com/skills/dashboard)。
 
-当前 Rest API 免费试用与自助购买线以 `/api-service` + Theneo 文档为准，不要把历史 Developer API Quick Start 当成当前 Rest API 事实来源。
+## API key 仅作为兜底
 
-## API key 与环境配置
+浏览器登录不可用，或你的 Agent 环境由管理员统一托管凭证时，才需要手动配置 API key。
 
-- Skill / CLI 底层仍依赖有效 API key，但大多数用户应让 `noxinfluencer login` 自动创建或复用。
-- 宿主安全注入和 `NOXINFLUENCER_API_KEY` 仍然支持，适合已经由环境托管凭证的场景。
-- 如果你需要手动配置 key，使用 `noxinfluencer auth --key-stdin`。
-- 如果你希望 CLI 返回中文引导链接和提示，可以在命令中添加 `--lang zh`，例如 `noxinfluencer --lang zh doctor`。
-- Remote MCP 当前支持 API-key 试点，也可以在外围授权服务可用时以 OAuth 或 dual 模式运行。API-key 配置和 OAuth connector 配置是不同用户路径。
-- 不要默认把 Skill API key 当成当前 Rest API key；Rest API key 是否复用底层 key backing 需要研发确认，但用户侧文案应表达为 Rest API key / Rest API Credit。
-- 当前 Rest API 文档入口是 Theneo，不是本目录下的历史 Developer API Quick Start。
+- 从官方 Skills Dashboard 获取 key
+- 使用 `noxinfluencer auth --key-stdin` 安全写入，不要把 key 作为命令参数
+- 已托管凭证的环境可以使用 `NOXINFLUENCER_API_KEY`
+- 不要把 API key 放进聊天消息、日志、截图、工单正文或可共享文件
 
-## CLI 与 Agent 设置检查
+## 账号、权限和 Credits
 
-- CLI 尚未认证时，先运行 `noxinfluencer login`。
-- 需要确认账号和 key 配置时，运行 `noxinfluencer doctor`。
-- 需要查看当前 Skill 额度时，运行 `noxinfluencer quota`。
-- 需要复盘近期 Skill Credit 消耗时，运行 `noxinfluencer quota usage --days 7`。
-- 大范围或批量工作流开始前，运行 `noxinfluencer pricing tools --charged-only` 查看当前服务端动作单价。
-- 安装或更新 CLI 后，运行 `noxinfluencer schema --all`。当前 CLI 基线需要覆盖 `login`、`campaign`、`collection`、`email`、`message`、`crm`、`product`、`short-link`、`affiliation`、`brand-monitor`、`export`、`feedback`、`quota`、`pricing` 和 `agent`。
-- 自动化或 Agent 需要稳定错误处理时，使用 `noxinfluencer agent exit-codes` 查看 CLI exit code。
+一次调用能否执行，可能同时取决于：
 
-## 你需要理解的四个层次
+- 账号套餐是否包含该能力
+- 对应 Tool 是否标记为已开放或 Beta
+- 当前 Credits 是否足够
+- 对应 NoxInfluencer 底层服务配额或权限是否可用
 
-### 1. 主账号
+官网使用 **Credits** 表达套餐和消耗；CLI 使用 `quota` 显示当前余额和可用状态。部分动作还会检查底层服务配额，因此有剩余 Credits 不一定代表所有能力都可执行。
 
-主账号决定你的套餐、基础权限和升级路径。
+达人搜索和相似达人当前按实际返回的达人数计费。执行大范围任务前，可以让 Agent 检查当前单价和近期用量：
 
-### 2. 能力开放状态
+```bash
+noxinfluencer quota
+noxinfluencer pricing tools --charged-only
+noxinfluencer quota usage --days 7
+```
 
-不是所有账号都自动拥有所有能力。某些能力可能未开放、正在 Beta，或仍处于规划中。
+详细说明见 [Credits 与配额](../resources/credit-guide.md)。
 
-### 3. Scope 与权限要求
+## Skill、Remote MCP 与 Rest API
 
-部分请求除了账号和套餐之外，还依赖更细的能力权限。当前实现里，进阶搜索、受众分析、品牌分析、联系方式获取等能力缺权限时，会返回 `SCOPE_REQUIRED`。
+- 本文默认介绍的是 Skill / CLI 登录路径
+- Remote MCP 是面向 MCP 客户端的只读接入面，使用自己的 API key 或 OAuth connector 配置，见 [Remote MCP](remote-mcp.md)
+- Rest API 从 `/api-service` 和当前 Theneo 文档进入，使用 Rest API Credit，不与 Skill 的 Credits 混用
 
-### 4. 配额约束
+## 登录失败时
 
-Skill / CLI 体验可按 quota 解释，实际可能同时受到两层约束：
+让 Agent 依次检查：
 
-- Skill 技能额度
-- 底层服务配额
+1. `noxinfluencer doctor`
+2. `noxinfluencer login`
+3. `noxinfluencer quota`
 
-Rest API 使用独立 `Credit`，不要和 Skill quota / Skill credit 混用。
-
-需要确认当前 Skill 动作单价时，使用 `pricing tools`；需要复盘历史消耗时，使用 `quota usage`。达人搜索和相似达人当前按返回达人数量计费，因此小而明确的分页比大范围探索更容易控制消耗。
-
-## 遇到问题时先看什么
-
-- 是否登录了正确账号
-- 当前套餐是否包含目标能力
-- 是 Skill 额度不足、底层服务配额不足，还是 Rest API Credit 不足
-
-## 常见误区
-
-- 误以为所有文档页都代表该能力已公开上线
-- 误以为只要有账号，就一定能用所有 Tool
-- 误以为额度只看一层，不需要考虑底层服务能力边界
-- 误以为所有拦截都一定是额度不足
-- 误以为 Skill API key / Skill quota 就是当前 Rest API key / Rest API Credit
-- 把 API key 放进命令参数、日志、截图或聊天消息，而不是使用浏览器登录或 `auth --key-stdin`
+如果仍未成功，查看 [CLI 诊断](../resources/cli-diagnostics.md) 和 [错误码](../resources/error-codes.md)。

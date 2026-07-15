@@ -1,13 +1,13 @@
 ---
 doc_id: docs_home
 title: 文档中心
-description: NoxInfluencer Skill、CLI 工作流、Remote MCP、工具参考、商品中心、短链、联盟营销和资源说明的公共文档首页。
+description: 从安装 NoxInfluencer Skill、完成登录到让 AI Agent 找到第一批达人的公共文档入口。
 locale: zh
 content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-07-10
+updated_at: 2026-07-15
 keywords:
   - noxinfluencer 文档
   - influencer marketing
@@ -16,6 +16,7 @@ keywords:
 source_of_truth:
   - ../../../03_API能力设计.md
   - ../../../05_PRD.md
+  - "https://cn.noxinfluencer.com/skills"
   - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
   - "repo:kol_claw path:cli/README.md"
@@ -25,25 +26,43 @@ source_of_truth:
 
 # 文档中心
 
-你可以在这里安装 NoxInfluencer、配置账号访问、理解当前达人工作流，并查看 Beta 营销运营、商品中心、短链、联盟营销、邮件协作、收件人过滤和品牌情报能力边界。
+NoxInfluencer Skill 让你直接在 Codex、Claude Code、OpenClaw 或 Hermes 中完成达人发现、受众分析、候选名单整理、建联准备和效果监控。AI Agent 负责重复的查找、检查和整理工作，你和团队负责最终判断。
 
-## 从这里开始
+新账号注册后可获得一次性 30 Credits 免费额度，无需绑定信用卡。查看当前套餐和价格时，以 [NoxInfluencer 定价页](https://cn.noxinfluencer.com/product/pricing?modal=ai-pricing) 为准。
 
-- 第一次接入：看 [快速开始](getting-started/quick-start/index.md)
-- 账号登录、浏览器登录、API key 兜底和权限心智：看 [认证与账号](getting-started/authentication.md)
-- Remote MCP 只读工具、OAuth resource metadata 和 scope 模型：看 [Remote MCP](getting-started/remote-mcp.md)
-- 产品范围和边界：看 [产品简介](getting-started/introduction.md)
-- CLI 0.4.19 命令树校验、quota / pricing 检查和旧安装排查：看 [CLI 诊断](resources/cli-diagnostics.md)
-- 当前 Rest API 免费试用或自助购买：从现有 `/api-service` 页面进入，并以 Theneo API 文档和 API Runner 为准
+## 第一次使用只需三步
 
-## 安装入口概览
+1. 选择你已经在使用的 Agent，并安装 NoxInfluencer Skill。
+2. 告诉 Agent 你想开始使用 NoxInfluencer。它会检查环境，并在需要时打开浏览器，引导你注册或登录。
+3. 给出推广目标、平台和地区，让 Agent 返回第一批候选达人、推荐理由和下一步。
 
-- OpenClaw：优先从 [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer) 开始
-- Claude Code、OpenAI Codex、Cursor、Hermes 或其他兼容环境：优先从 [skills.sh](https://skills.sh/noxinfluencer/skills/noxinfluencer) 和 [快速开始](getting-started/quick-start/index.md) 中的命令开始
-- CLI 登录：运行 `noxinfluencer login`；只有需要 API key 兜底时再打开 [Skills 控制台](https://cn.noxinfluencer.com/skills/dashboard)
-- 成本和用量规划：使用 `noxinfluencer pricing tools --charged-only` 和 `noxinfluencer quota usage --days 7`
-- GitHub：只有当 Agent 需要仓库地址，或商店路径无法完成时，再使用 [NoxInfluencer/skills](https://github.com/NoxInfluencer/skills/tree/main)
-- ChatGPT：不是 NoxInfluencer Skill 的支持运行环境；OpenAI 用户应使用 OpenAI Codex 来运行 Skill 工作流
+完整安装路径见 [快速开始](getting-started/quick-start/index.md)。第一次可以直接给 Agent 这条任务：
+
+> 帮我在美国 YouTube 找 20 个适合推广 AI 生产力工具的达人，按合作优先级排序，并说明先看谁。
+
+## 选择你的 Agent
+
+- OpenAI 用户：使用 **Codex**，安装命令见 [快速开始](getting-started/quick-start/index.md)
+- Claude Code：使用 Skills CLI 安装，安装命令见 [快速开始](getting-started/quick-start/index.md)
+- OpenClaw：从官方 [ClawHub Skill 页面](https://clawhub.ai/noxinfluencer/skills/nox-influencer-marketing) 开始
+- Hermes：通过 Hermes Skills Hub 安装，安装命令见 [快速开始](getting-started/quick-start/index.md)
+- 通用 Skill 页面：[skills.sh](https://skills.sh/noxinfluencer/skills/noxinfluencer)
+
+ChatGPT 当前不能作为 NoxInfluencer Skill 的运行环境。使用 OpenAI 产品的用户应选择 OpenAI Codex。
+
+## 首次结果在哪里查看
+
+Agent 会在对话中返回候选达人、匹配理由、风险点和下一步。需要查看、复盘或与团队协作时，打开 [NoxInfluencer Dashboard](https://cn.noxinfluencer.com/skills/dashboard)。
+
+## 按目标继续
+
+- 了解产品能做什么：[产品简介](getting-started/introduction.md)
+- 完成安装与首次任务：[快速开始](getting-started/quick-start/index.md)
+- 了解登录、免费额度和 API key 兜底：[认证与账号](getting-started/authentication.md)
+- 完成第一批达人发现：[完成第一次达人发现](guides/find-your-first-creators.md)
+- 查看 Credits 和用量：[Credits 与配额](resources/credit-guide.md)
+- 安装或运行失败：[CLI 诊断](resources/cli-diagnostics.md)
+- 开发者只读接入：[Remote MCP](getting-started/remote-mcp.md)
 
 ## 工具参考
 

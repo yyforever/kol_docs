@@ -1,13 +1,13 @@
 ---
 doc_id: docs_home
 title: Documentation
-description: Public documentation hub for NoxInfluencer Skills, CLI workflows, Remote MCP, tool reference, product center, short links, affiliation, and resources.
+description: Start with NoxInfluencer Skill, sign in, and ask your AI agent to find your first creator shortlist.
 locale: en
 content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-07-10
+updated_at: 2026-07-15
 keywords:
   - noxinfluencer docs
   - influencer marketing
@@ -16,6 +16,7 @@ keywords:
 source_of_truth:
   - ../../../03_API能力设计.md
   - ../../../05_PRD.md
+  - "https://www.noxinfluencer.com/skills"
   - "https://github.com/NoxInfluencer/skills/blob/main/README.md"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
   - "repo:kol_claw path:cli/README.md"
@@ -25,25 +26,43 @@ source_of_truth:
 
 # Documentation
 
-Use these docs to install NoxInfluencer in your agent environment, configure account access, understand the current creator workflow, and review the beta marketing ops, product center, short-link, affiliation, email collaboration, recipient filtering, and brand intelligence surface.
+NoxInfluencer Skill lets you run creator discovery, audience analysis, shortlist preparation, outreach preparation, and performance monitoring from Codex, Claude Code, OpenClaw, or Hermes. Your AI agent handles repetitive research, checks, and cleanup while you and your team make the final decisions.
 
-## Start here
+New accounts receive a one-time allowance of 30 free Credits with no credit card required. Use the [NoxInfluencer pricing page](https://www.noxinfluencer.com/product/pricing?modal=ai-pricing) for current plans and prices.
 
-- New setup: start with [Quick Start](getting-started/quick-start/index.md)
-- Account sign-in, browser login, API key fallback, and entitlement model: read [Authentication](getting-started/authentication.md)
-- Remote MCP read tools, OAuth resource metadata, and scope model: read [Remote MCP](getting-started/remote-mcp.md)
-- Product scope and boundaries: read [Introduction](getting-started/introduction.md)
-- CLI 0.4.19 command-tree checks, quota/pricing checks, and stale install recovery: read [CLI Diagnostics](resources/cli-diagnostics.md)
-- Current Rest API free trial or self-service purchase: use the existing `/api-service` page and the Theneo API docs / API Runner as the source of truth
+## Your first run takes three steps
 
-## Install entry overview
+1. Choose the agent you already use and install NoxInfluencer Skill.
+2. Tell your agent that you want to get started with NoxInfluencer. It checks your environment and opens a browser when you need to sign in or create an account.
+3. Give it your campaign goal, platform, and region. Your agent returns creator candidates, fit reasons, and next steps.
 
-- OpenClaw: start from [ClawHub](https://clawhub.ai/noxinfluencer/noxinfluencer)
-- Claude Code, OpenAI Codex, Cursor, Hermes, or another compatible environment: start from [skills.sh](https://skills.sh/noxinfluencer/skills/noxinfluencer) and the commands in [Quick Start](getting-started/quick-start/index.md)
-- CLI sign-in: run `noxinfluencer login`; use the [Skills dashboard](https://www.noxinfluencer.com/skills/dashboard) only as the API key fallback
-- Cost and usage planning: use `noxinfluencer pricing tools --charged-only` and `noxinfluencer quota usage --days 7`
-- GitHub: use [NoxInfluencer/skills](https://github.com/NoxInfluencer/skills/tree/main) only when your agent needs the repository address or the store-based path cannot complete
-- ChatGPT: not a supported NoxInfluencer Skill runtime; OpenAI users should use OpenAI Codex for Skill workflows
+See [Quick Start](getting-started/quick-start/index.md) for the complete install path. For your first task, try:
+
+> Find 20 YouTube creators in the US for an AI productivity tools campaign. Prioritize creators with strong audience fit and explain who to review first.
+
+## Choose your agent
+
+- OpenAI users: use **Codex** and follow the command in [Quick Start](getting-started/quick-start/index.md)
+- Claude Code: install through Skills CLI using the command in [Quick Start](getting-started/quick-start/index.md)
+- OpenClaw: start from the official [ClawHub Skill page](https://clawhub.ai/noxinfluencer/skills/nox-influencer-marketing)
+- Hermes: install through Hermes Skills Hub using the command in [Quick Start](getting-started/quick-start/index.md)
+- General Skill listing: [skills.sh](https://skills.sh/noxinfluencer/skills/noxinfluencer)
+
+ChatGPT is not a supported NoxInfluencer Skill runtime. Use OpenAI Codex when you want to run this Skill with an OpenAI product.
+
+## Where to review results
+
+Your agent returns candidates, fit reasons, watchouts, and next steps in the conversation. Open the [NoxInfluencer Dashboard](https://www.noxinfluencer.com/skills/dashboard) when you want to review results, recap work, or collaborate with your team.
+
+## Continue by goal
+
+- Understand the product: [Introduction](getting-started/introduction.md)
+- Install and run your first task: [Quick Start](getting-started/quick-start/index.md)
+- Learn sign-in, free allowance, and API key fallback: [Authentication](getting-started/authentication.md)
+- Find your first shortlist: [Find Your First Creators](guides/find-your-first-creators.md)
+- Understand Credits and usage: [Credits and Quotas](resources/credit-guide.md)
+- Fix setup or runtime issues: [CLI Diagnostics](resources/cli-diagnostics.md)
+- Use the developer read-only surface: [Remote MCP](getting-started/remote-mcp.md)
 
 ## Tool Reference
 
