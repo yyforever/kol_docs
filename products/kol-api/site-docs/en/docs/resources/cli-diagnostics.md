@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 4
 status: published
-updated_at: 2026-07-10
+updated_at: 2026-07-18
 keywords:
   - cli diagnostics
   - troubleshooting
@@ -18,6 +18,8 @@ source_of_truth:
   - "repo:kol_claw path:cli/src/main.ts"
   - "repo:kol_claw path:cli/src/commands/login.ts"
   - "repo:kol_claw path:cli/src/commands/creator.ts"
+  - "repo:kol_claw path:cli/src/commands/monitor.ts"
+  - "repo:kol_claw path:cli/src/commands/file.ts"
   - "repo:kol_claw path:cli/src/commands/quota.ts"
   - "repo:kol_claw path:cli/src/commands/pricing.ts"
   - "repo:kol_claw path:cli/src/lib/exit-codes.ts"
@@ -60,6 +62,8 @@ noxinfluencer schema --all
 The current CLI baseline expects the installed command tree to expose:
 
 - `login`
+- `creator`
+- `monitor`
 - `campaign`
 - `collection`
 - `email`
@@ -70,6 +74,7 @@ The current CLI baseline expects the installed command tree to expose:
 - `affiliation`
 - `brand-monitor`
 - `export`
+- `file`
 - `feedback`
 - `quota`
 - `pricing`
@@ -83,7 +88,9 @@ npm install -g @noxinfluencer/cli@latest
 
 Version output alone is not enough when local or global compiled files are stale.
 
-The current documented baseline is `@noxinfluencer/cli` `0.4.19` or newer. Prefer `schema --all` over version checks when diagnosing a stale install. If `login` is missing, browser onboarding is unavailable from that installed tree. If `quota` or `pricing` is missing, the install cannot show current Skill quota, recent usage, or server-side action prices. If `product` is missing, Product Center and email product-card workflows are unavailable. If `short-link` or `affiliation` is missing, normal short-link and Shopify affiliate workflows are unavailable. If nested commands such as `creator lookalikes`, `creator search-filter-options`, `pricing tools`, `quota usage`, `email recipients filter options`, `email collaborators list`, `email attachments upload`, `message project-filters`, `message creator-filters`, `message projects`, `message attachments upload`, `short-link create`, `affiliation stores list`, `affiliation members status`, or `feedback submit` are missing, reinstall the latest CLI before continuing.
+The current documented baseline is `@noxinfluencer/cli` `0.4.21` or newer. Prefer `schema --all` over version checks when diagnosing a stale install. If `login` is missing, browser onboarding is unavailable from that installed tree. If `quota` or `pricing` is missing, the install cannot show current Skill quota, recent usage, or server-side action prices. If `product` is missing, Product Center and email product-card workflows are unavailable. If `file` is missing, public rich-text image uploads are unavailable. If `short-link` or `affiliation` is missing, normal short-link and Shopify affiliate workflows are unavailable.
+
+Nested commands are equally important. Reinstall the latest CLI if commands such as `creator export`, `creator export-preview`, `monitor auto-track import-file`, `monitor report`, `crm import-file`, `email recipients import-file`, `email attachments download`, `message templates attachments upload`, `file image upload`, `short-link export-list`, `affiliation members import-file`, or `feedback attachments download` are missing.
 
 ## Inspect exact command parameters
 
@@ -93,15 +100,22 @@ Use schema before building JSON-first requests:
 noxinfluencer schema "creator search"
 noxinfluencer schema "creator search-filter"
 noxinfluencer schema "creator lookalikes"
+noxinfluencer schema "creator export"
+noxinfluencer schema "creator export-preview"
+noxinfluencer schema "monitor import-file"
+noxinfluencer schema "monitor auto-track import-file"
+noxinfluencer schema "monitor report"
 noxinfluencer schema "login"
 noxinfluencer schema "pricing tools"
 noxinfluencer schema "quota usage"
 noxinfluencer schema "email create"
 noxinfluencer schema "email recipients add"
+noxinfluencer schema "email recipients import-file"
 noxinfluencer schema "email recipients filter update"
 noxinfluencer schema "email collaborators add"
 noxinfluencer schema "email products replace"
 noxinfluencer schema "email attachments upload"
+noxinfluencer schema "email attachments download"
 noxinfluencer schema "message list"
 noxinfluencer schema "message project-filters"
 noxinfluencer schema "message creator-filters"
@@ -110,18 +124,38 @@ noxinfluencer schema "message projects"
 noxinfluencer schema "message send"
 noxinfluencer schema "message schedule"
 noxinfluencer schema "message attachments upload"
+noxinfluencer schema "message templates attachments upload"
+noxinfluencer schema "file image upload"
 noxinfluencer schema "product list"
 noxinfluencer schema "short-link create"
+noxinfluencer schema "short-link export-list"
 noxinfluencer schema "affiliation stores list"
 noxinfluencer schema "affiliation campaigns create"
 noxinfluencer schema "affiliation members status"
+noxinfluencer schema "affiliation members import-file"
 noxinfluencer schema "brand-monitor influencer-list"
 noxinfluencer schema "feedback submit"
 ```
 
 Many marketing ops commands use `--body-file`. Prefer a minimal JSON body and validate or preview when the workflow supports it.
 
-Attachment upload commands are different: they use a local `--file` path and are still mutation commands. Preview first when possible, then use `--force` only after the target task or thread and attachment file are approved.
+Upload and spreadsheet-import commands are different: they use a local `--file` path and are still mutation commands. Preview first when possible, then use `--force` only after the target object and local file are approved. Authorized downloads use `--output`; add `--overwrite` only when replacing an existing local file is intentional.
+
+## Verify file, import, and report workflows
+
+Use representative help or schema checks for the workflow you need:
+
+```bash
+noxinfluencer schema "creator export-preview"
+noxinfluencer schema "monitor import-file"
+noxinfluencer schema "monitor auto-track import-file"
+noxinfluencer schema "crm import-file"
+noxinfluencer schema "email recipients import-file"
+noxinfluencer schema "message templates attachments download"
+noxinfluencer schema "file image upload"
+```
+
+Creator, collection, CRM, and brand-monitor exports create async tasks that you inspect through `export list/get/download`. Monitoring reports, short-link reports, and affiliation campaign reports are direct Excel downloads to `--output`; do not wait for them through the shared export task list.
 
 For SaaS-aligned hide and deduplication menus, use the options commands before writing request bodies:
 

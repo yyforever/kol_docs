@@ -1,13 +1,13 @@
 ---
 doc_id: tool_affiliation
 title: 联盟营销
-description: 用于 Shopify 联盟店铺、活动、成员、tracking links、折扣码和表现读取的 Beta 能力页面。
+description: 用于 Shopify 联盟活动、成员表格导入、tracking 和 Excel 报告的 Beta 能力页面。
 locale: zh
 content_type: doc
 nav_group: tool-reference
 order: 14
 status: published
-updated_at: 2026-07-02
+updated_at: 2026-07-18
 keywords:
   - affiliation
   - affiliate marketing
@@ -36,8 +36,10 @@ source_of_truth:
 - 你需要在创建或管理活动前查看已授权 Shopify affiliate stores
 - 你需要查看或更新 Shopify affiliate campaign
 - 你需要把 NoxInfluencer 达人或自有达人链接加入联盟活动
+- 你需要通过 SaaS 支持的 Excel 模板导入自有达人链接
 - 你需要在确认设置后激活、终止或恢复 affiliate members
 - 你需要读取联盟活动或成员的 tracking 表现
+- 你需要直接下载联盟活动表现 Excel 报告
 
 ## 当前 beta 范围
 
@@ -46,7 +48,9 @@ source_of_truth:
 - 查看、创建、更新、删除和汇总 affiliate campaigns
 - 查看 pending 和 active campaign members
 - 添加、更新、删除、激活、终止或恢复 members
+- 下载成员导入模板，并通过 Excel 导入自有达人链接
 - 读取 member overview、performance、promotion orders 和 tracking-link click details
+- 把联盟活动表现直接下载为 SaaS Excel
 
 ## 重要路由规则
 
@@ -82,11 +86,21 @@ noxinfluencer affiliation campaigns update <campaign_id> --body-file affiliation
 noxinfluencer affiliation campaigns delete <campaign_id> --force
 ```
 
+直接下载活动表现报告：
+
+```bash
+noxinfluencer affiliation campaigns export <campaign_id> --start-time 2026-07-01T00:00:00Z --end-time 2026-07-15T00:00:00Z --output affiliation-campaign.xlsx
+```
+
+该命令会直接把 Excel 写入 `--output`，不会创建共享异步 `export` 任务。
+
 管理活动成员：
 
 ```bash
 noxinfluencer affiliation members pending <campaign_id>
 noxinfluencer affiliation members active <campaign_id>
+noxinfluencer affiliation members import-template --language cn --output affiliation-member-template.xlsx
+noxinfluencer affiliation members import-file <campaign_id> --file affiliation-members.xlsx --force
 noxinfluencer affiliation members add <campaign_id> --body-file affiliation-members.json --force
 noxinfluencer affiliation members update --body-file affiliation-member-update.json --force
 noxinfluencer affiliation members status --body-file affiliation-member-status.json --force
@@ -115,6 +129,9 @@ noxinfluencer affiliation members track-detail <member_id>
 - 写操作前确认准确的 `store_id`、`campaign_id`、`member_id`、成员列表、状态动作、折扣设置和佣金设置
 - 创建或更新 campaign 时，使用与 SaaS 对齐的折扣字段，例如 `commission_type`、`discount_method` 和 `discount_detail`
 - Store 授权留在 SaaS；CLI 只操作当前账号已经可见的 stores
+- 成员导入支持不超过 10MB 的 `.xls` 或 `.xlsx` 文件；请使用下载的 SaaS 模板，不要自行猜测表格列
+- 真正执行成员导入时会立即写入成员，并读回 pending member 数量；它是写操作，不是只校验步骤
+- 活动 Excel 报告会直接下载，不是共享异步导出任务
 
 ## 当前边界
 
@@ -122,6 +139,7 @@ noxinfluencer affiliation members track-detail <member_id>
 - 它不管理普通 Nox 短链
 - 它不会撰写触达文案或自动协商达人条款
 - 它不操作 NoxInfluencer affiliation 能力之外的 Shopify admin
+- 它不接受任意表格结构；成员导入必须使用下载的 SaaS 模板
 
 ## 推荐下一步
 

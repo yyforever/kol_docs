@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 9
 status: published
-updated_at: 2026-06-16
+updated_at: 2026-07-18
 keywords:
   - email tasks
   - outreach operations
@@ -17,6 +17,7 @@ availability: beta
 source_of_truth:
   - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:cli/src/commands/email.ts"
+  - "repo:kol_claw path:cli/src/commands/file.ts"
   - "repo:kol_claw path:cli/src/lib/email-guidance.ts"
   - "repo:kol_claw path:server/app/routers/email.py"
   - "repo:kol_claw path:server/app/schemas.py"
@@ -38,8 +39,10 @@ Email Tasks lets you manage NoxInfluencer email-task records after you have sele
 
 - You want to create or inspect email-task records
 - You need to manage recipients, sender settings, and approved content for an email task
+- You need to import recipients from the supported SaaS Excel template
 - You want to send platform email to creators found in NoxInfluencer by using their `creator_id`
 - You need to attach an approved brief or file to an email task before send or schedule
+- You need to embed an approved public image in rich-text email content
 - You need to filter recipients by prior contact, CRM, collaboration, collection, or task state
 - You need to manage task collaborators and their member-management permission
 - You want to send or schedule a task after confirming the exact recipients, sender, timing, and content
@@ -50,6 +53,7 @@ Email Tasks lets you manage NoxInfluencer email-task records after you have sele
 - Read one task by `task_id`
 - Create, update, copy, or delete email tasks
 - Add, replace, and list task recipients
+- Download the recipient import template and import recipients from Excel
 - Delete or clear task recipients on unsent tasks
 - Save and inspect task-scoped recipient hide/deduplication filters
 - List available recipient filter options and filterable email tasks
@@ -58,7 +62,8 @@ Email Tasks lets you manage NoxInfluencer email-task records after you have sele
 - Send, schedule, or cancel an email task
 - List, save, and apply email content templates
 - List, replace, and delete email product cards
-- List, upload, and delete task attachments
+- List, upload, download, and delete task attachments
+- Upload public images for use in approved rich-text `html_body`
 - Read email task reports, team summary, and team breakdown metrics
 
 ## Safe execution rules
@@ -76,9 +81,12 @@ Email Tasks lets you manage NoxInfluencer email-task records after you have sele
 - Product cards use Product Center `product_collect_id` values
 - Recipient filters use the public body patches returned by `email recipients filter options`; do not invent raw SaaS field names
 - Collaborator commands use SaaS team `user_uid`; list collaborators first when you need to discover valid team members
+- Recipient import accepts `.xls` or `.xlsx` files up to 8MB; use the downloaded SaaS template instead of inventing columns
+- Recipient import is only available before the email task enters its active send flow
 - Attachment upload uses `--file`, not `--body-file`
 - Email tasks support at most 1 attachment, up to 10MB; dangerous executable or script extensions are rejected
 - Uploading or deleting an attachment cancels any existing scheduled send on the task. Read the task back and schedule again only after you confirm the final attachment state.
+- Public inline images and private attachments are different: `file image upload` returns a public `file_url` for `html_body`, while email attachments stay authorized task files
 
 ## Key commands
 
@@ -88,11 +96,14 @@ Inspect schema before building task, collaborator, recipient, filter, content, s
 noxinfluencer schema "email create"
 noxinfluencer schema "email collaborators add"
 noxinfluencer schema "email recipients add"
+noxinfluencer schema "email recipients import-file"
 noxinfluencer schema "email recipients filter update"
 noxinfluencer schema "email content save"
 noxinfluencer schema "email products replace"
 noxinfluencer schema "email attachments upload"
+noxinfluencer schema "email attachments download"
 noxinfluencer schema "email attachments delete"
+noxinfluencer schema "file image upload"
 ```
 
 Read task state before sending:
@@ -111,6 +122,13 @@ noxinfluencer email recipients filter options
 noxinfluencer email recipients filter tasks
 noxinfluencer email recipients filter get <task_id>
 noxinfluencer email recipients filter update <task_id> --body-file recipient-filter.json --force
+```
+
+Import recipients from the current SaaS template when a spreadsheet is the approved source:
+
+```bash
+noxinfluencer email recipients import-template --language en --output email-recipient-template.xlsx
+noxinfluencer email recipients import-file <task_id> --file recipients.xlsx --force
 ```
 
 Manage task collaborators by team member `user_uid`:
@@ -138,7 +156,14 @@ Attach an approved file after the task exists and before send or schedule:
 ```bash
 noxinfluencer email attachments list <task_id>
 noxinfluencer email attachments upload <task_id> --file brief.pdf --force
+noxinfluencer email attachments download <task_id> <attachment_id> --output ./brief.pdf
 noxinfluencer email attachments delete <task_id> <attachment_id> --force
+```
+
+For an inline image inside approved rich-text content, upload it separately and embed the returned `file_url` in `html_body`:
+
+```bash
+noxinfluencer file image upload --file hero.jpg --force
 ```
 
 Send or schedule only after reading the task back:
@@ -179,6 +204,7 @@ noxinfluencer email products delete <task_id> <email_product_id> --force
 - Collaborator `remove` keeps the task owner and remaining non-owner collaborators
 - Some sender, template, and entitlement behavior may depend on your account configuration
 - Attachments are files on the NoxInfluencer email task primary project, not files in an external mailbox or external email platform
+- Inline public image URLs are not task attachments and do not replace the private attachment workflow
 - Attachment upload and delete can change scheduled-send state; do not treat a previously scheduled task as still scheduled after changing attachments
 
 ## Recommended next steps

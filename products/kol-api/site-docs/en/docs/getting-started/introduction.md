@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 1
 status: published
-updated_at: 2026-07-15
+updated_at: 2026-07-18
 keywords:
   - introduction
   - noxinfluencer
@@ -26,7 +26,7 @@ source_of_truth:
 
 # Introduction
 
-NoxInfluencer Skill connects creator marketing capabilities to the AI agent you already use. Describe your campaign goal and let your agent find creators, analyze audience fit, prepare a shortlist, organize outreach next steps, and follow campaign-video performance.
+NoxInfluencer Skill connects creator marketing capabilities to the AI agent you already use. Describe your campaign goal and let your agent find creators, analyze audience fit, export an approved shortlist, organize outreach next steps, and monitor published or future campaign content.
 
 It is not another dashboard you need to keep switching into. AI handles repetitive research, checks, and cleanup first, then gives you candidates, evidence, watchouts, and next steps. You remain responsible for final partnership decisions, approved content, and high-impact actions.
 
@@ -53,22 +53,23 @@ New accounts receive a one-time allowance of 30 free Credits with no credit card
 
 - Discover Creators: find candidates by market, platform, and content direction
 - Search-result filtering: hide or deduplicate returned candidates by collaboration, contact, CRM, or collection state
+- Creator result exports: preview deep-export quota and export 1 to 100 approved search or lookalike results
 - Analyze Creator: review profile, audience, content, and cooperation signals
-- Track Performance: manage video-monitor projects, tasks, summaries, and task history
+- Track Performance: monitor known video URLs, auto-track future creator content, review history, and download Excel reports
 - Outreach Creators: retrieve visible/exportable contact information for selected creators when external outreach needs it
 
 ### Beta marketing ops and intelligence
 
 - Manage Campaigns: keep campaign-level context and skeleton data
 - Collections: organize creators into reusable working groups
-- Exports: inspect and download async export tasks
+- Exports: inspect and download async creator, collection, CRM, and brand-monitor export tasks
 - Email Tasks: manage NoxInfluencer email tasks with explicit approval before send or schedule
 - Email recipient controls: filter recipients by collaboration/contact state and manage task collaborators by team member
-- Message Threads: manage existing thread state and approved replies
-- CRM: query and update NoxInfluencer CRM channels and groups
-- Product Center: manage collected product items and custom tags used by email product cards
-- Short Links: manage normal Nox short links and read short-link effect data
-- Affiliation: manage Shopify affiliate stores, campaigns, members, discount codes, tracking links, and performance reads after SaaS store authorization
+- Message Threads: manage existing thread state, approved replies, draft/history attachments, and template attachments
+- CRM: query, import, and update NoxInfluencer CRM channels and groups
+- Product Center: manage collected product items, thumbnail uploads, and custom tags used by email product cards
+- Short Links: manage normal Nox short links and download list or effect Excel reports
+- Affiliation: manage Shopify affiliate stores, campaigns, member imports, discount codes, tracking links, performance reads, and Excel reports after SaaS store authorization
 - Brand Monitor: inspect monitored brands, strategy signals, product signals, assets, and brand-monitor exports
 
 ### Planned capability
@@ -85,6 +86,8 @@ New accounts receive a one-time allowance of 30 free Credits with no credit card
 ## Boundaries to keep in mind
 
 - Marketing ops write actions default to dry-run or preview-style behavior and require explicit approval before execution
+- Shared async export tasks and direct Excel reports are different: monitor, short-link, and affiliation reports download directly to `--output`
+- Public rich-text or product image URLs are separate from private email/message attachments
 - NoxInfluencer platform email can use creator `creator_id` values directly; visible contact retrieval is only needed for external outreach
 - Email and message workflows do not write outreach copy for you; use approved content before send or schedule
 - Brand Monitor starts from `brand_id`, not `creator_id`

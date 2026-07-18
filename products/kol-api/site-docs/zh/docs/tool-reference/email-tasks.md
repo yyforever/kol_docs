@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 9
 status: published
-updated_at: 2026-06-16
+updated_at: 2026-07-18
 keywords:
   - email tasks
   - outreach operations
@@ -17,6 +17,7 @@ availability: beta
 source_of_truth:
   - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:cli/src/commands/email.ts"
+  - "repo:kol_claw path:cli/src/commands/file.ts"
   - "repo:kol_claw path:cli/src/lib/email-guidance.ts"
   - "repo:kol_claw path:server/app/routers/email.py"
   - "repo:kol_claw path:server/app/schemas.py"
@@ -38,8 +39,10 @@ source_of_truth:
 
 - 你要创建或查看邮件任务
 - 你要管理某个任务的收件人、发件人设置和已确认内容
+- 你要通过 SaaS 支持的 Excel 模板导入收件人
 - 你要用达人搜索或详情返回的 `creator_id` 发起 NoxInfluencer 平台邮件
 - 你要在发送或定时前，把已确认的 brief 或文件附加到邮件任务
+- 你要在富文本邮件正文中嵌入已确认的公开图片
 - 你要按历史联系、CRM、合作、资源池或其他邮件任务状态过滤收件人
 - 你要管理邮件任务协作者及其成员管理权限
 - 你要在确认收件人、发件人、发送时间和内容后发送或定时邮件任务
@@ -50,6 +53,7 @@ source_of_truth:
 - 通过 `task_id` 查看单个任务
 - 创建、更新、复制或删除邮件任务
 - 添加、替换和查看任务收件人
+- 下载收件人导入模板，并通过 Excel 导入收件人
 - 删除或清空未发送任务的收件人
 - 保存和查看任务级收件人隐藏/去重过滤条件
 - 查看可用收件人过滤选项和可用于过滤的邮件任务
@@ -58,7 +62,8 @@ source_of_truth:
 - 发送、定时或取消邮件任务
 - 查看、保存和应用邮件内容模板
 - 查看、替换和删除邮件商品卡
-- 查看、上传和删除任务附件
+- 查看、上传、下载和删除任务附件
+- 上传公开图片，用于已确认的富文本 `html_body`
 - 查看邮件任务报告、团队汇总和团队明细指标
 
 ## 安全执行规则
@@ -76,9 +81,12 @@ source_of_truth:
 - 商品卡使用商品中心的 `product_collect_id`
 - 收件人过滤使用 `email recipients filter options` 返回的公开 body patches，不要自己猜 SaaS 原始字段名
 - 协作者命令使用 SaaS 团队 `user_uid`；如果不确定有效成员，先查看 collaborators list
+- 收件人导入支持不超过 8MB 的 `.xls` 或 `.xlsx` 文件；请使用下载的 SaaS 模板，不要自行猜测表格列
+- 只有邮件任务尚未进入有效发送流程时，才能导入收件人
 - 附件上传使用 `--file`，不是 `--body-file`
 - 邮件任务最多支持 1 个附件，最大 10MB；危险可执行文件或脚本扩展名会被拒绝
 - 上传或删除附件会取消该任务已有的定时发送。修改附件后，需要先读回任务，再确认最终附件状态后重新定时。
+- 富文本公开图片与私有附件是两条不同路径：`file image upload` 返回可放入 `html_body` 的公开 `file_url`，邮件附件仍是需要授权的任务文件
 
 ## 关键命令
 
@@ -88,11 +96,14 @@ source_of_truth:
 noxinfluencer schema "email create"
 noxinfluencer schema "email collaborators add"
 noxinfluencer schema "email recipients add"
+noxinfluencer schema "email recipients import-file"
 noxinfluencer schema "email recipients filter update"
 noxinfluencer schema "email content save"
 noxinfluencer schema "email products replace"
 noxinfluencer schema "email attachments upload"
+noxinfluencer schema "email attachments download"
 noxinfluencer schema "email attachments delete"
+noxinfluencer schema "file image upload"
 ```
 
 发送前先读取任务状态：
@@ -111,6 +122,13 @@ noxinfluencer email recipients filter options
 noxinfluencer email recipients filter tasks
 noxinfluencer email recipients filter get <task_id>
 noxinfluencer email recipients filter update <task_id> --body-file recipient-filter.json --force
+```
+
+已经确认以表格为收件人来源时，使用当前 SaaS 模板导入：
+
+```bash
+noxinfluencer email recipients import-template --language cn --output email-recipient-template.xlsx
+noxinfluencer email recipients import-file <task_id> --file recipients.xlsx --force
 ```
 
 按团队成员 `user_uid` 管理任务协作者：
@@ -138,7 +156,14 @@ noxinfluencer email sender update <task_id> --body-file sender.json --force
 ```bash
 noxinfluencer email attachments list <task_id>
 noxinfluencer email attachments upload <task_id> --file brief.pdf --force
+noxinfluencer email attachments download <task_id> <attachment_id> --output ./brief.pdf
 noxinfluencer email attachments delete <task_id> <attachment_id> --force
+```
+
+要在已确认的富文本正文中插入图片，请单独上传，并把返回的 `file_url` 写入 `html_body`：
+
+```bash
+noxinfluencer file image upload --file hero.jpg --force
 ```
 
 只有读回任务并确认无误后，才发送或定时：
@@ -179,6 +204,7 @@ noxinfluencer email products delete <task_id> <email_product_id> --force
 - 协作者 `remove` 会保留任务 owner 和其他非 owner 协作者
 - 发件人、模板和权限行为可能依赖你的账号配置
 - 附件属于 NoxInfluencer 邮件任务 primary project，不是外部邮箱或外部邮件平台里的文件
+- 富文本公开图片 URL 不是任务附件，也不能替代私有附件工作流
 - 附件上传和删除可能改变定时发送状态；修改附件后，不要假设之前的定时仍然有效
 
 ## 推荐下一步

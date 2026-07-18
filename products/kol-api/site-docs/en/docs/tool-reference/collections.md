@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 7
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-07-18
 keywords:
   - collections
   - creator organization
@@ -41,6 +41,7 @@ Collections helps you organize creators into reusable working groups so you can 
 - Inspect collection items and related resource views
 - Add explicit creators from search/profile results into one or more collections
 - Import owned creator URLs into a collection from a spreadsheet
+- Download the current SaaS spreadsheet template before importing owned creator URLs
 - Use grouped operations such as move, copy, label, refresh, and export
 - Add a whole collection and platform slice to NoxInfluencer CRM through validate, preview, and apply stages
 
@@ -72,10 +73,11 @@ The add-creators body should use `collection_ids`, `platform`, and `creator_ids`
 Import your owned creator links into one collection:
 
 ```bash
+noxinfluencer collection import-template --language en --output collection-import-template.xlsx
 noxinfluencer collection import-file <collection_id> --file creators.xlsx --force
 ```
 
-The spreadsheet import is accepted asynchronously. Poll collection items by platform to confirm resolved rows:
+Use the downloaded template instead of inventing spreadsheet columns. The import is accepted asynchronously; poll collection items by platform to confirm resolved rows:
 
 ```bash
 noxinfluencer collection items <collection_id> --body-file items-query.json
@@ -96,6 +98,7 @@ noxinfluencer collection refresh-email apply --body-file refresh-email.json --fo
 - `collection add-to-crm` currently works at whole collection + platform slice level; filtered or explicit channel subsets are not supported in v1
 - `collection add-creators` is add-only, not collection-to-collection copy
 - `collection import-file` imports owned creator URLs into one collection; it is separate from adding search/profile IDs
+- `collection import-template` downloads the supported SaaS format; it does not import or change collection data
 - It does not replace creator discovery or creator evaluation
 
 ## Recommended next steps

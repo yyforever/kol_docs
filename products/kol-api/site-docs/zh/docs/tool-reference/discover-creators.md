@@ -1,13 +1,13 @@
 ---
 doc_id: tool_discover_creators
 title: 达人发现
-description: 公开达人发现能力说明，适用于生成候选名单和下一步分析对象。
+description: 公开达人发现能力说明，适用于生成候选名单、选择分析对象和导出已选结果。
 locale: zh
 content_type: doc
 nav_group: tool-reference
 order: 1
 status: published
-updated_at: 2026-07-10
+updated_at: 2026-07-18
 keywords:
   - discover creators
   - creator search
@@ -18,6 +18,7 @@ source_of_truth:
   - ../../../../03_API能力设计.md
   - ../../../../05_PRD.md
   - "repo:kol_claw path:cli/src/commands/creator.ts"
+  - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:cli/src/commands/pricing.ts"
   - "repo:kol_claw path:server/app/routers/discover.py"
   - "repo:kol_claw path:server/contracts/capabilities/creator_search.json"
@@ -34,6 +35,7 @@ source_of_truth:
 - 你已经知道目标市场、品类或平台
 - 你需要先建立候选名单，而不是立即做深度尽调
 - 你希望把后续分析对象控制在可判断的范围内
+- 你要导出已经确认的搜索或相似达人结果
 
 ## 推荐输入
 
@@ -62,6 +64,28 @@ noxinfluencer creator search --platform tiktok --keywords '[coffee,review]' --ke
 - 深分页需要复用上一次响应里的 `data.search_after`
 - 传游标数组或复杂筛选条件时，优先通过 `--body-file -` 传 JSON body
 - 搜索结果行会提供后续可用的搜索结果标识，但完整达人身份需要通过后续达人读取获取
+
+## 导出已选结果
+
+完成搜索或相似达人筛选后，可以明确选择 1 到 100 个 `data.items[].id` 导出。这里必须使用结果中的加密 ID，不要替换成达人详情里的 `creator_id`。
+
+- `mode=base` 使用 SaaS 标准达人列
+- `mode=deep` 必须提供当前平台支持的 `field_keys`
+- 导出相似达人时，要原样保留响应里的 `data.export_context`，确保导出复用同一来源达人和筛选条件
+- `email`、`whatsapp` 等字段可能消耗联系方式配额；只有外部触达确实需要可见联系方式时才选择
+
+创建 deep 导出前，先预估业务配额：
+
+```bash
+noxinfluencer creator export-preview --body-file creator-export.json
+noxinfluencer creator export --body-file creator-export.json --force
+noxinfluencer export get <export_id>
+noxinfluencer export download <export_id> --output ./creators.xlsx
+```
+
+`creator export-preview` 只适用于 deep 模式。它不会创建导出任务，不消耗 Skill Credit，只预估已选字段可能需要的 SaaS 导出、邮箱或 WhatsApp 业务配额。base 导出可以在确认已选 ID 后直接创建。
+
+导出相似达人时，使用 `creator lookalikes-export` 并带上原样保留的 `export_context`，之后仍通过共享 `export` 命令查看和下载。
 
 ## 价格和用量规划
 
@@ -94,6 +118,7 @@ noxinfluencer creator search-filter --body-file search-filter.json
 - 平台、体量、市场或内容方向等基础匹配信息
 - 帮你决定下一步看谁的搜索结果标识
 - 对当前页面应用隐藏或去重规则后的可选过滤结果
+- 确认导出已选结果后返回的异步导出任务 ID
 
 ## 搜索结果暂时不包含什么
 

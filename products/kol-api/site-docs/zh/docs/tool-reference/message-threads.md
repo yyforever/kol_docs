@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 10
 status: published
-updated_at: 2026-06-25
+updated_at: 2026-07-18
 keywords:
   - message threads
   - communication workflows
@@ -17,6 +17,7 @@ availability: beta
 source_of_truth:
   - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:cli/src/commands/message.ts"
+  - "repo:kol_claw path:cli/src/commands/file.ts"
   - "repo:kol_claw path:cli/src/lib/message-guidance.ts"
   - "repo:kol_claw path:server/app/routers/message.py"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
@@ -36,6 +37,8 @@ source_of_truth:
 - 你需要按 SaaS 项目、任务创建人、团队成员、合作状态或标签筛选消息中心线程
 - 你要管理某个已知线程的标签、合作状态或草稿状态
 - 你要在发送或定时前，把已确认文件附加到线程草稿
+- 你要管理可复用消息模板上的已确认文件
+- 你要在富文本消息正文中嵌入已确认的公开图片
 - 你要对已有 `thread_id` 发送、定时或取消一条已确认回复
 
 ## 当前 beta 范围
@@ -45,17 +48,21 @@ source_of_truth:
 - 查看与 SaaS 对齐的项目筛选和任务创建人 / 团队成员筛选选项
 - 解析某个达人 / channel 的相关项目或相关线程
 - 查看、保存和应用消息模板
+- 查看、上传、下载和删除消息模板附件
 - 查看和设置标签
 - 查看和更新合作状态
 - 保存草稿正文
-- 查看、上传和删除草稿附件
+- 查看、上传、下载和删除草稿附件，并下载已授权的消息历史附件
+- 上传公开图片，用于已确认的富文本 `html_body`
 - 对一个已有线程发送、定时或取消回复
 
 ## 重要路由规则
 
 `message send` 和 `message schedule` 只适用于已有 `thread_id` 的回复。如果你只有邮件任务 ID，先用 `message list --business_kind email_task --business_id <task_id>` 找到线程。如果没有线程，应对平台达人或已确认外部邮箱地址改走 [邮件任务](email-tasks.md) 路径。
 
-消息附件属于线程草稿。发送或定时前先上传附件，NoxInfluencer 会在发送时带上这些草稿文件。
+草稿附件属于消息线程草稿。发送或定时前先上传，NoxInfluencer 会在发送时带上这些文件。模板附件属于可复用消息模板，应使用 `message templates attachments ...` 管理。
+
+富文本内联图片使用 `file image upload`，并把返回的公开 `file_url` 放入 `html_body`。内联图片与私有草稿、历史和模板附件相互独立。
 
 ## 回复状态判断
 
@@ -101,7 +108,10 @@ noxinfluencer schema "message project-filters"
 noxinfluencer schema "message creator-filters"
 noxinfluencer schema "message send"
 noxinfluencer schema "message attachments upload"
+noxinfluencer schema "message attachments download"
 noxinfluencer schema "message attachments delete"
+noxinfluencer schema "message templates attachments upload"
+noxinfluencer schema "file image upload"
 noxinfluencer schema "message labels set"
 ```
 
@@ -138,7 +148,23 @@ noxinfluencer message draft save <thread_id> --body-file draft.json --force
 ```bash
 noxinfluencer message attachments list <thread_id>
 noxinfluencer message attachments upload <thread_id> --file brief.pdf --force
+noxinfluencer message attachments download <thread_id> <attachment_id> --output ./brief.pdf
 noxinfluencer message attachments delete <thread_id> <attachment_id> --force
+```
+
+管理属于可复用消息模板的文件：
+
+```bash
+noxinfluencer message templates attachments list <template_id>
+noxinfluencer message templates attachments upload <template_id> --file brief.pdf --force
+noxinfluencer message templates attachments download <template_id> <attachment_id> --output ./template-brief.pdf
+noxinfluencer message templates attachments delete <template_id> <attachment_id> --force
+```
+
+单独上传富文本内联图片：
+
+```bash
+noxinfluencer file image upload --file message-hero.jpg --force
 ```
 
 内容和发件人确认后，才发送或定时：
@@ -162,6 +188,10 @@ noxinfluencer message cancel <thread_id> --force
 - 草稿附件上传使用 `--file`，不是 `--body-file`
 - 一个线程最多支持 2 个草稿附件，单个最大 10MB；危险可执行文件或脚本扩展名会被拒绝
 - 只有确认准确 `thread_id` 后，才上传或删除草稿附件
+- 上传或删除模板附件前，确认准确的 `template_id`
+- 一个消息模板最多支持 2 个私有附件，单个最大 10MB
+- 下载附件需要有权访问的 `attachment_id`，并写入 `--output`；只有明确覆盖本地文件时才使用 `--overwrite`
+- 富文本公开图片 URL 不是私有附件
 
 ## 当前边界
 
@@ -172,7 +202,7 @@ noxinfluencer message cancel <thread_id> --force
 - 它不操作 NoxInfluencer 之外的外部消息平台
 - 部分项目标签页概念在上游已废弃，当前筛选条件以 CLI schema 为准
 - `message get` 内联 composer state 和 metadata；当前没有单独的 draft-get 或 metadata-get 公开命令
-- 草稿附件不是消息模板附件；模板附件不在当前公开命令范围内
+- 草稿 / 历史附件与消息模板附件是两套独立的公开命令路径，不要混用其中的 ID
 
 ## 推荐下一步
 

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 7
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-07-18
 keywords:
   - collections
   - creator organization
@@ -41,6 +41,7 @@ source_of_truth:
 - 查看资源池条目和相关资源视图
 - 把搜索或主页读取结果中的显式达人加入一个或多个资源池
 - 从表格导入你自有的达人 URL 到一个资源池
+- 导入自有达人 URL 前下载当前 SaaS 表格模板
 - 对同一组对象执行移动、复制、打标签、刷新、导出等操作
 - 通过 validate、preview 和 apply 阶段把整组资源池和平台切片加入 NoxInfluencer CRM
 
@@ -72,10 +73,11 @@ noxinfluencer collection add-creators --body-file add-creators.json --force
 把你自有的达人链接导入一个资源池：
 
 ```bash
+noxinfluencer collection import-template --language cn --output collection-import-template.xlsx
 noxinfluencer collection import-file <collection_id> --file creators.xlsx --force
 ```
 
-表格导入会被异步接受。导入后按平台轮询资源池条目确认解析结果：
+请使用下载的模板，不要自行猜测表格列。导入会被异步接受；提交后按平台轮询资源池条目确认解析结果：
 
 ```bash
 noxinfluencer collection items <collection_id> --body-file items-query.json
@@ -96,6 +98,7 @@ noxinfluencer collection refresh-email apply --body-file refresh-email.json --fo
 - `collection add-to-crm` 当前只支持整组资源池和平台切片；v1 不支持筛选后的集合或显式 channel 子集
 - `collection add-creators` 是 add-only，不是资源池之间的复制
 - `collection import-file` 用于把自有达人 URL 导入一个资源池，不是添加搜索 / profile IDs 的路径
+- `collection import-template` 只下载 SaaS 支持格式，不会导入或修改资源池数据
 - 它不替代达人发现或达人评估
 
 ## 推荐下一步

@@ -1,13 +1,13 @@
 ---
 doc_id: tool_manage_campaigns
 title: Manage Campaigns
-description: Beta public capability page for campaign context, workflow continuity, and adjacent operations.
+description: Beta public capability page for campaign context, product images, workflow continuity, and adjacent operations.
 locale: en
 content_type: doc
 nav_group: tool-reference
 order: 6
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-07-18
 keywords:
   - manage campaigns
   - campaign context
@@ -33,11 +33,13 @@ Manage Campaigns helps you preserve campaign-level context as work moves from cr
 - You want one campaign anchor around shortlist, monitoring, and later ops work
 - You need basic campaign records and overview data instead of a full CRM
 - You want discovery, outreach preparation, monitoring, collections, email/message tasks, CRM, and exports to stay connected
+- You need public product-image URLs for campaign product records
 
 ## Current beta scope
 
 - Keep campaign-level records and overview data
 - List, inspect, initialize, create, update, delete, open dropdown data, and read campaign dashboard data
+- Upload approved campaign product images for use in product `thumbnail_urls`
 - Reuse campaign context across adjacent beta operations
 
 ## What beta means right now
@@ -72,11 +74,20 @@ noxinfluencer campaign update <campaign_id> --body-file campaign.json --force
 noxinfluencer campaign delete <campaign_id> --force
 ```
 
+Upload campaign product images before placing their returned URLs in a campaign product body:
+
+```bash
+noxinfluencer campaign product-images upload --file campaign-product.jpg --force
+```
+
+The upload accepts `.png`, `.jpg`, or `.jpeg`. A product can reuse up to 5 returned URLs in its `thumbnail_urls` array. Uploading a file does not update the campaign by itself; confirm the product body separately before applying it.
+
 ## Current boundary
 
 - It is not a full CRM
 - Email, message, and CRM now have their own beta pages and approval guardrails
 - It is not a negotiation execution surface
+- Public campaign product images are separate from private email or message attachments
 - It does not replace discovery, analysis, outreach preparation, or monitoring
 
 ## Recommended reading

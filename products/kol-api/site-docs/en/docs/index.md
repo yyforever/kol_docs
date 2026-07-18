@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 0
 status: published
-updated_at: 2026-07-15
+updated_at: 2026-07-18
 keywords:
   - noxinfluencer docs
   - influencer marketing
@@ -26,7 +26,7 @@ source_of_truth:
 
 # Documentation
 
-NoxInfluencer Skill lets you run creator discovery, audience analysis, shortlist preparation, outreach preparation, and performance monitoring from Codex, Claude Code, OpenClaw, or Hermes. Your AI agent handles repetitive research, checks, and cleanup while you and your team make the final decisions.
+NoxInfluencer Skill lets you run creator discovery, audience analysis, selected-result exports, outreach preparation, known-video monitoring, future-content auto-track, and marketing operations from Codex, Claude Code, OpenClaw, or Hermes. Your AI agent handles repetitive research, checks, files, and cleanup while you and your team make the final decisions.
 
 New accounts receive a one-time allowance of 30 free Credits with no credit card required. Use the [NoxInfluencer pricing page](https://www.noxinfluencer.com/product/pricing?modal=ai-pricing) for current plans and prices.
 
@@ -92,5 +92,7 @@ Your agent returns candidates, fit reasons, watchouts, and next steps in the con
 - First creator shortlist: [Find Your First Creators](guides/find-your-first-creators.md)
 - Creator review before outreach: [Evaluate Creators Before Outreach](guides/evaluate-creators-before-outreach.md)
 - Monitoring workflow: [Set Up Performance Monitoring](guides/set-up-performance-monitoring.md)
+- Creator result exports: [Discover Creators](tool-reference/discover-creators.md) and [Exports](tool-reference/exports.md)
+- Spreadsheet imports, reports, and file downloads: [CLI Diagnostics](resources/cli-diagnostics.md)
 - Campaign and ops continuity: [Organize Campaign Workflows](guides/organize-campaign-workflows.md)
 - Troubleshooting and support: [CLI Diagnostics](resources/cli-diagnostics.md), [Support and Feedback](resources/support-feedback.md), [Error Codes](resources/error-codes.md), and [Rate Limits](resources/rate-limits.md)

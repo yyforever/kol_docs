@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 1
 status: published
-updated_at: 2026-07-15
+updated_at: 2026-07-18
 keywords:
   - introduction
   - noxinfluencer
@@ -26,7 +26,7 @@ source_of_truth:
 
 # 产品简介
 
-NoxInfluencer Skill 把达人营销能力接入你已经在使用的 AI Agent。你可以直接描述推广目标，让 Agent 查找达人、分析受众匹配度、整理候选名单、准备建联下一步并跟进合作视频表现。
+NoxInfluencer Skill 把达人营销能力接入你已经在使用的 AI Agent。你可以直接描述推广目标，让 Agent 查找达人、分析受众匹配度、导出已确认名单、准备建联下一步，并监控已经发布或未来发布的合作内容。
 
 它不是另一个需要反复切换的后台入口。AI 先完成重复的查找、检查和整理，再把候选人、证据、风险点和下一步交给你。最终合作判断、内容确认和高影响操作仍由你决定。
 
@@ -53,22 +53,23 @@ NoxInfluencer Skill 把达人营销能力接入你已经在使用的 AI Agent。
 
 - 达人发现：按市场、平台和内容方向找到候选达人
 - 搜索结果过滤：按合作、联系、CRM 或收藏夹状态隐藏或去重已返回候选人
+- 达人结果导出：预估 deep 导出的业务配额，并导出 1 到 100 个已确认的搜索或相似达人结果
 - 达人分析：查看主页信息、受众、内容和合作信号
-- 表现监控：管理视频监控项目、任务、汇总和任务历史
+- 表现监控：监控已知视频 URL、自动追踪达人未来内容、查看历史并下载 Excel 报告
 - 达人触达：当外部触达需要联系方式时，为已选达人获取可见 / 可导出联系方式
 
 ### Beta 营销运营与情报能力
 
 - 活动管理：保留活动级上下文和基础活动数据
 - 资源池：把达人组织成可复用工作组
-- 导出任务：查看并下载异步导出任务
+- 导出任务：查看并下载达人、资源池、CRM 和品牌监控异步导出任务
 - 邮件任务：管理 NoxInfluencer 邮件任务，发送或定时前必须得到明确确认
 - 邮件收件人控制：按合作/联系状态过滤收件人，并按团队成员管理任务协作者
-- 消息线程：管理已有对话线程状态和已确认的回复
-- CRM：查询和更新 NoxInfluencer CRM channels 与 groups
-- 商品中心：管理用于邮件商品卡的商品条目和自定义标签
-- 短链：管理普通 Nox 短链并读取短链效果数据
-- 联盟营销：在 SaaS 店铺授权后，管理 Shopify affiliate stores、campaigns、members、discount codes、tracking links 和表现读取
+- 消息线程：管理已有对话线程、已确认回复、草稿 / 历史附件和模板附件
+- CRM：查询、导入和更新 NoxInfluencer CRM channels 与 groups
+- 商品中心：管理用于邮件商品卡的商品条目、缩略图上传和自定义标签
+- 短链：管理普通 Nox 短链，并下载列表或效果 Excel 报告
+- 联盟营销：在 SaaS 店铺授权后，管理 Shopify affiliate stores、campaigns、成员导入、discount codes、tracking links、表现读取和 Excel 报告
 - 品牌监控：查看已监控品牌、策略信号、产品信号、资产列表和品牌监控导出
 
 ### 规划中能力
@@ -85,6 +86,8 @@ NoxInfluencer Skill 把达人营销能力接入你已经在使用的 AI Agent。
 ## 使用边界
 
 - 营销运营写操作默认走 dry-run 或 preview 类行为，真正执行前需要你明确确认
+- 共享异步导出任务与直接 Excel 报告是两条路径：监控、短链和联盟营销报告直接下载到 `--output`
+- 富文本或商品公开图片 URL 与私有邮件 / 消息附件是不同路径
 - NoxInfluencer 平台邮件可以直接使用达人 `creator_id`；只有外部触达才需要获取可见联系方式
 - 邮件和消息工作流不会代你撰写触达文案；发送或定时前必须使用已确认内容
 - 品牌监控从 `brand_id` 开始，不是从 `creator_id` 开始

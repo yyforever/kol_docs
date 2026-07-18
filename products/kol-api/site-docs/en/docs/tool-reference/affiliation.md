@@ -1,13 +1,13 @@
 ---
 doc_id: tool_affiliation
 title: Affiliation
-description: Beta public capability page for Shopify affiliate stores, campaigns, members, tracking links, discount codes, and performance reads.
+description: Beta public capability page for Shopify affiliate campaigns, member spreadsheet imports, tracking, and Excel reports.
 locale: en
 content_type: doc
 nav_group: tool-reference
 order: 14
 status: published
-updated_at: 2026-07-02
+updated_at: 2026-07-18
 keywords:
   - affiliation
   - affiliate marketing
@@ -36,8 +36,10 @@ Affiliation helps you manage Shopify affiliate stores after SaaS authorization, 
 - You need to list authorized Shopify affiliate stores before creating or managing campaigns
 - You need to inspect or update a Shopify affiliate campaign
 - You need to add NoxInfluencer creators or owned creator links to an affiliate campaign
+- You need to import owned creator links from the supported SaaS Excel template
 - You need to activate, terminate, or resume affiliate members after confirming settings
 - You need campaign or member performance reads for affiliate tracking
+- You need a direct campaign-performance Excel report
 
 ## Current beta scope
 
@@ -46,7 +48,9 @@ Affiliation helps you manage Shopify affiliate stores after SaaS authorization, 
 - List, read, create, update, delete, and summarize affiliate campaigns
 - List pending and active campaign members
 - Add, update, delete, activate, terminate, or resume members
+- Download the member import template and import owned creator links from Excel
 - Read member overview, performance, promotion orders, and tracking-link click details
+- Download affiliate campaign performance directly as SaaS Excel
 
 ## Important routing rule
 
@@ -82,11 +86,21 @@ noxinfluencer affiliation campaigns update <campaign_id> --body-file affiliation
 noxinfluencer affiliation campaigns delete <campaign_id> --force
 ```
 
+Download a campaign performance report directly:
+
+```bash
+noxinfluencer affiliation campaigns export <campaign_id> --start-time 2026-07-01T00:00:00Z --end-time 2026-07-15T00:00:00Z --output affiliation-campaign.xlsx
+```
+
+This writes Excel directly to `--output`; it does not create a shared async `export` task.
+
 Manage campaign members:
 
 ```bash
 noxinfluencer affiliation members pending <campaign_id>
 noxinfluencer affiliation members active <campaign_id>
+noxinfluencer affiliation members import-template --language en --output affiliation-member-template.xlsx
+noxinfluencer affiliation members import-file <campaign_id> --file affiliation-members.xlsx --force
 noxinfluencer affiliation members add <campaign_id> --body-file affiliation-members.json --force
 noxinfluencer affiliation members update --body-file affiliation-member-update.json --force
 noxinfluencer affiliation members status --body-file affiliation-member-status.json --force
@@ -115,6 +129,9 @@ Activation can generate SaaS discount codes and affiliate tracking links when me
 - Confirm the exact `store_id`, `campaign_id`, `member_id`, member list, status action, discount settings, and commission settings before mutations
 - Use SaaS-aligned discount fields such as `commission_type`, `discount_method`, and `discount_detail` when creating or updating campaigns
 - Store authorization stays in SaaS; the CLI only operates stores already available to the account
+- Member import accepts `.xls` or `.xlsx` files up to 10MB; use the downloaded SaaS template instead of inventing columns
+- An executed member import writes members immediately and then reads back the pending-member count; treat it as a write, not a validation-only step
+- Campaign Excel reports download directly and are not shared async export jobs
 
 ## Current boundary
 
@@ -122,6 +139,7 @@ Activation can generate SaaS discount codes and affiliate tracking links when me
 - It does not manage normal Nox short links
 - It does not create outreach copy or negotiate creator terms
 - It does not operate Shopify admin outside the NoxInfluencer affiliation surface
+- It does not import arbitrary spreadsheet schemas; member imports must follow the downloaded SaaS template
 
 ## Recommended next steps
 

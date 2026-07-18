@@ -1,13 +1,13 @@
 ---
 doc_id: guide_set_up_performance_monitoring
 title: Set Up Performance Monitoring
-description: Move from shortlist and evaluation into ongoing observation and review.
+description: Choose between known-video monitoring and future-content auto-track, then review trends and reports.
 locale: en
 content_type: doc
 nav_group: guides
 order: 3
 status: published
-updated_at: 2026-05-20
+updated_at: 2026-07-18
 keywords:
   - performance monitoring
   - tracking
@@ -16,44 +16,64 @@ source_of_truth:
   - ../../../../02_用户场景.md
   - ../../../../05_PRD.md
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
+  - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:cli/src/commands/monitor.ts"
   - "repo:kol_claw path:server/app/routers/video_monitor.py"
 ---
 
 # Set Up Performance Monitoring
 
-Monitoring works best after you already have a candidate, collaborator, or watchlist target.
+Monitoring works best after you already have a candidate or collaborator and know whether you are tracking published videos or waiting for future content.
 
 ## Best-fit scenarios
 
-- Ongoing shortlist observation
-- Collaboration follow-up
-- Campaign review and trend watching
+- You want to track known campaign videos over time
+- You want matching future content from selected creators to enter monitoring automatically
+- You need evidence or an Excel report for campaign decisions and retrospective review
 
-## Recommended flow
+## First choose what you know today
 
-1. Decide which campaign videos or collaboration assets you want to track
-2. Create a monitoring project first
-3. Add one or more video URLs as monitoring tasks
-4. Review task lists and project summaries over time
-5. Use the task list to identify the right `task_id` when you need one specific video's history
-6. Use `monitor history` with `daily` or `hourly` granularity when you need ordered performance points
-7. Feed the monitoring result back into shortlist or campaign decisions
+- If the video is already published and you have its URL, add it directly or import known URLs from the monitor spreadsheet template
+- If the creator is known but the future video URL does not exist, create an auto-track rule from the auto-track spreadsheet template
+- Do not add placeholder URLs or repeatedly search manually when auto-track is the better fit
+
+## Path A: monitor known video URLs
+
+```bash
+noxinfluencer monitor create --project_name "Summer launch" --force
+noxinfluencer monitor add-task --project_id 7101 --video_url "https://www.youtube.com/watch?v=..." --force
+noxinfluencer monitor tasks --project_id 7101
+noxinfluencer monitor history --task_id 9120 --granularity daily
+```
+
+For a spreadsheet batch, download `monitor import-template`, fill in the supported columns, and submit it with `monitor import-file`. One upload supports a file up to 10MB and parses up to 1,000 rows, with no more than 500 valid rows saved in one request. If the response includes `failed_items`, preserve them and generate `monitor import-report` before correcting the workbook.
 
 By default, `monitor add-task` monitors for 60 days unless you set a different `monitor_days` value.
 
-## Current public workflow
+## Path B: auto-track future creator content
 
-The current public surface is a project-based video monitoring workflow, not just a future direction.
+```bash
+noxinfluencer monitor auto-track import-template --language en --output auto-track-template.xlsx
+noxinfluencer monitor auto-track import-file \
+  --project_id 7101 \
+  --rule_name "Hisense launches" \
+  --keywords '[Hisense,TV]' \
+  --file influencers.xlsx \
+  --force
+```
 
-## What monitoring helps answer
+Use up to 50 creator homepage links and up to 5 keywords, or provide a valid Nox short link for every imported creator. Auto-track import is all-or-nothing: if one row is invalid, no rule is created. Fix the returned `data.failed_items` and retry the complete file.
 
-- Which creators are still worth watching
-- Which creators show unusual changes over time
-- Which creators should move into the next collaboration review
+## Review and hand off results
 
-## When history matters more than the latest snapshot
+1. Use `monitor tasks` to identify the exact `task_id`
+2. Use `monitor history` with `daily` or `hourly` granularity for ordered trend points
+3. Use `monitor summary` for project-level totals and platform breakdowns
+4. Use `monitor report`, `monitor dashboard-report`, or `monitor task-report` when you need a direct Excel handoff
+5. Feed the evidence back into campaign or collaboration decisions
 
-- Use task history when you need trend points rather than only the current task state
-- Reuse the returned `task_id` instead of re-identifying the same video each time
-- Preserve creator identity fields from monitor task rows when they are present, especially `creator_id`, `creator_name`, `channel_handle`, and `channel_url`
+Monitor reports download directly to `--output`; they are not shared async export jobs. If an auto-track rule becomes `paused_monitor_quota` or `paused_creator_quota`, resolve the corresponding quota before expecting new content to enter monitoring.
+
+Preserve creator identity fields from monitor task rows when they are present, especially `creator_id`, `creator_name`, `channel_handle`, and `channel_url`.
+
+For exact commands, limits, and report types, see [Track Performance](../tool-reference/track-performance.md).

@@ -7,7 +7,7 @@ content_type: doc
 nav_group: resources
 order: 4
 status: published
-updated_at: 2026-07-10
+updated_at: 2026-07-18
 keywords:
   - cli diagnostics
   - troubleshooting
@@ -18,6 +18,8 @@ source_of_truth:
   - "repo:kol_claw path:cli/src/main.ts"
   - "repo:kol_claw path:cli/src/commands/login.ts"
   - "repo:kol_claw path:cli/src/commands/creator.ts"
+  - "repo:kol_claw path:cli/src/commands/monitor.ts"
+  - "repo:kol_claw path:cli/src/commands/file.ts"
   - "repo:kol_claw path:cli/src/commands/quota.ts"
   - "repo:kol_claw path:cli/src/commands/pricing.ts"
   - "repo:kol_claw path:cli/src/lib/exit-codes.ts"
@@ -60,6 +62,8 @@ noxinfluencer schema --all
 当前 CLI 基线需要已安装命令树暴露这些命令组：
 
 - `login`
+- `creator`
+- `monitor`
 - `campaign`
 - `collection`
 - `email`
@@ -70,6 +74,7 @@ noxinfluencer schema --all
 - `affiliation`
 - `brand-monitor`
 - `export`
+- `file`
 - `feedback`
 - `quota`
 - `pricing`
@@ -83,7 +88,9 @@ npm install -g @noxinfluencer/cli@latest
 
 本地或全局编译文件过旧时，只看版本号不够。
 
-当前文档基线是 `@noxinfluencer/cli` `0.4.19` 或更新版本。排查旧安装时，优先看 `schema --all`，不要只看版本号。如果缺少 `login`，当前安装树无法使用浏览器登录。如果缺少 `quota` 或 `pricing`，当前安装树无法查看 Skill 当前额度、近期用量或服务端动作单价。如果缺少 `product`，当前安装树就不能执行商品中心和邮件商品卡相关工作流。如果缺少 `short-link` 或 `affiliation`，当前安装树就不能执行普通短链和 Shopify 联盟营销工作流。如果缺少 `creator lookalikes`、`creator search-filter-options`、`pricing tools`、`quota usage`、`email recipients filter options`、`email collaborators list`、`email attachments upload`、`message project-filters`、`message creator-filters`、`message projects`、`message attachments upload`、`short-link create`、`affiliation stores list`、`affiliation members status` 或 `feedback submit` 等嵌套命令，需要先重新安装最新 CLI，再继续。
+当前文档基线是 `@noxinfluencer/cli` `0.4.21` 或更新版本。排查旧安装时，优先看 `schema --all`，不要只看版本号。如果缺少 `login`，当前安装树无法使用浏览器登录。如果缺少 `quota` 或 `pricing`，当前安装树无法查看 Skill 当前额度、近期用量或服务端动作单价。如果缺少 `product`，当前安装树就不能执行商品中心和邮件商品卡相关工作流。如果缺少 `file`，当前安装树无法上传富文本使用的公开图片。如果缺少 `short-link` 或 `affiliation`，当前安装树就不能执行普通短链和 Shopify 联盟营销工作流。
+
+嵌套命令也必须完整。如果缺少 `creator export`、`creator export-preview`、`monitor auto-track import-file`、`monitor report`、`crm import-file`、`email recipients import-file`、`email attachments download`、`message templates attachments upload`、`file image upload`、`short-link export-list`、`affiliation members import-file` 或 `feedback attachments download`，请先重新安装最新 CLI。
 
 ## 查看具体命令参数
 
@@ -93,15 +100,22 @@ npm install -g @noxinfluencer/cli@latest
 noxinfluencer schema "creator search"
 noxinfluencer schema "creator search-filter"
 noxinfluencer schema "creator lookalikes"
+noxinfluencer schema "creator export"
+noxinfluencer schema "creator export-preview"
+noxinfluencer schema "monitor import-file"
+noxinfluencer schema "monitor auto-track import-file"
+noxinfluencer schema "monitor report"
 noxinfluencer schema "login"
 noxinfluencer schema "pricing tools"
 noxinfluencer schema "quota usage"
 noxinfluencer schema "email create"
 noxinfluencer schema "email recipients add"
+noxinfluencer schema "email recipients import-file"
 noxinfluencer schema "email recipients filter update"
 noxinfluencer schema "email collaborators add"
 noxinfluencer schema "email products replace"
 noxinfluencer schema "email attachments upload"
+noxinfluencer schema "email attachments download"
 noxinfluencer schema "message list"
 noxinfluencer schema "message project-filters"
 noxinfluencer schema "message creator-filters"
@@ -110,18 +124,38 @@ noxinfluencer schema "message projects"
 noxinfluencer schema "message send"
 noxinfluencer schema "message schedule"
 noxinfluencer schema "message attachments upload"
+noxinfluencer schema "message templates attachments upload"
+noxinfluencer schema "file image upload"
 noxinfluencer schema "product list"
 noxinfluencer schema "short-link create"
+noxinfluencer schema "short-link export-list"
 noxinfluencer schema "affiliation stores list"
 noxinfluencer schema "affiliation campaigns create"
 noxinfluencer schema "affiliation members status"
+noxinfluencer schema "affiliation members import-file"
 noxinfluencer schema "brand-monitor influencer-list"
 noxinfluencer schema "feedback submit"
 ```
 
 很多营销运营命令需要 `--body-file`。优先准备最小 JSON body；如果工作流支持 validate 或 preview，先验证再执行。
 
-附件上传命令不同：它们使用本地 `--file` 路径，但仍然属于写操作。能预览时先预览，只有在确认目标任务或线程以及附件文件后，才使用 `--force`。
+上传和表格导入命令不同：它们使用本地 `--file` 路径，但仍然属于写操作。能预览时先预览，只有在确认目标对象和本地文件后，才使用 `--force`。授权下载使用 `--output`；只有明确要替换已有本地文件时，才加 `--overwrite`。
+
+## 检查文件、导入和报告工作流
+
+根据你要执行的工作流，检查有代表性的 help 或 schema：
+
+```bash
+noxinfluencer schema "creator export-preview"
+noxinfluencer schema "monitor import-file"
+noxinfluencer schema "monitor auto-track import-file"
+noxinfluencer schema "crm import-file"
+noxinfluencer schema "email recipients import-file"
+noxinfluencer schema "message templates attachments download"
+noxinfluencer schema "file image upload"
+```
+
+达人、资源池、CRM 和品牌监控导出会创建异步任务，需要通过 `export list/get/download` 查看和下载。监控报告、短链报告和联盟营销活动报告会直接把 Excel 下载到 `--output`，不要去共享导出任务列表里等待。
 
 对于 SaaS 对齐的隐藏和去重菜单，先使用 options 命令，再构建请求 body：
 

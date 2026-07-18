@@ -1,13 +1,13 @@
 ---
 doc_id: resource_support_feedback
 title: 支持与反馈
-description: 通过 NoxInfluencer CLI 提交产品反馈、bug、数据问题、使用问题和功能建议。
+description: 通过 NoxInfluencer CLI 提交产品反馈，并安全下载你有权访问的支持会话附件。
 locale: zh
 content_type: doc
 nav_group: resources
 order: 5
 status: published
-updated_at: 2026-06-13
+updated_at: 2026-07-18
 keywords:
   - feedback
   - support
@@ -33,6 +33,7 @@ source_of_truth:
 - 你希望附上截图或日志，帮助我们复现问题
 - 你有产品建议或功能需求
 - 你想查看是否有异步追问或回复
+- 你要下载自己有权访问的反馈会话附件
 
 ## 关键命令
 
@@ -41,6 +42,7 @@ source_of_truth:
 ```bash
 noxinfluencer schema "feedback submit"
 noxinfluencer schema "feedback reply"
+noxinfluencer schema "feedback attachments download"
 ```
 
 提交反馈：
@@ -56,7 +58,8 @@ noxinfluencer feedback submit --body-file feedback.json --force
 noxinfluencer feedback notifications
 noxinfluencer feedback inbox
 noxinfluencer feedback get <feedback_id>
-noxinfluencer feedback reply <feedback_id> --message "It happened on online." --force
+noxinfluencer feedback reply <feedback_id> --message "问题出现在正式站点。" --force
+noxinfluencer feedback attachments download <feedback_id> <attachment_id> --output ./support-attachment.png
 ```
 
 ## 安全与隐私
@@ -66,6 +69,7 @@ noxinfluencer feedback reply <feedback_id> --message "It happened on online." --
 - 只有当截图或日志有助于排查时才上传附件
 - 不要在反馈正文或附件中包含 API key、bearer token、密码或客户隐私数据
 - 后续回复是异步的；稍后使用 `feedback inbox` 或 `feedback get <feedback_id>` 查看
+- 附件下载只允许访问你有权限的反馈会话，并写入 `--output`；只有明确覆盖本地文件时才使用 `--overwrite`
 
 ## 推荐下一步
 

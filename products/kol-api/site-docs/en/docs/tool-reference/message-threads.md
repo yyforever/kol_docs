@@ -7,7 +7,7 @@ content_type: doc
 nav_group: tool-reference
 order: 10
 status: published
-updated_at: 2026-06-25
+updated_at: 2026-07-18
 keywords:
   - message threads
   - communication workflows
@@ -17,6 +17,7 @@ availability: beta
 source_of_truth:
   - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:cli/src/commands/message.ts"
+  - "repo:kol_claw path:cli/src/commands/file.ts"
   - "repo:kol_claw path:cli/src/lib/message-guidance.ts"
   - "repo:kol_claw path:server/app/routers/message.py"
   - "https://github.com/NoxInfluencer/skills/blob/main/skills/noxinfluencer/SKILL.md"
@@ -36,6 +37,8 @@ Message Threads helps you work with existing NoxInfluencer communication threads
 - You need to filter message-center threads by SaaS project, task creator, team member, cooperation status, or label
 - You want to manage labels, cooperation status, or draft state on a known thread
 - You need to attach approved files to a thread draft before sending or scheduling
+- You need to manage approved files on a reusable message template
+- You need to embed an approved public image in rich-text message content
 - You need to send, schedule, or cancel an approved reply on an existing `thread_id`
 
 ## Current beta scope
@@ -45,17 +48,21 @@ Message Threads helps you work with existing NoxInfluencer communication threads
 - List SaaS-aligned project and task creator/team member filter options
 - Resolve sibling projects or related threads for a creator/channel
 - List, save, and apply message templates
+- List, upload, download, and delete message-template attachments
 - List and set labels
 - List and update cooperation status
 - Save a draft body
-- List, upload, and delete draft attachments
+- List, upload, download, and delete draft attachments; download authorized message-history attachments
+- Upload public images for approved rich-text `html_body`
 - Send, schedule, or cancel a reply on one existing thread
 
 ## Important routing rule
 
 Use `message send` or `message schedule` only for existing `thread_id` replies. If you only have an email task ID, resolve the thread first with `message list --business_kind email_task --business_id <task_id>`. If no thread exists, use the [Email Tasks](email-tasks.md) path for platform creators or approved external email addresses.
 
-Message attachments belong to the thread draft. Upload them before `message send` or `message schedule`; NoxInfluencer attaches those draft files during send.
+Draft attachments belong to the thread draft. Upload them before `message send` or `message schedule`; NoxInfluencer attaches those files during send. Template attachments belong to a reusable template and use `message templates attachments ...` instead.
+
+For an inline image, use `file image upload` and embed the returned public `file_url` in `html_body`. Inline images are separate from private draft, history, and template attachments.
 
 ## Reply-state checks
 
@@ -101,7 +108,10 @@ noxinfluencer schema "message project-filters"
 noxinfluencer schema "message creator-filters"
 noxinfluencer schema "message send"
 noxinfluencer schema "message attachments upload"
+noxinfluencer schema "message attachments download"
 noxinfluencer schema "message attachments delete"
+noxinfluencer schema "message templates attachments upload"
+noxinfluencer schema "file image upload"
 noxinfluencer schema "message labels set"
 ```
 
@@ -138,7 +148,23 @@ Attach approved files to the thread draft before send or schedule:
 ```bash
 noxinfluencer message attachments list <thread_id>
 noxinfluencer message attachments upload <thread_id> --file brief.pdf --force
+noxinfluencer message attachments download <thread_id> <attachment_id> --output ./brief.pdf
 noxinfluencer message attachments delete <thread_id> <attachment_id> --force
+```
+
+Manage files that belong to a reusable message template:
+
+```bash
+noxinfluencer message templates attachments list <template_id>
+noxinfluencer message templates attachments upload <template_id> --file brief.pdf --force
+noxinfluencer message templates attachments download <template_id> <attachment_id> --output ./template-brief.pdf
+noxinfluencer message templates attachments delete <template_id> <attachment_id> --force
+```
+
+Upload inline rich-text images separately:
+
+```bash
+noxinfluencer file image upload --file message-hero.jpg --force
 ```
 
 Send or schedule only after content and sender are approved:
@@ -162,6 +188,10 @@ noxinfluencer message cancel <thread_id> --force
 - Draft attachment upload uses `--file`, not `--body-file`
 - A thread supports at most 2 draft attachments, up to 10MB each; dangerous executable or script extensions are rejected
 - Upload or delete draft attachments only after confirming the exact `thread_id`
+- Confirm the exact `template_id` before uploading or deleting template attachments
+- One message template supports at most 2 private attachments, up to 10MB each
+- Attachment downloads require an authorized `attachment_id` and write to `--output`; use `--overwrite` only when replacement is intentional
+- Public inline image URLs are not private attachments
 
 ## Current boundary
 
@@ -172,7 +202,7 @@ noxinfluencer message cancel <thread_id> --force
 - It does not operate external messaging platforms outside NoxInfluencer
 - Some project-tab concepts are deprecated upstream; use the CLI schema for current filters
 - `message get` embeds composer state and metadata; there is no separate public draft-get or metadata-get command
-- Draft attachments are not message-template attachments; template attachments remain outside the current public command surface
+- Draft/history attachments and message-template attachments are separate public command paths; do not reuse IDs across them
 
 ## Recommended next steps
 

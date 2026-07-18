@@ -7,7 +7,7 @@ content_type: doc
 nav_group: getting-started
 order: 2
 status: published
-updated_at: 2026-07-15
+updated_at: 2026-07-18
 keywords:
   - quick start
   - skills.sh
@@ -102,7 +102,7 @@ The commands below are mainly for cases where your agent cannot finish setup aut
 
 ### Install or refresh the CLI manually
 
-The current public documentation baseline is `@noxinfluencer/cli` `0.4.19` or newer:
+The current public documentation baseline is `@noxinfluencer/cli` `0.4.21` or newer:
 
 ```bash
 npm install -g @noxinfluencer/cli@latest
@@ -139,7 +139,18 @@ noxinfluencer pricing tools --charged-only
 noxinfluencer quota usage --days 7
 ```
 
-`schema --all` should include `login`, `campaign`, `collection`, `email`, `message`, `crm`, `product`, `short-link`, `affiliation`, `brand-monitor`, `export`, `feedback`, `quota`, `pricing`, and `agent`. If command groups are missing, reinstall the latest CLI, then use [CLI Diagnostics](../../resources/cli-diagnostics.md).
+`schema --all` should include `login`, `creator`, `monitor`, `campaign`, `collection`, `email`, `message`, `crm`, `product`, `short-link`, `affiliation`, `brand-monitor`, `export`, `file`, `feedback`, `quota`, `pricing`, and `agent`.
+
+If you plan to export creator results, import spreadsheets, download reports, or upload images, also check a few representative nested commands:
+
+```bash
+noxinfluencer schema "creator export"
+noxinfluencer schema "monitor auto-track import-file"
+noxinfluencer schema "monitor report"
+noxinfluencer schema "file image upload"
+```
+
+If a command group or nested command is missing, reinstall the latest CLI, then use [CLI Diagnostics](../../resources/cli-diagnostics.md).
 
 GitHub is a supplemental source and final fallback, not the normal first step for a new user: [NoxInfluencer/skills](https://github.com/NoxInfluencer/skills/tree/main).
 

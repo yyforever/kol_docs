@@ -7,7 +7,7 @@ content_type: changelog
 nav_group: changelog
 order: 0
 status: published
-updated_at: 2026-07-15
+updated_at: 2026-07-18
 keywords:
   - changelog
   - updates
@@ -22,6 +22,7 @@ This section records notable updates to the public documentation source and capa
 
 ## Published entries
 
+- [2026-07-18 - CLI 0.4.21 exports, auto-track, and file workflows](2026-07-18-cli-0421-files-exports-auto-track.md)
 - [2026-07-15 - Website onboarding alignment](2026-07-15-website-onboarding-alignment.md)
 - [2026-07-10 - CLI 0.4.19 pricing and creator search alignment](2026-07-10-cli-0419-pricing-creator-search.md)
 - [2026-07-02 - CLI 0.4.15 short links and affiliation](2026-07-02-cli-0415-short-links-affiliation.md)

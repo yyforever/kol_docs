@@ -1,13 +1,13 @@
 ---
 doc_id: tool_product_center
 title: 商品中心
-description: 用于管理商品中心条目、自定义标签和邮件商品卡输入的 Beta 能力页面。
+description: 用于管理商品记录、缩略图上传、自定义标签和邮件商品卡输入的 Beta 能力页面。
 locale: zh
 content_type: doc
 nav_group: tool-reference
 order: 12
 status: published
-updated_at: 2026-06-04
+updated_at: 2026-07-18
 keywords:
   - product center
   - product cards
@@ -33,6 +33,7 @@ source_of_truth:
 
 - 你需要在邮件活动前查看或确认已收集商品
 - 你想先分析一个商品链接，再创建商品记录
+- 你要在创建或更新商品记录前上传已确认的商品缩略图
 - 你需要一个稳定的 `product_collect_id`，用于邮件商品卡
 - 你要用自定义标签组织商品记录
 
@@ -42,6 +43,7 @@ source_of_truth:
 - 通过 `product_collect_id` 查看单个商品
 - 创建商品记录前分析商品链接
 - 创建、更新或删除已收集商品记录
+- 上传商品图片，并把返回的公开 `file_url` 作为 `thumbnail_url`
 - 查看、创建、更新和删除商品自定义标签
 - 向 [邮件任务](email-tasks.md) 商品卡命令提供 `product_collect_id`
 
@@ -53,6 +55,7 @@ source_of_truth:
 noxinfluencer schema "product list"
 noxinfluencer schema "product analyze-link"
 noxinfluencer schema "product create"
+noxinfluencer schema "product image upload"
 noxinfluencer schema "email products replace"
 ```
 
@@ -65,6 +68,12 @@ noxinfluencer product analyze-link --body-file product-link.json
 noxinfluencer product create --body-file product.json --force
 noxinfluencer product update <product_collect_id> --body-file product-update.json --force
 noxinfluencer product delete <product_collect_id> --force
+```
+
+请单独上传已确认的缩略图，再把返回的 `file_url` 写入创建或更新 body 的 `thumbnail_url`：
+
+```bash
+noxinfluencer product image upload --file product.jpg --force
 ```
 
 自定义标签命令：
@@ -100,6 +109,7 @@ noxinfluencer email products delete <task_id> <email_product_id> --force
 - JSON-first 命令使用 `--body-file`；准备商品筛选或写入 body 前先看 schema
 - `product create` 需要 `link`，或 `external_product_id` 加 `product_type`
 - `product update` 是部分更新；如果省略 `custom_tag_ids`，会保留当前标签
+- 图片上传会创建公开商品缩略图 URL；使用 `--force` 前确认本地图片，不要把它当成私有附件
 - `email products replace` 会替换任务 primary project 上当前所有商品卡
 - `email products replace` 最多支持 5 个 `product_collect_ids`
 
@@ -107,6 +117,7 @@ noxinfluencer email products delete <task_id> <email_product_id> --force
 
 - 商品中心管理的是 NoxInfluencer 商品记录，不操作外部电商平台
 - `product_collect_id` 不是外部商城商品 ID
+- `product image upload` 只负责上传图片，不会自动创建或更新商品中心记录
 - 删除邮件商品卡只会移除任务商品卡关系，不会删除商品中心里的商品本体
 - 商品中心和 [品牌监控](brand-monitor.md) 的产品信号、品牌产品资产不是同一类能力
 

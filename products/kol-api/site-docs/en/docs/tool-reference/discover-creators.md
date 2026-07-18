@@ -1,13 +1,13 @@
 ---
 doc_id: tool_discover_creators
 title: Discover Creators
-description: Public capability reference for creator discovery and shortlist generation.
+description: Public capability reference for creator discovery, shortlist generation, and selected-result exports.
 locale: en
 content_type: doc
 nav_group: tool-reference
 order: 1
 status: published
-updated_at: 2026-07-10
+updated_at: 2026-07-18
 keywords:
   - discover creators
   - creator discovery
@@ -18,6 +18,7 @@ source_of_truth:
   - ../../../../03_API能力设计.md
   - ../../../../05_PRD.md
   - "repo:kol_claw path:cli/src/commands/creator.ts"
+  - "repo:kol_claw path:cli/README.md"
   - "repo:kol_claw path:cli/src/commands/pricing.ts"
   - "repo:kol_claw path:server/app/routers/discover.py"
   - "repo:kol_claw path:server/contracts/capabilities/creator_search.json"
@@ -34,6 +35,7 @@ Discover Creators helps you find candidate creators and build a shortlist worth 
 - You already know the target platform, market, or category
 - You want a shortlist before deep due diligence
 - You need a clean handoff into creator analysis
+- You want to export an approved subset of search or lookalike results
 
 ## Recommended inputs
 
@@ -62,6 +64,28 @@ noxinfluencer creator search --platform tiktok --keywords '[coffee,review]' --ke
 - For deeper pagination, reuse the prior response's `data.search_after`
 - Prefer a JSON body through `--body-file -` when passing cursor arrays or complex filters
 - Search rows expose search-result identifiers for follow-up, but full identity comes from a later creator read
+
+## Export selected results
+
+After reviewing search or lookalike results, you can export 1 to 100 explicitly selected `data.items[].id` values. Do not replace these encrypted result IDs with profile `creator_id` values.
+
+- `mode=base` uses the standard SaaS creator columns
+- `mode=deep` requires platform-supported `field_keys`
+- For lookalike results, preserve the returned `data.export_context` unchanged so the export reuses the same source and filters
+- Fields such as `email` and `whatsapp` can consume contact quota; request them only when external outreach actually needs visible contact data
+
+Before creating a deep export, preview its business-quota impact:
+
+```bash
+noxinfluencer creator export-preview --body-file creator-export.json
+noxinfluencer creator export --body-file creator-export.json --force
+noxinfluencer export get <export_id>
+noxinfluencer export download <export_id> --output ./creators.xlsx
+```
+
+`creator export-preview` is deep-mode only. It creates no export task, consumes no Skill Credit, and estimates the SaaS export, email, or WhatsApp quota required by the selected fields. Base exports can be created directly after you approve the selected IDs.
+
+For lookalike results, use `creator lookalikes-export` with the preserved `export_context`, then inspect and download it through the same shared `export` commands.
 
 ## Pricing and usage planning
 
@@ -94,6 +118,7 @@ noxinfluencer creator search-filter --body-file search-filter.json
 - Basic fit signals such as platform, audience size, market, or topical match
 - Search result identifiers that help you decide who to inspect next
 - Optional filtered rows after applying hide or deduplication rules to the current page
+- An async export task ID after you approve a selected-result export
 
 ## What discovery output does not include yet
 
